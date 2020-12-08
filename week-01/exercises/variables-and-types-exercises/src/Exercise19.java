@@ -5,5 +5,7 @@ public class Exercise19 {
         System.out.println(message);
         // 1. Print the length of the message below.
         // Leave existing code intact.
+
+        System.out.println(message.length());
     }
 }

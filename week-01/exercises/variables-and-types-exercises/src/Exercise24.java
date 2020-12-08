@@ -17,5 +17,9 @@ public class Exercise24 {
         // Interrupting cow.
         // Interrupti...
         // Moo!
+
+        String newKnockKnock = knockKnock.replace("a", "o");
+
+        System.out.println(newKnockKnock);
     }
 }
