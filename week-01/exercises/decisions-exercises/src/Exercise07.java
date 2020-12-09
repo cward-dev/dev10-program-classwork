@@ -30,5 +30,18 @@ public class Exercise07 {
         // Hours of homework: 20
         // Day of week: Sunday
         // Time to do the homework...
+        char firstLetter = Character.toLowerCase(dayOfWeek.charAt(0));
+        String willAbdiDoHomework;
+
+        if (firstLetter != 's' || hoursOfHomework >= 15) {
+            willAbdiDoHomework = "Time to do the homework...";
+        }
+        else {
+            willAbdiDoHomework = "I'm taking the day off!";
+        }
+
+        System.out.println("Hours of homework: " + hoursOfHomework);
+        System.out.println("Day of the week: " + dayOfWeek);
+        System.out.println(willAbdiDoHomework);
     }
 }
