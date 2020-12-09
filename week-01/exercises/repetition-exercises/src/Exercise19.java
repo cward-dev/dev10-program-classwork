@@ -24,5 +24,23 @@ public class Exercise19 {
         // "B", "igstar" -> "Bigstar"
         // "", "huh?" -> "huh?"
         // "wha?", "" -> "wha?"
+
+        int longestPhraseLength;
+        if (first.length() >= second.length()) {
+            longestPhraseLength = first.length();
+        } else {
+            longestPhraseLength = second.length();
+        }
+
+        System.out.println(longestPhraseLength);
+
+        String newPhrase = "";
+
+        for (int i = 0; i < longestPhraseLength; i++) {
+            newPhrase += first.charAt(i);
+            newPhrase += second.charAt(i);
+        }
+
+        System.out.println(newPhrase);
     }
 }

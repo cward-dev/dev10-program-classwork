@@ -22,5 +22,19 @@ public class Exercise16 {
         // (2X2)
         // **
         // **
+
+        int rows = 5;
+        int columns = 5;
+
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < columns; col++) {
+                if (row == 0 || row == rows - 1 || col == 0 || col == columns - 1) {
+                    System.out.print('*');
+                } else {
+                    System.out.print('#');
+                }
+            }
+            System.out.println("");
+        }
     }
 }

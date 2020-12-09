@@ -10,5 +10,19 @@ public class Exercise12 {
 
         // 1. Write a loop to determine if the letter `x` occurs in a user-entered phrase.
         // 2. Print a message for both finding and not finding the `x`.
+
+        boolean xWasFound = false;
+
+        for (int i = 0; i < phrase.length(); i++) {
+            if (Character.toLowerCase(phrase.charAt(i)) == 'x') {
+                xWasFound = true;
+            }
+        }
+
+        if (xWasFound == true) {
+            System.out.println("The letter \"x\" was found.");
+        } else {
+            System.out.println("The letter \"x\" was not found.");
+        }
     }
 }
