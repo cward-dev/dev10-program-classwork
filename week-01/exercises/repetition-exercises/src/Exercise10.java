@@ -13,5 +13,12 @@ public class Exercise10 {
 
         // 1. Write a loop to sum all numbers between start and end.
         // 2. Print the result.
+
+        int sum = 0;
+        for (int i = start; i <= end; i++) {
+            sum += i;
+        }
+
+        System.out.println(sum);
     }
 }

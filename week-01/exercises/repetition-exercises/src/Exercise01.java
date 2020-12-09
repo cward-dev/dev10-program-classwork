@@ -18,8 +18,8 @@ public class Exercise01 {
         // 10
 
         int index = 0;
-        while (index < 5) {
-            System.out.println(index);
+        while (index < 10) {
+            System.out.println(index + 1);
             index++;
         }
     }
