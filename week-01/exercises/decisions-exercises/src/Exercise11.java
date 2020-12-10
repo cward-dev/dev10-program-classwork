@@ -10,11 +10,32 @@ public class Exercise11 {
         // - If only one of the three ask, print "Going to hold off for a bit."
         // - If none of the managers ask, print "Nothing to do..."
 
-        boolean managerAAsked = true;
+        boolean managerAAsked = false;
         boolean managerBAsked = true;
-        boolean managerCAsked = true;
+        boolean managerCAsked = false;
+        int count = 0;
 
         // 1. Add decisions statements to cover all scenarios.
         // 2. Change manager variables to test all scenarios.
+
+        if (managerAAsked) {
+            count++;
+        }
+        if (managerBAsked) {
+            count++;
+        }
+        if (managerCAsked) {
+            count++;
+        }
+
+        if (count == 0) {
+            System.out.println("Nothing to do...");
+        } else if (count == 1) {
+            System.out.println("Going to hold off for a bit.");
+        } else if (count == 2) {
+            System.out.println("Adding feature to schedule.");
+        } else if (count == 3) {
+            System.out.println("Feature in progress.");
+        }
     }
 }
