@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Exercise12 {
 
     // 1. Create a method.
@@ -20,8 +22,24 @@ public class Exercise12 {
 
     public static void main(String[] args) {
         // 3. Uncomment the code below and confirm it works.
-        // printNounPhrase();
-        // printNounPhrase();
-        // printNounPhrase();
+        printNounPhrase();
+        printNounPhrase();
+        printNounPhrase();
+    }
+
+    public static String readRequiredString(String prompt) {
+        Scanner console = new Scanner(System.in);
+        String result;
+        do {
+            System.out.println(prompt);
+            result = console.nextLine();
+        } while (result.isBlank());
+        return result;
+    }
+
+    public static void printNounPhrase() {
+        String adjective = readRequiredString("Please enter an adjective: ");
+        String noun = readRequiredString("Please enter a noun: ");
+        System.out.println(adjective + " " + noun);
     }
 }

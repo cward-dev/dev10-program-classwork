@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Exercise15 {
     /* FIZZ BUZZ
 
@@ -32,4 +34,46 @@ public class Exercise15 {
     17
     Fizz
      */
+
+    public static void main(String[] args) {
+        int value = readInt("Enter a positive integer: ");
+
+        loopToValue(value);
+    }
+
+    public static int readInt(String prompt) {
+        Scanner console = new Scanner(System.in);
+        int value;
+        do {
+            System.out.print(prompt);
+            value = Integer.parseInt(console.nextLine());
+        } while (!(value >= 1));
+
+        return value;
+    }
+
+    public static boolean divisibleByNum(int value, int divBy) {
+        if (value % divBy == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static void loopToValue(int value) {
+        for (int i = 1; i <= value; i++) {
+            boolean divBy3 = divisibleByNum(i, 3);
+            boolean divBy5 = divisibleByNum(i, 5);
+
+            if (divBy3 && divBy5) {
+                System.out.println("Fizz Buzz");
+            } else if (divBy3) {
+                System.out.println("Fizz");
+            } else if (divBy5) {
+                System.out.println("Buzz");
+            } else {
+                System.out.println(i);
+            }
+        }
+    }
 }

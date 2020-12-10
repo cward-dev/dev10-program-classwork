@@ -8,11 +8,16 @@ public class Exercise05 {
 
     public static void main(String[] args) {
         // 2. Uncomment the following code to test your results.
-        /*
+
         System.out.println(gallonsToCups(0)); // Expected: 0
         System.out.println(gallonsToCups(1)); // Expected: 16
         System.out.println(gallonsToCups(2)); // Expected: 32
-        */
+
+    }
+
+    // Description: converts gallons to cups. (Common measure, not US legal.)
+    public static int gallonsToCups(int numberOfGallons) {
+        return numberOfGallons * 16;
     }
 
 
