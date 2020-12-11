@@ -31,7 +31,8 @@
 * print confirmation
     * There are **[numOfCapsules]** unoccupied capsules ready to be booked.
     
-#### void menu(Scanner console, String[] capsules)
+#### void menu(Scanner console, String[] capsules)                              // ### IC - for the method names try to follow Java naming conventions, 
+                                                                                // ### i.e. start method name with a verb, e.g. displayMenu()
 * declare int menuSelection variable
 * declare boolean exitProgram = false;
 
@@ -56,7 +57,7 @@
 * declare String guestName
 * declare int capsuleNumber
 * assign both variables from the console with appropriate prompts
-    * use do-while validation to check for valid entries
+    * use do-while validation to check for valid entries                        // ### IC - what if the user's input for the capsule number is outside of the range?
         * guestName.isBlank()
         * capsules[capsuleNumber] == null
 * update array with the new information
@@ -66,7 +67,7 @@
 * declare int capsuleNumber
 * assign variable from the console with appropriate prompt
     * use validation to check for valid entry
-        * capsuleNumber - use if statement to ensure that capsule is occupied
+        * capsuleNumber - use if statement to ensure that capsule is occupied   // ### IC - what if ALL of the capsules unoccupied? 
 * update array with the new information (capsules[capsuleNumber] = null)
 * print success message and confirmation
 
@@ -75,7 +76,7 @@
 * assign variable from the console with appropriate prompt
     * use validation to check for valid entry
 * initiate for loop to print capsule # and guest name (or [unoccupied]) for capsules[capsuleNumber] and 5 capules above and below it (11 capsules total)
-    * initiate if statement to account for fringe capsules (<6 or >95)
+    * initiate if statement to account for fringe capsules (<6 or >95)      // ### IC - not 95 specifically, right? 
         * if capsuleNumber < 6 then print capsules[0-10]
         * if capsuleNumber > 95 then print capsules[89-99]
 
