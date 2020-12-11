@@ -43,7 +43,13 @@ public class Exercise14 {
         // 1. Fix the capitalization. Normalize to all lowercase.
 
         // The following call should print all lowercase email addresses.
+
+        for (int i = 0; i < emailAddresses.length; i++) {
+            emailAddresses[i] = emailAddresses[i].toLowerCase();
+        }
+
         printArray(emailAddresses);
+
     }
 
     public static void printArray(String[] arr) {

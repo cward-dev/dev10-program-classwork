@@ -11,5 +11,12 @@ public class Exercise03 {
         // 1. Change it to the correct spelling. Don't alter the array literal declaration. Set the value by index.
 
         // 2. Loop a second time and confirm all five words are spelled correctly.
+
+        commonlyMisspelledWords[3] = "comparison";
+
+        System.out.println();
+        for (int i = 0; i < commonlyMisspelledWords.length; i++) {
+            System.out.println(commonlyMisspelledWords[i]);
+        }
     }
 }

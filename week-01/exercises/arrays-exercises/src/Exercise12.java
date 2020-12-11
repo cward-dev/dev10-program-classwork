@@ -11,6 +11,43 @@ public class Exercise12 {
         // 3. Loop through `values` a second time. If an element is positive, add it to the positive array.
         // If it is non-positive, add it to the non-positive array.
         // 4. Confirm that your secondary arrays are properly populated either by debugging or printing their elements.
+
+        int countPos = 0;
+        int countNeg = 0;
+
+        for (int i = 0; i < values.length; i++) {
+            if (values[i] > 0) {
+                countPos++;
+            } else if (values[i] < 0) {
+                countNeg++;
+            }
+        }
+
+        int[] posValues = new int[countPos];
+        int nextPosIndex = 0;
+        int[] negValues = new int[countNeg];
+        int nextNegIndex = 0;
+
+        for (int i = 0; i < values.length; i++) {
+            if (values[i] > 0) {
+                posValues[nextPosIndex] = values[i];
+                nextPosIndex++;
+            } else if (values[i] < 0) {
+                negValues[nextNegIndex] = values[i];
+                nextNegIndex++;
+            }
+        }
+
+        System.out.println("Positive Values:");
+        for (int i = 0; i < posValues.length; i++) {
+            System.out.println(posValues[i]);
+        }
+
+
+        System.out.println("Negative Values:");
+        for (int i = 0; i < negValues.length; i++) {
+            System.out.println(negValues[i]);
+        }
     }
 
     public static int[] makeRandomArray() {

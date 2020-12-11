@@ -5,5 +5,13 @@ public class Exercise06 {
 
         // 1. Create a loop to calculate the sum of elements in `values`.
         // 2. Print the result.
+
+        int sum = 0;
+
+        for (int i = 0; i < values.length; i++) {
+            sum += values[i];
+        }
+
+        System.out.println(sum);
     }
 }

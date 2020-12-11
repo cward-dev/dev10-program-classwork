@@ -11,12 +11,11 @@ public class Exercise08 {
     public static void main(String[] args) {
         int[] values = makeRandomArray();
         // 2. Uncomment the code below and make it work.
-        /*
+
         int sum = sumArray(values);
         System.out.println(sum);
         System.out.println(sumArray(makeRandomArray()));
         System.out.println(sumArray(makeRandomArray()));
-         */
     }
 
     public static int[] makeRandomArray() {
@@ -26,5 +25,13 @@ public class Exercise08 {
             result[i] = random.nextInt(1000) - 500;
         }
         return result;
+    }
+
+    public static int sumArray(int[] values) {
+        int sum = 0;
+        for (int i = 0; i < values.length; i++) {
+            sum += values[i];
+        }
+        return sum;
     }
 }

@@ -21,6 +21,49 @@ public class Exercise16 {
            if oneIndex >= one.length, there are no `one` elements remaining so use elements from two
            if twoIndex >= two.length, there are no `two` elements remaining so use elements from one
           */
+
+        int count = 0;
+
+        for (int i = 0; i < one.length; i++) {
+            count++;
+        }
+        for (int i = 0; i < two.length; i++) {
+            count++;
+        }
+
+        int oneIndex = 0;
+        int twoIndex = 0;
+        int resultIndex = 0;
+        int[] result = new int[count];
+
+        for (int i = 0; i < result.length; i++) {
+            if (oneIndex >= one.length) {
+                result[resultIndex] = two[twoIndex];
+                resultIndex++;
+                twoIndex++;
+            } else if (twoIndex >= two.length) {
+                result[resultIndex] = one[oneIndex];
+                resultIndex++;
+                oneIndex++;
+            } else if (one[oneIndex] <= two[twoIndex]) {
+                result[resultIndex] = one[oneIndex];
+                resultIndex++;
+                oneIndex++;
+            } else if (one[oneIndex] > two[twoIndex]) {
+                result[resultIndex] = two[twoIndex];
+                resultIndex++;
+                twoIndex++;
+            }
+        }
+
+        System.out.println("One Length: " + one.length);
+        System.out.println("Two Length: " + two.length);
+        System.out.println("Result Length: " + result.length);
+        System.out.println();
+
+        for (int i = 0; i < result.length; i++) {
+            System.out.println(result[i]);
+        }
     }
 
     public static int[] makeRandomAscendingArray() {
