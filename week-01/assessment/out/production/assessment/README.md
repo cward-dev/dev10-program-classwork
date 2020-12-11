@@ -24,6 +24,7 @@
     
 #### int getNumOfCapsules(Scanner console)
 * declare int numOfCapsules variable
+* declare boolean exitProgram = false;  
 * print prompt for number of available capsules
     * Enter the number of capsules available
         * Assign number entered to console to numOfCapsules variable
@@ -32,10 +33,8 @@
     * There are **[numOfCapsules]** unoccupied capsules ready to be booked.
     
 #### void menu(Scanner console, String[] capsules)
-* declare int menuSelection variable
-* declare boolean exitProgram = false;
-
-* initiate a do-while loop to allow user to work through the menu while exitProgram == false
+* Declare int menuSelection variable
+* Initiate a do-while loop to allow user to work through the menu while exitProgram == false
     * Print Main Menu
         * Guest Menu
         * ==========
@@ -45,7 +44,7 @@
         * 4 - Exit
         * Choose an option [1-4]:
             * Assign number entered to console to menuSelection variable
-    * initiate a switch statement for menuSelection
+    * Initiate a switch statement for menuSelection
         * case 1 - call checkIn(console, capsules[])
         * case 2 - call checkOut(console, capsules[])
         * case 3 - call viewGuests(console, capsules[])
