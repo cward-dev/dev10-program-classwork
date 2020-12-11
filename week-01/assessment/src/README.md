@@ -12,12 +12,12 @@
 
 #### main method
 * declare Scanner console variable
-* call introduction()
+* call displayIntroduction()
 * declare int numOfCapsules variable = getNumOfCapsules(console)
 * declare String[] capsules variable = new String[numOfCapsules]
-* call menu(console, numOfCapsules)
+* call displayMenu(console, numOfCapsules)
     
-#### void introduction()
+#### void displayIntroduction()
 * print start-up message
     * Welcome to Capsule-Capsule.
     * ===========================
@@ -31,10 +31,9 @@
 * print confirmation
     * There are **[numOfCapsules]** unoccupied capsules ready to be booked.
     
-#### void menu(Scanner console, String[] capsules)
+#### void displayMenu(Scanner console, String[] capsules)
 * declare int menuSelection variable
 * declare boolean exitProgram = false;
-
 * initiate a do-while loop to allow user to work through the menu while exitProgram == false
     * Print Main Menu
         * Guest Menu
@@ -57,8 +56,11 @@
 * declare int capsuleNumber
 * assign both variables from the console with appropriate prompts
     * use do-while validation to check for valid entries
+        * capsuleNumber < 1 or capsuleNumber > capsules.length
         * guestName.isBlank()
         * capsules[capsuleNumber] == null
+        * if all capsules are occupied (== null) then print error message and return to main menu
+          * use for loop to cycle through and count number of unoccupied capsules
 * update array with the new information
 * print success message and confirmation
 
@@ -67,6 +69,8 @@
 * assign variable from the console with appropriate prompt
     * use validation to check for valid entry
         * capsuleNumber - use if statement to ensure that capsule is occupied
+            * if all capsules are unoccupied, print error message and go back to main menu
+                * use for loop to cycle through and count number of occupied capsules
 * update array with the new information (capsules[capsuleNumber] = null)
 * print success message and confirmation
 
@@ -74,7 +78,7 @@
 * declare int capsuleNumber
 * assign variable from the console with appropriate prompt
     * use validation to check for valid entry
-* initiate for loop to print capsule # and guest name (or [unoccupied]) for capsules[capsuleNumber] and 5 capules above and below it (11 capsules total)
+* initiate for loop to print capsule # and guest name (or [unoccupied]) for capsules[capsuleNumber] and 5 capsules above and below it (11 capsules total)
     * initiate if statement to account for fringe capsules (<6 or >95)
         * if capsuleNumber < 6 then print capsules[0-10]
         * if capsuleNumber > 95 then print capsules[89-99]
