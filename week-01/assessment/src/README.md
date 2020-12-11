@@ -78,7 +78,7 @@
         * if capsuleNumber < 6 then print capsules[0-10]
         * if capsuleNumber > 95 then print capsules[89-99]
 
-#### void exit(Scanner console)
+#### boolean exit(Scanner console)
 * declare String answer variable
 * prompt user if they are sure they want to exit, all data will be lost [y/n]
     * if y then return true
