@@ -56,13 +56,10 @@
 * declare String guestName
 * declare int capsuleNumber
 * assign both variables from the console with appropriate prompts
-<<<<<<< HEAD
     * use do-while validation to check for valid entries
-        * capsuleNumber < 1 or capsuleNumber > capsules.length
-=======
-    * use do-while validation to check for valid entries                        // ### IC - what if the user's input for the capsule number is outside of the range?
         * guestName.isBlank()
         * capsules[capsuleNumber] == null
+        * capsuleNumber < 1 or capsuleNumber > capsules.length
         * if all capsules are occupied (== null) then print error message and return to main menu
           * use for loop to cycle through and count number of unoccupied capsules
 * update array with the new information
@@ -75,7 +72,6 @@
         * capsuleNumber - use if statement to ensure that capsule is occupied
             * if all capsules are unoccupied, print error message and go back to main menu
                 * use for loop to cycle through and count number of occupied capsules
-        * capsuleNumber - use if statement to ensure that capsule is occupied   // ### IC - what if ALL of the capsules unoccupied? 
 * update array with the new information (capsules[capsuleNumber] = null)
 * print success message and confirmation
 
@@ -83,12 +79,10 @@
 * declare int capsuleNumber
 * assign variable from the console with appropriate prompt
     * use validation to check for valid entry
-* initiate for loop to print capsule # and guest name (or [unoccupied]) for capsules[capsuleNumber] and 5 capsules above and below it (11 capsules total)
-    * initiate if statement to account for fringe capsules (<6 or >95)
 * initiate for loop to print capsule # and guest name (or [unoccupied]) for capsules[capsuleNumber] and 5 capules above and below it (11 capsules total)
-    * initiate if statement to account for fringe capsules (<6 or >95)      // ### IC - not 95 specifically, right? 
+    * initiate if statement to account for fringe capsules (<6 or >capsules.length)
         * if capsuleNumber < 6 then print capsules[0-10]
-        * if capsuleNumber > 95 then print capsules[89-99]
+        * if capsuleNumber > capsules.length-5 then print capsules[(capsules.length-11)-(capsules.length-1)]
 
 #### boolean exit(Scanner console)
 * declare String answer variable

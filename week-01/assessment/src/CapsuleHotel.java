@@ -91,17 +91,24 @@ public class CapsuleHotel {
         unoccupiedCapsulesExist = checkForUnoccupiedCapsules(capsules);
         if (unoccupiedCapsulesExist) {
             // Get Guest Name for check in
+            System.out.println("Enter [-1] to return to main menu.");
             System.out.print("Guest Name: ");
             do {
                 guestName = console.nextLine();
             } while (guestName.isBlank());
+
+            if (guestName.equalsIgnoreCase("-1")) {
+                return;
+            }
 
             // Get Capsule # for check in
             do {
                 System.out.printf("Capsule #[1-%d]: ", capsules.length);
                 capsuleNumber = Integer.parseInt(console.nextLine());
                 System.out.println();
-                if (capsuleNumber < 1 || capsuleNumber > capsules.length) {
+                if (capsuleNumber == -1) { // Return to main menu
+                    return;
+                } else if (capsuleNumber < 1 || capsuleNumber > capsules.length) {
                     System.out.println("That is not a valid capsule number.");
                 } else if (capsules[capsuleNumber-1] != null) {
                     System.out.println("Error :(");
@@ -171,12 +178,15 @@ public class CapsuleHotel {
         if (occupiedCapsulesExist) {
             // Grab Capsule # for check out
             do {
+                System.out.println("Enter [-1] to return to main menu.");
                 System.out.printf("Capsule #[1-%d]: ", capsules.length);
                 capsuleNumber = Integer.parseInt(console.nextLine());
                 System.out.println();
-                if (capsuleNumber < 1 || capsuleNumber > capsules.length) {
+                if (capsuleNumber == -1) { // Return to main menu
+                    return;
+                } else if (capsuleNumber < 1 || capsuleNumber > capsules.length) { // Error invalid number
                     System.out.printf("There is no capsule #%d at this hotel.%n", capsuleNumber);
-                } else if (capsules[capsuleNumber-1] == null) {
+                } else if (capsules[capsuleNumber-1] == null) { // Error occupied capsule
                     System.out.println("Error :(");
                     System.out.printf("Capsule #%d is unoccupied.%n", capsuleNumber);
                     System.out.println();
@@ -240,11 +250,14 @@ public class CapsuleHotel {
 
         // Get Capsule # for guest list generation
         do {
+            System.out.println("Enter [-1] to return to main menu.");
             System.out.println("Enter [0] to view the full current guest list.");
             System.out.printf("Capsule #[1-%d]: ", capsules.length);
             capsuleNumber = Integer.parseInt(console.nextLine());
             System.out.println();
-            if (capsuleNumber == 0) {
+            if (capsuleNumber == -1) { // Return to main menu
+                return;
+            } else if (capsuleNumber == 0) {
                 String fullGuestListTitle = "Full Guest List";
                 System.out.println(fullGuestListTitle);
                 System.out.println("=".repeat(fullGuestListTitle.length()));
@@ -311,7 +324,7 @@ public class CapsuleHotel {
         System.out.println();
     }
 
-    // Print list of guests pulling only occupied or unoccupied rooms
+    // Print list of guests, pulling only occupied or unoccupied rooms
     public static void printGuestList(int capsuleLow, int capsuleHigh, String[] capsules, int[] capsulesPulled) {
         System.out.printf("%3s: %s%n", "Capsule", "Guest");
         for (int i = capsuleLow - 1; i <= capsuleHigh - 1; i++) {
@@ -335,6 +348,8 @@ public class CapsuleHotel {
     }
 
     public static void depopulateHotel(String[] capsules) {
+        System.out.printf("Check out all guests[y/n]: ");
+
         for (int i = 0; i < capsules.length; i++) {
             capsules[i] = null;
         }
