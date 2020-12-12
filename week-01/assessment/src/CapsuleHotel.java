@@ -18,9 +18,14 @@ public class CapsuleHotel {
 
     public static int getNumberOfCapsules(Scanner console) {
         int numOfCapsules;
-        System.out.print("Enter the number of capsules available: ");
-        numOfCapsules = Integer.parseInt(console.nextLine());
-        System.out.println();
+        do {
+            System.out.print("Enter the number of capsules available [1-100]: ");
+            numOfCapsules = Integer.parseInt(console.nextLine());
+            System.out.println();
+            if (numOfCapsules < 1 || numOfCapsules > 100) {
+                System.out.println("That is not a valid number.");
+            }
+        } while (numOfCapsules < 1 || numOfCapsules > 100);
         System.out.printf("There are %s unoccupied capsules ready to be booked.%n", numOfCapsules);
         System.out.println();
         return numOfCapsules;
@@ -45,6 +50,12 @@ public class CapsuleHotel {
                     break;
                 case "4":
                     exitProgram = exit(console);
+                    break;
+                case "autopop":
+                    autoPopulateHotel(capsules);
+                    break;
+                case "depop":
+                    depopulateHotel(capsules);
                     break;
                 default:
                     System.out.println("I do not recognize that command.");
@@ -72,6 +83,10 @@ public class CapsuleHotel {
         boolean unoccupiedCapsulesExist;
         String guestName;
         int capsuleNumber;
+
+        String title = "Check In";
+        System.out.println(title);
+        System.out.println("=".repeat(title.length()));
 
         unoccupiedCapsulesExist = checkForUnoccupiedCapsules(capsules);
         if (unoccupiedCapsulesExist) {
@@ -127,19 +142,13 @@ public class CapsuleHotel {
             }
             // Print list of unoccupied capsules
             if (unoccupiedCapsulesCount > 11) { // if list is longer than 11, trim list to first 11 available capsules
-                System.out.println("The first 11 unoccupied capsules:");
-                for (int i = 0; i < 11; i++) {
-                    System.out.printf("%d: %s%n", unoccupiedCapsules[i],
-                            capsules[unoccupiedCapsules[i]-1] == null ?
-                                    "[unoccupied]" : capsules[unoccupiedCapsules[i]-1]);
-                }
+                System.out.println("The following are the first 11 unoccupied capsules.");
+                System.out.println();
+                printGuestList(1,11, capsules, unoccupiedCapsules);
             } else { // otherwise, show full list
-                System.out.println("The following capsules are unoccupied:");
-                for (int i = 0; i < unoccupiedCapsules.length; i++) {
-                    System.out.printf("%d: %s%n", unoccupiedCapsules[i],
-                            capsules[unoccupiedCapsules[i]-1] == null ?
-                                    "[unoccupied]" : capsules[unoccupiedCapsules[i]-1]);
-                }
+                System.out.println("The following capsules are unoccupied.");
+                System.out.println();
+                printGuestList(1, unoccupiedCapsules.length, capsules, unoccupiedCapsules);
             }
             unoccupiedCapsulesExist = true;
         } else {
@@ -204,9 +213,14 @@ public class CapsuleHotel {
                 }
             }
             // Print list of occupied capsules
-            System.out.println("The following capsules are occupied:");
-            for (int i = 0; i < occupiedCapsules.length; i++) {
-                System.out.printf("%d: %s%n", occupiedCapsules[i], capsules[occupiedCapsules[i]-1]);
+            if (occupiedCapsulesCount > 11) { // if list is longer than 11, trim list to first 11 available capsules
+                System.out.println("The following are the first 11 occupied capsules.");
+                System.out.println();
+                printGuestList(1,11, capsules, occupiedCapsules);
+            } else { // otherwise, show full list
+                System.out.println("The following capsules are occupied.");
+                System.out.println();
+                printGuestList(1, occupiedCapsules.length, capsules, occupiedCapsules);
             }
             occupiedCapsulesExist = true;
         } else {
@@ -226,17 +240,23 @@ public class CapsuleHotel {
 
         // Get Capsule # for guest list generation
         do {
+            System.out.println("Enter [0] to view the full current guest list.");
             System.out.printf("Capsule #[1-%d]: ", capsules.length);
             capsuleNumber = Integer.parseInt(console.nextLine());
             System.out.println();
-            if (capsuleNumber < 1 || capsuleNumber > capsules.length) {
+            if (capsuleNumber == 0) {
+                String fullGuestListTitle = "Full Guest List";
+                System.out.println(fullGuestListTitle);
+                System.out.println("=".repeat(fullGuestListTitle.length()));
+                printGuestList(1, capsules.length, capsules);
+                return;
+            } else if (capsuleNumber < 1 || capsuleNumber > capsules.length) {
                 System.out.println("That is not a valid capsule number.");
                 System.out.println();
             }
         } while (capsuleNumber < 1 || capsuleNumber > capsules.length);
 
         // Print list of guests, with decision making based on where in array the call is starting
-        System.out.println("Capsule: Guest");
         if (capsules.length < 11) { // if less than 11 capsules total, then print all capsules
             printGuestList(1, capsules.length, capsules);
         } else if (capsuleNumber < 6) { // if at lower limit then return first 11 capsules
@@ -246,13 +266,6 @@ public class CapsuleHotel {
         } else { // default: print requested capsule and 5 capsules above and below
             printGuestList(capsuleNumber - 5, capsuleNumber + 5, capsules);
         }
-    }
-
-    public static void printGuestList(int capsuleLow, int capsuleHigh, String[] capsules) {
-        for (int i = capsuleLow - 1; i <= capsuleHigh - 1; i++) {
-            System.out.printf("%d: %s%n", i + 1, capsules[i] == null ? "[unoccupied]" : capsules[i]);
-        }
-        System.out.println();
     }
 
     public static boolean exit(Scanner console) {
@@ -280,9 +293,50 @@ public class CapsuleHotel {
                 System.out.println("I do not understand.");
                 System.out.println();
             }
-
         } while (!exitAnswer.equalsIgnoreCase("y") && !exitAnswer.equalsIgnoreCase("n"));
 
         return exitProgram;
+    }
+
+    public static void printGuest(int capsuleNumber, String guestName) {
+        System.out.printf("%7d: %s%n", capsuleNumber, guestName);
+    }
+
+    // Print list of guests
+    public static void printGuestList(int capsuleLow, int capsuleHigh, String[] capsules) {
+        System.out.printf("%3s: %s%n", "Capsule", "Guest");
+        for (int i = capsuleLow - 1; i <= capsuleHigh - 1; i++) {
+            printGuest(i + 1, capsules[i] == null ? "[unoccupied]" : capsules[i]);
+        }
+        System.out.println();
+    }
+
+    // Print list of guests pulling only occupied or unoccupied rooms
+    public static void printGuestList(int capsuleLow, int capsuleHigh, String[] capsules, int[] capsulesPulled) {
+        System.out.printf("%3s: %s%n", "Capsule", "Guest");
+        for (int i = capsuleLow - 1; i <= capsuleHigh - 1; i++) {
+            printGuest(capsulesPulled[i],
+                    capsules[capsulesPulled[i]-1] == null ? "[unoccupied]" : capsules[capsulesPulled[i]-1]);
+        }
+        System.out.println();
+    }
+
+    public static void autoPopulateHotel(String[] capsules) {
+        int firstNum;
+        int lastNum;
+        String[] firstName = { "Thomas", "Zachary", "Philip", "Theodore", "Peter", "Katelyn", "Rebecca", "Sarah", "Penelope", "Samantha" };
+        String[] lastName = { "Hancock", "Hamilton", "Washington", "Burr", "Jefferson", "Franklin", "Adams", "Madison", "Brown", "Baker" };
+
+        for (int i = 0; i < capsules.length; i++) {
+            firstNum = (int)(Math.random() * 10);
+            lastNum = (int)(Math.random() * 10);
+            capsules[i] = firstName[firstNum] + " " + lastName[lastNum];
+        }
+    }
+
+    public static void depopulateHotel(String[] capsules) {
+        for (int i = 0; i < capsules.length; i++) {
+            capsules[i] = null;
+        }
     }
 }
