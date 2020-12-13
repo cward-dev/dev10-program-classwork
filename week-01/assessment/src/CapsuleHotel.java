@@ -52,7 +52,7 @@ public class CapsuleHotel {
                     exitProgram = exit(console);
                     break;
                 case "autopop":
-                    autoPopulateHotel(capsules);
+                    populateHotel(capsules);
                     break;
                 case "depop":
                     depopulateHotel(capsules);
@@ -224,7 +224,7 @@ public class CapsuleHotel {
             }
             // Print list of occupied capsules
             if (occupiedCapsulesCount > 11) { // if list is longer than 11, trim list to first 11 available capsules
-                System.out.println("The following are the first 11 occupied capsules.");
+                System.out.println("The following are the first  occupied capsules.");
                 System.out.println();
                 printGuestList(1,11, capsules, occupiedCapsules);
             } else { // otherwise, show full list
@@ -315,7 +315,7 @@ public class CapsuleHotel {
         System.out.printf("%7d: %s%n", capsuleNumber, guestName);
     }
 
-    // Print list of guests
+    // Print list of guests (String Array passed in)
     public static void printGuestList(int capsuleLow, int capsuleHigh, String[] capsules) {
         System.out.printf("%3s: %s%n", "Capsule", "Guest");
         for (int i = capsuleLow - 1; i <= capsuleHigh - 1; i++) {
@@ -324,7 +324,7 @@ public class CapsuleHotel {
         System.out.println();
     }
 
-    // Print list of guests, pulling only occupied or unoccupied rooms
+    // Print list of guests, pulling only occupied or unoccupied rooms (Int Array passed in)
     public static void printGuestList(int capsuleLow, int capsuleHigh, String[] capsules, int[] capsulesPulled) {
         System.out.printf("%3s: %s%n", "Capsule", "Guest");
         for (int i = capsuleLow - 1; i <= capsuleHigh - 1; i++) {
@@ -334,19 +334,23 @@ public class CapsuleHotel {
         System.out.println();
     }
 
-    public static void autoPopulateHotel(String[] capsules) {
+    // Populate all empty hotel rooms with randomly generated names **Test Purposes**
+    public static void populateHotel(String[] capsules) {
         int firstNum;
         int lastNum;
         String[] firstName = { "Thomas", "Zachary", "Philip", "Theodore", "Peter", "Katelyn", "Rebecca", "Sarah", "Penelope", "Samantha" };
         String[] lastName = { "Hancock", "Hamilton", "Washington", "Burr", "Jefferson", "Franklin", "Adams", "Madison", "Brown", "Baker" };
 
         for (int i = 0; i < capsules.length; i++) {
-            firstNum = (int)(Math.random() * 10);
-            lastNum = (int)(Math.random() * 10);
-            capsules[i] = firstName[firstNum] + " " + lastName[lastNum];
+            if (capsules[i] == null) {
+                firstNum = (int)(Math.random() * 10);
+                lastNum = (int)(Math.random() * 10);
+                capsules[i] = firstName[firstNum] + " " + lastName[lastNum];
+            }
         }
     }
 
+    // Check out all hotel guests **Test Purposes**
     public static void depopulateHotel(String[] capsules) {
         System.out.printf("Check out all guests[y/n]: ");
 
