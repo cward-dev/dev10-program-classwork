@@ -49,7 +49,7 @@ public class CapsuleHotel {
                     viewGuests(console, capsules);
                     break;
                 case "4":
-                    exitProgram = exit(console);
+                    exitProgram = exitProgram(console);
                     break;
                 case "autopop":
                     populateHotel(capsules);
@@ -281,7 +281,7 @@ public class CapsuleHotel {
         }
     }
 
-    public static boolean exit(Scanner console) {
+    public static boolean exitProgram(Scanner console) {
         String exitAnswer = "";
         boolean exitProgram = false;
 
