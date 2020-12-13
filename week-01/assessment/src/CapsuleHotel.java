@@ -317,7 +317,7 @@ public class CapsuleHotel {
 
     // Print list of guests (String Array passed in)
     public static void printGuestList(int capsuleLow, int capsuleHigh, String[] capsules) {
-        System.out.printf("%3s: %s%n", "Capsule", "Guest");
+        System.out.printf("%7s: %s%n", "Capsule", "Guest");
         for (int i = capsuleLow - 1; i <= capsuleHigh - 1; i++) {
             printGuest(i + 1, capsules[i] == null ? "[unoccupied]" : capsules[i]);
         }
@@ -326,7 +326,7 @@ public class CapsuleHotel {
 
     // Print list of guests, pulling only occupied or unoccupied rooms (Int Array passed in)
     public static void printGuestList(int capsuleLow, int capsuleHigh, String[] capsules, int[] capsulesPulled) {
-        System.out.printf("%3s: %s%n", "Capsule", "Guest");
+        System.out.printf("%7s: %s%n", "Capsule", "Guest");
         for (int i = capsuleLow - 1; i <= capsuleHigh - 1; i++) {
             printGuest(capsulesPulled[i],
                     capsules[capsulesPulled[i]-1] == null ? "[unoccupied]" : capsules[capsulesPulled[i]-1]);
