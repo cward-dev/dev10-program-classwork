@@ -270,7 +270,7 @@ public class CapsuleHotel {
         } while (capsuleNumber < 1 || capsuleNumber > capsules.length);
 
         // Print list of guests, with decision making based on where in array the call is starting
-        if (capsules.length < 11) { // if less than 11 capsules total, then print all capsules
+        if (capsules.length < 12) { // if less than 11 capsules total, then print all capsules
             printGuestList(1, capsules.length, capsules);
         } else if (capsuleNumber < 6) { // if at lower limit then return first 11 capsules
             printGuestList(1, 11, capsules);
