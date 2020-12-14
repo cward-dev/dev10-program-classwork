@@ -10,5 +10,33 @@ public class Exercise15 {
 
         // 2. Instantiate your three favorite super heroes with appropriate powers.
         // 3. Use the `toLine` method to print each hero's details to the console.
+
+        Power healingFactor = new Power("Healing Factor");
+        Power superStrength = new Power("Superhuman Strength");
+        Power superReflexes = new Power("Superhuman Reflexes");
+        Power superSpeed = new Power("Superhuman Speed");
+        Power superDurability = new Power("Superhuman Durability");
+
+        Hero[] heroes = {
+                new Hero("Deadpool", new Power[]{ healingFactor, new Power("Technopathy") }),
+                new Hero("The Hulk", new Power[]{ superStrength, superDurability, healingFactor }),
+                new Hero("The Flash", new Power[]{ superSpeed, superReflexes, healingFactor })
+        };
+
+        for (Hero h : heroes) {
+            toLine(h);
+        }
+    }
+
+    public static void toLine(Hero hero) {
+        System.out.print(hero.getName() + ": ");
+
+        String delimiter = "";
+        for (Power p : hero.getPowers()) {
+            System.out.print(delimiter);
+            delimiter = ", ";
+            System.out.print(p.getName());
+        }
+        System.out.println();
     }
 }
