@@ -297,7 +297,7 @@ public class CapsuleHotel {
         int capsuleLow;
         int capsuleHigh;
 
-        if (capsules.length < 12 || capsuleNumber == 0) { // if less than 11 total capsules, or user enters 0, print all capsules
+        if (capsules.length < 12 || capsuleNumber == 0) { // if less than 12 total capsules, or user enters 0, print all capsules
             capsuleLow = 1;
             capsuleHigh = capsules.length;
         } else if (capsuleNumber < 6) { // else if below 6 then print first 11
