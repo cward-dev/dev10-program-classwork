@@ -118,7 +118,7 @@ public class CapsuleHotel {
             } while (capsules[capsuleNumber-1] != null);
 
             // Update capsule data and confirm
-            capsules[capsuleNumber-1] = guestName;
+            capsules[capsuleNumber - 1] = guestName;
             System.out.println("Success :)");
             System.out.printf("%s is booked in capsule #%d%n", guestName, capsuleNumber);
             System.out.println();
@@ -137,6 +137,7 @@ public class CapsuleHotel {
             }
         }
 
+        // Print unoccupied capsules
         if (unoccupiedCapsulesCount > 0) {
             // Grab capsule numbers of unoccupied capsules
             int[] unoccupiedCapsules = new int[unoccupiedCapsulesCount];
@@ -148,15 +149,9 @@ public class CapsuleHotel {
                 }
             }
             // Print list of unoccupied capsules
-            if (unoccupiedCapsulesCount > 11) { // if list is longer than 11, trim list to first 11 available capsules
-                System.out.println("The following are the first 11 unoccupied capsules.");
-                System.out.println();
-                printGuestList(1,11, capsules, unoccupiedCapsules);
-            } else { // otherwise, show full list
-                System.out.println("The following capsules are unoccupied.");
-                System.out.println();
-                printGuestList(1, unoccupiedCapsules.length, capsules, unoccupiedCapsules);
-            }
+            System.out.println("The following are the first 11 unoccupied capsules.");
+            System.out.println();
+            printGuestList(1, capsules, unoccupiedCapsules);
             unoccupiedCapsulesExist = true;
         } else {
             System.out.println("All capsules are currently occupied.");
@@ -196,7 +191,7 @@ public class CapsuleHotel {
             System.out.println("Success :)");
             System.out.printf("%s checked out from capsule #%d%n",capsules[capsuleNumber-1], capsuleNumber);
             System.out.println();
-            capsules[capsuleNumber-1] = null;
+            capsules[capsuleNumber - 1] = null;
         }
     }
 
@@ -212,6 +207,7 @@ public class CapsuleHotel {
             }
         }
 
+        // Print occupied capsules
         if (occupiedCapsulesCount > 0) {
             // Grab capsule numbers of occupied capsules
             int[] occupiedCapsules = new int[occupiedCapsulesCount];
@@ -223,15 +219,9 @@ public class CapsuleHotel {
                 }
             }
             // Print list of occupied capsules
-            if (occupiedCapsulesCount > 11) { // if list is longer than 11, trim list to first 11 available capsules
-                System.out.println("The following are the first  occupied capsules.");
-                System.out.println();
-                printGuestList(1,11, capsules, occupiedCapsules);
-            } else { // otherwise, show full list
-                System.out.println("The following capsules are occupied.");
-                System.out.println();
-                printGuestList(1, occupiedCapsules.length, capsules, occupiedCapsules);
-            }
+            System.out.println("The following are the first 11 occupied capsules.");
+            System.out.println();
+            printGuestList(1, capsules, occupiedCapsules);
             occupiedCapsulesExist = true;
         } else {
             System.out.println("There are no currently occupied capsules.");
@@ -261,7 +251,7 @@ public class CapsuleHotel {
                 String fullGuestListTitle = "Full Guest List";
                 System.out.println(fullGuestListTitle);
                 System.out.println("=".repeat(fullGuestListTitle.length()));
-                printGuestList(1, capsules.length, capsules);
+                printGuestList(0, capsules);
                 return;
             } else if (capsuleNumber < 1 || capsuleNumber > capsules.length) {
                 System.out.println("That is not a valid capsule number.");
@@ -269,21 +259,11 @@ public class CapsuleHotel {
             }
         } while (capsuleNumber < 1 || capsuleNumber > capsules.length);
 
-        // Print list of guests, with decision making based on where in array the call is starting
-        if (capsules.length < 12) { // if less than 11 capsules total, then print all capsules
-            printGuestList(1, capsules.length, capsules);
-        } else if (capsuleNumber < 6) { // if at lower limit then return first 11 capsules
-            printGuestList(1, 11, capsules);
-        } else if (capsuleNumber > capsules.length - 5) { // if at upper limit then return last 11 capsules
-            printGuestList(capsules.length - 10, capsules.length, capsules);
-        } else { // default: print requested capsule and 5 capsules above and below
-            printGuestList(capsuleNumber - 5, capsuleNumber + 5, capsules);
-        }
+        printGuestList(capsuleNumber, capsules);
     }
 
     public static boolean exitProgram(Scanner console) {
         String exitAnswer = "";
-        boolean exitProgram = false;
 
         String title = "Exit";
         System.out.println(title);
@@ -292,23 +272,20 @@ public class CapsuleHotel {
         System.out.println("All data will be lost.");
 
         // Get user confirmation
-        do {
-            System.out.print("Exit [y/n]: ");
-            exitAnswer = console.nextLine();
-            System.out.println();
+        System.out.print("Exit [y/n]: ");
+        exitAnswer = console.nextLine();
+        System.out.println();
 
-            if (exitAnswer.equalsIgnoreCase("y")) {
-                exitProgram = true;
-                System.out.println("Goodbye!");
-            } else if (exitAnswer.equalsIgnoreCase("n")) {
-                exitProgram = false;
-            } else {
+        if (exitAnswer.equalsIgnoreCase("y")) {
+            System.out.println("Goodbye!");
+            return true;
+        } else {
+            if (!exitAnswer.equalsIgnoreCase("n")) {
                 System.out.println("I do not understand.");
                 System.out.println();
             }
-        } while (!exitAnswer.equalsIgnoreCase("y") && !exitAnswer.equalsIgnoreCase("n"));
-
-        return exitProgram;
+            return false;
+        }
     }
 
     public static void printGuest(int capsuleNumber, String guestName) {
@@ -316,7 +293,24 @@ public class CapsuleHotel {
     }
 
     // Print list of guests (String Array passed in)
-    public static void printGuestList(int capsuleLow, int capsuleHigh, String[] capsules) {
+    public static void printGuestList(int capsuleNumber, String[] capsules) {
+        int capsuleLow;
+        int capsuleHigh;
+
+        if (capsules.length < 12 || capsuleNumber == 0) { // if less than 11 total capsules, or user enters 0, print all capsules
+            capsuleLow = 1;
+            capsuleHigh = capsules.length;
+        } else if (capsuleNumber < 6) { // else if below 6 then print first 11
+            capsuleLow = 1;
+            capsuleHigh = 11;
+        } else if (capsuleNumber > capsules.length - 5) { // else if above (capsules.length - 5) then print last 11 capsules
+            capsuleLow = capsules.length - 10;
+            capsuleHigh = capsules.length;
+        } else { // print requested capsule and 5 above/below
+            capsuleLow = capsuleNumber - 5;
+            capsuleHigh = capsuleNumber + 5;
+        }
+
         System.out.printf("%7s: %s%n", "Capsule", "Guest");
         for (int i = capsuleLow - 1; i <= capsuleHigh - 1; i++) {
             printGuest(i + 1, capsules[i] == null ? "[unoccupied]" : capsules[i]);
@@ -325,7 +319,24 @@ public class CapsuleHotel {
     }
 
     // Print list of guests, pulling only occupied or unoccupied rooms (Int Array passed in)
-    public static void printGuestList(int capsuleLow, int capsuleHigh, String[] capsules, int[] capsulesPulled) {
+    public static void printGuestList(int capsuleNumber, String[] capsules, int[] capsulesPulled) {
+        int capsuleLow;
+        int capsuleHigh;
+
+        if (capsulesPulled.length < 12 || capsuleNumber == 0) { // if less than 11 total capsules, or user enters 0, print all capsules
+            capsuleLow = 1;
+            capsuleHigh = capsulesPulled.length;
+        } else if (capsuleNumber < 6) { // else if below 6 then print first 11
+            capsuleLow = 1;
+            capsuleHigh = 11;
+        } else if (capsuleNumber > capsulesPulled.length - 5) { // else if above (capsules.length - 5) then print last 11 capsules
+            capsuleLow = capsulesPulled.length - 10;
+            capsuleHigh = capsulesPulled.length;
+        } else { // print requested capsule and 5 above/below
+            capsuleLow = capsuleNumber - 5;
+            capsuleHigh = capsuleNumber + 5;
+        }
+
         System.out.printf("%7s: %s%n", "Capsule", "Guest");
         for (int i = capsuleLow - 1; i <= capsuleHigh - 1; i++) {
             printGuest(capsulesPulled[i],

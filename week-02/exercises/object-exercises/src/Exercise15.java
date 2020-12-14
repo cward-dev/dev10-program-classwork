@@ -24,19 +24,7 @@ public class Exercise15 {
         };
 
         for (Hero h : heroes) {
-            toLine(h);
+            System.out.println(h.toLine());
         }
-    }
-
-    public static void toLine(Hero hero) {
-        System.out.print(hero.getName() + ": ");
-
-        String delimiter = "";
-        for (Power p : hero.getPowers()) {
-            System.out.print(delimiter);
-            delimiter = ", ";
-            System.out.print(p.getName());
-        }
-        System.out.println();
     }
 }

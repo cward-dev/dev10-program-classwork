@@ -26,4 +26,17 @@ public class Hero {
         this.powers = powers;
     }
 
+    public String toLine() {
+        String result = getName() + ": ";
+
+        String delimiter = "";
+        for (Power p : getPowers()) {
+            result += (delimiter);
+            delimiter = ", ";
+            result += p.getName();
+        }
+
+        return result;
+    }
+
 }
