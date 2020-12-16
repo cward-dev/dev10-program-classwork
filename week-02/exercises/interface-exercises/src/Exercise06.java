@@ -2,7 +2,7 @@ public class Exercise06 {
 
     public static void main(String[] args) {
         // 1. Replace `null` with a new BankAccount. Initialize its balance to zero.
-        MoneyStorage storage = null;
+        MoneyStorage storage = new BankAccount(0.0, "My bank account");
 
         // 2. Run Exercise06.
         // The only output allowed is: Success!
