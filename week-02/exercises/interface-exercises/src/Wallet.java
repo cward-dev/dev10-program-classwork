@@ -38,7 +38,6 @@ public class Wallet implements MoneyStorage {
         if (amount <= 0.0) {
             return 0.0;
         }
-
         double result = Math.min(amount, balance);
         balance -= result;
         return result;

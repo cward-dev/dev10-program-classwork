@@ -26,11 +26,10 @@ public class Vault implements MoneyStorage {
 
     @Override
     public double withdraw(double amount) {
-        double result = 0.0;
-        if (balance <= 0.0) {
+        if (amount <= 0.0) {
             return 0.0;
         }
-        result = Math.min(amount, balance);
+        double result = Math.min(amount, balance);
         balance -= result;
         return result;
     }
