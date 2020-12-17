@@ -21,20 +21,35 @@ public class Submarine {
         return depthInMeters;
     }
 
+    public void setDepthInMeters(double depthInMeters) {
+        this.depthInMeters = depthInMeters;
+    }
+
+
     public void dive() {
         // 1. Each dive should increase the depth by 3 meters.
         // Depth cannot exceed maxDepth.
+        if (depthInMeters >= maxDepth - 3) {
+            depthInMeters = maxDepth;
+        } else {
+            depthInMeters += 3;
+        }
     }
 
     public void surface() {
         // 2. Each surface should decrease the depth by 5 meters.
         // Minimum depth is 0.0 (sea level).
+        if (depthInMeters <= 5) {
+            depthInMeters = 0.0;
+        } else {
+            depthInMeters -= 5;
+        }
     }
 
     public double getPressureInAtmospheres() {
         // 3. At sea level, pressure is 1 atmosphere.
         // Pressure increases by 1 atmosphere for every 10 meters.
-        return 0.0;
+        return 1 + (depthInMeters/10);
     }
 
 }

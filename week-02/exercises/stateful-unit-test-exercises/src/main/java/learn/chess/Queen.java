@@ -31,6 +31,14 @@ public class Queen {
         return column;
     }
 
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    public void setColumn(int column) {
+        this.column = column;
+    }
+
     /**
      * Requests a move to a new row and column.
      *
@@ -39,7 +47,6 @@ public class Queen {
      * @return true if the move is valid, false if it's not
      */
     public boolean move(int row, int column) {
-
         // 1. Implement the move method.
         // If the move is valid, return true and update `row` and `column` fields.
         // If the move is invalid, return false and do not update fields.
@@ -51,6 +58,28 @@ public class Queen {
         // - Otherwise, the absolute difference between row parameter and field
         //   and the absolute difference between the column parameter and field must be the same.
         //   That represents a diagonal move.
+
+        if (row < 0 || row > 7 ||
+                column < 0 || column > 7 ||
+                (row == this.row && column == this.column)
+        ) {
+            return false;
+        }
+
+        if (row == this.row || column == this.column) {
+            this.row = row;
+            this.column = column;
+            return true;
+        }
+
+        int differenceInRows = Math.abs(row - this.row);
+        int differenceInColumns = Math.abs(column - this.column);
+        if (differenceInRows == differenceInColumns) {
+            this.row = row;
+            this.column = column;
+            return true;
+        }
+
         return false;
     }
 }
