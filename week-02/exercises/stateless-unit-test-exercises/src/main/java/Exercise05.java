@@ -20,7 +20,12 @@ public class Exercise05 {
      * @param value the number to test
      * @return true if value is within 5 of a number evenly divisible by 100, false if not.
      */
-    public boolean isWithinFiveOfAHundred(int value) {
-        return false;
+    public static boolean isWithinFiveOfAHundred(int value) {
+        int newValue = (value % 100);
+
+        if (newValue >= 0 && (newValue <= 5 || newValue >= 95)) {
+            return true;
+        } else return newValue < 0 && (newValue >= -5 || newValue <= -95);
     }
+
 }

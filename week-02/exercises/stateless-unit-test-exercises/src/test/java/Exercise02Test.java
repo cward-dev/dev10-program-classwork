@@ -6,7 +6,7 @@ class Exercise02Test {
 
     @Test
     void surroundWithTags() {
-        assertEquals("<a>b</b>", Exercise02.surroundWithTag("a", "b"));
+        assertEquals("<b>a</b>", Exercise02.surroundWithTag("a", "b"));
         assertEquals("splendid", Exercise02.surroundWithTag("splendid", null));
     }
 }
