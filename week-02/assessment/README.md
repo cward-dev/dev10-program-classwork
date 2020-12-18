@@ -1,7 +1,6 @@
 #Gomoku Assessment
-***
+
 ## Requirements
-***
 
 ### Basic Requirements
 * Can set up two players.
@@ -29,9 +28,7 @@
 * Black has an advantage as the starting player. Competitive Gomoku uses various opening rules to improve fairness. Implement one of those rules. For example, the Swap2 should be achievable using only the Gomoku's place and swap methods. In the starting screen, give the option to choose an opening rule.
 
 ## Plan
-***
 * a
 
 ## Tasks
-***
 * [ ] a
