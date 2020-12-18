@@ -1,4 +1,4 @@
-#Gomoku Assessment
+# Gomoku Assessment
 
 ## Requirements
 
