@@ -11,5 +11,12 @@ public class Exercise08 {
 
         // 1. Remove the the 5th and 10th game from `games`.
         // 2. Print `games`.
+
+        games.remove(9);
+        games.remove(4);
+
+        for (BoardGame game : games) {
+            System.out.println(game);
+        }
     }
 }

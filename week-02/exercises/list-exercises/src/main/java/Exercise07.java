@@ -12,5 +12,15 @@ public class Exercise07 {
         // 1. Instantiate a new ArrayList<BoardGame> and call it `economicGames`.
         // 2. Loop over `games`. Add each game with the "Economic" category to `economicGames`.
         // 3. Print `economicGames`.
+
+        ArrayList<BoardGame> economicGames = new ArrayList<>();
+
+        for (BoardGame game : games) {
+            if (game.getCategory() == "Economic") {
+                economicGames.add(game);
+            }
+        }
+
+        System.out.println(economicGames);
     }
 }
