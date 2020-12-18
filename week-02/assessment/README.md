@@ -79,7 +79,7 @@
 
 
 ### Game class
-// Need to split into separate methods in line with Single Responsibility Principle
+// TODO Need to split into separate methods in line with Single Responsibility Principle
 * Import Gomoku class
 * Pass in gomoku object from Gomoku class
 * Declare next stone variable
@@ -96,7 +96,7 @@
         sout
         Enter a row: [user input]
         Enter a column: [user input]
-        gomoku.place(new Stone([user input row], [user input column], *isBlack*)) // Not sure how I will check for isBlack on human player's turn yet
+        gomoku.place(new Stone([user input row], [user input column], *isBlack*)) // TODO Not sure how I will check for isBlack on human player's turn yet
 * If RandomPlayer then display same message but autofill the randomly generated row and column for move 
         
 
