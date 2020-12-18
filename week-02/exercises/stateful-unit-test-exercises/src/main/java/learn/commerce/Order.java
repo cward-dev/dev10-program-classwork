@@ -1,5 +1,6 @@
 package learn.commerce;
 
+import javax.sound.sampled.Line;
 import java.util.Arrays;
 
 /**
@@ -27,7 +28,13 @@ public class Order {
     public double getTotal() {
         // 1. Complete the getTotal method.
         // It should calculate the order's grand total by summing totals from each LineItem.
-        return 0.0;
+        double total = 0.00;
+
+        for (LineItem lineItem : lineItems) {
+            total += (lineItem.getPrice() * lineItem.getQuantity());
+        }
+
+        return total;
     }
 
     public boolean add(LineItem lineItem) {
@@ -45,4 +52,41 @@ public class Order {
     }
 
     // 2. Stretch goal: add a remove method that removes a LineItem by either index or reference.
+
+    public boolean remove(int index) {
+        // invalid item
+        if (this.getLineItems()[index] == null) {
+            return false;
+        }
+
+        // Shorten the array by one and remove the lineItem.
+        LineItem[] newLineItems = new LineItem[lineItems.length - 1];
+        lineItems[index] = null;
+        int nextIndex = 0;
+
+        for (int i = 0; i < lineItems.length; i++) {
+            if (lineItems[i] != null) {
+                newLineItems[nextIndex] = lineItems[i];
+                nextIndex++;
+            }
+        }
+        lineItems = newLineItems;
+        return true;
+    }
+
+    // Overloaded
+    public boolean remove(LineItem lineItem) {
+        // invalid item
+        if (lineItem == null) {
+            return false;
+        }
+
+        for (int i = 0; i < lineItems.length; i++) {
+            if (lineItems[i] == lineItem) {
+                remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
 }

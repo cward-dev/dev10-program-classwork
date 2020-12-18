@@ -62,9 +62,7 @@ public class Queen {
         if (row < 0 || row > 7 ||
                 column < 0 || column > 7 ||
                 (row == this.row && column == this.column)
-        ) {
-            return false;
-        }
+        ) { return false; }
 
         if (row == this.row || column == this.column) {
             this.row = row;

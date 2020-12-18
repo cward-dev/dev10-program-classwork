@@ -7,6 +7,6 @@ import learn.gomoku.game.Stone;
 import learn.gomoku.players.Player;
 import learn.gomoku.players.RandomPlayer;
 
-public class App {
+public class SetUp {
 
 }

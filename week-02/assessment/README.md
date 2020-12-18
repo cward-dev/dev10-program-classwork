@@ -26,9 +26,94 @@
 ### Stretch Goals
 * Create a third Player implementation and add it to your list of player options. Can you build a player that makes good choices?
 * Black has an advantage as the starting player. Competitive Gomoku uses various opening rules to improve fairness. Implement one of those rules. For example, the Swap2 should be achievable using only the Gomoku's place and swap methods. In the starting screen, give the option to choose an opening rule.
-
+***
 ## Plan
-* a
+### Main method
 
-## Tasks
-* [ ] a
+
+        SetUp setUp = new SetUp();
+        setUp.run();
+  
+        Game game = new Game();
+        game.run(setUp)
+        
+### SetUp class
+* Print welcome message
+    
+
+        sout
+        Welcome to Gomoku
+        =================
+* Get 2 Players (Select 1 for a human player, 2 for a random player)
+
+
+        sout
+        Player [N] is:
+        1. Human
+        2. Random Player
+        Select [1-2]: [user input]
+* If human [1], take user input to create a HumanPlayer object with input String as name
+
+
+        sout Player [N], enter your name: [user input]
+
+        HumanPlayer playerOne = new HumanPlayer([user input]);
+* If random [2], create a RandomPlayer object and print their name
+
+
+        HumanPlayer playerTwo = new RandomPlayer();
+
+        sout Player [N], enter your name: [playerTwo.getName()]
+* Create new Gomoku object
+
+
+        Gomoku gomoku = new Gomoku(playerOne, playerTwo);
+* Print randomizing message (who will go first is being randomized)
+
+
+        sout (Randomizing)
+* Print who goes first (isBlack)
+
+
+        sout [gomoku.getCurrent().getName()] goes first.
+
+
+### Game class
+// Need to split into separate methods in line with Single Responsibility Principle
+* Import Gomoku class
+* Pass in gomoku object from Gomoku class
+* Declare next stone variable
+    
+
+        Stone nextStone;
+* Print whose turn it is
+    
+
+        [player name]'s Turn
+* If HumanPlayer then get row and column input for move
+
+
+        sout
+        Enter a row: [user input]
+        Enter a column: [user input]
+        gomoku.place(new Stone([user input row], [user input column], *isBlack*)) // Not sure how I will check for isBlack on human player's turn yet
+* If RandomPlayer then display same message but autofill the randomly generated row and column for move 
+        
+
+        gomoku.place(player.generateMove())
+        Enter a row: [nextStone.getRow()]
+        Enter a column: [nextStone.getColumn()]
+* Run Gomoku.place() method to update the board state
+* If the move is valid, call printBoard() for the new board state, otherwise display error message and get move again
+* printBoard() method
+  * Overall strategy: nested for loop
+  * Print index+1 for each row/column along axis
+    * Print 01-15 above each column
+    * Print 01-15 to the left of each row (will be performed during outer for loop)
+  * Loop through gomoku.board[][] and print all row/column chars in appropriate order
+    * If empty element then print an underscore [_]
+    * Otherwise print the appropriate character [X/O]
+* endGame() method
+  * If gomoku.isOver() then run endGame()
+    * Prints out who the winner is.
+    * Prompts if the user wants to play again [y/n]. If y then reset the board and start over
