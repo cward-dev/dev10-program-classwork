@@ -14,5 +14,17 @@ public class Exercise08 {
         // (You may want to use your print all method from Exercise03.)
         // 4. How many 2006 vehicles are there? (Expected: 50)
 
+        HashMap<String, Vehicle> twoThousandSix = new HashMap<>();
+
+        for (String vin : vehicleMap.keySet()) {
+            Vehicle vehicle = vehicleMap.get(vin);
+            if (vehicle.getYear() == 2006) {
+                twoThousandSix.put(vin, vehicle);
+            }
+        }
+
+        Exercise03.printAll(twoThousandSix);
+
+
     }
 }

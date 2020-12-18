@@ -11,5 +11,9 @@ public class Exercise04 {
         // 1. Create a new Vehicle. Use a VIN that's easy to remember.
         // 2. Add the Vehicle to `vehicleMap` with the `put` method.
         // 3. Confirm the Vehicle was added by retrieving it with `get` and printing it to the console.
+        vehicleMap.put("123456789ABCDEFGH",new Vehicle());
+
+        System.out.println(vehicleMap.get("123456789ABCDEFGH"));
+
     }
 }

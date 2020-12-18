@@ -10,5 +10,16 @@ public class Exercise07 {
 
         // 1. How many vehicles are Pink (ignore case)?
         // Expected: 54
+
+        int countPink = 0;
+
+        for (String vin : vehicleMap.keySet()) {
+            Vehicle vehicle = vehicleMap.get(vin);
+            if (vehicle.getColor().equalsIgnoreCase("pink")) {
+                    countPink++;
+            }
+        }
+
+        System.out.println(countPink);
     }
 }

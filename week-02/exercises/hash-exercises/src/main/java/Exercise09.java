@@ -12,5 +12,12 @@ public class Exercise09 {
         // 2. Remove VIN 2G4WD582061270646
         // 3. Remove VIN 1M8GDM9AXKP042788
         // 4. Print the size of `vehicleMap`. (Expected: 999)
+
+        System.out.println(vehicleMap.size());
+
+        vehicleMap.remove("2G4WD582061270646");
+        vehicleMap.remove("1M8GDM9AXKP042788");
+
+        System.out.println(vehicleMap.size());
     }
 }
