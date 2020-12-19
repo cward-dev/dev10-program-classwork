@@ -117,3 +117,30 @@
   * If gomoku.isOver() then run endGame()
     * Prints out who the winner is.
     * Prompts if the user wants to play again [y/n]. If y then reset the board and start over
+
+## Tasks
+* [x] App class (just a main method to call and pass objects to other classes)
+  * Estimate: 15 minutes
+  * Actual: 15 minutes
+  * [x] boolean playAgain to handle looping through game until user does not want to play again
+* [x] SetUp class - will have a run() method that returns Gomoku object
+  * Estimate: 1 hour
+  * Actual: 45 minutes
+  * [x] run() method
+    * return new Gomoku(playerOne, playerTwo)
+  * [x] createPlayer() method
+    * Create playerOne and playerTwo
+* [x] Board class - will require the Gomoku.WIDTH generic class field but not an instance, not truly dependent?
+  * Estimate: 30 minutes
+  * Actual: 1 hour
+  * [x] getBoard() getter
+  * [x] updateBoard() method
+  * [x] printBoard() method
+* [x] Game class - has a dependency on the Gomoku class - will require a Gomoku gomoku object for constructor
+  * Returns boolean to App.java for playAgain
+  * Estimate: 1 hours
+  * Actual: 2 hours
+  * [x] Fields: Scanner console, Gomoku gomoku, Board board(with Gomoku.WIDTH for both parameters)
+  * [x] run() method
+  * [ ] takeTurn() method // Still need to incorporate Result object to check for valid moves and initiate endGame()
+  * [x] endGame() method(will print out winner and ask if user wants to play again, returning a boolean)

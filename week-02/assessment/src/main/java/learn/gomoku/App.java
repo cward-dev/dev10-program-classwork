@@ -2,11 +2,18 @@
 package learn.gomoku;
 
 import learn.gomoku.game.Gomoku;
-import learn.gomoku.game.Result;
-import learn.gomoku.game.Stone;
-import learn.gomoku.players.Player;
-import learn.gomoku.players.RandomPlayer;
 
 public class App {
 
+    public static void main(String[] args) {
+        boolean playAgain;
+        do {
+            SetUp setUp = new SetUp();
+            Gomoku gomoku = setUp.run();
+
+            Game game = new Game(gomoku);
+            playAgain = game.run();
+
+        } while (playAgain);
+    }
 }
