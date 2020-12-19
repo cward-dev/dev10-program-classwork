@@ -2,6 +2,7 @@ package learn.gomoku;
 
 import java.util.Scanner;
 import learn.gomoku.game.Gomoku;
+import learn.gomoku.game.Result;
 import learn.gomoku.game.Stone;
 import learn.gomoku.players.Player;
 import learn.gomoku.game.Board;
@@ -17,9 +18,12 @@ public class Game {
     }
 
     public boolean run() {
+        System.out.println("( Randomizing )");
+        System.out.println();
         System.out.println(gomoku.getCurrent().getName() + " will go first.");
         System.out.println();
-        board.printBoard();
+
+        getAdvantage();
 
         do {
             takeTurn();
@@ -29,51 +33,71 @@ public class Game {
     }
 
     public void takeTurn() {
-        Player currentPlayer = gomoku.getCurrent();
-        Stone nextStone = currentPlayer.generateMove(gomoku.getStones());
-        int row;
-        int column;
+        boolean isValidMove;
+        do {
+            Player currentPlayer = gomoku.getCurrent();
+            Stone nextStone = currentPlayer.generateMove(gomoku.getStones()); // If player then return null, otherwise computer controlled
+            int row;
+            int column;
 
-        System.out.println(currentPlayer.getName() + "'s Turn");
+            // Print whose turn it is
+            System.out.print(currentPlayer.getName() + "'s Turn ");
+            if (gomoku.isBlacksTurn()) {
+                System.out.printf("(%s)%n", board.getBlackSymbol()); // Symbol for black on Black's turn
+            } else {
+                System.out.printf("(%s)%n", board.getWhiteSymbol()); // Symbol for black on Black's turn
+            }
 
-        if (nextStone == null) {
-            System.out.print("Enter a row: ");
-            row = Integer.parseInt(console.nextLine()) - 1;
-            System.out.print("Enter a column: ");
-            column = Integer.parseInt(console.nextLine()) - 1;
+            if (nextStone == null) { // If player, get inputs
 
-            nextStone = new Stone(row, column, gomoku.isBlacksTurn());
-            moveStoneIfValidMove(row, column, nextStone);
-        } else {
-            System.out.println("Enter a row: " + (nextStone.getRow() + 1));
-            System.out.println("Enter a column: " + (nextStone.getColumn() + 1));
+                System.out.print("Enter a row: ");
+                int rowInput = Integer.parseInt(console.nextLine());
+                row = Gomoku.WIDTH - rowInput;
 
-            moveStoneIfValidMove(nextStone.getRow(), nextStone.getColumn(), nextStone);
-        }
-        System.out.println();
-        board.printBoard();
+                System.out.print("Enter a column: ");
+                char columnInput = Character.toUpperCase(console.nextLine().charAt(0));
+                column = columnInput - 65;
+
+                nextStone = new Stone(row, column, gomoku.isBlacksTurn());
+            } else { // If not player, use pre-generated move as inputs
+                char columnInput = (char)(65 + nextStone.getColumn());
+                System.out.println("Enter a row: " + (Gomoku.WIDTH - nextStone.getRow()));
+                System.out.println("Enter a column: " + columnInput);
+            }
+            System.out.println();
+
+            Result result = gomoku.place(nextStone);
+            getResult(result, nextStone);
+
+            isValidMove = result.isSuccess();
+        } while (!isValidMove);
     }
 
-    public void moveStoneIfValidMove(int row, int column, Stone nextStone) {
-        System.out.println();
-        if (board.getBoard()[row][column] == '\u0000') {
-            gomoku.place(nextStone);
+    public void getResult(Result result, Stone nextStone) {
+        if (result.isSuccess()) {
             board.updateBoard(nextStone);
-            return;
+        } else {
+            System.out.print("[Err]: ");
         }
 
-        System.out.println("[Err]: Duplicate move.");
+        if (result.getMessage() != null) {
+            System.out.println(result.getMessage());
+            System.out.println();
+        }
+
+        board.printBoard();
     }
 
     public boolean endGame() {
         Player winner = gomoku.getWinner();
         char playAgain;
 
-        System.out.println(winner.getName() + " wins!");
+        System.out.println(winner.getName() + " has won the game! Would you like to play again?");
         System.out.println();
         do {
             System.out.print("Play Again? [y/n]: ");
             playAgain = console.nextLine().charAt(0);
+            System.out.println();
         } while (playAgain != 'y' && playAgain != 'n');
         System.out.println();
 
@@ -84,4 +108,97 @@ public class Game {
         return false;
     }
 
+    public void getAdvantage() {
+        System.out.print("Would you like to play with a swap advantage rule? [y/n]: ");
+        char answer = Character.toLowerCase(console.nextLine().charAt(0));
+        System.out.println();
+
+        if (answer == 'n') {
+            return;
+        }
+
+        String ruleSelection;
+        System.out.println("Which swap advantage rule would you like to use?");
+        System.out.println("1. Swap");
+        System.out.println("2. Swap2");
+        do {
+            System.out.print("Select [1-2]: ");
+            ruleSelection = console.nextLine();
+            System.out.println();
+        } while (!ruleSelection.equals("1") && !ruleSelection.equals("2"));
+
+        switch (ruleSelection) {
+            case "1":
+                advantageSwap(2);
+                break;
+            case "2":
+                advantageSwap(3);
+                break;
+        }
+    }
+
+    public void advantageSwap(int numOfChoices) {
+        System.out.println("ADVANTAGE RULES");
+        System.out.println("===============");
+        System.out.println("* The starting player puts the first three stones anywhere on the board (two black stones and a white one).");
+        System.out.println("* The second player can decide whether s/he wants to:");
+        System.out.println("     1 Stay at white and put a fourth stone or s/he can swap and control the black stones.");
+        System.out.println("     2 Swap and control the black stones.");
+        if (numOfChoices == 3)
+            { System.out.println("     3 Put two more stones (one black and one white) and defer choice to opponent."); }
+        System.out.println("* After this ceremony the players keep on moving till someone gets five in a row.");
+        System.out.println();
+
+        board.printBoard();
+
+        executeAdvantageMoves(numOfChoices, 3);
+    }
+
+    public void executeAdvantageMoves(int numOfChoices, int numOfTurns) {
+        int swapToBlack;
+
+        for (int i = 0; i < numOfTurns - 1; i++) {
+            takeTurn();
+            gomoku.swap();
+        }
+        takeTurn();
+
+        System.out.println(gomoku.getCurrent().getName() + ", what would you like to do?");
+        System.out.printf("1. Swap to black (%s) and end turn.%n", board.getBlackSymbol());
+        System.out.printf("2. Remain white (%s) and place fourth stone.%n", board.getWhiteSymbol());
+        if (numOfChoices == 3) {
+            System.out.println("3. Place two more stones (one black and one white) and defer choice to opponent.");
+        }
+
+        if (gomoku.getCurrent().generateMove(gomoku.getStones()) != null) {
+            swapToBlack = (int)(Math.random() * numOfChoices) + 1;
+            System.out.printf("Your Choice [1-%d]: %d%n", numOfChoices, swapToBlack);
+        } else {
+            do {
+                System.out.printf("Your Choice [1-%d]: ", numOfChoices);
+                swapToBlack = Integer.parseInt(console.nextLine());
+                System.out.println();
+            } while (swapToBlack < 1 || swapToBlack > numOfChoices);
+        }
+        System.out.println();
+
+        if (swapToBlack == 1) {
+            System.out.println(gomoku.getCurrent().getName() + " has swapped to black. Their turn has ended.");
+            System.out.println();
+            gomoku.swap();
+            return;
+        }
+
+        if (swapToBlack == 2) {
+            System.out.println(gomoku.getCurrent().getName() + " remains white. Their turn is next.");
+            System.out.println();
+            return;
+        }
+
+        if (swapToBlack == 3) {
+            System.out.println(gomoku.getCurrent().getName() + " defers choice. They will place the next two stones.");
+            System.out.println();
+            executeAdvantageMoves(2, 2);
+        }
+    }
 }

@@ -26,7 +26,7 @@
 ### Stretch Goals
 * Create a third Player implementation and add it to your list of player options. Can you build a player that makes good choices?
 * Black has an advantage as the starting player. Competitive Gomoku uses various opening rules to improve fairness. Implement one of those rules. For example, the Swap2 should be achievable using only the Gomoku's place and swap methods. In the starting screen, give the option to choose an opening rule.
-***
+
 ## Plan
 ### Main method
 
@@ -142,5 +142,13 @@
   * Actual: 2 hours
   * [x] Fields: Scanner console, Gomoku gomoku, Board board(with Gomoku.WIDTH for both parameters)
   * [x] run() method
-  * [ ] takeTurn() method // Still need to incorporate Result object to check for valid moves and initiate endGame()
+  * [x] takeTurn() method
   * [x] endGame() method(will print out winner and ask if user wants to play again, returning a boolean)
+  
+  
+## Stretch Goals
+* [x] Standard
+* [ ] Pro
+* [ ] Long Pro
+* [ ] Swap
+* [ ] Swap 2

@@ -18,9 +18,6 @@ public class SetUp {
         Player playerOne = newPlayer(1);
         Player playerTwo = newPlayer(2);
 
-        System.out.println("(Randomizing)");
-        System.out.println();
-
         return new Gomoku(playerOne, playerTwo);
     }
     
@@ -59,5 +56,4 @@ public class SetUp {
 
         return player;
     }
-
 }
