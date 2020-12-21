@@ -26,6 +26,7 @@ public class SmarterPlayer implements Player {
     private final String name;
     private int futureRow = 0;
     private int futureColumn = 0;
+    private int direction = 0;
 
     public SmarterPlayer() {
         name = String.format("%s %s %s",
@@ -43,54 +44,115 @@ public class SmarterPlayer implements Player {
     @Override
     public Stone generateMove(List<Stone> previousMoves) {
         boolean isBlack = true;
-        Stone lastMove = null;
-        Stone nextStone = null;
+        Stone lastMove;
+        Stone nextStone;
 
         if (previousMoves == null || previousMoves.isEmpty()) {
-            nextStone = generateRandomMove(previousMoves);
-            futureRow = nextStone.getRow() - 1;
-            futureColumn = nextStone.getColumn();
+            nextStone = generateRandomMove(isBlack);
+            generateFutureRowAndColumn(nextStone);
             return nextStone;
         }
 
         lastMove = previousMoves.get(previousMoves.size() - 1);
         isBlack = !lastMove.isBlack();
 
-        if (lastMove.getRow() == futureRow && lastMove.getColumn() == futureColumn) {
-            nextStone = generateRandomMove(previousMoves);
-            futureRow = nextStone.getRow() - 1;
-            futureColumn = nextStone.getColumn();
-            return nextStone;
-        }
-
-        if (futureRow < 0) {
-            nextStone = generateRandomMove(previousMoves);
-            futureRow = nextStone.getRow() - 1;
-            futureColumn = nextStone.getColumn();
+        if ((lastMove.getRow() == futureRow && lastMove.getColumn() == futureColumn) ||
+                futureRow < 0 || futureRow > Gomoku.WIDTH - 1
+                || futureColumn < 0 || futureColumn > Gomoku.WIDTH - 1) {
+            nextStone = generateRandomMove(isBlack);
+            generateFutureRowAndColumn(nextStone);
             return nextStone;
         }
 
         nextStone = new Stone(futureRow, futureColumn, isBlack);
-        futureRow = nextStone.getRow() - 1;
-        futureColumn = nextStone.getColumn();
+        generateFutureRowAndColumn(nextStone);
 
         return nextStone;
-
     }
 
-    public Stone generateRandomMove(List<Stone> previousMoves) {
-        Stone nextStone;
-        boolean isBlack = true;
-        if (previousMoves != null && !previousMoves.isEmpty()) {
-            Stone lastMove = previousMoves.get(previousMoves.size() - 1);
-            isBlack = !lastMove.isBlack();
+    public void generateFutureRowAndColumn(Stone nextStone) {
+        switch (direction) {
+            case 0: // down
+                futureRow = nextStone.getRow() + 1;
+                futureColumn = nextStone.getColumn();
+                break;
+            case 1: // down right
+                futureRow = nextStone.getRow() + 1;
+                futureColumn = nextStone.getColumn() + 1;
+                break;
+            case 2: // right
+                futureRow = nextStone.getRow();
+                futureColumn = nextStone.getColumn() + 1;
+                break;
+            case 3: // up right
+                futureRow = nextStone.getRow() - 1;
+                futureColumn = nextStone.getColumn() + 1;
+                break;
+            case 4: // up
+                futureRow = nextStone.getRow() - 1;
+                futureColumn = nextStone.getColumn();
+                break;
+            case 5: // up left
+                futureRow = nextStone.getRow() - 1;
+                futureColumn = nextStone.getColumn() - 1;
+                break;
+            case 6: // left
+                futureRow = nextStone.getRow();
+                futureColumn = nextStone.getColumn() - 1;
+                break;
+            case 7: // down left
+                futureRow = nextStone.getRow() + 1;
+                futureColumn = nextStone.getColumn() - 1;
+                break;
         }
+    }
+
+    public Stone generateRandomMove(boolean isBlack) {
+        Stone nextStone;
+        direction = random.nextInt(7);
+        int leftBound = 0; // 4
+        int rightBound = Gomoku.WIDTH - 5; // G
+        int downBound = Gomoku.WIDTH - 5; // G
+        int upBound = 0; // 4
+
+        switch (direction) {
+            case 0: // down
+                downBound = Gomoku.WIDTH - 5;
+                break;
+            case 1: // down right
+                downBound = Gomoku.WIDTH - 5;
+                rightBound = Gomoku.WIDTH - 5;
+                break;
+            case 2: // right
+                rightBound = Gomoku.WIDTH - 5;
+                break;
+            case 3: // up right
+                upBound = 4;
+                rightBound = Gomoku.WIDTH - 5;
+                break;
+            case 4: // up
+                upBound = 4;
+                break;
+            case 5: // up left
+                upBound = 4;
+                leftBound = 4;
+                break;
+            case 6: // left
+                leftBound = Gomoku.WIDTH - 5;
+                break;
+            case 7: // down left
+                downBound = Gomoku.WIDTH - 5;
+                leftBound = 4;
+                break;
+        }
+
         do {
             nextStone = new Stone(
                     random.nextInt(Gomoku.WIDTH),
                     random.nextInt(Gomoku.WIDTH),
                     isBlack);
-        } while (nextStone.getRow() < 4);
+        } while (nextStone.getRow() > downBound || nextStone.getRow() < upBound ||
+                 nextStone.getColumn() > rightBound || nextStone.getColumn() < leftBound);
         return nextStone;
     }
 }

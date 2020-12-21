@@ -58,7 +58,7 @@ public class Game {
                     } catch (NumberFormatException e) {
                         // Empty Catch
                     }
-                } while (rowInput < 0 || rowInput > Gomoku.WIDTH - 1);
+                } while (rowInput < 0 || rowInput > Gomoku.WIDTH);
                 row = Gomoku.WIDTH - rowInput;
 
                 char columnInput;
@@ -66,7 +66,7 @@ public class Game {
                     System.out.print("Enter a column [A-O]: ");
                     columnInput = Character.toUpperCase(console.nextLine().charAt(0));
                     column = columnInput - 65;
-                } while (column < 0 || column > Gomoku.WIDTH);
+                } while (column < 0 || column > Gomoku.WIDTH - 1);
 
                 nextStone = new Stone(row, column, gomoku.isBlacksTurn());
             } else { // If not player, use pre-generated move as inputs
