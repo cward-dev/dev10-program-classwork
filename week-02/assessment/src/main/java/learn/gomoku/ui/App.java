@@ -1,5 +1,4 @@
-
-package learn.gomoku;
+package learn.gomoku.ui;
 
 import learn.gomoku.game.Gomoku;
 

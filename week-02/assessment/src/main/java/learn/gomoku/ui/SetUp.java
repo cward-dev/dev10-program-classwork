@@ -1,4 +1,4 @@
-package learn.gomoku;
+package learn.gomoku.ui;
 
 import java.util.Scanner;
 import learn.gomoku.game.Gomoku;
