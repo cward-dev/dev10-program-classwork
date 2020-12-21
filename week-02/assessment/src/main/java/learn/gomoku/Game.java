@@ -50,13 +50,23 @@ public class Game {
 
             if (nextStone == null) { // If player, get inputs
 
-                System.out.print("Enter a row: ");
-                int rowInput = Integer.parseInt(console.nextLine());
+                int rowInput = -1;
+                do {
+                    System.out.printf("Enter a row [%d-%d]: ", 1, Gomoku.WIDTH);
+                    try {
+                        rowInput = Integer.parseInt(console.nextLine());
+                    } catch (NumberFormatException e) {
+                        // Empty Catch
+                    }
+                } while (rowInput < 0 || rowInput > Gomoku.WIDTH - 1);
                 row = Gomoku.WIDTH - rowInput;
 
-                System.out.print("Enter a column: ");
-                char columnInput = Character.toUpperCase(console.nextLine().charAt(0));
-                column = columnInput - 65;
+                char columnInput;
+                do {
+                    System.out.print("Enter a column [A-O]: ");
+                    columnInput = Character.toUpperCase(console.nextLine().charAt(0));
+                    column = columnInput - 65;
+                } while (column < 0 || column > Gomoku.WIDTH);
 
                 nextStone = new Stone(row, column, gomoku.isBlacksTurn());
             } else { // If not player, use pre-generated move as inputs
@@ -121,16 +131,21 @@ public class Game {
             return;
         }
 
-        int ruleSelection;
+        int ruleSelection = -1;
         System.out.println("Which swap advantage rule would you like to use?");
         System.out.println("1. Swap");
         System.out.println("2. Swap2");
         System.out.println("0. None");
+
         do {
             System.out.print("Select [1-2]: ");
-            ruleSelection = Integer.parseInt(console.nextLine());
-            System.out.println();
+            try {
+                ruleSelection = Integer.parseInt(console.nextLine());
+            } catch (NumberFormatException e) {
+                // Empty Catch
+            }
         } while (ruleSelection < 0 || ruleSelection > 2);
+        System.out.println();
 
         switch (ruleSelection) {
             case 1:
@@ -165,7 +180,7 @@ public class Game {
     }
 
     public void executeAdvantageMoves(int numberOfChoices, int numberOfTurns) {
-        int swapToBlack;
+        int swapToBlack = -1;
 
         for (int i = 0; i < numberOfTurns - 1; i++) {
             takeTurn();
@@ -185,9 +200,12 @@ public class Game {
             System.out.printf("Your Choice [1-%d]: %d%n", numberOfChoices, swapToBlack);
         } else {
             do {
-                System.out.printf("Your Choice [1-%d]: ", numberOfChoices);
-                swapToBlack = Integer.parseInt(console.nextLine());
-                System.out.println();
+                System.out.printf("Select [1-%d]: ", numberOfChoices);
+                try {
+                    swapToBlack = Integer.parseInt(console.nextLine());
+                } catch (NumberFormatException e) {
+                    // Empty Catch
+                }
             } while (swapToBlack < 1 || swapToBlack > numberOfChoices);
         }
         System.out.println();
