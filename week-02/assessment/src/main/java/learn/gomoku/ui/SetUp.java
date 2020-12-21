@@ -12,6 +12,7 @@ public class SetUp {
     private final Scanner console = new Scanner(System.in);
 
     public Gomoku run() {
+        System.out.println("=================");
         System.out.println("Welcome to Gomoku");
         System.out.println("=================");
         System.out.println();
