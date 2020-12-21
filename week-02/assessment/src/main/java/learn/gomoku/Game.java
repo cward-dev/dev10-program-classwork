@@ -108,12 +108,16 @@ public class Game {
         return false;
     }
 
+    // Advantage methods below
     public void getAdvantage() {
         System.out.print("Would you like to play with a swap advantage rule? [y/n]: ");
         char answer = Character.toLowerCase(console.nextLine().charAt(0));
         System.out.println();
 
         if (answer == 'n') {
+            System.out.println("You have elected to play with no advantage rule.");
+            System.out.println();
+            board.printBoard();
             return;
         }
 
