@@ -43,13 +43,12 @@ public class Game {
             // Print whose turn it is
             System.out.print(currentPlayer.getName() + "'s Turn ");
             if (gomoku.isBlacksTurn()) {
-                System.out.printf("(%s)%n", board.getBlackSymbol()); // Symbol for black on Black's turn
+                System.out.printf("(%s)%n", board.getBlackSymbol()); // Symbol for black on black's turn
             } else {
-                System.out.printf("(%s)%n", board.getWhiteSymbol()); // Symbol for black on Black's turn
+                System.out.printf("(%s)%n", board.getWhiteSymbol()); // Symbol for white on white's turn
             }
 
             if (nextStone == null) { // If player, get inputs
-
                 int rowInput = -1;
                 do {
                     System.out.printf("Enter a row [%d-%d]: ", 1, Gomoku.WIDTH);
@@ -118,7 +117,8 @@ public class Game {
         return false;
     }
 
-    // Advantage methods below
+    // Advantage methods below here
+
     public void getAdvantage() {
         System.out.print("Would you like to play with a swap advantage rule? [y/n]: ");
         char answer = Character.toLowerCase(console.nextLine().charAt(0));
