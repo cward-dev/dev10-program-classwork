@@ -5,6 +5,7 @@ import learn.gomoku.game.Gomoku;
 import learn.gomoku.players.HumanPlayer;
 import learn.gomoku.players.Player;
 import learn.gomoku.players.RandomPlayer;
+import learn.gomoku.players.SmarterPlayer;
 
 public class SetUp {
 
@@ -28,11 +29,12 @@ public class SetUp {
         System.out.println("Player " + playerNumber + " is:");
         System.out.println("1. Human");
         System.out.println("2. Random Player");
+        System.out.println("3. Smart(er) Player");
         do {
-            System.out.print("Select [1-2]: ");
+            System.out.print("Select [1-3]: ");
             userSelection = console.nextLine();
             System.out.println();
-        } while (!userSelection.equals("1") && !userSelection.equals("2"));
+        } while (!userSelection.equals("1") && !userSelection.equals("2") && !userSelection.equals("3"));
 
         switch (userSelection) {
             case "1":
@@ -45,6 +47,11 @@ public class SetUp {
                 break;
             case "2":
                 player = new RandomPlayer();
+                System.out.print("Player " + playerNumber + ", enter your name: ");
+                System.out.println(player.getName());
+                break;
+            case "3":
+                player = new SmarterPlayer();
                 System.out.print("Player " + playerNumber + ", enter your name: ");
                 System.out.println(player.getName());
                 break;
