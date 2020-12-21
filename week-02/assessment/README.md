@@ -150,5 +150,6 @@
 * [x] Standard
 * [ ] Pro
 * [ ] Long Pro
-* [ ] Swap
-* [ ] Swap 2
+* [x] Swap
+* [x] Swap 2
+* [x] Smart(er) Player
