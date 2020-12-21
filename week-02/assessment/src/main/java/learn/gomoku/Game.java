@@ -226,5 +226,6 @@ public class Game {
                 executeAdvantageMoves(2, 2);
                 break;
         }
+        board.printBoard();
     }
 }
