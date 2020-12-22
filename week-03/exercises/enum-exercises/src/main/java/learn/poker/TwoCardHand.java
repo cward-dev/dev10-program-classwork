@@ -28,6 +28,46 @@ public class TwoCardHand implements Comparable<TwoCardHand> {
         // If `this` has a higher score than the TwoCardHand parameter, compareTo returns an int greater than 0.
         // If `this` and the TwoCardHand parameter have the same score, compareTo returns 0.
         // See Exercise04.md for scoring rules.
-        return 0;
+
+        // Get your high and low card rank value
+        int yourHighValue;
+        int yourLowValue;
+        if (one.getRank().getValue() > two.getRank().getValue()) {
+            yourHighValue = one.getRank().getValue();
+            yourLowValue = two.getRank().getValue();
+        } else {
+            yourHighValue = two.getRank().getValue();
+            yourLowValue = one.getRank().getValue();
+        }
+
+        // Get opponent high and low card rank value
+        int opponentHighValue;
+        int opponentLowValue;
+        if (o.one.getRank().getValue() > o.two.getRank().getValue()) {
+            opponentHighValue = o.one.getRank().getValue();
+            opponentLowValue = o.two.getRank().getValue();
+        } else {
+            opponentHighValue = o.two.getRank().getValue();
+            opponentLowValue = o.one.getRank().getValue();
+        }
+
+        // Pairs logic
+        if (yourHighValue == yourLowValue) {
+            if (opponentHighValue == opponentLowValue) {
+                return Integer.compare(yourHighValue, opponentHighValue);
+            } else {
+                return 1;
+            }
+        } else if (opponentHighValue == opponentLowValue) {
+            return -1;
+        }
+
+        // High card is tied logic
+        if (yourHighValue == opponentHighValue) {
+            return Integer.compare(yourLowValue, opponentLowValue);
+        }
+
+        // Normal logic
+        return Integer.compare(yourHighValue, opponentHighValue);
     }
 }
