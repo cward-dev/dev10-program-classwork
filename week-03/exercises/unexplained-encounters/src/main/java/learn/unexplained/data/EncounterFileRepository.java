@@ -32,7 +32,29 @@ public class EncounterFileRepository implements EncounterRepository {
                 }
             }
         } catch (FileNotFoundException ex) {
+            System.out.println("That file was not found.");
+        } catch (IOException ex) {
+            throw new DataAccessException(ex.getMessage(), ex);
+        }
 
+        return result;
+    }
+
+    @Override
+    public List<Encounter> findByType(EncounterType encounterType) throws DataAccessException {
+
+        ArrayList<Encounter> result = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            reader.readLine(); // skip header
+            for (String line = reader.readLine(); line != null; line = reader.readLine()) {
+                Encounter encounter = deserialize(line);
+                if (encounter != null && encounter.getType() == encounterType) {
+                    result.add(encounter);
+                }
+            }
+        } catch (FileNotFoundException ex) {
+            System.out.println("That file was not found.");
         } catch (IOException ex) {
             throw new DataAccessException(ex.getMessage(), ex);
         }
@@ -47,6 +69,20 @@ public class EncounterFileRepository implements EncounterRepository {
         all.add(encounter);
         writeAll(all);
         return encounter;
+    }
+
+    @Override
+    public boolean update(Encounter encounter) throws DataAccessException {
+        List<Encounter> all = findAll();
+        for (int i = 0; i < all.size(); i++) {
+            if (all.get(i).getEncounterId() == encounter.getEncounterId()) {
+                all.remove(i);
+                all.add(encounter);
+                writeAll(all);
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

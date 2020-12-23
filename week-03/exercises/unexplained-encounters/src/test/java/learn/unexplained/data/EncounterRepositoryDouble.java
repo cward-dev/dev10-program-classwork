@@ -12,8 +12,18 @@ public class EncounterRepositoryDouble implements EncounterRepository {
     }
 
     @Override
+    public List<Encounter> findByType(EncounterType encounterType) throws DataAccessException {
+        return null;
+    }
+
+    @Override
     public Encounter add(Encounter encounter) throws DataAccessException {
         return encounter;
+    }
+
+    @Override
+    public boolean update(Encounter encounter) throws DataAccessException {
+        return false;
     }
 
     @Override
