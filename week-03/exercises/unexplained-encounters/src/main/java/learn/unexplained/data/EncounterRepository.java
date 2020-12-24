@@ -9,6 +9,8 @@ import java.util.List;
 public interface EncounterRepository {
     List<Encounter> findAll() throws DataAccessException;
 
+    Encounter findById(int encounterId) throws DataAccessException;
+
     List<Encounter> findByType(EncounterType encounterType) throws DataAccessException;
 
     Encounter add(Encounter encounter) throws DataAccessException;

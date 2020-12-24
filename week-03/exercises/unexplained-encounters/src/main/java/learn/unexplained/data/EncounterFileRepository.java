@@ -41,22 +41,25 @@ public class EncounterFileRepository implements EncounterRepository {
     }
 
     @Override
+    public Encounter findById(int encounterId) throws DataAccessException {
+        List<Encounter> encounters = findAll();
+        for (Encounter e : encounters) {
+            if (e.getEncounterId() == encounterId) {
+                return e;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public List<Encounter> findByType(EncounterType encounterType) throws DataAccessException {
+        List<Encounter> encounters = findAll();
 
         ArrayList<Encounter> result = new ArrayList<>();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            reader.readLine(); // skip header
-            for (String line = reader.readLine(); line != null; line = reader.readLine()) {
-                Encounter encounter = deserialize(line);
-                if (encounter != null && encounter.getType() == encounterType) {
-                    result.add(encounter);
-                }
+        for (Encounter e : encounters) {
+            if (e.getType() == encounterType) {
+                result.add(e);
             }
-        } catch (FileNotFoundException ex) {
-            System.out.println("That file was not found.");
-        } catch (IOException ex) {
-            throw new DataAccessException(ex.getMessage(), ex);
         }
 
         return result;
@@ -64,21 +67,23 @@ public class EncounterFileRepository implements EncounterRepository {
 
     @Override
     public Encounter add(Encounter encounter) throws DataAccessException {
-        List<Encounter> all = findAll();
-        encounter.setEncounterId(getNextId(all));
-        all.add(encounter);
-        writeAll(all);
+        List<Encounter> encounters = findAll();
+
+        encounter.setEncounterId(getNextId(encounters));
+        encounters.add(encounter);
+        writeAll(encounters);
         return encounter;
     }
 
     @Override
     public boolean update(Encounter encounter) throws DataAccessException {
-        List<Encounter> all = findAll();
-        for (int i = 0; i < all.size(); i++) {
-            if (all.get(i).getEncounterId() == encounter.getEncounterId()) {
-                all.remove(i);
-                all.add(encounter);
-                writeAll(all);
+        List<Encounter> encounters = findAll();
+
+        for (int i = 0; i < encounters.size(); i++) {
+            if (encounters.get(i).getEncounterId() == encounter.getEncounterId()) {
+                encounters.remove(i);
+                encounters.add(encounter);
+                writeAll(encounters);
                 return true;
             }
         }
@@ -87,11 +92,11 @@ public class EncounterFileRepository implements EncounterRepository {
 
     @Override
     public boolean deleteById(int encounterId) throws DataAccessException {
-        List<Encounter> all = findAll();
-        for (int i = 0; i < all.size(); i++) {
-            if (all.get(i).getEncounterId() == encounterId) {
-                all.remove(i);
-                writeAll(all);
+        List<Encounter> encounters = findAll();
+        for (int i = 0; i < encounters.size(); i++) {
+            if (encounters.get(i).getEncounterId() == encounterId) {
+                encounters.remove(i);
+                writeAll(encounters);
                 return true;
             }
         }
