@@ -75,7 +75,6 @@ public class Controller {
 
     private void updateEncounter() throws DataAccessException {
         int encounterId = view.getEncounterId();
-
         Encounter encounter = service.findById(encounterId);
         view.printEncounter(encounter);
 
