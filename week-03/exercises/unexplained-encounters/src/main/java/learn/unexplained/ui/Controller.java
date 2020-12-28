@@ -4,6 +4,7 @@ import learn.unexplained.data.DataAccessException;
 import learn.unexplained.domain.EncounterResult;
 import learn.unexplained.domain.EncounterService;
 import learn.unexplained.models.Encounter;
+import learn.unexplained.models.EncounterType;
 
 import java.util.List;
 
@@ -37,8 +38,17 @@ public class Controller {
                 case DISPLAY_ALL:
                     displayAllEncounters();
                     break;
+                case DISPLAY_BY_TYPE:
+                    displayEncountersByType();
+                    break;
                 case ADD:
                     addEncounter();
+                    break;
+                case UPDATE:
+                    updateEncounter();
+                    break;
+                case DELETE:
+                    deleteEncounter();
                     break;
             }
         } while (option != MenuOption.EXIT);
@@ -49,9 +59,50 @@ public class Controller {
         view.printAllEncounters(encounters);
     }
 
+    private void displayEncountersByType() throws DataAccessException {
+        EncounterType type = view.getEncounterType();
+
+        List<Encounter> encounters = service.findByType(type);
+
+        view.printEncountersOfType(encounters);
+    }
+
     private void addEncounter() throws DataAccessException {
         Encounter encounter = view.makeEncounter();
         EncounterResult result = service.add(encounter);
         view.printResult(result);
     }
+
+    private void updateEncounter() throws DataAccessException {
+        int encounterId = view.getEncounterId();
+
+        Encounter encounter = service.findById(encounterId);
+        view.printEncounter(encounter);
+
+        Encounter updatedEncounter = null;
+        if (encounter != null) {
+            updatedEncounter = view.getUpdatedEncounter(encounter);
+        }
+
+        EncounterResult result = service.update(updatedEncounter);
+        view.printResult(result);
+    }
+
+    private void deleteEncounter() throws DataAccessException {
+        int encounterId = view.getEncounterIdToDelete();
+        Encounter encounter = service.findById(encounterId);
+
+        view.printEncounter(encounter);
+
+        boolean delete = false;
+        if (encounter != null) {
+            delete = view.confirmDeleteEncounter();
+        }
+
+        if (delete) {
+            EncounterResult result = service.deleteById(encounterId);
+            view.printResult(result);
+        }
+    }
+
 }

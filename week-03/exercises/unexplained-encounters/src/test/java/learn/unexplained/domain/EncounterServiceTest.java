@@ -29,7 +29,6 @@ class EncounterServiceTest {
         assertEquals(expected, actual);
     }
 
-
     @Test
     void shouldNotAddEmptyDescription() throws DataAccessException {
         Encounter encounter = new Encounter(0, EncounterType.CREATURE, "2/2/2019", "  ", 1);
