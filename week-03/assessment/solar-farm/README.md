@@ -35,5 +35,119 @@
 * Repository and service classes must be fully tested with both negative and positive cases. Do not use your "production" data file to test your repository.
 * Solar panel material should be a Java enum with five values. Since solar technology is changing quickly, an enum may be a risky choice. The requirement is included specifically to practice with enums.
 
-***
+## Plan
 
+### Data Folder (in root folder)
+* solar-panels.csv // actual data file
+* solar-panels-seed.csv // seed data file that will be copied over for data layer tests
+* solar-panels-test.csv // text data file that will be populated from seed file for data layer tests
+
+### Models
+* Panel
+  * private int panelId; // will not be set by user, will be equal to the highest existing id + 1
+  * private String section; // required and cannot be blank
+  * private int row; // positive number <= 250
+  * private int column; // positive number <= 250
+  * private int yearInstalled; // must be in the past
+    * To verify, will compare to int currentYear = Year.now(ZoneId.of("America/Chicago")).getValue(); // gets the current year in CST
+  * private boolean isTracking;
+* PanelMaterial
+  * Values
+    * MULTICRYSTALLINE_SILICON("multicrystalline silicon", "c-Si")
+    * MONOCRYSTALLINE_SILICON("monocrystalline silicon", "mono-Si")
+    * AMORPHOUS_SILICON("amorphous silicon", "a-Si")
+    * CADMIUM_TELLURIDE("cadmium telluride", "CdTe")
+    * COPPER_INDIUM_GALLIUM_SELENIDE("copper indium gallium selenide", "CIGS")
+  * public final String name;
+  * public final String abbreviation;
+  * PanelMaterial(String name, String abbreviation)
+  * declare getters and setters for name and abbreviation
+
+### Data Layer
+* PanelRepository (interface)
+  * Will write to and read from "./data/solar-panels.csv"
+  * Will implement CRUD to manipulate persistent data
+    * C - Panel add(Panel panel)
+    * R - List\<Panel> findAll(), Panel findById(int panelId), List\<Panel> findBySection(String section), List\<Panel> findByMaterial(PanelMaterial material)
+    * U - boolean update(Panel panel)
+    * D - boolean deleteById(int panelId)
+* PanelFileRepository (implements PanelRepository)
+  * Will also require the following private helper methods:
+    * String serialize(Panel panel) and Panel deserialize(String value)
+    * void writeAll() // repopulates the data file
+    * Strategy: use findAll() as the dependency for all other methods, returning an ArrayList<Panel> that will be updated and written back to the file with writeAll()
+      * // Unsure if "dependency" is correct term in the context of methods rather than objects
+* DataAccessException (extends Exception)
+  * Custom exception that notifies us when we encounter an error accessing the data file
+
+### Domain Layer
+* PanelService - dependencies : PanelRepository repository
+  * Will handle all data from the PanelRepository and validate it to be passed to the View
+  * List<Panel> findBySection(String section)
+  * Panel findById(int panelId)
+  * Panel findByLocation(String section, int row, int column)
+  * PanelResult updateById(int panelId)
+  * PanelResult updateBySection(String section)
+  * List\<Panel> updateByRange(int rowStart, int columnStart, int rowEnd, int columnEnd) // bulk update features
+  * PanelResult add(Panel panel)
+  * PanelResult delete(int panelId)
+  * PanelResult validateInputs(Panel panel) // Used to validate that a Panel argument is a valid Panel
+* PanelResult
+  * private ArrayList<String> messages
+  * private Panel payload;
+  * void addErrorMessage() // will include domain's custom error messages that are displayed to the user when needed
+  * boolean isSuccess() // if messages.size() == 0 then returns true // used to determine if repository action was successful
+  * getter and setter for Panel payload, only getter for String messages
+
+### UI Layer
+* Controller - dependencies: PanelService service, View view
+  * run() // tries calling runMenu() and finally catches our DataAccessException that was thrown around, printing "Fatal Err: " + ex
+  * runMenu() // get menu selection from view and allow continued selections until EXIT is selected
+  * displayPanels() - get header from view, get panel section from view, get List<Panel> from service, get display of panels from view
+  * createPanel() - get header from view, get new Panel from view, get PanelResult from service, get displayResult from view
+  * updatePanel() - get header from view, get section from view, get List<Panel> from view, get updated panel from view, check if panel is null, send updated panel to service and return PanelResult, get displayResult from view
+  * deletePanel() - same flow as update, but using delete methods in view/service
+* View
+  * void printHeader()
+  * MenuOption displayMenuAndSelect() - handles user selection of menu choices to be returned to the controller
+  * void displayPanels(List\<Panel> panels) - prints out the List\<Panel> argument to the ui (if none then prints "No orbiters found.")
+  * void displayResult(PanelResult result) - if success then prints "Success.", otherwise prints "Err: " + result messages
+  * Panel makePanel() - gets new Panel fields from user input, then creates and returns that Panel
+  * Panel update(List<Panel> panels) - gets list of panels and gets user selection from that list to be passed to overloaded method
+  * Panel update(Panel panel) - OVERLOADED - gets user inputs to edit the Panel argument and return the updated version
+    * If any given field is given a blank value, will keep that field's previous value
+  * Panel findPanel() - gets a panel by panelId from user, or gets a panel by location information (section, row, column)
+  * read methods
+    * readString(String prompt)
+    * readRequiredString(String prompt) // will loop until a value is provided
+    * readInt(String prompt)
+    * readInt(String prompt, int min, int max) - OVERLOADED - // will loop until a value in range is provided
+    * read PanelMaterial(String prompt)
+* MenuOption (enum)
+  * Values
+    * EXIT("Exit")
+    * DISPLAY_PANELS("Display Solar Panels")
+    * CREATE_PANEL("Create Solar Panel")
+    * UPDATE_PANEL("Update Solar Panel")
+    * DELETE_PANEL("Delete Solar Panel")
+  * private final String title;
+  * MenuOption(String title)
+  * public string getTitle()
+
+### App.java
+* main method
+  * PanelFileRepository repository = new PanelFileRepository("./data/solar-panels.csv");
+  * PanelService service = new PanelService(repository);
+  * View view = new View();
+  * Controller controller = new Controller(service, view);
+  * controller.run();
+
+### Tests
+* Data Layer
+  * PanelFileRepositoryTest
+    * Will use data from "solar-panels-seed.csv" and "solar-panels-test.csv" to test the PanelFileRepository without tampering with source data
+  * PanelRepositoryDouble
+    * Will mimic the outputs of a working PanelRepository object for use in domain testing
+* Domain Layer
+  * PanelServiceTest
+    * Will utilize the PanelRepositoryDouble for a controlled testing environment
