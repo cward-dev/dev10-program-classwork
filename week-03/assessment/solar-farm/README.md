@@ -110,7 +110,7 @@
 * View
   * void printHeader()
   * MenuOption displayMenuAndSelect() - handles user selection of menu choices to be returned to the controller
-  * void displayPanels(List\<Panel> panels) - prints out the List\<Panel> argument to the ui (if none then prints "No orbiters found.")
+  * void displayPanels(List\<Panel> panels) - prints out the List\<Panel> argument to the ui (if none then prints "No panels found.")
   * void displayResult(PanelResult result) - if success then prints "Success.", otherwise prints "Err: " + result messages
   * Panel makePanel() - gets new Panel fields from user input, then creates and returns that Panel
   * Panel update(List<Panel> panels) - gets list of panels and gets user selection from that list to be passed to overloaded method
