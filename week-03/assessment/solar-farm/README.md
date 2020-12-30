@@ -36,13 +36,19 @@
 * Solar panel material should be a Java enum with five values. Since solar technology is changing quickly, an enum may be a risky choice. The requirement is included specifically to practice with enums.
 
 ## Plan
+* Total Time (Estimate): 10 hours, 25 minutes
+  * Total Time (Actual) : tbd
 
 ### Data Folder (in root folder)
+* Time (Estimate): 5 minutes
+  * Time (Actual) : tbd
 * solar-panels.csv // actual data file
 * solar-panels-seed.csv // seed data file that will be copied over for data layer tests
 * solar-panels-test.csv // text data file that will be populated from seed file for data layer tests
 
 ### Models
+* Time (Estimate): 45 minutes
+  * Time (Actual) : tbd
 * Panel
   * private int panelId; // will not be set by user, will be equal to the highest existing id + 1
   * private String section; // required and cannot be blank
@@ -64,6 +70,8 @@
   * declare getters and setters for name and abbreviation
 
 ### Data Layer
+* Time (Estimate): 2 hours
+  * Time (Actual) : tbd
 * PanelRepository (interface)
   * Will write to and read from "./data/solar-panels.csv"
   * Will implement CRUD to manipulate persistent data
@@ -75,37 +83,42 @@
   * Will also require the following private helper methods:
     * String serialize(Panel panel) and Panel deserialize(String value)
     * void writeAll() // repopulates the data file
-    * Strategy: use findAll() as the dependency for all other methods, returning an ArrayList<Panel> that will be updated and written back to the file with writeAll()
-      * // Unsure if "dependency" is correct term in the context of methods rather than objects
+    * Strategy: use findAll() as the starting point for all other methods, returning an ArrayList\<Panel> that will be updated and written back to the file with writeAll()
 * DataAccessException (extends Exception)
   * Custom exception that notifies us when we encounter an error accessing the data file
 
 ### Domain Layer
+* Time (Estimate): 1 hour, 30 minutes
+  * Time (Actual) : tbd
 * PanelService - dependencies : PanelRepository repository
   * Will handle all data from the PanelRepository and validate it to be passed to the View
-  * List<Panel> findBySection(String section)
+  * List\<Panel> findBySection(String section)
   * Panel findById(int panelId)
   * Panel findByLocation(String section, int row, int column)
-  * PanelResult updateById(int panelId)
-  * PanelResult updateBySection(String section)
-  * List\<Panel> updateByRange(int rowStart, int columnStart, int rowEnd, int columnEnd) // bulk update features
+  * PanelResult update(Panel panel)
+  * List\<Panel> updateRange(String section, int rowStart, int columnStart, int rowEnd, int columnEnd) // bulk update features
+    * Not sure how I will implement this yet. Either will need to findBySection() then initialize an array and populate with Panels in given range, or may move this to the controller and have it send each capsule to be updated to the service individually (although this seems inefficient)
   * PanelResult add(Panel panel)
   * PanelResult delete(int panelId)
   * PanelResult validateInputs(Panel panel) // Used to validate that a Panel argument is a valid Panel
 * PanelResult
-  * private ArrayList<String> messages
+  * private ArrayList\<String> messages
   * private Panel payload;
   * void addErrorMessage() // will include domain's custom error messages that are displayed to the user when needed
   * boolean isSuccess() // if messages.size() == 0 then returns true // used to determine if repository action was successful
   * getter and setter for Panel payload, only getter for String messages
 
 ### UI Layer
+* Time (Estimate): 3 hours, 30 minutes
+  * Time (Actual) : tbd
 * Controller - dependencies: PanelService service, View view
   * run() // tries calling runMenu() and finally catches our DataAccessException that was thrown around, printing "Fatal Err: " + ex
   * runMenu() // get menu selection from view and allow continued selections until EXIT is selected
-  * displayPanels() - get header from view, get panel section from view, get List<Panel> from service, get display of panels from view
-  * createPanel() - get header from view, get new Panel from view, get PanelResult from service, get displayResult from view
-  * updatePanel() - get header from view, get section from view, get List<Panel> from view, get updated panel from view, check if panel is null, send updated panel to service and return PanelResult, get displayResult from view
+  * displayPanels() - get header from view, get panel section from view, get List\<Panel> from service, get display of panels from view
+  * createPanel() - get header from view, get new Panel from view, send panel to service and get PanelResult from service, get displayResult from view
+  * updatePanelById() - get header from view, get panelId from view, get Panel from service, get updated panel from view, get displayResult from view
+  * updatePanelBySection() - get header from view, get section from view, get List\<Panel> from service, get updated fields from view, send updated panels to service and return PanelResult, get displayResult from View
+  * updatePanel() - get header from view, get section from view, get List\<Panel> from view, get updated panel from view, check if panel is null, send updated panel to service and return PanelResult, get displayResult from view
   * deletePanel() - same flow as update, but using delete methods in view/service
 * View
   * void printHeader()
@@ -113,7 +126,7 @@
   * void displayPanels(List\<Panel> panels) - prints out the List\<Panel> argument to the ui (if none then prints "No panels found.")
   * void displayResult(PanelResult result) - if success then prints "Success.", otherwise prints "Err: " + result messages
   * Panel makePanel() - gets new Panel fields from user input, then creates and returns that Panel
-  * Panel update(List<Panel> panels) - gets list of panels and gets user selection from that list to be passed to overloaded method
+  * Panel update(List\<Panel> panels) - gets list of panels and gets user selection from that list to be passed to overloaded method
   * Panel update(Panel panel) - OVERLOADED - gets user inputs to edit the Panel argument and return the updated version
     * If any given field is given a blank value, will keep that field's previous value
   * Panel findPanel() - gets a panel by panelId from user, or gets a panel by location information (section, row, column)
@@ -135,6 +148,8 @@
   * public string getTitle()
 
 ### App.java
+* Time (Estimate): 5 minutes
+  * Time (Actual) : tbd
 * main method
   * PanelFileRepository repository = new PanelFileRepository("./data/solar-panels.csv");
   * PanelService service = new PanelService(repository);
@@ -143,6 +158,8 @@
   * controller.run();
 
 ### Tests
+* Time (Estimate): 2 hours, 30 minutes
+  * Time (Actual) : tbd
 * Data Layer
   * PanelFileRepositoryTest
     * Will use data from "solar-panels-seed.csv" and "solar-panels-test.csv" to test the PanelFileRepository without tampering with source data
