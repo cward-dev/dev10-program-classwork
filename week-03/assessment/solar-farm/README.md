@@ -48,7 +48,7 @@
 
 ### Models
 * Time (Estimate): 45 minutes
-  * Time (Actual) : tbd
+  * Time (Actual) : 15 minutes
 * Panel
   * private int panelId; // will not be set by user, will be equal to the highest existing id + 1
   * private String section; // required and cannot be blank
@@ -71,7 +71,7 @@
 
 ### Data Layer
 * Time (Estimate): 2 hours
-  * Time (Actual) : tbd
+  * Time (Actual) : 1 hour
 * PanelRepository (interface)
   * Will write to and read from "./data/solar-panels.csv"
   * Will implement CRUD to manipulate persistent data
@@ -89,7 +89,7 @@
 
 ### Domain Layer
 * Time (Estimate): 1 hour, 30 minutes
-  * Time (Actual) : tbd
+  * Time (Actual) : 1 hour
 * PanelService - dependencies : PanelRepository repository
   * Will handle all data from the PanelRepository and validate it to be passed to the View
   * List\<Panel> findBySection(String section)
