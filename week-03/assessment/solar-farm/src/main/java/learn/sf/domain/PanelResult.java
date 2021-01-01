@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public class PanelResult {
 
-    private List<String> messages;
+    private List<String> messages = new ArrayList<>();
     private Panel payload;
 
     public Panel getPayload() {

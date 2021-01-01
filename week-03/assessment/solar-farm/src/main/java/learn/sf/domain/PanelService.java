@@ -32,15 +32,20 @@ public class PanelService {
         return repository.findById(panelId);
     }
 
+    public List<String> getAllSections() throws DataAccessException {
+        return repository.getAllSections();
+    }
+
     public PanelResult add(Panel panel) throws DataAccessException {
         PanelResult result = validate(panel);
-        if (result.isSuccess()) {
+        if (!result.isSuccess()) {
             return result;
         }
 
         boolean duplicate = checkForDuplicate(panel);
         if (duplicate) {
-            result.addErrorMessage(String.format("A panel already exists at Section: %s, Row: %s, Column: %s.", result.getPayload().getSection(), result.getPayload().getRow(), result.getPayload().getColumn()));
+            result.addErrorMessage(String.format("A panel already exists at Section: %s, Row: %s, Column: %s.", panel.getSection(), panel.getRow(), panel.getColumn()));
+            return result;
         }
 
         panel = repository.add(panel);
@@ -51,19 +56,20 @@ public class PanelService {
 
     public PanelResult update(Panel panel) throws DataAccessException {
         PanelResult result = validate(panel);
-        if (result.isSuccess()) {
+        if (!result.isSuccess()) {
             return result;
         }
 
         boolean duplicate = checkForDuplicate(panel);
         if (duplicate) {
-            result.addErrorMessage(String.format("A panel already exists at Section: %s, Row: %s, Column: %s.", result.getPayload().getSection(), result.getPayload().getRow(), result.getPayload().getColumn()));
+            result.addErrorMessage(String.format("A panel already exists at Section: %s, Row: %s, Column: %s.", panel.getSection(), panel.getRow(), panel.getColumn()));
         }
 
         boolean success = repository.update(panel);
         if (!success) {
             result.addErrorMessage(String.format("Panel Id %s not found.", panel.getPanelId()));
         }
+        result.setPayload(panel);
 
         return result;
     }
@@ -71,7 +77,7 @@ public class PanelService {
     public PanelResult deleteById(int panelId) throws DataAccessException {
         Panel panel = findById(panelId);
         PanelResult result = validate(panel);
-        if (result.isSuccess()) {
+        if (!result.isSuccess()) {
             return result;
         }
 
@@ -88,6 +94,7 @@ public class PanelService {
 
         if (panel == null) {
             result.addErrorMessage("Panel cannot be null.");
+            return result;
         }
 
         if (panel.getSection() == null || panel.getSection().trim().length() == 0) {

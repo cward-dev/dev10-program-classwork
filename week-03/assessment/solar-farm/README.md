@@ -159,7 +159,7 @@
 
 ### Tests
 * Time (Estimate): 2 hours, 30 minutes
-  * Time (Actual) : tbd
+  * Time (Actual) : 1 hour, 45 minutes
 * Data Layer
   * PanelFileRepositoryTest
     * Will use data from "solar-panels-seed.csv" and "solar-panels-test.csv" to test the PanelFileRepository without tampering with source data

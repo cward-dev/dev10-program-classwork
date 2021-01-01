@@ -15,6 +15,8 @@ public interface PanelRepository {
 
     Panel findById(int panelId) throws DataAccessException;
 
+    List<String> getAllSections() throws DataAccessException;
+
     Panel add(Panel panel) throws DataAccessException;
 
     boolean update(Panel panel) throws DataAccessException;

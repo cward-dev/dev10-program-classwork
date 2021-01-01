@@ -3,6 +3,7 @@ package learn.sf.data;
 import learn.sf.model.Panel;
 import learn.sf.model.PanelMaterial;
 
+import javax.xml.crypto.Data;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
 public class PanelFileRepository implements PanelRepository {
 
     private static final String DELIMITER = ",";
-    private static final String DELIMITER_REPLACEMENT = "@@@";
+    private static final String DELIMITER_REPLACEMENT = "@@~@@~@@";
     private static final String HEADER = "panelId,section,row,column,yearInstalled,material,isTracking";
     private final String filePath;
 
@@ -81,10 +82,38 @@ public class PanelFileRepository implements PanelRepository {
     }
 
     @Override
+    public List<String> getAllSections() throws DataAccessException {
+        List<Panel> panels = findAll();
+        ArrayList<String> result = new ArrayList<>();
+
+        boolean isPresent;
+        for (Panel p : panels) {
+            if (result.size() == 0) {
+                result.add(p.getSection());
+            } else {
+                isPresent = false;
+                for (String s : result) {
+                    if (s.equalsIgnoreCase(p.getSection())) {
+                        isPresent = true;
+                    }
+                }
+                if (!isPresent) {
+                    result.add(p.getSection());
+                }
+            }
+        }
+
+        return result;
+    }
+
+    @Override
     public Panel add(Panel panel) throws DataAccessException {
         List<Panel> panels = findAll();
 
         panel.setPanelId(getNextId());
+
+        panel = deserialize(serialize(panel)); // removes any @@@s and replaces them with a comma in panel object
+
         panels.add(panel);
         writeAll(panels);
 
@@ -180,6 +209,4 @@ public class PanelFileRepository implements PanelRepository {
     private String restore(String value) {
         return value.replace(DELIMITER_REPLACEMENT, DELIMITER);
     }
-
-
 }

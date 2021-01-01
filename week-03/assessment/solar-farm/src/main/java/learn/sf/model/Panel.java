@@ -1,5 +1,7 @@
 package learn.sf.model;
 
+import java.util.Objects;
+
 public class Panel {
 
     private int panelId;
@@ -11,11 +13,9 @@ public class Panel {
     private boolean isTracking;
 
     public Panel() {
-
     }
 
-    public Panel(int panelId, String section, int row, int column, int yearInstalled, PanelMaterial material, boolean isTracking) {
-        this.panelId = panelId;
+    public Panel(String section, int row, int column, int yearInstalled, PanelMaterial material, boolean isTracking) {
         this.section = section;
         this.row = row;
         this.column = column;
@@ -78,5 +78,24 @@ public class Panel {
 
     public void setTracking(boolean tracking) {
         isTracking = tracking;
+    }
+
+    @Override // From unexplained encounters lesson
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Panel panel = (Panel) o;
+        return panelId == panel.panelId &&
+                Objects.equals(section, panel.getSection()) &&
+                row == panel.getRow() &&
+                column == panel.getColumn() &&
+                yearInstalled == panel.getYearInstalled() &&
+                Objects.equals(material, panel.getMaterial()) &&
+                isTracking == panel.isTracking;
+    }
+
+    @Override // From unexplained encounters lesson
+    public int hashCode() {
+        return Objects.hash(panelId, section, row, column, yearInstalled, material, isTracking);
     }
 }
