@@ -82,6 +82,21 @@ public class PanelFileRepository implements PanelRepository {
     }
 
     @Override
+    public Panel findByLocation(String section, int row, int column) throws DataAccessException {
+        List<Panel> panels = findAll();
+
+        for (Panel p : panels) {
+            if (p.getSection().equalsIgnoreCase(section)
+                        && p.getRow() == row
+                        && p.getColumn() == column) {
+                return p;
+            }
+        }
+
+        return null;
+    }
+
+    @Override
     public List<String> getAllSections() throws DataAccessException {
         List<Panel> panels = findAll();
         ArrayList<String> result = new ArrayList<>();

@@ -52,6 +52,20 @@ class PanelServiceTest {
     }
 
     @Test
+    void shouldFindByLocation() throws DataAccessException {
+        Panel panel = service.findByLocation("Bluegrass", 3, 15);
+
+        assertNotNull(panel);
+        assertEquals(1, panel.getPanelId());
+        assertEquals("Bluegrass", panel.getSection());
+        assertEquals(3, panel.getRow());
+        assertEquals(15, panel.getColumn());
+        assertEquals(1994, panel.getYearInstalled());
+        assertEquals(PanelMaterial.MULTICRYSTALLINE_SILICON, panel.getMaterial());
+        assertTrue(panel.isTracking());
+    }
+
+    @Test
     void shouldGetAllSections() throws DataAccessException {
         List<String> sections = service.getAllSections();
 
@@ -180,8 +194,30 @@ class PanelServiceTest {
         assertEquals(expected, actual);
     }
 
-    // TODO deleteById()
+    @Test
+    void shouldDeleteById() throws DataAccessException {
+        PanelResult actual = service.deleteById(1);
+        PanelResult expected = new PanelResult();
+        expected.setPayload(new Panel("Bluegrass",3,15,1994,PanelMaterial.MULTICRYSTALLINE_SILICON,true));
+        expected.getPayload().setPanelId(1);
 
+        assertTrue(actual.isSuccess());
+        assertEquals(expected, actual);
+
+        assertEquals("Bluegrass", actual.getPayload().getSection());
+        assertNull(service.findById(1));
+    }
+
+    @Test
+    void shouldNotDeleteInvalidId() throws DataAccessException {
+        PanelResult actual = service.deleteById(100000);
+        PanelResult expected = makeResult("Panel Id 100000 not found.");
+
+        assertFalse(actual.isSuccess());
+        assertNull(actual.getPayload());
+    }
+
+    // Helper method for expected PanelResult error messages
     private PanelResult makeResult(String message) {
         PanelResult result = new PanelResult();
         result.addErrorMessage(message);

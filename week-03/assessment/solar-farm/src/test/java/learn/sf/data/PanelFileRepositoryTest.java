@@ -5,9 +5,7 @@ import learn.sf.model.PanelMaterial;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -77,7 +75,7 @@ class PanelFileRepositoryTest {
     }
 
     @Test
-    void shouldFindByMaterial() throws DataAccessException {
+    void shouldFindByMaterialInJazz() throws DataAccessException {
         List<Panel> amorphousSiliconPanels = repository.findByMaterial(PanelMaterial.AMORPHOUS_SILICON);
 
         assertEquals(2, amorphousSiliconPanels.size());
@@ -106,6 +104,26 @@ class PanelFileRepositoryTest {
     @Test
     void shouldNotFindByInvalidId() throws DataAccessException {
         Panel panel = repository.findById(100000);
+
+        assertNull(panel);
+    }
+
+    @Test
+    void shouldFindByLocation() throws DataAccessException {
+        Panel panel = repository.findByLocation("Bluegrass", 3, 15);
+
+        assertEquals(1, panel.getPanelId());
+        assertEquals("Bluegrass", panel.getSection());
+        assertEquals(3, panel.getRow());
+        assertEquals(15, panel.getColumn());
+        assertEquals(1994, panel.getYearInstalled());
+        assertEquals(PanelMaterial.MULTICRYSTALLINE_SILICON, panel.getMaterial());
+        assertTrue(panel.isTracking());
+    }
+
+    @Test
+    void shouldNotFindByInvalidLocation() throws DataAccessException {
+        Panel panel = repository.findByLocation("Bluegrass", 23, 87);
 
         assertNull(panel);
     }

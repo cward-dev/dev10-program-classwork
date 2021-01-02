@@ -32,6 +32,10 @@ public class PanelService {
         return repository.findById(panelId);
     }
 
+    public Panel findByLocation(String section, int row, int column) throws DataAccessException {
+        return repository.findByLocation(section, row, column);
+    }
+
     public List<String> getAllSections() throws DataAccessException {
         return repository.getAllSections();
     }
@@ -85,6 +89,7 @@ public class PanelService {
         if (!success) {
             result.addErrorMessage(String.format("Panel Id %s not found", panelId));
         }
+        result.setPayload(panel);
 
         return result;
     }
@@ -122,7 +127,8 @@ public class PanelService {
         for (Panel p : panels) {
             if (Objects.equals(panel.getSection(), p.getSection())
                                     && Objects.equals(panel.getRow(), p.getRow())
-                                    && Objects.equals(panel.getColumn(), p.getColumn())) {
+                                    && Objects.equals(panel.getColumn(), p.getColumn())
+                                    && !Objects.equals(panel, p)) {
                 return true;
             }
         }
