@@ -84,11 +84,15 @@ public class Controller {
     }
 
     private void displayAllPanels() throws DataAccessException {
+        view.printHeader(DisplayMenuOption.DISPLAY_ALL.getMessage());
+
         List<Panel> panels = service.findAll();
-        view.printAllPanels(panels);
+        view.printPanels(panels);
     }
 
     private void displayPanelsBySection() throws DataAccessException {
+        view.printHeader(DisplayMenuOption.DISPLAY_BY_SECTION.getMessage());
+
         List<String> sections = service.getAllSections();
         String section = view.getSection(sections);
 
@@ -97,6 +101,8 @@ public class Controller {
     }
 
     private void displayPanelsByMaterial() throws DataAccessException {
+        view.printHeader(DisplayMenuOption.DISPLAY_BY_MATERIAL.getMessage());
+
         PanelMaterial material = view.getPanelMaterial();
         List<Panel> panels = service.findByMaterial(material);
 
@@ -104,6 +110,8 @@ public class Controller {
     }
 
     private void displayPanelById() throws DataAccessException {
+        view.printHeader(DisplayMenuOption.DISPLAY_BY_ID.getMessage());
+
         int panelId = view.getPanelId();
         Panel panel = service.findById(panelId);
 
@@ -111,13 +119,19 @@ public class Controller {
     }
 
     private void addPanel() throws DataAccessException {
-        Panel panel = view.getNewPanelToAdd();
+        view.printHeader(MenuOption.ADD.getMessage());
+
+        List<String> sections = service.getAllSections();
+
+        Panel panel = view.getNewPanelToAdd(sections);
         PanelResult result = service.add(panel);
 
         view.printResult(result, "added");
     }
 
     private void updatePanel() throws DataAccessException {
+        view.printHeader(MenuOption.UPDATE.getMessage());
+
         List<String> sections = service.getAllSections();
         String section = view.getSection(sections);
         List<Panel> panels = service.findBySection(section);
@@ -138,6 +152,8 @@ public class Controller {
     }
 
     private void deletePanel() throws DataAccessException {
+        view.printHeader(MenuOption.DELETE.getMessage());
+
         List<String> sections = service.getAllSections();
         String section = view.getSection(sections);
         List<Panel> panels = service.findBySection(section);

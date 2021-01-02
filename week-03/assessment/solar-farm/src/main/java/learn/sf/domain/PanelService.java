@@ -129,7 +129,7 @@ public class PanelService {
             if (Objects.equals(panel.getSection(), p.getSection())
                                     && Objects.equals(panel.getRow(), p.getRow())
                                     && Objects.equals(panel.getColumn(), p.getColumn())
-                                    && !Objects.equals(panel, p)) {
+                                    && !Objects.equals(panel.getPanelId(), p.getPanelId())) {
                 return true;
             }
         }

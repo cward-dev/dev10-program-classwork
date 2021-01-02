@@ -40,24 +40,25 @@ public class View {
         return options[selection - 1];
     }
 
-    public void printAllPanels(List<Panel> panels) {
-        printHeader(DisplayMenuOption.DISPLAY_ALL.getMessage(), "=");
-        printPanels(panels);
-    }
-
     public void printBySection(String section, List<Panel> panels) {
-        printHeader(DisplayMenuOption.DISPLAY_BY_SECTION.getMessage());
+        if (panels.size() == 0) {
+            System.out.println();
+            System.out.printf("No panels exist in section %s.%n", section);
+            return;
+        }
+
         printHeader(String.format("Panels in %s", section), "*");
         printPanels(panels);
     }
 
     public void printByMaterial(PanelMaterial material, List<Panel> panels) {
-        printHeader(String.format("%s: %s", DisplayMenuOption.DISPLAY_BY_MATERIAL.getMessage(), material.getName()));
-
         if (panels.size() == 0) {
+            System.out.println();
+            System.out.printf("No panels of material %s exist.%n", material);
             return;
         }
 
+        printHeader(String.format("%s (%s) Panels", material.getName(), material.getAbbreviation()), "*");
         printPanels(panels);
     }
 
@@ -67,8 +68,6 @@ public class View {
             System.out.println("No panel exists with that Panel Id.");
             return;
         }
-
-        printHeader(DisplayMenuOption.DISPLAY_BY_ID.getMessage());
 
         ArrayList<Panel> panels = new ArrayList<>();
         panels.add(panel);
@@ -94,14 +93,14 @@ public class View {
         }
     }
 
-    private void printHeader(String message) {
+    public void printHeader(String message) {
         System.out.println();
         System.out.println(message);
         System.out.println("=".repeat(message.length()));
     }
 
     // Overloaded
-    private void printHeader(String message, String symbol) {
+    public void printHeader(String message, String symbol) {
         String lineSymbol = "";
         lineSymbol += symbol.charAt(0);
 
@@ -110,7 +109,7 @@ public class View {
         System.out.println(lineSymbol.repeat(message.length()));
     }
 
-    private void printPanels(List<Panel> panels) {
+    public void printPanels(List<Panel> panels) {
         if (panels == null || panels.size() == 0) {
             System.out.println("No panels exist by that criteria.");
             return;
@@ -130,11 +129,17 @@ public class View {
         }
     }
 
-    public Panel getNewPanelToAdd() {
+    public Panel getNewPanelToAdd(List<String> sections) {
         int currentYear = Year.now(ZoneId.of("America/Chicago")).getValue();
         Panel panel = new Panel();
 
-        panel.setSection(readRequiredString("Section: "));
+        boolean chooseFromExistingSections = readBoolean("Would you like to choose section from list? [y/n]: ");
+        if (chooseFromExistingSections) {
+            panel.setSection(getSection(sections));
+        } else {
+            panel.setSection(readRequiredString("Section: "));
+        }
+
         panel.setRow(readInt("Row [1-250]: ", 1, 250));
         panel.setColumn(readInt("Column [1-250]: ",1,250));
         panel.setYearInstalled(readInt("Year Installed: ", 1954, currentYear));
@@ -144,14 +149,21 @@ public class View {
         return panel;
     }
 
-    public Panel getUpdatedPanel(Panel panel, List<String> sections) {
+    public Panel getUpdatedPanel(Panel panel, List<String> sections) { // TODO Fix this in line with explore-venus project
         int currentYear = Year.now(ZoneId.of("America/Chicago")).getValue();
         Panel updatedPanel = panel;
 
-        printHeader(MenuOption.UPDATE.getMessage());
+        String section;
+        boolean chooseFromExistingSections = readBoolean("Would you like to choose section from list? [y/n]: ");
+        if (chooseFromExistingSections) {
+            updatedPanel.setSection(getSection(sections));
+        } else {
+            section = readString(String.format("Section [%s]: ", panel.getSection()));
+            if (section.trim().length() > 0) {
+                updatedPanel.setSection(section);
+            }
+        }
 
-        String section = readString(String.format("Section [%s]: ", panel.getSection()));
-        updatedPanel.setSection(section.isBlank() ? panel.getSection() : section);
         updatedPanel.setRow(readInt(String.format("Row [%s]: ", panel.getRow()), 1, 250));
         updatedPanel.setColumn(readInt(String.format("Column [%s]: ", panel.getColumn()),1,250));
         updatedPanel.setYearInstalled(readInt(String.format("Year Installed [%s]: ", panel.getYearInstalled()), 1954, currentYear));
