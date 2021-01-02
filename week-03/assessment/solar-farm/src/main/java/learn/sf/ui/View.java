@@ -62,6 +62,12 @@ public class View {
     }
 
     public void printPanel(Panel panel) {
+        if (panel == null) {
+            System.out.println();
+            System.out.println("No panel exists with that Panel Id.");
+            return;
+        }
+
         printHeader(DisplayMenuOption.DISPLAY_BY_ID.getMessage());
 
         ArrayList<Panel> panels = new ArrayList<>();
@@ -70,15 +76,13 @@ public class View {
         printPanels(panels);
     }
 
-    public void printResult(PanelResult result) {
+    public void printResult(PanelResult result, String actionVerb) {
         System.out.println();
         if (result.isSuccess()) {
             if (result.getPayload() != null) {
-                System.out.printf("Panel Id %s added to %s, row %s, column %s.%n",
+                System.out.printf("Panel Id %s %s.%n",
                         result.getPayload().getPanelId(),
-                        result.getPayload().getSection(),
-                        result.getPayload().getRow(),
-                        result.getPayload().getColumn());
+                        actionVerb);
             } else {
                 System.out.println("Success!");
             }
@@ -107,6 +111,11 @@ public class View {
     }
 
     private void printPanels(List<Panel> panels) {
+        if (panels == null || panels.size() == 0) {
+            System.out.println("No panels exist by that criteria.");
+            return;
+        }
+
         printHeader(" Id  Section  Row  Col  Year  Material  Tracking", "-");
         for (Panel panel : panels) {
             System.out.printf("%3s  %7s  %3s  %3s  %4s  %8s  %8s%n",
@@ -123,7 +132,6 @@ public class View {
 
     public Panel getNewPanelToAdd() {
         int currentYear = Year.now(ZoneId.of("America/Chicago")).getValue();
-        System.out.println(currentYear);
         Panel panel = new Panel();
 
         panel.setSection(readRequiredString("Section: "));
@@ -142,7 +150,8 @@ public class View {
 
         printHeader(MenuOption.UPDATE.getMessage());
 
-        updatedPanel.setSection(readRequiredString(String.format("Section [%s]: ", panel.getSection())));
+        String section = readString(String.format("Section [%s]: ", panel.getSection()));
+        updatedPanel.setSection(section.isBlank() ? panel.getSection() : section);
         updatedPanel.setRow(readInt(String.format("Row [%s]: ", panel.getRow()), 1, 250));
         updatedPanel.setColumn(readInt(String.format("Column [%s]: ", panel.getColumn()),1,250));
         updatedPanel.setYearInstalled(readInt(String.format("Year Installed [%s]: ", panel.getYearInstalled()), 1954, currentYear));
@@ -152,8 +161,17 @@ public class View {
         return updatedPanel;
     }
 
-    public int getPanelId() {
+    public boolean confirmDeletePanel() {
+        boolean delete = readBoolean("Are you sure you want to delete this panel? [y/n]: ");
+        if (delete) {
+            return true;
+        }
         System.out.println();
+        System.out.println("Panel not deleted.");
+        return false;
+    }
+
+    public int getPanelId() {
         String message = "Enter Panel Id: ";
         return readInt(message);
     }
@@ -201,7 +219,7 @@ public class View {
         return options[selection - 1];
     }
 
-    // Overloaded - update method includes previously listed material
+    // Overloaded - update method includes previously listed material in prompt
     public PanelMaterial getPanelMaterial(String currentMaterial) {
         printHeader(String.format("Panel Material [%s]", currentMaterial), "-");
 
@@ -230,7 +248,6 @@ public class View {
                 isValid = true;
             } else {
                 System.out.println("Value must be \"y\" or \"n\".");
-                System.out.println();
             }
         } while (!isValid);
 
@@ -250,7 +267,6 @@ public class View {
             input = readString(message);
             if (input.trim().length() == 0) {
                 System.out.println("Value is required.");
-                System.out.println();
             }
         } while (input.trim().length() == 0);
 
@@ -267,7 +283,6 @@ public class View {
                 isValid = true;
             } catch (NumberFormatException ex) {
                 System.out.println("Value must be a number.");
-                System.out.println();
             }
         } while (!isValid);
 

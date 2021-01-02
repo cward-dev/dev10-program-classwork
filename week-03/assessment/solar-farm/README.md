@@ -110,7 +110,7 @@
 
 ### UI Layer
 * Time (Estimate): 3 hours, 30 minutes
-  * Time (Actual) : tbd
+  * Time (Actual) : 6 hours
 * Controller - dependencies: PanelService service, View view
   * run() // tries calling runMenu() and finally catches our DataAccessException that was thrown around, printing "Fatal Err: " + ex
   * runMenu() // get menu selection from view and allow continued selections until EXIT is selected

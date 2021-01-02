@@ -67,6 +67,7 @@ public class PanelService {
         boolean duplicate = checkForDuplicate(panel);
         if (duplicate) {
             result.addErrorMessage(String.format("A panel already exists at Section: %s, Row: %s, Column: %s.", panel.getSection(), panel.getRow(), panel.getColumn()));
+            return result;
         }
 
         boolean success = repository.update(panel);

@@ -46,10 +46,9 @@ public class Controller {
                     break;
                 case ADD:
                     addPanel();
-                    System.out.println("added");
                     break;
                 case UPDATE:
-                    updatePanelByLocation();
+                    updatePanel();
                     break;
                 case DELETE:
                     deletePanel();
@@ -115,10 +114,10 @@ public class Controller {
         Panel panel = view.getNewPanelToAdd();
         PanelResult result = service.add(panel);
 
-        view.printResult(result);
+        view.printResult(result, "added");
     }
 
-    private void updatePanelByLocation() throws DataAccessException {
+    private void updatePanel() throws DataAccessException {
         List<String> sections = service.getAllSections();
         String section = view.getSection(sections);
         List<Panel> panels = service.findBySection(section);
@@ -130,15 +129,35 @@ public class Controller {
 
         view.printPanel(panel);
 
-        Panel updatedPanel = view.getUpdatedPanel(panel, sections);
-        PanelResult result = service.update(updatedPanel);
+        if (panel != null) {
+            Panel updatedPanel = view.getUpdatedPanel(panel, sections);
+            PanelResult result = service.update(updatedPanel);
 
-        view.printResult(result);
-
+            view.printResult(result, "updated");
+        }
     }
 
-    private void deletePanel() {
+    private void deletePanel() throws DataAccessException {
+        List<String> sections = service.getAllSections();
+        String section = view.getSection(sections);
+        List<Panel> panels = service.findBySection(section);
 
+        view.printBySection(section, panels);
+
+        int panelId = view.getPanelId();
+        Panel panel = service.findById(panelId);
+
+        view.printPanel(panel);
+
+        boolean delete = false;
+        if (panel != null) {
+            delete = view.confirmDeletePanel();
+        }
+
+        if (delete) {
+            PanelResult result = service.deleteById(panelId);
+            view.printResult(result, "deleted");
+        }
     }
 
 }
