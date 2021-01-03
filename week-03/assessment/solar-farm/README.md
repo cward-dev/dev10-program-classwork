@@ -37,11 +37,11 @@
 
 ## Plan
 * Total Time (Estimate): 10 hours, 25 minutes
-  * Total Time (Actual) : tbd
+  * Total Time (Actual) : 13 hours, 55 minutes
 
 ### Data Folder (in root folder)
 * Time (Estimate): 5 minutes
-  * Time (Actual) : tbd
+  * Time (Actual) : 5 minutes
 * solar-panels.csv // actual data file
 * solar-panels-seed.csv // seed data file that will be copied over for data layer tests
 * solar-panels-test.csv // text data file that will be populated from seed file for data layer tests
@@ -110,7 +110,7 @@
 
 ### UI Layer
 * Time (Estimate): 3 hours, 30 minutes
-  * Time (Actual) : 6 hours
+  * Time (Actual) : 8 hours
 * Controller - dependencies: PanelService service, View view
   * run() // tries calling runMenu() and finally catches our DataAccessException that was thrown around, printing "Fatal Err: " + ex
   * runMenu() // get menu selection from view and allow continued selections until EXIT is selected
@@ -149,7 +149,7 @@
 
 ### App.java
 * Time (Estimate): 5 minutes
-  * Time (Actual) : tbd
+  * Time (Actual) : 5 minutes
 * main method
   * PanelFileRepository repository = new PanelFileRepository("./data/solar-panels.csv");
   * PanelService service = new PanelService(repository);
@@ -159,7 +159,7 @@
 
 ### Tests
 * Time (Estimate): 2 hours, 30 minutes
-  * Time (Actual) : 1 hour, 45 minutes
+  * Time (Actual) : 3 hours, 30 minutes
 * Data Layer
   * PanelFileRepositoryTest
     * Will use data from "solar-panels-seed.csv" and "solar-panels-test.csv" to test the PanelFileRepository without tampering with source data

@@ -53,6 +53,9 @@ public class Controller {
                 case DELETE:
                     deletePanel();
                     break;
+                case UPDATE_SECTION:
+                    updateSection();
+                    break;
             }
         } while (selection != MenuOption.EXIT);
     }
@@ -145,9 +148,31 @@ public class Controller {
 
         if (panel != null) {
             Panel updatedPanel = view.getUpdatedPanel(panel, sections);
-            PanelResult result = service.update(updatedPanel);
 
-            view.printResult(result, "updated");
+            if (updatedPanel != null) {
+                PanelResult result = service.update(updatedPanel);
+                view.printResult(result, "updated");
+            }
+        }
+    }
+
+    private void updateSection() throws DataAccessException {
+        view.printHeader(MenuOption.UPDATE_SECTION.getMessage());
+
+        List<String> sections = service.getAllSections();
+        String section = view.getSection(sections);
+        List<Panel> panels = service.findBySection(section);
+
+        view.printHeader(String.format("Move Panels in %s to New Section", section), "*");
+
+        String newSection = view.updateSection(section, sections);
+
+        if (!section.equals(newSection)) {
+            for (Panel p : panels) {
+                p.setSection(newSection);
+                service.update(p);
+            }
+            view.printPanels(panels);
         }
     }
 

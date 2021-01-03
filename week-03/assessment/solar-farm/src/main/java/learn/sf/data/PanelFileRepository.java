@@ -224,4 +224,9 @@ public class PanelFileRepository implements PanelRepository {
     private String restore(String value) {
         return value.replace(DELIMITER_REPLACEMENT, DELIMITER);
     }
+
+    private void sortAllPanels() throws DataAccessException {
+        List<Panel> panels = findAll();
+
+    }
 }

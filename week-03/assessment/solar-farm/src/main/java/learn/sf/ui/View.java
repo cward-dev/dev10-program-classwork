@@ -76,13 +76,14 @@ public class View {
     }
 
     public void printResult(PanelResult result, String actionVerb) {
-        System.out.println();
         if (result.isSuccess()) {
             if (result.getPayload() != null) {
+                System.out.println();
                 System.out.printf("Panel Id %s %s.%n",
                         result.getPayload().getPanelId(),
                         actionVerb);
             } else {
+                System.out.println();
                 System.out.println("Success!");
             }
         } else {
@@ -133,13 +134,7 @@ public class View {
         int currentYear = Year.now(ZoneId.of("America/Chicago")).getValue();
         Panel panel = new Panel();
 
-        boolean chooseFromExistingSections = readBoolean("Would you like to choose section from list? [y/n]: ");
-        if (chooseFromExistingSections) {
-            panel.setSection(getSection(sections));
-        } else {
-            panel.setSection(readRequiredString("Section: "));
-        }
-
+        panel.setSection(getSectionFromListOrManualInput(sections, panel, false));
         panel.setRow(readInt("Row [1-250]: ", 1, 250));
         panel.setColumn(readInt("Column [1-250]: ",1,250));
         panel.setYearInstalled(readInt("Year Installed: ", 1954, currentYear));
@@ -153,24 +148,47 @@ public class View {
         int currentYear = Year.now(ZoneId.of("America/Chicago")).getValue();
         Panel updatedPanel = panel;
 
+        String section = getSectionFromListOrManualInput(sections, panel, true);
+        int row = readUpdateInt(String.format("Row [%s]: ", panel.getRow()), 1, 250);
+        int column = readUpdateInt(String.format("Column [%s]: ", panel.getColumn()), 1, 250);
+        int yearInstalled = readUpdateInt(String.format("Year Installed [%s]: ", panel.getYearInstalled()), 1954, currentYear);
+        PanelMaterial material = getUpdatePanelMaterial(panel.getMaterial());
+        boolean isTracking = readUpdateBoolean(String.format("Solar Tracking [%s]: ", panel.isTracking() ? "y" : "n"), panel.isTracking());
+
+        boolean updateMade = false;
+        if (!section.equals(panel.getSection())) { updatedPanel.setSection(section); updateMade = true; }
+        if (row != 0) { updatedPanel.setRow(row); updateMade = true; }
+        if (column != 0) { updatedPanel.setColumn(column); updateMade = true; }
+        if (yearInstalled != 0) { updatedPanel.setYearInstalled(yearInstalled); updateMade = true; }
+        if (material != null) { updatedPanel.setMaterial(material); updateMade = true; }
+        if (isTracking != panel.isTracking()) { updatedPanel.setTracking(isTracking); updateMade = true; }
+
+        if (!updateMade) {
+            System.out.println();
+            System.out.println("No updates were made.");
+            return null;
+        }
+
+        return updatedPanel;
+    }
+
+    private String getSectionFromListOrManualInput(List<String> sections, Panel panel, boolean canBeEmpty) {
         String section;
         boolean chooseFromExistingSections = readBoolean("Would you like to choose section from list? [y/n]: ");
         if (chooseFromExistingSections) {
-            updatedPanel.setSection(getSection(sections));
-        } else {
-            section = readString(String.format("Section [%s]: ", panel.getSection()));
-            if (section.trim().length() > 0) {
-                updatedPanel.setSection(section);
-            }
+            return getSection(sections);
         }
 
-        updatedPanel.setRow(readInt(String.format("Row [%s]: ", panel.getRow()), 1, 250));
-        updatedPanel.setColumn(readInt(String.format("Column [%s]: ", panel.getColumn()),1,250));
-        updatedPanel.setYearInstalled(readInt(String.format("Year Installed [%s]: ", panel.getYearInstalled()), 1954, currentYear));
-        updatedPanel.setMaterial(getPanelMaterial(panel.getMaterial().getName()));
-        updatedPanel.setTracking(readBoolean(String.format("Solar Tracking [%s]: ", panel.isTracking() ? "y" : "n")));
+        if (canBeEmpty && panel != null) {
+            section = readString(String.format("Section [%s]: ", panel.getSection()));
+            if (section.trim().length() == 0) {
+                return panel.getSection();
+            }
+        } else {
+            section = readRequiredString("Section: ");
+        }
 
-        return updatedPanel;
+        return section;
     }
 
     public boolean confirmDeletePanel() {
@@ -186,6 +204,19 @@ public class View {
     public int getPanelId() {
         String message = "Enter Panel Id: ";
         return readInt(message);
+    }
+
+    public String updateSection(String section, List<String> sections) {
+        String newSection = getSectionFromListOrManualInput(sections, null, false);
+
+        System.out.println();
+        if (section.equals(newSection)) {
+            System.out.printf("No change was made to %s.%n", section);
+        } else {
+            System.out.printf("Moving panels from %s to %s.%n", section, newSection);
+        }
+
+        return newSection;
     }
 
     public String getSection(List<String> sections) {
@@ -231,9 +262,9 @@ public class View {
         return options[selection - 1];
     }
 
-    // Overloaded - update method includes previously listed material in prompt
-    public PanelMaterial getPanelMaterial(String currentMaterial) {
-        printHeader(String.format("Panel Material [%s]", currentMaterial), "-");
+    // Overloaded - update method
+    public PanelMaterial getUpdatePanelMaterial(PanelMaterial currentMaterial) {
+        printHeader(String.format("Panel Material [%s]", currentMaterial.getName()), "-");
 
         PanelMaterial[] options = PanelMaterial.values();
         for (int i = 0; i < options.length; i++) {
@@ -241,7 +272,11 @@ public class View {
         }
 
         String message = String.format("Select [%s-%s]: ", 1, options.length);
-        int selection = readInt(message, 1, options.length);
+        int selection = readUpdateInt(message, 1, options.length);
+
+        if (selection == 0) {
+            return null;
+        }
 
         return options[selection - 1];
     }
@@ -253,6 +288,31 @@ public class View {
 
         do {
             input = readRequiredString(message);
+            if (input.equalsIgnoreCase("y")) {
+                result = true;
+                isValid = true;
+            } else if (input.equalsIgnoreCase("n")) {
+                isValid = true;
+            } else {
+                System.out.println("Value must be \"y\" or \"n\".");
+            }
+        } while (!isValid);
+
+        return result;
+    }
+
+    // Overloaded - update method
+    private boolean readUpdateBoolean(String message, boolean currentTracking) {
+        String input;
+        boolean result = false;
+        boolean isValid = false;
+
+        do {
+            input = readString(message);
+            if (input.trim().length() == 0) {
+                return currentTracking;
+            }
+
             if (input.equalsIgnoreCase("y")) {
                 result = true;
                 isValid = true;
@@ -314,4 +374,31 @@ public class View {
 
         return result;
     }
+
+    // Overloaded - update method
+    private int readUpdateInt(String message, int min, int max) {
+        String input;
+        int result = 0;
+        boolean isValid = false;
+
+        do {
+            input = readString(message);
+            if (input.trim().length() == 0) {
+                return 0;
+            }
+            try {
+                result = Integer.parseInt(input);
+                if (result < min || result > max) {
+                    System.out.printf("Value must be between %s and %s.%n", min, max);
+                } else {
+                    isValid = true;
+                }
+            } catch (NumberFormatException ex) {
+                System.out.println("Value must be a number.");
+            }
+        } while (!isValid);
+
+        return result;
+    }
+
 }
