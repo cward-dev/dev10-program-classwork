@@ -75,41 +75,6 @@ public class View {
         printPanels(panels);
     }
 
-    public void printResult(PanelResult result, String actionVerb) {
-        if (result.isSuccess()) {
-            if (result.getPayload() != null) {
-                System.out.println();
-                System.out.printf("Panel Id %s %s.%n",
-                        result.getPayload().getPanelId(),
-                        actionVerb);
-            } else {
-                System.out.println();
-                System.out.println("Success!");
-            }
-        } else {
-            printHeader("Errors");
-            for (String message : result.getMessages()) {
-                System.out.printf("- %s%n", message);
-            }
-        }
-    }
-
-    public void printHeader(String message) {
-        System.out.println();
-        System.out.println(message);
-        System.out.println("=".repeat(message.length()));
-    }
-
-    // Overloaded
-    public void printHeader(String message, String symbol) {
-        String lineSymbol = "";
-        lineSymbol += symbol.charAt(0);
-
-        System.out.println();
-        System.out.println(message);
-        System.out.println(lineSymbol.repeat(message.length()));
-    }
-
     public void printPanels(List<Panel> panels) {
         if (panels == null || panels.size() == 0) {
             System.out.println("No panels exist by that criteria.");
@@ -130,6 +95,41 @@ public class View {
         }
     }
 
+    public void printHeader(String message) {
+        System.out.println();
+        System.out.println(message);
+        System.out.println("=".repeat(message.length()));
+    }
+
+    // Overloaded
+    public void printHeader(String message, String symbol) {
+        String lineSymbol = "";
+        lineSymbol += symbol.charAt(0);
+
+        System.out.println();
+        System.out.println(message);
+        System.out.println(lineSymbol.repeat(message.length()));
+    }
+
+    public void printResult(PanelResult result, String actionVerb) {
+        if (result.isSuccess()) {
+            if (result.getPayload() != null) {
+                System.out.println();
+                System.out.printf("Panel Id %s %s.%n",
+                        result.getPayload().getPanelId(),
+                        actionVerb);
+            } else {
+                System.out.println();
+                System.out.println("Success!");
+            }
+        } else {
+            printHeader("Errors");
+            for (String message : result.getMessages()) {
+                System.out.printf("- %s%n", message);
+            }
+        }
+    }
+
     public Panel getNewPanelToAdd(List<String> sections) {
         int currentYear = Year.now(ZoneId.of("America/Chicago")).getValue();
         Panel panel = new Panel();
@@ -144,9 +144,8 @@ public class View {
         return panel;
     }
 
-    public Panel getUpdatedPanel(Panel panel, List<String> sections) { // TODO Fix this in line with explore-venus project
+    public Panel getUpdatedPanel(Panel panel, List<String> sections) {
         int currentYear = Year.now(ZoneId.of("America/Chicago")).getValue();
-        Panel updatedPanel = panel;
 
         String section = getSectionFromListOrManualInput(sections, panel, true);
         int row = readUpdateInt(String.format("Row [%s]: ", panel.getRow()), 1, 250);
@@ -156,12 +155,12 @@ public class View {
         boolean isTracking = readUpdateBoolean(String.format("Solar Tracking [%s]: ", panel.isTracking() ? "y" : "n"), panel.isTracking());
 
         boolean updateMade = false;
-        if (!section.equals(panel.getSection())) { updatedPanel.setSection(section); updateMade = true; }
-        if (row != 0) { updatedPanel.setRow(row); updateMade = true; }
-        if (column != 0) { updatedPanel.setColumn(column); updateMade = true; }
-        if (yearInstalled != 0) { updatedPanel.setYearInstalled(yearInstalled); updateMade = true; }
-        if (material != null) { updatedPanel.setMaterial(material); updateMade = true; }
-        if (isTracking != panel.isTracking()) { updatedPanel.setTracking(isTracking); updateMade = true; }
+        if (!section.equals(panel.getSection())) { panel.setSection(section); updateMade = true; }
+        if (row != 0) { panel.setRow(row); updateMade = true; }
+        if (column != 0) { panel.setColumn(column); updateMade = true; }
+        if (yearInstalled != 0) { panel.setYearInstalled(yearInstalled); updateMade = true; }
+        if (material != null) { panel.setMaterial(material); updateMade = true; }
+        if (isTracking != panel.isTracking()) { panel.setTracking(isTracking); updateMade = true; }
 
         if (!updateMade) {
             System.out.println();
@@ -169,26 +168,7 @@ public class View {
             return null;
         }
 
-        return updatedPanel;
-    }
-
-    private String getSectionFromListOrManualInput(List<String> sections, Panel panel, boolean canBeEmpty) {
-        String section;
-        boolean chooseFromExistingSections = readBoolean("Would you like to choose section from list? [y/n]: ");
-        if (chooseFromExistingSections) {
-            return getSection(sections);
-        }
-
-        if (canBeEmpty && panel != null) {
-            section = readString(String.format("Section [%s]: ", panel.getSection()));
-            if (section.trim().length() == 0) {
-                return panel.getSection();
-            }
-        } else {
-            section = readRequiredString("Section: ");
-        }
-
-        return section;
+        return panel;
     }
 
     public boolean confirmDeletePanel() {
@@ -199,11 +179,6 @@ public class View {
         System.out.println();
         System.out.println("Panel not deleted.");
         return false;
-    }
-
-    public int getPanelId() {
-        String message = "Enter Panel Id: ";
-        return readInt(message);
     }
 
     public String updateSection(String section, List<String> sections) {
@@ -217,6 +192,11 @@ public class View {
         }
 
         return newSection;
+    }
+
+    public int getPanelId() {
+        String message = "Enter Panel Id: ";
+        return readInt(message);
     }
 
     public String getSection(List<String> sections) {
@@ -236,6 +216,25 @@ public class View {
         int selection = readInt(message, 1, sections.size());
 
         return sections.get(selection - 1);
+    }
+
+    private String getSectionFromListOrManualInput(List<String> sections, Panel panel, boolean canBeEmpty) {
+        String section;
+        boolean chooseFromExistingSections = readBoolean("Would you like to choose section from list? [y/n]: ");
+        if (chooseFromExistingSections) {
+            return getSection(sections);
+        }
+
+        if (canBeEmpty && panel != null) {
+            section = readString(String.format("Section [%s]: ", panel.getSection()));
+            if (section.trim().length() == 0) {
+                return panel.getSection();
+            }
+        } else {
+            section = readRequiredString("Section: ");
+        }
+
+        return section;
     }
 
     public int getRow() {

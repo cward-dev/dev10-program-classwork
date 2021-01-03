@@ -86,7 +86,7 @@ public class Panel {
         if (o == null || getClass() != o.getClass()) return false;
         Panel panel = (Panel) o;
         return panelId == panel.panelId &&
-                Objects.equals(section, panel.getSection()) &&
+                section.equals(panel.getSection()) &&
                 row == panel.getRow() &&
                 column == panel.getColumn() &&
                 yearInstalled == panel.getYearInstalled() &&

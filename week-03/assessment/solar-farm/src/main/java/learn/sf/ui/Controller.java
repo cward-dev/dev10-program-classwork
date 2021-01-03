@@ -156,26 +156,6 @@ public class Controller {
         }
     }
 
-    private void updateSection() throws DataAccessException {
-        view.printHeader(MenuOption.UPDATE_SECTION.getMessage());
-
-        List<String> sections = service.getAllSections();
-        String section = view.getSection(sections);
-        List<Panel> panels = service.findBySection(section);
-
-        view.printHeader(String.format("Move Panels in %s to New Section", section), "*");
-
-        String newSection = view.updateSection(section, sections);
-
-        if (!section.equals(newSection)) {
-            for (Panel p : panels) {
-                p.setSection(newSection);
-                service.update(p);
-            }
-            view.printPanels(panels);
-        }
-    }
-
     private void deletePanel() throws DataAccessException {
         view.printHeader(MenuOption.DELETE.getMessage());
 
@@ -201,4 +181,23 @@ public class Controller {
         }
     }
 
+    private void updateSection() throws DataAccessException {
+        view.printHeader(MenuOption.UPDATE_SECTION.getMessage());
+
+        List<String> sections = service.getAllSections();
+        String section = view.getSection(sections);
+        List<Panel> panels = service.findBySection(section);
+
+        view.printHeader(String.format("Move Panels in %s to New Section", section), "*");
+
+        String newSection = view.updateSection(section, sections);
+
+        if (!section.equals(newSection)) {
+            for (Panel p : panels) {
+                p.setSection(newSection);
+                service.update(p);
+            }
+            view.printPanels(panels);
+        }
+    }
 }
