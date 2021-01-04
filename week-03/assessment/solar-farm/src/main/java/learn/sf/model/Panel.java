@@ -80,22 +80,22 @@ public class Panel {
         isTracking = tracking;
     }
 
-    @Override // From unexplained encounters lesson
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Panel panel = (Panel) o;
-        return panelId == panel.panelId &&
-                section.equals(panel.getSection()) &&
-                row == panel.getRow() &&
-                column == panel.getColumn() &&
-                yearInstalled == panel.getYearInstalled() &&
-                Objects.equals(material, panel.getMaterial()) &&
-                isTracking == panel.isTracking;
-    }
-
-    @Override // From unexplained encounters lesson
-    public int hashCode() {
-        return Objects.hash(panelId, section, row, column, yearInstalled, material, isTracking);
-    }
+//    @Override // From unexplained encounters lesson
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        Panel panel = (Panel) o;
+//        return panelId == panel.panelId &&
+//                section.equals(panel.getSection()) &&
+//                row == panel.getRow() &&
+//                column == panel.getColumn() &&
+//                yearInstalled == panel.getYearInstalled() &&
+//                Objects.equals(material, panel.getMaterial()) &&
+//                isTracking == panel.isTracking;
+//    }
+//
+//    @Override // From unexplained encounters lesson
+//    public int hashCode() {
+//        return Objects.hash(panelId, section, row, column, yearInstalled, material, isTracking);
+//    }
 }

@@ -22,6 +22,7 @@ public class View {
             System.out.printf("%s. %s%n", i + 1, options[i].getMessage());
         }
 
+        System.out.println();
         String message = String.format("Select [%s-%s]: ", 1, options.length);
         int selection = readInt(message,1, options.length);
         return options[selection - 1];
@@ -35,6 +36,7 @@ public class View {
             System.out.printf("%s. %s%n", i + 1, options[i].getMessage());
         }
 
+        System.out.println();
         String message = String.format("Select [%s-%s]: ", 1, options.length);
         int selection = readInt(message,1, options.length);
         return options[selection - 1];
@@ -77,6 +79,7 @@ public class View {
 
     public void printPanels(List<Panel> panels) {
         if (panels == null || panels.size() == 0) {
+            System.out.println();
             System.out.println("No panels exist by that criteria.");
             return;
         }
@@ -93,6 +96,7 @@ public class View {
                             substring(0,Math.min(panel.getMaterial().getAbbreviation().length(), 7)),
                     panel.isTracking() ? "Yes" : "No");
         }
+        System.out.println();
     }
 
     public void printHeader(String message) {
@@ -115,14 +119,17 @@ public class View {
         if (result.isSuccess()) {
             if (result.getPayload() != null) {
                 System.out.println();
+                System.out.println("[Success]");
                 System.out.printf("Panel Id %s %s.%n",
                         result.getPayload().getPanelId(),
                         actionVerb);
             } else {
                 System.out.println();
-                System.out.println("Success!");
+                System.out.println("[Success]");
             }
         } else {
+            System.out.println();
+            System.out.println("[Failure]");
             printHeader("Errors");
             for (String message : result.getMessages()) {
                 System.out.printf("- %s%n", message);
@@ -212,7 +219,8 @@ public class View {
             System.out.printf("%" + digitLength + "s. %s%n", i + 1, sections.get(i));
         }
 
-        String message = String.format("Select [%s-%s]: ", 1, sections.size());
+        System.out.println();
+        String message = String.format("Section [%s-%s]: ", 1, sections.size());
         int selection = readInt(message, 1, sections.size());
 
         return sections.get(selection - 1);
@@ -255,7 +263,8 @@ public class View {
             System.out.printf("%s. %s (%s)%n", i + 1, options[i].getName(), options[i].getAbbreviation());
         }
 
-        String message = String.format("Select [%s-%s]: ", 1, options.length);
+        System.out.println();
+        String message = String.format("Material [%s-%s]: ", 1, options.length);
         int selection = readInt(message, 1, options.length);
 
         return options[selection - 1];
@@ -270,7 +279,8 @@ public class View {
             System.out.printf("%s. %s (%s)%n", i + 1, options[i].getName(), options[i].getAbbreviation());
         }
 
-        String message = String.format("Select [%s-%s]: ", 1, options.length);
+        System.out.println();
+        String message = String.format("Material [%s-%s]: ", 1, options.length);
         int selection = readUpdateInt(message, 1, options.length);
 
         if (selection == 0) {
@@ -326,7 +336,6 @@ public class View {
     }
 
     private String readString(String message) {
-        System.out.println();
         System.out.print(message);
         return console.nextLine();
     }
