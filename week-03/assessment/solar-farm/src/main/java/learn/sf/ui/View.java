@@ -171,6 +171,7 @@ public class View {
 
         if (!updateMade) {
             System.out.println();
+            System.out.println("[Failure]");
             System.out.println("No updates were made.");
             return null;
         }
@@ -189,12 +190,15 @@ public class View {
     }
 
     public String updateSection(String section, List<String> sections) {
+        System.out.println();
         String newSection = getSectionFromListOrManualInput(sections, null, false);
 
         System.out.println();
         if (section.equals(newSection)) {
+            System.out.println("[Failure]");
             System.out.printf("No change was made to %s.%n", section);
         } else {
+            System.out.println("[Success]");
             System.out.printf("Moving panels from %s to %s.%n", section, newSection);
         }
 
