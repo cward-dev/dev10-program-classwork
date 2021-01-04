@@ -186,7 +186,6 @@ class PanelServiceTest {
         Panel panel = new Panel("Jazz",54,22,2020,PanelMaterial.MULTICRYSTALLINE_SILICON,true);
         panel.setPanelId(1);
         PanelResult expected = makeResult("A panel already exists at Section: Jazz, Row: 54, Column: 22.");
-        expected.setPayload(panel);
 
         PanelResult actual = service.update(panel);
 
