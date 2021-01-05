@@ -13,22 +13,22 @@ public class Exercise05 {
     // Payments start on the first Friday of the year.
     // Given a date, calculate payments expected from that date until the end of the year.
     BigDecimal calculateGiftsTilEndOfYear(LocalDate date) {
-        LocalDate giftDay = LocalDate.of(date.getYear(), 1, 1);
-        LocalDate end = LocalDate.of(date.plusYears(1).getYear(), 1, 1);
+        LocalDate giftDate = LocalDate.of(date.getYear(), 1, 1);
+        LocalDate endDate = LocalDate.of(date.plusYears(1).getYear(), 1, 1);
 
-        BigDecimal totalGifts = new BigDecimal("0");
+        BigDecimal totalGiftAmount = new BigDecimal("0");
 
-        while (giftDay.getDayOfWeek() != DayOfWeek.FRIDAY) {
-            giftDay = giftDay.plusDays(1);
+        while (giftDate.getDayOfWeek() != DayOfWeek.FRIDAY) {
+            giftDate = giftDate.plusDays(1);
         }
 
-        for (; giftDay.compareTo(end) < 0; giftDay = giftDay.plusWeeks(2)) {
-            if (!giftDay.isBefore(date)) {
-                totalGifts = totalGifts.add(new BigDecimal("10"));
+        for (; giftDate.compareTo(endDate) < 0; giftDate = giftDate.plusWeeks(2)) {
+            if (!giftDate.isBefore(date)) {
+                totalGiftAmount = totalGiftAmount.add(new BigDecimal("10"));
             }
         }
 
-        return totalGifts;
+        return totalGiftAmount;
     }
 
     // 2. Your Godmother is getting quirky. She adjusted her payment schedule.
@@ -40,24 +40,22 @@ public class Exercise05 {
     // July 12 == $12
     // Given a date, calculate payments expected from that date until the end of the year.
     BigDecimal calculateQuirkyGiftsTilEndOfYear(LocalDate date) {
-        LocalDate giftDay = LocalDate.of(date.getYear(), 1, 1);
-        LocalDate end = LocalDate.of(date.plusYears(1).getYear(), 1, 1);
+        LocalDate giftDate = LocalDate.of(date.getYear(), 1, 1);
+        LocalDate endDate = LocalDate.of(date.plusYears(1).getYear(), 1, 1);
 
-        BigDecimal totalGifts = new BigDecimal("0");
-        int dailyGift;
+        BigDecimal totalGiftAmount = new BigDecimal("0");
 
-        while (giftDay.getDayOfWeek() != DayOfWeek.FRIDAY) {
-            giftDay = giftDay.plusDays(1);
+        while (giftDate.getDayOfWeek() != DayOfWeek.FRIDAY) {
+            giftDate = giftDate.plusDays(1);
         }
 
-        for (; giftDay.compareTo(end) < 0; giftDay = giftDay.plusWeeks(2)) {
-            if (!giftDay.isBefore(date)) {
-                dailyGift = giftDay.getDayOfMonth();
-                totalGifts = totalGifts.add(new BigDecimal(String.format("%s", dailyGift)));
+        for (; giftDate.compareTo(endDate) < 0; giftDate = giftDate.plusWeeks(2)) {
+            if (!giftDate.isBefore(date)) {
+                totalGiftAmount = totalGiftAmount.add(new BigDecimal(giftDate.getDayOfMonth()));
             }
         }
 
-        return totalGifts;
+        return totalGiftAmount;
     }
 
 }
