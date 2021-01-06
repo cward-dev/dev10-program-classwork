@@ -5,11 +5,13 @@ import learn.sf.model.Panel;
 import learn.sf.model.PanelMaterial;
 import learn.sf.ui.MenuModel.DisplayMenuOption;
 import learn.sf.ui.MenuModel.MenuOption;
+import org.springframework.stereotype.Component;
 
 import java.time.Year;
 import java.time.ZoneId;
 import java.util.*;
 
+@Component
 public class View {
 
     Scanner console = new Scanner(System.in);

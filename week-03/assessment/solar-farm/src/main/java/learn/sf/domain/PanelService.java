@@ -4,10 +4,12 @@ import learn.sf.data.DataAccessException;
 import learn.sf.data.PanelRepository;
 import learn.sf.model.Panel;
 import learn.sf.model.PanelMaterial;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
 
+@Service
 public class PanelService {
 
     PanelRepository repository;

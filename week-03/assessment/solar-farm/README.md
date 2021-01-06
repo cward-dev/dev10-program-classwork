@@ -147,7 +147,7 @@
   * MenuOption(String title)
   * public string getTitle()
 
-### App.java
+### learn.sf.ui.App.java
 * Time (Estimate): 5 minutes
   * Time (Actual) : 5 minutes
 * main method

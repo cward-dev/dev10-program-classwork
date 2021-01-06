@@ -2,11 +2,14 @@ package learn.sf.data;
 
 import learn.sf.model.Panel;
 import learn.sf.model.PanelMaterial;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class PanelFileRepository implements PanelRepository {
 
     private static final String DELIMITER = ",";
@@ -14,7 +17,7 @@ public class PanelFileRepository implements PanelRepository {
     private static final String HEADER = "panelId,section,row,column,yearInstalled,material,isTracking";
     private final String filePath;
 
-    public PanelFileRepository(String filePath) {
+    public PanelFileRepository(@Value("${dataFilePath:./data/solar-panels.csv}")String filePath) {
         this.filePath = filePath;
     }
 

@@ -7,14 +7,25 @@ import learn.sf.model.Panel;
 import learn.sf.model.PanelMaterial;
 import learn.sf.ui.MenuModel.DisplayMenuOption;
 import learn.sf.ui.MenuModel.MenuOption;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class Controller {
 
-    private final PanelService service;
-    private final View view;
+    private View view;
 
+    @Autowired
+    private final PanelService service;
+
+    @Autowired // setter injection
+    public void setView(View view) {
+        this.view = view;
+    }
+
+    @Autowired
     public Controller(PanelService service, View view) {
         this.service = service;
         this.view = view;
