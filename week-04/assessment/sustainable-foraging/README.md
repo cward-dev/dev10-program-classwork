@@ -152,12 +152,12 @@
   * Actual Time:
   * Goal: Convert all manual dependency injection to Spring dependency injection (either XML or annotations)
 - [ ] Debug provided code
-  * Estimated Time: 2 hours
+  * Estimated Time: 3 hours
   * Actual Time:
   * Goal: Ensure that all provided methods function as intended
     * Will also create thorough tests for all altered/new methods
 - [ ] Implement missing features
-  * Estimated Time: 2 hours
+  * Estimated Time: 2.5 hours
   * Actual Time:
   * Goal: Add missing features to ensure the application is fully CRUD-enabled
     * Will also create thorough tests for all new methods
