@@ -76,15 +76,33 @@ public class Main {
                     .forEach(System.out::println);
 
         printHeader("10. Who has the latest birthday? Who is the youngest?");
+            Student studentWithLatestBirthDate = students.stream()
+                    .max(Comparator.comparing((Student student) -> student.getBirthDate().getMonthValue())
+                            .thenComparing(s -> s.getBirthDate().getDayOfMonth()))
+                    .orElse(new Student());
+
+            System.out.printf("Student With Latest Birthday: %s %s, %s%n",
+                    studentWithLatestBirthDate.getFirstName(),
+                    studentWithLatestBirthDate.getLastName(),
+                    studentWithLatestBirthDate.getBirthDate());
+
             students.stream()
                     .sorted(Comparator.comparing(Student::getBirthDate).reversed())
                     .limit(1)
-                    .forEach(System.out::println);
+                    .forEach(s -> System.out.printf("Youngest Student: %s %s, %s%n",
+                            s.getFirstName(),
+                            s.getLastName(),
+                            s.getBirthDate()));
 
         printHeader("11. Who has the highest GPA? There may be a tie.");
-            System.out.println("Highest GPA: " +
-                    students.stream()
-                            .max(Comparator.comparing(Student::getGpa)));
+            BigDecimal maxGpa = students.stream()
+                    .map(Student::getGpa)
+                    .max(BigDecimal::compareTo)
+                    .orElse(BigDecimal.ZERO);
+
+            students.stream()
+                    .filter(student -> student.getGpa().equals(maxGpa))
+                    .forEach(s -> System.out.printf("%s %s, GPA: %s%n", s.getFirstName(), s.getLastName(), s.getGpa()));
 
         printHeader("12. Print every course students are registered for, including repeats.");
             students.stream()
@@ -155,7 +173,6 @@ public class Main {
             }
 
         printHeader("21. What is the maximum GPA per country?");
-
             Map<String, Optional<Student>> maxGPA = students.stream()
                     .collect(Collectors.groupingBy(Student::getCountry, Collectors.maxBy(Comparator.comparing(Student::getGpa))));
 
@@ -176,25 +193,54 @@ public class Main {
             }
 
         // STRETCH GOAL!
-        printHeader("23. Who has the highest pointPercent in \"Sacred Writing\"?");
-            students.stream()
-                    .filter(s -> s.getRegistrations().stream()
-                            .anyMatch(r -> r.getCourse().equalsIgnoreCase("Sacred Writing")))
-                    .sorted(Comparator.comparingDouble((Student s) -> s.getRegistrations().stream()
-                            .filter(r -> r.getCourse().equalsIgnoreCase("Sacred Writing"))
-                            .findAny().get().getPointPercent()).reversed())
-//                    .limit(1)
-                    .forEach(s -> System.out.printf("%s %s: %s%n", s.getFirstName(), s.getLastName(), s.getRegistrations().stream()
-                            .filter(r -> r.getCourse().equalsIgnoreCase("Sacred Writing"))
-                            .findAny().get().getPointPercent())
-                    );
-    }
-
-    public static Optional<Double> getPointPercent(Student student) {
-        return student.getRegistrations().stream()
-                .filter(r -> r.getCourse().equalsIgnoreCase("Sacred Writing"))
+        // With Variables
+        String className = "Sacred Writing";
+        printHeader(String.format("23. Who has the highest point percent in \"%s\"?", className));
+        double highestPointPercent = students.stream()
+                .filter(s -> s.getRegistrations().stream()
+                        .anyMatch(r -> r.getCourse().equalsIgnoreCase(className)))
+                .flatMap(s -> s.getRegistrations().stream())
+                .sorted(Comparator.comparing(Registration::getPointPercent).reversed())
                 .map(Registration::getPointPercent)
-                .reduce(Double::sum);
+                .findFirst()
+                .orElse(-1.0);
+
+        students.stream()
+                .filter(student -> student.getRegistrations().stream()
+                        .filter(registration -> registration.getCourse().equalsIgnoreCase(className))
+                        .findFirst().orElse(new Registration()).getPointPercent() == highestPointPercent)
+                .sorted(Comparator.comparing(Student::getLastName)
+                        .thenComparing(Student::getFirstName))
+                .forEach(s -> System.out.printf("%s %s: %s%n",
+                        s.getFirstName(), s.getLastName(), s.getRegistrations().stream()
+                                .filter(r -> r.getCourse().equalsIgnoreCase(className))
+                                .findAny().orElse(new Registration()).getPointPercent())
+                );
+
+
+        // Without Variables
+//        printHeader(String.format("23. Who has the highest point percent in \"%s\"? (Without Variables)", className));
+//        students.stream()
+//                    .filter(student -> student.getRegistrations().stream()
+//                            .filter(registration -> registration.getCourse().equalsIgnoreCase(className))
+//                            .findFirst().orElse(new Registration()).getPointPercent() ==
+//                            students.stream()
+//                                    .filter(s -> s.getRegistrations().stream()
+//                                            .anyMatch(r -> r.getCourse().equalsIgnoreCase(className)))
+//                                    .flatMap(s -> s.getRegistrations().stream())
+//                                    .sorted(Comparator.comparing(Registration::getPointPercent).reversed())
+//                                    .map(Registration::getPointPercent)
+//                                    .findFirst()
+//                                    .orElse(-1.0)
+//                            )
+//                    .sorted(Comparator.comparing(Student::getLastName)
+//                            .thenComparing(Student::getFirstName))
+//                    .forEach(s -> System.out.printf("%s %s: %s%n",
+//                            s.getFirstName(), s.getLastName(), s.getRegistrations().stream()
+//                                    .filter(r -> r.getCourse().equalsIgnoreCase(className))
+//                                    .findAny().orElse(new Registration()).getPointPercent())
+//                    );
+
     }
 
     public static void printHeader(String message) {
