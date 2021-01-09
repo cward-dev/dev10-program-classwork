@@ -1,5 +1,6 @@
 package learn.foraging.ui;
 
+import learn.foraging.models.State;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -7,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Locale;
 import java.util.Scanner;
 
 @Component
@@ -20,6 +22,8 @@ public class ConsoleIO {
             = "[INVALID] Value is required.";
     private static final String INVALID_DATE
             = "[INVALID] Enter a valid date no later than %s.";
+    private static final String INVALID_STATE
+            = "[INVALID] Enter a valid state abbreviation.";
 
     private final Scanner scanner = new Scanner(System.in);
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
@@ -120,7 +124,19 @@ public class ConsoleIO {
                 println(String.format(INVALID_DATE, today.format(dateFormatter)));
             }
         }
+    }
 
+    public State readState(String prompt) {
+        State state;
+        while (true) {
+            String input = readRequiredString(prompt);
+            try {
+                state = State.getStateFromAbbreviation(input.toUpperCase());
+                if (state != null) return state;
+            } catch (IllegalArgumentException ex) {
+                println(INVALID_STATE);
+            }
+        }
     }
 
     public BigDecimal readBigDecimal(String prompt) {

@@ -1,20 +1,21 @@
 package learn.foraging.data;
 
 import learn.foraging.models.Forager;
+import learn.foraging.models.State;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOError;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Repository
 public class ForagerFileRepository implements ForagerRepository {
 
+    private static final String HEADER = "id,first_name,last_name,state";
     private final String filePath;
 
     private final String DELIMITER = ",";
@@ -55,16 +56,46 @@ public class ForagerFileRepository implements ForagerRepository {
     @Override
     public List<Forager> findByState(String stateAbbr) {
         return findAll().stream()
-                .filter(i -> i.getState().equalsIgnoreCase(stateAbbr))
+                .filter(i -> i.getState().getAbbreviation().equalsIgnoreCase(stateAbbr))
                 .collect(Collectors.toList());
     }
-    
+
+    @Override
+    public Forager add(Forager forager) throws DataException {
+        List<Forager> all = findAll();
+        forager.setId((java.util.UUID.randomUUID().toString()));
+        all.add(forager);
+        writeAll(all);
+        return forager;
+    }
+
+    private void writeAll(List<Forager> all) throws DataException {
+        try (PrintWriter writer = new PrintWriter(filePath)) {
+            writer.println(HEADER);
+
+            for (Forager forager : all) {
+                writer.println(serialize(forager));
+            }
+        } catch (FileNotFoundException ex) {
+            throw new DataException(ex);
+        }
+    }
+
+    private String serialize(Forager forager) {
+        return String.format("%s,%s,%s,%s",
+                clean(forager.getId()),
+                clean(forager.getFirstName()),
+                clean(forager.getLastName()),
+                clean(forager.getState().getAbbreviation())
+                );
+    }
+
     private Forager deserialize(String[] fields) {
         Forager result = new Forager();
         result.setId(restore(fields[0]));
         result.setFirstName(restore(fields[1]));
         result.setLastName(restore(fields[2]));
-        result.setState(restore(fields[3]));
+        result.setState(State.getStateFromAbbreviation(restore(fields[3])));
         return result;
     }
 

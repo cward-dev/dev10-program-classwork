@@ -1,9 +1,6 @@
 package learn.foraging.ui;
 
-import learn.foraging.models.Category;
-import learn.foraging.models.Forage;
-import learn.foraging.models.Forager;
-import learn.foraging.models.Item;
+import learn.foraging.models.*;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -112,6 +109,15 @@ public class View {
         String message = String.format("Kilograms of %s: ", item.getName());
         forage.setKilograms(io.readDouble(message, 0.001, 250.0));
         return forage;
+    }
+
+    public Forager makeForager() {
+        displayHeader(MainMenuOption.ADD_FORAGER.getMessage());
+        Forager forager = new Forager();
+        forager.setFirstName(io.readRequiredString("Forager First Name: "));
+        forager.setLastName(io.readRequiredString("Forager Last Name: "));
+        forager.setState(io.readState("Forager State: "));
+        return forager;
     }
 
     public Item makeItem() {

@@ -4,10 +4,7 @@ import learn.foraging.data.DataException;
 import learn.foraging.data.ForageRepositoryDouble;
 import learn.foraging.data.ForagerRepositoryDouble;
 import learn.foraging.data.ItemRepositoryDouble;
-import learn.foraging.models.Category;
-import learn.foraging.models.Forage;
-import learn.foraging.models.Forager;
-import learn.foraging.models.Item;
+import learn.foraging.models.*;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -43,7 +40,7 @@ class ForageServiceTest {
         forager.setId("30816379-188d-4552-913f-9a48405e8c08");
         forager.setFirstName("Ermengarde");
         forager.setLastName("Sansom");
-        forager.setState("NM");
+        forager.setState(State.getStateFromAbbreviation("NM"));
 
         Forage forage = new Forage();
         forage.setDate(LocalDate.now());

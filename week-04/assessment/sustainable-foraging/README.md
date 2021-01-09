@@ -234,4 +234,6 @@
   * Solution:
     * Added Spring dependency to `pom.xml` file
     * Used same wiring techniques as shown in the `memories` example
-- [ ] Add   
+- [ ] Implement Add a Forager Feature
+- [ ] Create a report that displays the kilograms of each Item collected on one day.
+- [ ] Create a report that displays the total value of each Category collected on one day.

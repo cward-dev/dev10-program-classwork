@@ -1,6 +1,7 @@
 package learn.foraging.data;
 
 import learn.foraging.models.Forager;
+import learn.foraging.models.State;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,11 @@ public class ForagerRepositoryDouble implements ForagerRepository {
     }
 
     @Override
+    public Forager add(Forager forager) {
+        return forager;
+    }
+
+    @Override
     public Forager findById(String id) {
         return foragers.stream()
                 .filter(i -> i.getId().equals(id))
@@ -30,9 +36,15 @@ public class ForagerRepositoryDouble implements ForagerRepository {
     }
 
     @Override
-    public List<Forager> findByState(String stateAbbr) {
+    public List<Forager> findByState(String state) {
+        if (state != null && state.trim().length() == 2) {
+            return foragers.stream()
+                    .filter(i -> i.getState().getAbbreviation().equals(state))
+                    .collect(Collectors.toList());
+        }
+
         return foragers.stream()
-                .filter(i -> i.getState().equalsIgnoreCase(stateAbbr))
+                .filter(i -> i.getState().equals(State.getStateFromAbbreviation(state)))
                 .collect(Collectors.toList());
     }
 
@@ -41,7 +53,7 @@ public class ForagerRepositoryDouble implements ForagerRepository {
         forager.setId("0e4707f4-407e-4ec9-9665-baca0aabe88c");
         forager.setFirstName("Jilly");
         forager.setLastName("Sisse");
-        forager.setState("GA");
+        forager.setState(State.getStateFromAbbreviation("GA"));
         return forager;
     }
 
