@@ -23,7 +23,7 @@ public class ConsoleIO {
     private static final String INVALID_DATE
             = "[INVALID] Enter a valid date no later than %s.";
     private static final String INVALID_STATE
-            = "[INVALID] Enter a valid state abbreviation.";
+            = "[INVALID] Enter a valid state name or abbreviation.";
 
     private final Scanner scanner = new Scanner(System.in);
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
@@ -131,8 +131,13 @@ public class ConsoleIO {
         while (true) {
             String input = readRequiredString(prompt);
             try {
-                state = State.getStateFromAbbreviation(input.toUpperCase());
+                if (input.trim().length() == 2) {
+                    state = State.getStateFromAbbreviation(input);
+                } else {
+                    state = State.getStateFromName(input.toUpperCase());
+                }
                 if (state != null) return state;
+                println(INVALID_STATE);
             } catch (IllegalArgumentException ex) {
                 println(INVALID_STATE);
             }

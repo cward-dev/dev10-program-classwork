@@ -236,7 +236,10 @@
     * Used same wiring techniques as shown in the `memories` example
 - [x] Implement Add a Forager Feature
   * Added methods to `ForagerRepository`, `ForagerService`, `Controller`, `View`, and `ConsoleIO` to create a Forager
-  * 
+    * New methods are consistent with the structure of provided code
+  * Added the State enum to ensure that Forager states are always a valid input
+    * `State::getStateFromAbbreviation` & `State::getStateFromName` are HashMap-based method to get the State value corresponding to a provided String
   * TODO: TESTING!!!
 - [ ] Create a report that displays the kilograms of each Item collected on one day.
 - [ ] Create a report that displays the total value of each Category collected on one day.
+- [ ] Create breakout menus for each type of data being accessed (Main -> Forages || Foragers || Items) --> View || Add || Etc
