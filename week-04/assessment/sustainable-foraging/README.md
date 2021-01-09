@@ -234,6 +234,9 @@
   * Solution:
     * Added Spring dependency to `pom.xml` file
     * Used same wiring techniques as shown in the `memories` example
-- [ ] Implement Add a Forager Feature
+- [x] Implement Add a Forager Feature
+  * Added methods to `ForagerRepository`, `ForagerService`, `Controller`, `View`, and `ConsoleIO` to create a Forager
+  * 
+  * TODO: TESTING!!!
 - [ ] Create a report that displays the kilograms of each Item collected on one day.
 - [ ] Create a report that displays the total value of each Category collected on one day.

@@ -79,8 +79,5 @@ public enum State {
         for (State s : values()) stateKey.put(s.abbreviation.toUpperCase(), s);
 
         return stateKey.get(abbreviation);
-
     }
-
-
 }
