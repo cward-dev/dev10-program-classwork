@@ -7,6 +7,7 @@ import learn.foraging.models.Item;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -87,17 +88,19 @@ public class View {
             return null;
         }
 
-        int itemId = io.readInt("Select an item id: ");
-        Item item = items.stream()
-                .filter(i -> i.getId() == itemId)
-                .findFirst()
-                .orElse(null);
+        while (true) {
+            int itemId = io.readInt("Select an item id: ");
+            Item item = items.stream()
+                    .filter(i -> i.getId() == itemId)
+                    .findFirst()
+                    .orElse(null);
 
-        if (item == null) {
+            if (item != null) {
+                return item;
+            }
+
             displayStatus(false, String.format("No item with id %s found.", itemId));
         }
-
-        return item;
     }
 
     public Forage makeForage(Forager forager, Item item) {

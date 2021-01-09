@@ -207,11 +207,11 @@
   * Solution
     * Added `clean` and `restore` methods to each FileRepository
     * Called those methods for the appropriate fields in each `serialize` (`clean`) and `deserialize` (`restore`) method
-- [x] LocalDate input validation in `ConsoleIO::readLocalDate` --> affects `View::makeForage` && `view.getForageDate`
+- [x] LocalDate input validation in `ConsoleIO::readLocalDate` --> affects `View::makeForage` and `View::getForageDate`
   * Issue
     * Should not allow future dates in user input validation, this is not caught until the service layer (throws an error message rather than allowing user to enter a valid date)
   * Solution
-    * Updated `ConsoleIO.readLocalDate` to check that input date !isAfter LocalDate.now()
+    * Updated `ConsoleIO::readLocalDate` to check that input date !isAfter LocalDate.now()
     * Updated `ConsoleIO String INVALID_DATE` call to include current date for reference.
 - [x] Duplicate Forage entries can be made
   * Issue
@@ -219,11 +219,11 @@
   * Solution
     * Added overrides for `Forage::equals` and `Forage::hashCode` to check for same date, Item, and Forager
     * Added `ForageService::checkForDuplicate`
-- [ ] `view.chooseItem` does not allow user to select again if invalid item id is entered, does not catch until the service layer (throws an error message rather tahn allowing use to enter a valid date)
+- [x] `View::chooseItem` does not allow user to select again if invalid item id is entered, does not catch until the service layer (throws an error message rather tahn allowing use to enter a valid date)
   * Issue
-    * 
+    * If a user enters an id for an item that is not listed, they are not given another chance to enter a valid value
   * Solution
-    * 
+    * added a `while (true)` loop to allow inputs until a valid one is entered
 
 ### Research
 - [ ] TBD

@@ -34,6 +34,7 @@ public class ConsoleIO {
     }
 
     public String readString(String prompt) {
+        System.out.println();
         print(prompt);
         return scanner.nextLine();
     }
