@@ -49,8 +49,14 @@ public class ForageService {
             return result;
         }
 
-        result.setPayload(forageRepository.add(forage));
+        boolean isDuplicate = checkForDuplicate(forage);
 
+        if (isDuplicate) {
+            result.addErrorMessage("Forage cannot be a duplicate.");
+            return result;
+        }
+
+        result.setPayload(forageRepository.add(forage));
         return result;
     }
 
@@ -144,5 +150,12 @@ public class ForageService {
         if (itemRepository.findById(forage.getItem().getId()) == null) {
             result.addErrorMessage("Item does not exist.");
         }
+    }
+
+    private boolean checkForDuplicate(Forage forage) {
+        List<Forage> forages = findByDate(forage.getDate());
+
+        return forages.stream()
+                .anyMatch(f -> f.equals(forage));
     }
 }

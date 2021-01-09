@@ -14,6 +14,9 @@ public class ForagerFileRepository implements ForagerRepository {
 
     private final String filePath;
 
+    private final String DELIMITER = ",";
+    private final String DELIMITER_REPLACEMENT = "@@@";
+
     public ForagerFileRepository(String filePath) {
         this.filePath = filePath;
     }
@@ -55,10 +58,14 @@ public class ForagerFileRepository implements ForagerRepository {
     
     private Forager deserialize(String[] fields) {
         Forager result = new Forager();
-        result.setId(fields[0]);
-        result.setFirstName(fields[1]);
-        result.setLastName(fields[2]);
-        result.setState(fields[3]);
+        result.setId(restore(fields[0]));
+        result.setFirstName(restore(fields[1]));
+        result.setLastName(restore(fields[2]));
+        result.setState(restore(fields[3]));
         return result;
     }
+
+    private String clean(String value) { return value.replace(DELIMITER, DELIMITER_REPLACEMENT); } // TODO will use for serialize method when we add the "add a forager" feature
+
+    private String restore(String value) { return value.replace(DELIMITER_REPLACEMENT, DELIMITER); }
 }

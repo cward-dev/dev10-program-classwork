@@ -1,6 +1,7 @@
 package learn.foraging.ui;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -15,7 +16,7 @@ public class ConsoleIO {
     private static final String REQUIRED
             = "[INVALID] Value is required.";
     private static final String INVALID_DATE
-            = "[INVALID] Enter a date in MM/dd/yyyy format.";
+            = "[INVALID] Enter a valid date no later than %s.";
 
     private final Scanner scanner = new Scanner(System.in);
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
@@ -100,14 +101,22 @@ public class ConsoleIO {
     }
 
     public LocalDate readLocalDate(String prompt) {
+        LocalDate today = LocalDate.now();
+        String todayFormatted = today.format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+
+        LocalDate result;
+
         while (true) {
             String input = readRequiredString(prompt);
             try {
-                return LocalDate.parse(input, formatter);
+                result = LocalDate.parse(input, formatter);
+                if (!result.isAfter(today)) return result;
+                println(String.format(INVALID_DATE, todayFormatted));
             } catch (DateTimeParseException ex) {
-                println(INVALID_DATE);
+                println(String.format(INVALID_DATE, todayFormatted));
             }
         }
+
     }
 
     public BigDecimal readBigDecimal(String prompt) {

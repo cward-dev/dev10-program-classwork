@@ -14,6 +14,9 @@ public class ItemFileRepository implements ItemRepository {
     private static final String HEADER = "id,name,category,dollars/kilogram";
     private final String filePath;
 
+    private final String DELIMITER = ",";
+    private final String DELIMITER_REPLACEMENT = "@@@";
+
     public ItemFileRepository(String filePath) {
         this.filePath = filePath;
     }
@@ -96,7 +99,7 @@ public class ItemFileRepository implements ItemRepository {
     private Item deserialize(String[] fields) {
         Item result = new Item();
         result.setId(Integer.parseInt(fields[0]));
-        result.setName(fields[1]);
+        result.setName(restore(fields[1]));
         result.setCategory(Category.valueOf(fields[2]));
         result.setDollarPerKilogram(new BigDecimal(fields[3]));
         return result;
@@ -119,4 +122,8 @@ public class ItemFileRepository implements ItemRepository {
             throw new DataException(ex);
         }
     }
+
+    private String clean(String value) { return value.replace(DELIMITER, DELIMITER_REPLACEMENT); }
+
+    private String restore(String value) { return value.replace(DELIMITER_REPLACEMENT, DELIMITER); }
 }

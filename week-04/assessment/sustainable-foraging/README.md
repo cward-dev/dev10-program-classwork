@@ -140,12 +140,46 @@
       1. Create a model for a Report
       2. Create a separate UI class for report generation to separate from other code
 
+# Basic Structure of Application
+
+### Models
+* Forager
+  * Fields - String id, String firstName, String lastName, String state
+  * Constructor - empty
+* Item
+  * Fields - int id, String name, Category category (enum), BigDecimal dollarPerKilogram
+  * Constructor - empty | int id, String name, Category category, BigDecimal dollarPerKilogram
+* Forage
+  * Fields - String id, LocalDate date, Forager forager, Item item, double kilograms
+  * Constructor - empty
+  * Depends on both Forager and Item
+
+### Features
+* View Items
+  * Get Category from view
+  * Get List<Item> by Category from itemService
+  * Send List<Item> to view for display
+* View Forages By Date
+  * Get LocalDate from view
+  * Get List<Forage> by LocalDate from forageService
+  * Send List<Forage> to view for display
+* Add a Forage
+  * Get Forager from view
+  * Get Item from view
+  * Get LocalDate --> TODO Bug LocalDate validation cannot be future date
+  * Get double (kilograms collected)
+  * Send to service - forageService.add(forage)
+* Add a Forager (incomplete)
+* Add an Item
+* Report: 
+* Report: 
+
 # TODO
 
 ### Workflow
-- [ ] Review the provided code
+- [x] Review the provided code
   * Estimated Time: 2 hours
-  * Actual Time: 
+  * Actual Time: 2 hours
   * Goal: Achieve an understanding the applications existing features and how they are implemented in the code
 - [ ] Add Spring dependency injection
   * Estimated Time: 1.5 hours
@@ -167,8 +201,29 @@
   * Goal: Get a head-start of Version 2 features for our overly ambitious client
   
 ### Bugs Found
-- [ ] TBD
-  * Solution: 
+- [x] Delimiters present in data fields
+  * Issue 
+    * Writing strings to the files that contain the delimiter (,) will cause an error in reading data
+  * Solution
+    * Added `clean` and `restore` methods to each FileRepository
+    * Called those methods for the appropriate fields in each `serialize` (`clean`) and `deserialize` (`restore`) method
+- [x] LocalDate input validation in `ConsoleIO::readLocalDate` --> affects `View::makeForage` && `view.getForageDate`
+  * Issue
+    * Should not allow future dates in user input validation, this is not caught until the service layer (throws an error message rather than allowing user to enter a valid date)
+  * Solution
+    * Updated `ConsoleIO.readLocalDate` to check that input date !isAfter LocalDate.now()
+    * Updated `ConsoleIO String INVALID_DATE` call to include current date for reference.
+- [x] Duplicate Forage entries can be made
+  * Issue
+    * Should not allow a forage entry that matches another entry's date, Item, and Forager - these should be tracked as one Forage
+  * Solution
+    * Added overrides for `Forage::equals` and `Forage::hashCode` to check for same date, Item, and Forager
+    * Added `ForageService::checkForDuplicate`
+- [ ] `view.chooseItem` does not allow user to select again if invalid item id is entered, does not catch until the service layer (throws an error message rather tahn allowing use to enter a valid date)
+  * Issue
+    * 
+  * Solution
+    * 
 
 ### Research
 - [ ] TBD

@@ -3,6 +3,7 @@ package learn.foraging.models;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Forage {
 
@@ -58,6 +59,21 @@ public class Forage {
         }
         BigDecimal kilos = new BigDecimal(kilograms).setScale(4, RoundingMode.HALF_UP);
         return item.getDollarPerKilogram().multiply(kilos);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Forage forage = (Forage) o;
+        return this.getDate().compareTo(forage.getDate()) == 0 &&
+                this.getItem().equals(forage.getItem()) &&
+                Objects.equals(this.getForager().getId(), forage.getForager().getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, date, forager, item, kilograms);
     }
 
 }

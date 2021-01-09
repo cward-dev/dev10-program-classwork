@@ -15,6 +15,9 @@ public class ForageFileRepository implements ForageRepository {
     private static final String HEADER = "id,forager_id,item_id,kg";
     private final String directory;
 
+    private final String DELIMITER = ",";
+    private final String DELIMITER_REPLACEMENT = "@@@";
+
     public ForageFileRepository(String directory) {
         this.directory = directory;
     }
@@ -80,7 +83,7 @@ public class ForageFileRepository implements ForageRepository {
 
     private String serialize(Forage item) {
         return String.format("%s,%s,%s,%s",
-                item.getId(),
+                clean(item.getId()),
                 item.getForager().getId(),
                 item.getItem().getId(),
                 item.getKilograms());
@@ -88,7 +91,7 @@ public class ForageFileRepository implements ForageRepository {
 
     private Forage deserialize(String[] fields, LocalDate date) {
         Forage result = new Forage();
-        result.setId(fields[0]);
+        result.setId(restore(fields[0]));
         result.setDate(date);
         result.setKilograms(Double.parseDouble(fields[3]));
 
@@ -101,4 +104,8 @@ public class ForageFileRepository implements ForageRepository {
         result.setItem(item);
         return result;
     }
+
+    private String clean(String value) { return value.replace(DELIMITER, DELIMITER_REPLACEMENT); }
+
+    private String restore(String value) { return value.replace(DELIMITER_REPLACEMENT, DELIMITER); }
 }
