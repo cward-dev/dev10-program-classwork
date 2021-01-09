@@ -181,13 +181,13 @@
   * Estimated Time: 2 hours
   * Actual Time: 2 hours
   * Goal: Achieve an understanding the applications existing features and how they are implemented in the code
-- [ ] Add Spring dependency injection
+- [x] Add Spring dependency injection
   * Estimated Time: 1.5 hours
-  * Actual Time:
+  * Actual Time: 30 minutes
   * Goal: Convert all manual dependency injection to Spring dependency injection (either XML or annotations)
-- [ ] Debug provided code
+- [x] Debug provided code
   * Estimated Time: 3 hours
-  * Actual Time:
+  * Actual Time: 2 hours
   * Goal: Ensure that all provided methods function as intended
     * Will also create thorough tests for all altered/new methods
 - [ ] Implement missing features
@@ -201,7 +201,7 @@
   * Goal: Get a head-start of Version 2 features for our overly ambitious client
   
 ### Bugs Found
-- [x] Delimiters present in data fields
+- [x] Delimiters are not cleaned in data fields
   * Issue 
     * Writing strings to the files that contain the delimiter (,) will cause an error in reading data
   * Solution
@@ -213,7 +213,7 @@
   * Solution
     * Updated `ConsoleIO::readLocalDate` to check that input date !isAfter LocalDate.now()
     * Updated `ConsoleIO String INVALID_DATE` call to include current date for reference.
-- [x] Duplicate Forage entries can be made
+- [x] Duplicate `Forage` entries can be made
   * Issue
     * Should not allow a forage entry that matches another entry's date, Item, and Forager - these should be tracked as one Forage
   * Solution
@@ -230,5 +230,8 @@
   * Solution:
 
 ### Additional Tasks
-- [ ] TBD
-  * Solution: 
+- [x] Replace manual dependency injection with Spring annotation DI
+  * Solution:
+    * Added Spring dependency to `pom.xml` file
+    * Used same wiring techniques as shown in the `memories` example
+- [ ] Add   

@@ -1,6 +1,8 @@
 package learn.foraging.data;
 
 import learn.foraging.models.Forager;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -10,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Repository
 public class ForagerFileRepository implements ForagerRepository {
 
     private final String filePath;
@@ -17,7 +20,7 @@ public class ForagerFileRepository implements ForagerRepository {
     private final String DELIMITER = ",";
     private final String DELIMITER_REPLACEMENT = "@@@";
 
-    public ForagerFileRepository(String filePath) {
+    public ForagerFileRepository(@Value("${foragersFilePath}") String filePath) {
         this.filePath = filePath;
     }
 

@@ -1,5 +1,7 @@
 package learn.foraging.ui;
 
+import org.springframework.stereotype.Component;
+
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -7,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
+@Component
 public class ConsoleIO {
 
     private static final String INVALID_NUMBER
@@ -103,7 +106,7 @@ public class ConsoleIO {
 
     public LocalDate readLocalDate(String prompt) {
         LocalDate today = LocalDate.now();
-        String todayFormatted = today.format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
         LocalDate result;
 
@@ -112,9 +115,9 @@ public class ConsoleIO {
             try {
                 result = LocalDate.parse(input, formatter);
                 if (!result.isAfter(today)) return result;
-                println(String.format(INVALID_DATE, todayFormatted));
+                println(String.format(INVALID_DATE, today.format(dateFormatter)));
             } catch (DateTimeParseException ex) {
-                println(String.format(INVALID_DATE, todayFormatted));
+                println(String.format(INVALID_DATE, today.format(dateFormatter)));
             }
         }
 
