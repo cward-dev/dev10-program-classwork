@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class Controller {
@@ -153,7 +152,7 @@ public class Controller {
     private void reportKgPerItem() {
         LocalDate date = view.getForageDate();
         List<String> itemsKgCollected =
-                reportService.getKilogramsOfEachItemCollected(forageService.findByDate(date), date);
+                reportService.reportKilogramsOfEachItemCollected(forageService.findByDate(date), date);
         view.displayReport(itemsKgCollected, date, "Kilograms of Each Item");
         view.enterToContinue();
     }
@@ -161,7 +160,7 @@ public class Controller {
     private void reportTotalValueEachCategory() {
         LocalDate date = view.getForageDate();
         List<String> totalValueOfEachCategoryCollected =
-                reportService.getTotalValueOfEachCategoryCollected(forageService.findByDate(date), date);
+                reportService.reportTotalValueOfEachCategoryCollected(forageService.findByDate(date), date);
         view.displayReport(totalValueOfEachCategoryCollected, date, "Total Value of Each Category");
         view.enterToContinue();
     }

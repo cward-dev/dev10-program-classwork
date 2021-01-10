@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -61,7 +60,7 @@ class ReportServiceTest {
 
     @Test
     void shouldGetReportOfKgCollected() {
-        List<String> itemsKgCollected = reports.getKilogramsOfEachItemCollected(forages, date);
+        List<String> itemsKgCollected = reports.reportKilogramsOfEachItemCollected(forages, date);
 
         assertEquals("|  ID#|  Category|      Item Name| Kilograms |", itemsKgCollected.get(0));
         assertEquals("|    1|    Edible|          Ramps|   20.00kg |", itemsKgCollected.get(1));
@@ -71,7 +70,7 @@ class ReportServiceTest {
 
     @Test
     void shouldGetReportOfTotalValueByCategory() {
-        List<String> totalValueOfEachCategoryCollected = reports.getTotalValueOfEachCategoryCollected(forages, date);
+        List<String> totalValueOfEachCategoryCollected = reports.reportTotalValueOfEachCategoryCollected(forages, date);
 
         assertEquals("|                          Category|   Total Value |", totalValueOfEachCategoryCollected.get(0));
         assertEquals("|                            Edible|       $351.33 |", totalValueOfEachCategoryCollected.get(1));

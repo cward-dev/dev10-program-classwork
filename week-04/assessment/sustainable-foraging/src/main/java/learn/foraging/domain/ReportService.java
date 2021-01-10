@@ -1,6 +1,5 @@
 package learn.foraging.domain;
 
-import learn.foraging.models.Category;
 import learn.foraging.models.Forage;
 import learn.foraging.models.Item;
 import org.springframework.stereotype.Service;
@@ -17,15 +16,12 @@ import java.util.stream.Collectors;
 @Service
 public class ReportService {
 
-    public List<String> getKilogramsOfEachItemCollected(List<Forage> forages, LocalDate date) {
-        Map<Item, Double> itemsKgCollected = forages.stream()
-            .filter(f -> f.getDate().equals(date))
-            .sorted(Comparator.comparing(f -> f.getItem().getId()))
-            .collect(Collectors.groupingBy(Forage::getItem, Collectors.summingDouble(Forage::getKilograms)));
+    public List<String> reportKilogramsOfEachItemCollected(List<Forage> forages, LocalDate date) {
+        Map<Item, Double> itemsKgCollected = getKilogramsOfEachItemCollected(forages, date);
 
         List<String> reportLines = new ArrayList<>();
-
         reportLines.add(String.format("| %4s| %9s| %14s| %9s |", "ID#", "Category", "Item Name", "Kilograms"));
+
         itemsKgCollected.entrySet().stream()
                 .sorted(Comparator.comparing(e -> e.getKey().getId()))
                 .forEach(e -> reportLines.add(String.format("| %4s| %9s| %14s| %7.2fkg |",
@@ -39,17 +35,8 @@ public class ReportService {
         return reportLines;
     }
 
-    public List<String> getTotalValueOfEachCategoryCollected(List<Forage> forages, LocalDate date) {
-        Map<Item, Double> itemsKgCollected = forages.stream()
-                .filter(f -> f.getDate().equals(date))
-                .sorted(Comparator.comparing(f -> f.getItem().getId()))
-                .collect(Collectors.groupingBy(Forage::getItem, Collectors.summingDouble(Forage::getKilograms)));
-
-        Map<String, BigDecimal> valueOfCategoriesCollected = itemsKgCollected.entrySet().stream()
-                .collect(Collectors.groupingBy(e -> e.getKey().getCategory().getName(), Collectors.reducing(
-                        BigDecimal.ZERO,
-                        e -> e.getKey().getDollarPerKilogram().multiply(new BigDecimal(e.getValue())),
-                        BigDecimal::add)));
+    public List<String> reportTotalValueOfEachCategoryCollected(List<Forage> forages, LocalDate date) {
+        Map<String, BigDecimal> valueOfCategoriesCollected = getTotalValueOfEachCategoryCollected(forages, date);
 
         List<String> reportLines = new ArrayList<>();
 
@@ -61,5 +48,20 @@ public class ReportService {
                         String.format("$%s", e.getValue().setScale(2, RoundingMode.HALF_EVEN)))));
 
         return reportLines;
+    }
+
+    public Map<Item, Double> getKilogramsOfEachItemCollected(List<Forage> forages, LocalDate date) {
+        return forages.stream()
+                .filter(f -> f.getDate().equals(date))
+                .sorted(Comparator.comparing(f -> f.getItem().getId()))
+                .collect(Collectors.groupingBy(Forage::getItem, Collectors.summingDouble(Forage::getKilograms)));
+    }
+
+    public Map<String, BigDecimal> getTotalValueOfEachCategoryCollected(List<Forage> forages, LocalDate date) {
+        return getKilogramsOfEachItemCollected(forages, date).entrySet().stream()
+                .collect(Collectors.groupingBy(e -> e.getKey().getCategory().getName(), Collectors.reducing(
+                        BigDecimal.ZERO,
+                        e -> e.getKey().getDollarPerKilogram().multiply(new BigDecimal(e.getValue())),
+                        BigDecimal::add)));
     }
 }
