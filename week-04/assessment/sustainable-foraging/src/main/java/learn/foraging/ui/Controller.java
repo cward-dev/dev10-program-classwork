@@ -152,7 +152,7 @@ public class Controller {
     private void reportKgPerItem() {
         LocalDate date = view.getForageDate();
         List<String> itemsKgCollected =
-                reportService.reportKilogramsOfEachItemCollected(forageService.findByDate(date), date);
+                reportService.reportKilogramsOfEachItemCollected(date);
         view.displayReport(itemsKgCollected, date, "Kilograms of Each Item");
         view.enterToContinue();
     }
@@ -160,7 +160,7 @@ public class Controller {
     private void reportTotalValueEachCategory() {
         LocalDate date = view.getForageDate();
         List<String> totalValueOfEachCategoryCollected =
-                reportService.reportTotalValueOfEachCategoryCollected(forageService.findByDate(date), date);
+                reportService.reportTotalValueOfEachCategoryCollected(date);
         view.displayReport(totalValueOfEachCategoryCollected, date, "Total Value of Each Category");
         view.enterToContinue();
     }

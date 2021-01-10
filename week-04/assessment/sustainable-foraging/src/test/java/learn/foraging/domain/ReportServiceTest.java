@@ -1,31 +1,32 @@
 package learn.foraging.domain;
 
+import learn.foraging.data.DataException;
+import learn.foraging.data.ForageRepository;
+import learn.foraging.data.ForageRepositoryDouble;
 import learn.foraging.models.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ReportServiceTest {
 
-    ReportService reports = new ReportService();
+    ForageRepository repository = new ForageRepositoryDouble();
 
-    List<Forage> forages = new ArrayList<>();
+    ReportService reports = new ReportService(repository);
+
     LocalDate date = LocalDate.of(2020, 1, 1);
 
     public final static Item RAMPS = new Item(1, "Ramps", Category.EDIBLE, new BigDecimal("5.00"));
     public final static Item PURSLANE = new Item(2, "Purslane", Category.EDIBLE, new BigDecimal("2.95"));
     public final static Item MUSHROOM = new Item(8, "Chicken of the Woods Mushroom", Category.EDIBLE, new BigDecimal("14.95"));
 
-
     @BeforeEach
-    void setup() throws IOException {
+    void setup() throws DataException {
         Forage forage;
         for (int i = 0; i < 10; i++) {
             forage = new Forage();
@@ -34,7 +35,7 @@ class ReportServiceTest {
             forage.setItem(RAMPS);
             forage.setKilograms(2);
 
-            forages.add(forage);
+            repository.add(forage);
         }
 
         for (int i = 0; i < 5; i++) {
@@ -44,7 +45,7 @@ class ReportServiceTest {
             forage.setItem(PURSLANE);
             forage.setKilograms(4.37);
 
-            forages.add(forage);
+            repository.add(forage);
         }
 
         for (int i = 0; i < 5; i++) {
@@ -54,25 +55,30 @@ class ReportServiceTest {
             forage.setItem(MUSHROOM);
             forage.setKilograms(2.5);
 
-            forages.add(forage);
+            repository.add(forage);
         }
     }
 
     @Test
     void shouldGetReportOfKgCollected() {
-        List<String> itemsKgCollected = reports.reportKilogramsOfEachItemCollected(forages, date);
-
+        List<String> itemsKgCollected = reports.reportKilogramsOfEachItemCollected(date);
         assertEquals("|  ID#|  Category|      Item Name| Kilograms |", itemsKgCollected.get(0));
         assertEquals("|    1|    Edible|          Ramps|   20.00kg |", itemsKgCollected.get(1));
         assertEquals("|    2|    Edible|       Purslane|   21.85kg |", itemsKgCollected.get(2));
         assertEquals("|    8|    Edible| Chicken of the|   12.50kg |", itemsKgCollected.get(3));
+
+        itemsKgCollected = reports.reportKilogramsOfEachItemCollected(LocalDate.of(2020,6,26));
+        assertEquals("|    1|    Edible|    Chanterelle|    1.25kg |", itemsKgCollected.get(1));
+
     }
 
     @Test
     void shouldGetReportOfTotalValueByCategory() {
-        List<String> totalValueOfEachCategoryCollected = reports.reportTotalValueOfEachCategoryCollected(forages, date);
-
+        List<String> totalValueOfEachCategoryCollected = reports.reportTotalValueOfEachCategoryCollected(date);
         assertEquals("|                          Category|   Total Value |", totalValueOfEachCategoryCollected.get(0));
         assertEquals("|                            Edible|       $351.33 |", totalValueOfEachCategoryCollected.get(1));
+
+        totalValueOfEachCategoryCollected = reports.reportTotalValueOfEachCategoryCollected(LocalDate.of(2020,6,26));
+        assertEquals("|                            Edible|        $12.49 |", totalValueOfEachCategoryCollected.get(1));
     }
 }
