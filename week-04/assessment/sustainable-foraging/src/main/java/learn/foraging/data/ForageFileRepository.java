@@ -34,7 +34,7 @@ public class ForageFileRepository implements ForageRepository {
 
             for (String line = reader.readLine(); line != null; line = reader.readLine()) {
 
-                String[] fields = line.split(",", -1);
+                String[] fields = line.split(DELIMITER, -1);
                 if (fields.length == 4) {
                     result.add(deserialize(fields, date));
                 }
@@ -49,6 +49,10 @@ public class ForageFileRepository implements ForageRepository {
     public Forage add(Forage forage) throws DataException {
         List<Forage> all = findByDate(forage.getDate());
         forage.setId(java.util.UUID.randomUUID().toString());
+
+        String[] fields = serialize(forage).split(DELIMITER); // removes DELIMITER_REPLACEMENT and replaces with DELIMITER
+        forage = deserialize(fields, forage.getDate());
+
         all.add(forage);
         writeAll(all, forage.getDate());
         return forage;
@@ -76,20 +80,20 @@ public class ForageFileRepository implements ForageRepository {
 
             writer.println(HEADER);
 
-            for (Forage item : forages) {
-                writer.println(serialize(item));
+            for (Forage forage : forages) {
+                writer.println(serialize(forage));
             }
         } catch (FileNotFoundException ex) {
             throw new DataException(ex);
         }
     }
 
-    private String serialize(Forage item) {
+    private String serialize(Forage forage) {
         return String.format("%s,%s,%s,%s",
-                clean(item.getId()),
-                item.getForager().getId(),
-                item.getItem().getId(),
-                item.getKilograms());
+                clean(forage.getId()),
+                forage.getForager().getId(),
+                forage.getItem().getId(),
+                forage.getKilograms());
     }
 
     private Forage deserialize(String[] fields, LocalDate date) {

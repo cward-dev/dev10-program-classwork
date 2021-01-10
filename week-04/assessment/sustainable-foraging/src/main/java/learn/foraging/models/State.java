@@ -76,16 +76,16 @@ public enum State {
     public static State getStateFromAbbreviation(String abbreviation) {
         Map<String, State> stateKey = new HashMap<>();
 
-        for (State s : values()) stateKey.put(s.abbreviation.toUpperCase(), s);
+        for (State s : values()) stateKey.put(s.abbreviation, s);
 
-        return stateKey.get(abbreviation);
+        return stateKey.get(abbreviation.toUpperCase());
     }
 
     public static State getStateFromName(String stateName) {
         Map<String, State> stateKey = new HashMap<>();
 
-        for (State s : values()) stateKey.put(s.name.toUpperCase(), s);
+        for (State s : values()) stateKey.put(s.name, s);
 
-        return stateKey.get(stateName);
+        return stateKey.get(stateName.toUpperCase());
     }
 }

@@ -19,6 +19,7 @@ public class ForagerRepositoryDouble implements ForagerRepository {
 
     @Override
     public Forager add(Forager forager) {
+        foragers.add(forager);
         return forager;
     }
 

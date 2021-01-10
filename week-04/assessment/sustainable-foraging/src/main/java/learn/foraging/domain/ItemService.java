@@ -40,6 +40,10 @@ public class ItemService {
             result.addErrorMessage(String.format("Item '%s' is a duplicate.", item.getName()));
         }
 
+        if (item.getCategory() == null) {
+            result.addErrorMessage("Item category is required.");
+        }
+
         if (item.getDollarPerKilogram() == null) {
             result.addErrorMessage("$/Kg is required.");
         } else if (item.getDollarPerKilogram().compareTo(BigDecimal.ZERO) < 0

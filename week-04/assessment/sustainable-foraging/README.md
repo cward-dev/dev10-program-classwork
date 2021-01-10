@@ -192,7 +192,7 @@
     * Will also create thorough tests for all altered/new methods
 - [ ] Implement missing features
   * Estimated Time: 2.5 hours
-  * Actual Time:
+  * Actual Time: 3 hours
   * Goal: Add missing features to ensure the application is fully CRUD-enabled
     * Will also create thorough tests for all new methods
 - [ ] Tackle stretch goals
@@ -207,6 +207,7 @@
   * Solution
     * Added `clean` and `restore` methods to each FileRepository
     * Called those methods for the appropriate fields in each `serialize` (`clean`) and `deserialize` (`restore`) method
+    * Added testing for `serialize` and `deserialize` in `ForagerFileRepository` and `ItemFileRepository`
 - [x] LocalDate input validation in `ConsoleIO::readLocalDate` --> affects `View::makeForage` and `View::getForageDate`
   * Issue
     * Should not allow future dates in user input validation, this is not caught until the service layer (throws an error message rather than allowing user to enter a valid date)
@@ -224,6 +225,17 @@
     * If a user enters an id for an item that is not listed, they are not given another chance to enter a valid value
   * Solution
     * added a `while (true)` loop to allow inputs until a valid one is entered
+- [x] `ItemRepositoryDouble::add` does not add new Item objects to the global `items`, only the local `all`
+  * Issue
+    * Testing `shouldNotAddDuplicateName` in `ItemServiceTest` fails because items are only added to a local ArrayList in the `add` method
+  * Solution
+    * Changed code in `ItemRepositoryDouble::add` to add the new item to the global `ArrayList<Item> items`
+- [x] `ItemService::add` does not validate that `item.getCategory` is not null
+  * Issue
+    * A null category can be passed to the repository
+  * Solution
+    * Added a validation if statement to ensure that Category is not null. If null, an error message is added to result.
+    * Added test `ItemServiceTest::shouldNotSaveNullCategory` to confirm behavior is correct
 
 ### Research
 - [ ] TBD
@@ -239,7 +251,21 @@
     * New methods are consistent with the structure of provided code
   * Added the State enum to ensure that Forager states are always a valid input
     * `State::getStateFromAbbreviation` & `State::getStateFromName` are HashMap-based method to get the State value corresponding to a provided String
-  * TODO: TESTING!!!
-- [ ] Create a report that displays the kilograms of each Item collected on one day.
-- [ ] Create a report that displays the total value of each Category collected on one day.
+  * Testing
+    * `ForagerRepository::add` - Verified that new foragers are written to file
+    * `ForagerService::add` - Verified that valid foragers are passed to the repository, and invalid foragers are rejected with the proper error message
+    * `State::getStateFromAbbreviation` and `State::getStateFromName` - Verified that both abbreviations and state names could be used to get a State value, ignoring capitalization
+- [x] Create a report that displays the kilograms of each Item collected on one day.
+- [x] Create a report that displays the total value of each Category collected on one day.
+  * Added a ReportService class that generates List<String> reports to print
+    * Added methods to Controller and View to run and display these reports for the user
 - [ ] Create breakout menus for each type of data being accessed (Main -> Forages || Foragers || Items) --> View || Add || Etc
+- [ ] Stretch Goals
+  - [ ] Update an existing Item.
+  - [ ] Delete an Item. (Careful with this one. If an Item is deleted, one of two things should happen: 1. All Forages that include that Item should also be deleted. Forages without a valid Item are not allowed. 2. Make it a "soft" delete. Add an Item status and hide all Items with a deleted status from search results.)
+  - [ ] Update a Forager.
+  - [ ] Delete a Forager. (See Item deletion.)
+  - [ ] Update a Forage.
+  - [ ] Delete a Forage.
+  - [ ] Figure out a way to view Forages by Forager. This is a non-trivial change.
+  - [ ] Add reports: total value per Forager, Item kilograms collected per Forager

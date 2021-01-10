@@ -3,6 +3,7 @@ package learn.foraging.data;
 import learn.foraging.models.Forage;
 import learn.foraging.models.Forager;
 import learn.foraging.models.Item;
+import learn.foraging.models.State;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ForageFileRepositoryTest {
 
@@ -58,5 +60,4 @@ class ForageFileRepositoryTest {
 
         assertEquals(36, forage.getId().length());
     }
-
 }

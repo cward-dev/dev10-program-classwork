@@ -34,7 +34,7 @@ public class ForagerFileRepository implements ForagerRepository {
 
             for (String line = reader.readLine(); line != null; line = reader.readLine()) {
 
-                String[] fields = line.split(",", -1);
+                String[] fields = line.split(DELIMITER, -1);
                 if (fields.length == 4) {
                     result.add(deserialize(fields));
                 }
@@ -64,6 +64,10 @@ public class ForagerFileRepository implements ForagerRepository {
     public Forager add(Forager forager) throws DataException {
         List<Forager> all = findAll();
         forager.setId((java.util.UUID.randomUUID().toString()));
+
+        String[] fields = serialize(forager).split(DELIMITER); // removes DELIMITER_REPLACEMENT and replaces with DELIMITER
+        forager = deserialize(fields);
+
         all.add(forager);
         writeAll(all);
         return forager;
@@ -99,7 +103,7 @@ public class ForagerFileRepository implements ForagerRepository {
         return result;
     }
 
-    private String clean(String value) { return value.replace(DELIMITER, DELIMITER_REPLACEMENT); } // TODO will use for serialize method when we add the "add a forager" feature
+    private String clean(String value) { return value.replace(DELIMITER, DELIMITER_REPLACEMENT); }
 
     private String restore(String value) { return value.replace(DELIMITER_REPLACEMENT, DELIMITER); }
 }

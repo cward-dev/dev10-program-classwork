@@ -1,7 +1,9 @@
 package learn.foraging.data;
 
 import learn.foraging.models.Category;
+import learn.foraging.models.Forager;
 import learn.foraging.models.Item;
+import learn.foraging.models.State;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -80,5 +82,30 @@ class ItemFileRepositoryTest {
         assertEquals(1, repository.findAll().size());
     }
 
+    @Test
+    void shouldSerializeAndDeserializeStringWithCommaCorrectly() throws DataException {
+        Item item = new Item();
+        item.setName("Catalpa, the Tester");
+        item.setCategory(Category.INEDIBLE);
+        item.setDollarPerKilogram(BigDecimal.ZERO);
+
+        item = repository.add(item);
+
+        assertNotNull(item);
+        assertEquals("Catalpa, the Tester", item.getName());
+    }
+
+    @Test
+    void shouldReturnWithCommaInsteadOfDelimiterIfWrittenIntoStringField() throws DataException {
+        Item item = new Item();
+        item.setName("Catalpa@@@ the Tester");
+        item.setCategory(Category.INEDIBLE);
+        item.setDollarPerKilogram(BigDecimal.ZERO);
+
+        item = repository.add(item);
+
+        assertNotNull(item);
+        assertEquals("Catalpa, the Tester", item.getName());
+    }
 
 }

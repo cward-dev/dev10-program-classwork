@@ -1,10 +1,7 @@
 package learn.foraging.ui;
 
 import learn.foraging.data.DataException;
-import learn.foraging.domain.ForageService;
-import learn.foraging.domain.ForagerService;
-import learn.foraging.domain.ItemService;
-import learn.foraging.domain.Result;
+import learn.foraging.domain.*;
 import learn.foraging.models.Category;
 import learn.foraging.models.Forage;
 import learn.foraging.models.Forager;
@@ -14,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class Controller {
@@ -28,13 +26,17 @@ public class Controller {
     private final ItemService itemService;
 
     @Autowired
+    private final ReportService reportService;
+
+    @Autowired
     private final View view;
 
     @Autowired
-    public Controller(ForagerService foragerService, ForageService forageService, ItemService itemService, View view) {
+    public Controller(ForagerService foragerService, ForageService forageService, ItemService itemService, ReportService reportService, View view) {
         this.foragerService = foragerService;
         this.forageService = forageService;
         this.itemService = itemService;
+        this.reportService = reportService;
         this.view = view;
     }
 
@@ -69,12 +71,10 @@ public class Controller {
                     addItem();
                     break;
                 case REPORT_KG_PER_ITEM:
-                    view.displayStatus(false, "NOT IMPLEMENTED");
-                    view.enterToContinue();
+                    reportKgPerItem();
                     break;
                 case REPORT_CATEGORY_VALUE:
-                    view.displayStatus(false, "NOT IMPLEMENTED");
-                    view.enterToContinue();
+                    reportTotalValueEachCategory();
                     break;
                 case GENERATE:
                     generate();
@@ -148,6 +148,22 @@ public class Controller {
             int count = forageService.generate(request.getStart(), request.getEnd(), request.getCount());
             view.displayStatus(true, String.format("%s forages generated.", count));
         }
+    }
+
+    private void reportKgPerItem() {
+        LocalDate date = view.getForageDate();
+        List<String> itemsKgCollected =
+                reportService.getKilogramsOfEachItemCollected(forageService.findByDate(date), date);
+        view.displayReport(itemsKgCollected, date, "Kilograms of Each Item");
+        view.enterToContinue();
+    }
+
+    private void reportTotalValueEachCategory() {
+        LocalDate date = view.getForageDate();
+        List<String> totalValueOfEachCategoryCollected =
+                reportService.getTotalValueOfEachCategoryCollected(forageService.findByDate(date), date);
+        view.displayReport(totalValueOfEachCategoryCollected, date, "Total Value of Each Category");
+        view.enterToContinue();
     }
 
     // support methods

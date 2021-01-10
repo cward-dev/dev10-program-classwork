@@ -37,7 +37,8 @@ public class ForagerService {
 
         boolean isDuplicate = checkForDuplicate(forager);
         if (isDuplicate) {
-            result.addErrorMessage("Forager cannot be a duplicate.");
+            result.addErrorMessage(String.format("Forager %s %s is a duplicate.",
+                    forager.getFirstName(), forager.getLastName()));
             return result;
         }
 

@@ -5,7 +5,11 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
@@ -182,6 +186,7 @@ public class View {
             io.println("No forages found.");
             return;
         }
+
         for (Forage forage : forages) {
             io.printf("%s %s - %s:%s - Value: $%.2f%n",
                     forage.getForager().getFirstName(),
@@ -202,5 +207,12 @@ public class View {
         for (Item item : items) {
             io.printf("%s: %s, %s, %.2f $/kg%n", item.getId(), item.getName(), item.getCategory(), item.getDollarPerKilogram());
         }
+    }
+
+    public void displayReport(List<String> reportLines, LocalDate date, String reportTitle) {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        displayHeader(String.format("%s Collected on %s", reportTitle, date.format(dateFormatter)));
+
+        reportLines.forEach(io::println);
     }
 }

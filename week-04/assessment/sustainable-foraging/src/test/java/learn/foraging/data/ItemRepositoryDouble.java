@@ -40,7 +40,7 @@ public class ItemRepositoryDouble implements ItemRepository {
 
         item.setId(nextId);
 
-        all.add(item);
+        items.add(item);
         return item;
     }
 }

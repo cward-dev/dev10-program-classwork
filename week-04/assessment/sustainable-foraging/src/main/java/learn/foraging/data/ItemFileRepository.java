@@ -33,7 +33,7 @@ public class ItemFileRepository implements ItemRepository {
 
             for (String line = reader.readLine(); line != null; line = reader.readLine()) {
 
-                String[] fields = line.split(",", -1);
+                String[] fields = line.split(DELIMITER, -1);
                 if (fields.length == 4) {
                     result.add(deserialize(fields));
                 }
@@ -67,6 +67,9 @@ public class ItemFileRepository implements ItemRepository {
 
         item.setId(nextId);
 
+        String[] fields = serialize(item).split(DELIMITER); // removes DELIMITER_REPLACEMENT and replaces with DELIMITER
+        item = deserialize(fields);
+
         all.add(item);
         writeAll(all);
 
@@ -94,7 +97,7 @@ public class ItemFileRepository implements ItemRepository {
     private String serialize(Item item) {
         return String.format("%s,%s,%s,%s",
                 item.getId(),
-                item.getName(),
+                clean(item.getName()),
                 item.getCategory(),
                 item.getDollarPerKilogram());
     }

@@ -29,6 +29,13 @@ class ItemServiceTest {
     }
 
     @Test
+    void shouldNotSaveNullCategory() throws DataException {
+        Item item = new Item(0, "Test Item", null, new BigDecimal("5.00"));
+        Result<Item> result = service.add(item);
+        assertFalse(result.isSuccess());
+    }
+
+    @Test
     void shouldNotSaveNullDollars() throws DataException {
         Item item = new Item(0, "Test Item", Category.EDIBLE, null);
         Result<Item> result = service.add(item);
@@ -57,6 +64,18 @@ class ItemServiceTest {
 
         assertNotNull(result.getPayload());
         assertEquals(2, result.getPayload().getId());
+    }
+
+    @Test
+    void shouldNotSaveDuplicateName() throws DataException {
+        Item item = new Item(0, "Test Item", Category.EDIBLE, new BigDecimal("5.00"));
+        Result<Item> result = service.add(item);
+
+        assertTrue(result.isSuccess());
+
+        Result<Item> result2 = service.add(item);
+
+        assertFalse(result2.isSuccess());
     }
 
 }
