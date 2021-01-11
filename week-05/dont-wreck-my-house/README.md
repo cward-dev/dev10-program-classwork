@@ -117,7 +117,7 @@ Validation
 # Project Plan
 
 ## Expected Workflow
-- [ ] Day 1 (Monday): Planning and prepare, begin setting up models
+- [x] Day 1 (Monday): Planning and prepare, begin setting up models
 - [ ] Day 2 (Tuesday): Finish models, begin data layer development
 - [ ] Day 3 (Wednesday): Progress presentation, finish data layer, begin domain layer development
 - [ ] Day 4 (Thursday): Finish domain layer, go through testing and ensure that tests are comprehensive
@@ -198,20 +198,20 @@ Validation
     * `setters`
     * `@Override equals / hashCode`
   * Time to Complete
-    * Estimated Time: 1 hour // Wow, **really** overestimated these
+    * Estimated Time: 1 hour // Wow, **really** overestimated the models
     * Actual Time: 5 minutes
 
 ### Data Layer
-- [ ] Create `DataException` class (extends `Exception`) --- provides us with a general exception in accessing/using data files, so that we may display a critical error to the user should we encounter it
+- [x] Create `DataException` class (extends `Exception`) --- provides us with a general exception in accessing/using data files, so that we may display a critical error to the user should we encounter it
   * Time to Complete
     * Estimated Time: 5 minutes
-    * Actual Time:  
+    * Actual Time: 2 minutes 
   
 
-- [ ] Create `GuestRepository`, `HostRepository`, and `ReservationRepository` interfaces
+- [x] Create `GuestRepository`, `HostRepository`, and `ReservationRepository` interfaces
   * Time to Complete
     * Estimated Time: 45 minutes
-    * Actual Time:
+    * Actual Time: 30 minutes
   
 
 - [ ] Create `GuestFileRepository` class and tests (implements GuestRepository)
@@ -220,7 +220,7 @@ Validation
       * `private final String filePath` --- constructor arg
       * `private final String DELIMITER = ","`
       * `private final String DELIMITER_REPLACEMENT = "@@@"`
-  * Methods 
+  * Methods
     * `findAll`
     * `findById`
     * `findByEmail`
