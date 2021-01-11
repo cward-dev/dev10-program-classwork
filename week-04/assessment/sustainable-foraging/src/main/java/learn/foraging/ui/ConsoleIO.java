@@ -1,5 +1,6 @@
 package learn.foraging.ui;
 
+import learn.foraging.models.Category;
 import learn.foraging.models.Forager;
 import learn.foraging.models.State;
 import org.springframework.stereotype.Component;
@@ -87,9 +88,35 @@ public class ConsoleIO {
         }
     }
 
+    // Overloaded for Update Item
+    public int readInt(String prompt, int currentValue) {
+        while (true) {
+            String input = readString(prompt);
+            if (input.trim().length() == 0) {
+                return currentValue;
+            }
+            try {
+                return Integer.parseInt(input);
+            } catch (NumberFormatException ex) {
+                println(INVALID_NUMBER);
+            }
+        }
+    }
+
     public int readInt(String prompt, int min, int max) {
         while (true) {
             int result = readInt(prompt);
+            if (result >= min && result <= max) {
+                return result;
+            }
+            println(String.format(NUMBER_OUT_OF_RANGE, min, max));
+        }
+    }
+
+    // Overloaded for Update Item
+    public int readInt(String prompt, int min, int max, int currentValue) {
+        while (true) {
+            int result = readInt(prompt, currentValue);
             if (result >= min && result <= max) {
                 return result;
             }
@@ -178,9 +205,35 @@ public class ConsoleIO {
         }
     }
 
+    // Overloaded for Update Item
+    public BigDecimal readBigDecimal(String prompt, BigDecimal currentValue) {
+        while (true) {
+            String input = readString(prompt);
+            if (input.trim().length() == 0) {
+                return currentValue;
+            }
+            try {
+                return new BigDecimal(input);
+            } catch (NumberFormatException ex) {
+                println(INVALID_NUMBER);
+            }
+        }
+    }
+
     public BigDecimal readBigDecimal(String prompt, BigDecimal min, BigDecimal max) {
         while (true) {
             BigDecimal result = readBigDecimal(prompt);
+            if (result.compareTo(min) >= 0 && result.compareTo(max) <= 0) {
+                return result;
+            }
+            println(String.format(NUMBER_OUT_OF_RANGE, min, max));
+        }
+    }
+
+    // Overloaded for Update Item
+    public BigDecimal readBigDecimal(String prompt, BigDecimal min, BigDecimal max, BigDecimal currentValue) {
+        while (true) {
+            BigDecimal result = readBigDecimal(prompt, currentValue);
             if (result.compareTo(min) >= 0 && result.compareTo(max) <= 0) {
                 return result;
             }

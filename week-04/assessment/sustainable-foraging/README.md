@@ -269,7 +269,7 @@
 - [x] Stretch Goals
   - [x] Update an existing Item.
   - [ ] Delete an Item. (Careful with this one. If an Item is deleted, one of two things should happen: 1. All Forages that include that Item should also be deleted. Forages without a valid Item are not allowed. 2. Make it a "soft" delete. Add an Item status and hide all Items with a deleted status from search results.)
-  - [ ] Update a Forager.
+  - [x] Update a Forager.
   - [ ] Delete a Forager. (See Item deletion.)
   - [ ] Update a Forage.
   - [ ] Delete a Forage.

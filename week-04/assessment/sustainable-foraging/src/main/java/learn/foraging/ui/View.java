@@ -89,13 +89,16 @@ public class View {
     public Category getItemCategory(Item item) {
         displayHeader("Item Categories");
         int index = 1;
+        int currentValue = 0;
         for (Category c : Category.values()) {
+            if (item.getCategory() == c) {
+                currentValue = index;
+            }
             io.printf("%s: %s%n", index++, c);
         }
         index--;
-
-        String message = String.format("Select a Category [%s]: ", item.getCategory().getName());
-        return Category.values()[io.readInt(message, 1, index) - 1];
+        String message = String.format("Select a Category [%s]: ", currentValue);
+        return Category.values()[io.readInt(message, 1, index, currentValue) - 1];
     }
 
     public Item chooseItem(List<Item> items) {
@@ -169,11 +172,19 @@ public class View {
 
     public Item updateItem(Item item) {
         displayHeader(MainMenuOption.UPDATE_ITEM.getMessage());
-        Item updatedItem = item;
-        updatedItem.setCategory(getItemCategory(updatedItem));
-        updatedItem.setName(io.readRequiredString(String.format("Item Name [%s]: ", item.getName())));
+        Item updatedItem = new Item();
+
+        updatedItem.setId(item.getId());
+        updatedItem.setCategory(getItemCategory(item));
+        updatedItem.setName(io.readString(String.format("Item Name [%s]: ", item.getName())));
+        if (updatedItem.getName().trim().length() == 0) {
+            updatedItem.setName(item.getName());
+        }
         updatedItem.setDollarPerKilogram(io.readBigDecimal(String.format("$/Kg [$%s]: ",
-                item.getDollarPerKilogram().setScale(2, RoundingMode.HALF_EVEN))));
+                item.getDollarPerKilogram().setScale(2, RoundingMode.HALF_EVEN)),
+                BigDecimal.ZERO,
+                new BigDecimal("7500.00"),
+                item.getDollarPerKilogram()));
         return updatedItem;
     }
 
