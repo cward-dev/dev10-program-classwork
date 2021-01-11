@@ -130,11 +130,11 @@ Validation
 // Note: My estimated times seem very optimistic. We will see how they go (and try to give ourselves plenty of time to play catch up as we go)
 
 ### Total Time to Complete
-  * Estimated Time: 29 hours (before stretch goals)
+  * Estimated Time: 28 hours (before stretch goals)
   * Actual Time: 
 
 ### Models
-- [ ] Create `State` enumerator
+- [x] Create `State` enumerator
   * Values - one for each of the 50 states, plus Washington DC
   * Fields
     * `String name`
@@ -144,11 +144,11 @@ Validation
     * `public static getStateFromAbbreviation(String abbreviation)`
     * `public static getStateFromName(String name)`
   * Time to Complete
-    * Estimated Time: 0.5 hours
-    * Actual Time:
+    * Estimated Time: 30 minutes
+    * Actual Time: 30 minutes
   
 
-- [ ] Create `Guest` model
+- [x] Create `Guest` model
   * Fields
     * `int id`
     * `String firstName`
@@ -162,10 +162,10 @@ Validation
     * `@Override equals / hashCode`
   * Time to Complete
     * Estimated Time: 1 hour
-    * Actual Time:
+    * Actual Time: 15 minutes
   
 
-- [ ] Create `Host` model
+- [x] Create `Host` model
   * Fields
     * `String id`
     * `String lastName`
@@ -183,10 +183,10 @@ Validation
     * `@Override equals / hashCode`
   * Time to Complete
     * Estimated Time: 1 hour
-    * Actual Time:
+    * Actual Time: 5 minutes
   
 
-- [ ] Create `Reservation` model
+- [x] Create `Reservation` model
   * Fields
     * `String id`
     * `LocalDate startDate`
@@ -198,8 +198,8 @@ Validation
     * `setters`
     * `@Override equals / hashCode`
   * Time to Complete
-    * Estimated Time: 2 hours
-    * Actual Time:
+    * Estimated Time: 1 hour // Wow, **really** overestimated these
+    * Actual Time: 5 minutes
 
 ### Data Layer
 - [ ] Create `DataException` class (extends `Exception`) --- provides us with a general exception in accessing/using data files, so that we may display a critical error to the user should we encounter it
