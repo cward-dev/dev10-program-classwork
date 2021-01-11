@@ -138,7 +138,6 @@ public class ConsoleIO {
 
     public LocalDate readLocalDate(String prompt) {
         LocalDate today = LocalDate.now();
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
         LocalDate result;
 
@@ -147,9 +146,9 @@ public class ConsoleIO {
             try {
                 result = LocalDate.parse(input, formatter);
                 if (!result.isAfter(today)) return result;
-                println(String.format(INVALID_DATE, today.format(dateFormatter)));
+                println(String.format(INVALID_DATE, today.format(formatter)));
             } catch (DateTimeParseException ex) {
-                println(String.format(INVALID_DATE, today.format(dateFormatter)));
+                println(String.format(INVALID_DATE, today.format(formatter)));
             }
         }
     }

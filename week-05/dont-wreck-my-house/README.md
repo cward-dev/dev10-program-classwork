@@ -1,0 +1,486 @@
+# Assessment: Don't Wreck My House Overview
+
+## Glossary
+* **Guest**
+  * A customer. Someone who wants to book a place to stay. Guest data is provided via a zip download.
+* **Host**
+  * The accommodation provider. Someone who has a property to rent per night. Host data is provided.
+* **Location**
+  * A rental property. In Don't Wreck My House, Location and Host are combined. The application enforces a limit on one Location per Host, so we can think of a Host and Location as a single thing.
+* **Reservation**
+  * One or more days where a Guest has exclusive access to a Location (or Host). Reservation data is provided.
+* **Administrator**
+  * The application user. Guests and Hosts don't book their own Reservations. The Administrator does it for them.
+
+## Requirements
+
+### High Level Requirements
+The application user is an accommodation administrator. They pair guests to hosts to make reservations. 
+* The administrator may view existing reservations for a host.
+* The administrator may create a reservation for a guest with a host.
+* The administrator may edit existing reservations.
+* The administrator may cancel a future reservation.
+    
+### Requirements
+There are four required scenarios.
+
+#### View Reservations for Host
+Display all reservations for a host.
+* The user may enter a value that uniquely identifies a host, or they can search for a host and pick one out of a list.
+  * If the host is not found, display a message.
+  * If the host has no reservations, display a message.
+  * Show all reservations for that host.
+  * Show useful information for each reservation: the guest, dates, totals, etc.
+  * Sort reservations in a meaningful way.
+
+#### Make a Reservation
+Books accommodations for a guest at a host.
+* The user may enter a value that uniquely identifies a guest, or they can search for a guest and pick one out of a list.
+* The user may enter a value that uniquely identifies a host, or they can search for a host and pick one out of a list.
+* Show all future reservations for that host, so the administrator can choose available dates.
+* Enter a start and end date for the reservation.
+* Calculate the total, display a summary, and ask the user to confirm. The reservation total is based on the host's standard rate and weekend rate. For each day in the reservation, determine if it is a weekday or a weekend. If it's a weekday, the standard rate applies. If it's a weekend, the weekend rate applies.
+* On confirmation, save the reservation.
+
+Validation
+* Guest, host, and start and end dates are required.
+* The guest and host must already exist in the "database". Guests and hosts cannot be created.
+* The start date must come before the end date.
+* The reservation may never overlap existing reservation dates.
+* The start date must be in the future.
+
+#### Edit a Reservation
+Edits an existing reservation.
+* Find a reservation.
+* Start and end date can be edited. No other data can be edited.
+* Recalculate the total, display a summary, and ask the user to confirm.
+
+Validation
+* Guest, host, and start and end dates are required.
+* The guest and host must already exist in the "database". Guests and hosts cannot be created.
+* The start date must come before the end date.
+* The reservation may never overlap existing reservation dates.
+
+#### Cancel a Reservation
+Cancel a future reservation.
+* Find a reservation.
+* Only future reservations are shown.
+* On success, display a message.
+Validation
+* You cannot cancel a reservation that's in the past.
+
+### Technical Requirements
+* Must be a Maven project.
+* Spring dependency injection configured with either XML or annotations.
+* All financial math must use `BigDecimal`.
+* Dates must be `LocalDate`, never strings.
+* All file data must be represented in models in the application.
+* Reservation identifiers are unique per host, not unique across the entire application. Effectively, the combination of a reservation identifier and a host identifier is required to uniquely identify a reservation.
+
+#### File Format
+* The data file format is bad, but it's required. You may not change the file formats or the file delimiters. You must use the files provided. Guests are stored in their own comma-delimited file, `guests.csv`, with a header row. Hosts are stored in their own comma-delimited file, `hosts.csv`, with a header row.
+* Reservations are stored across many files, one for each host. A host reservation file name has the format: `{host-identifier}.csv`.
+
+#### Examples
+* Reservations for host c6567347-6c57-4658-a2c7-50040eeeb80f are stored in `c6567347-6c57-4658-a2c7-50040eeeb80f.csv`
+* Reservations for host 54508cfa-4f67-4de8-9437-6f27d65b0af0 are stored in `54508cfa-4f67-4de8-9437-6f27d65b0af0.csv`
+* Reservations for host 6a3ef437-289c-40a9-b88a-dd70fad3fdbc are stored in `6a3ef437-289c-40a9-b88a-dd70fad3fdbc.csv`
+
+## Testing
+* All data components must be thoroughly tested. Tests must always run successfully regardless of the data starting point, so it's important to establish known good state. Never test with "production" data.
+* All domain components must be thoroughly tested using test doubles. Do not use file repositories for domain testing.
+* User interface testing is not required.
+
+## Approach
+* Plan before you write code. This is a large project. It will be difficult to achieve success without a plan.
+* Ask questions. The specification isn't perfect. You must ask questions to clarify. Don't make assumptions when things aren't clear.
+* Test as you go. If you wait to test until the end, three things happen:
+  1. Your tests aren't as good.
+  2. The last bit of development becomes a slog. No one loves 100% testing. Spread the testing out over several days.
+  3. You gain false confidence because you don't see domain failures that are prevented in the UI. Remember, if we throw away the UI, the domain should still prevent all invalid transactions.
+  
+## Deliverables
+* A schedule of concrete tasks. Tasks should contain time estimates and should never be more than 4 hours.
+* Class diagram (informal is okay)
+* Sequence diagrams or flow charts (optional, but encouraged)
+* A Java Maven project that contains everything needed to run without error
+* Test suite
+
+## Stretch Goals
+* Make reservation identifiers unique across the entire application.
+* Allow the user to create, edit, and delete guests.
+* Allow the user to create, edit, and delete hosts.
+* Display reservations for a guest.
+* Display all reservations for a state, city, or zip code.
+* Implement another set of repositories that store data in JSON format. In this approach, you don't want multiple files for reservations. Consider how you might migrate existing data to the JSON format safely.
+
+# Project Plan
+
+## Expected Workflow
+- [ ] Day 1 (Monday): Planning and prepare, begin setting up models
+- [ ] Day 2 (Tuesday): Finish models, begin data layer development
+- [ ] Day 3 (Wednesday): Progress presentation, finish data layer, begin domain layer development
+- [ ] Day 4 (Thursday): Finish domain layer, go through testing and ensure that tests are comprehensive
+- [ ] Day 5 (Friday): Progress presentation, begin ui layer development
+- [ ] Day 6 (Saturday): Finish ui layer, let the bug hunt begin (don't forget targeted tests!)
+- [ ] Day 7 (Sunday): Polish
+
+## Tasks
+
+// Note: My times seem ex
+
+### Total Time to Complete
+  * Estimated Time: 29 hours (before stretch goals)
+  * Actual Time: 
+
+### Models
+- [ ] Create `State` enumerator
+  * Values - one for each of the 50 states, plus Washington DC
+  * Fields
+    * `String name`
+    * `String abbreviation`
+  * Methods
+    * `getters`
+    * `public static getStateFromAbbreviation(String abbreviation)`
+    * `public static getStateFromName(String name)`
+  * Time to Complete
+    * Estimated Time: 0.5 hours
+    * Actual Time:
+  
+
+- [ ] Create `Guest` model
+  * Fields
+    * `int id`
+    * `String firstName`
+    * `String lastName`
+    * `String email`
+    * `String phone`
+    * `State state`
+  * Methods
+    * `getters`
+    * `setters`
+    * `@Override equals / hashCode`
+  * Time to Complete
+    * Estimated Time: 1 hour
+    * Actual Time:
+  
+
+- [ ] Create `Host` model
+  * Fields
+    * `String id`
+    * `String lastName`
+    * `String email`
+    * `String phone`
+    * `String address`
+    * `String city`
+    * `State state`
+    * `int postalCode`
+    * `BigDecimal standardRate`
+    * `BigDecimal weekendRate`
+  * Methods
+    * `getters`
+    * `setters`
+    * `@Override equals / hashCode`
+  * Time to Complete
+    * Estimated Time: 1 hour
+    * Actual Time:
+  
+
+- [ ] Create `Reservation` model
+  * Fields
+    * `String id`
+    * `LocalDate startDate`
+    * `LocalDate endDate`
+    * `int guestID`
+    * `BigDecimal total`
+  * Methods
+    * `getters`
+    * `setters`
+    * `@Override equals / hashCode`
+  * Time to Complete
+    * Estimated Time: 2 hours
+    * Actual Time:
+
+### Data Layer
+- [ ] Create `DataException` class (extends `Exception`)
+  * Time to Complete
+    * Estimated Time: 5 minutes
+    * Actual Time:  
+  
+
+- [ ] Create `GuestRepository`, `HostRepository`, and `ReservationRepository` interfaces
+  * Time to Complete
+    * Estimated Time: 45 minutes
+    * Actual Time:
+  
+
+- [ ] Create `GuestFileRepository` class and tests
+  * Dependencies: n/a
+    * Fields
+      * `private static final String HEADER = "guest_id,first_name,last_name,email,phone,state"`
+      * `private final String filePath` --- constructor arg
+      * `private final String DELIMITER = ","`
+      * `private final String DELIMITER_REPLACEMENT = "@@@"`
+  * Methods 
+    * `findAll`
+    * `findById`
+    * `findByEmail`
+    * `add`
+    * `update`
+    * `delete`
+    * Private helpers: 
+      * `writeAll`
+      * `serialize`
+      * `deserialize`
+      * `clean`
+      * `restore`
+  * Time to Complete
+    * Estimated Time: 2 hours
+    * Actual Time:    
+  
+
+- [ ] Create `HostFileRepository` class and tests
+  * Dependencies: n/a
+  * Fields
+    * `private static final String HEADER = "guest_id,first_name,last_name,email,phone,state"`
+    * `private final String filePath` --- constructor arg
+    * `private final String DELIMITER = ","`
+    * `private final String DELIMITER_REPLACEMENT = "@@@"`
+  * Methods
+    * `findAll`
+    * `findById`
+    * `findByEmail`
+    * `add`
+    * `update`
+    * `delete`
+    * Private helpers:
+      * `writeAll`
+      * `serialize`
+      * `deserialize`
+      * `clean`
+      * `restore`
+  * Time to Complete
+    * Estimated Time: 2 hours
+    * Actual Time:  
+  
+
+- [ ] Create `ReservationFileRepository` class and tests
+  * Dependencies: `GuestRepository`, `HostRepository`
+  * Fields
+    * `private static final String HEADER = "id,start_date,end_date,guest_id,total"`
+    * `private final String directory` --- constructor arg
+    * `private final String DELIMITER = ","`
+    * `private final String DELIMITER_REPLACEMENT = "@@@"`
+    * `private final GuestRepository guestRepository` --- constructor arg
+    * `private final HostRepository hostRepository` --- constructor arg
+  * Methods
+    * `findAll` --- will implement towards the end if time allows (for stretch goals)
+    * `findById` --- will implement towards the end if time allows (for stretch goals)
+    * `findByHost`
+    * `add`
+    * `update`
+    * `delete`
+    * Private helpers:
+      * `writeAll`
+      * `serialize`
+      * `deserialize`
+      * `clean`
+      * `restore`
+  * Time to Complete
+    * Estimated Time: 4 hours
+    * Actual Time: 
+  
+### Domain Layer
+- [ ] Create `GuestService` class and tests
+  * Dependencies: `GuestFileRepository`
+  * Fields
+    * `private final GuestRepository guestRepository` --- constructor arg
+  * Methods
+    * `findAll`
+    * `findById`
+    * `findByEmail`
+    * `add`
+    * `update`
+    * `delete`
+    * Private helpers:
+      * `validate`
+      * `checkForDuplicate`
+  * Time to Complete
+    * Estimated Time: 1.5 hours
+    * Actual Time:
+
+
+- [ ] Create `HostService` class and tests
+  * Dependencies: `HostFileRepository`
+  * Fields
+    * `private final HostRepository hostRepository` --- constructor arg
+  * Methods
+    * `findAll`
+    * `findById`
+    * `findByEmail`
+    * `add`
+    * `update`
+    * `delete`
+    * Private helpers:
+      * `validate`
+      * `checkForDuplicate`
+  * Time to Complete
+    * Estimated Time: 1.5 hours
+    * Actual Time:
+
+
+- [ ] Create `ReservationService` class and tests
+  * Dependencies: `ReservationRepository`, `GuestRepository`, `HostRepository`
+  * Fields
+    * `private final ReservationRepository reservationRepository` --- constructor arg
+    * `private final GuestRepository guestRepository` --- constructor arg
+    * `private final HostRepository hostRepository` --- constructor arg
+    * `findAll` --- will implement towards the end if time allows (for stretch goals)
+    * `findById` --- will implement towards the end if time allows (for stretch goals)
+    * `findByHost`
+    * `add`
+    * `update`
+    * `delete`
+  * Methods
+    * `findAll` --- will implement towards the end if time allows (for stretch goals)
+    * `findById` --- will implement towards the end if time allows (for stretch goals)
+    * `findByHost`
+    * `add`
+    * `update`
+    * `delete`
+    * Private helpers:
+      * `validate`
+      * `checkForOverlap`
+  * Time to Complete
+    * Estimated Time: 3 hours
+    * Actual Time: 
+
+  
+- [ ] Create `Result<T>` class (extends `Response`)
+  * Fields
+    * `private T payload`
+    * `getter`
+    * `setter`
+  * Time to Complete
+    * Estimated Time: 0.25 hours
+    * Actual Time:
+  
+
+- [ ] Create `Response` class (extends `Response`)
+  * Fields
+    * `private ArrayList<String> messages = new ArrayList<>()`
+    * `public boolean isSuccess` --- `(return messages.size() == 0)`
+    * `public List<String> getErrorMessages` --- `(return new ArrayList<>(messages))`
+    * `public void addErrorMessage(String message)` --- `(messages.add(message))`
+  * Time to Complete
+    * Estimated Time: 0.5 hours
+    * Actual Time:
+
+### UI Layer
+- [ ] Create `Controller` class
+  * Dependencies: `GuestService`, `HostService`, `ReservationService`, `View`
+  * Fields
+    * `private final GuestService guestService` --- constructor arg
+    * `private final HostService guestService` --- constructor arg
+    * `private final ReservationService reservationService` --- constructor arg
+    * `private final View view` --- constructor arg
+  * Methods
+    * `run` --- the application will be run from this method 
+    * Private methods:
+      * `runAppLoop` --- will run methods based on menu selections in a loop until EXIT is selected
+      * `viewReservationsByHost`
+      * `makeReservation`
+      * `editReservation`
+      * `cancelReservation`
+      * // If time allows, will add more viewing, creating, updating, and deleting methods for Guest and Host objects
+      * Private helpers:
+        * `getGuest`
+        * `getHost`
+        * `getReservation`
+  * Time to Complete
+    * Estimated Time: 2 hours
+    * Actual Time:
+  
+
+- [ ] Create `ConsoleIO` class
+  * Dependencies: n/a
+  * Fields
+    * `private static final String INVALID_(CASE)` --- will give [Invalid] message for each type of invalid input
+    * `private final Scanner scanner`
+    * `private DateTimeFormatter formatter` --- "MM/dd/yyyy"
+  * Methods
+    * `print`
+    * `println`
+    * `printf`
+    * `readString`
+    * `readRequiredString`
+    * `readInt`
+    * `readInt` --- Overloaded, with min and max parameters
+    * `readBoolean`
+    * `readState`
+    * `readLocalDate`
+    * `readBigDecimal`
+  * Time to Complete
+    * Estimated Time: 2 hours
+    * Actual Time:
+
+- [ ] Create `MainMenuOption` enumerator
+  * Dependencies:
+  * Values
+    * `EXIT`
+    * `VIEW_RESERVATIONS_FOR_HOST`
+    * `ADD_RESERVATION`
+    * `UPDATE_RESERVATION`
+    * `DELETE_RESERVATION`
+  * Fields
+    * `private int value` --- constructor arg
+    * `private String message` --- constructor arg
+    * `private boolean hidden` --- constructor arg
+  * Methods
+    * `public static MainMenuOption fromValue(int value)` --- (get MainMenuOption.Value from int value)
+    * `getters`
+  * Time to Complete
+    * Estimated Time: 1 hours
+    * Actual Time:
+
+- [ ] Create `View` class
+  * Dependencies: `ConsoleIO`
+  * Fields
+    * `private final ConsoleIO io` --- constructor arg
+  * Methods
+    * `public MainMenuOption selectMainMenuOption`
+    * `public LocalDate getReservationStartDate` // will likely overload for update feature
+    * `public LocalDate getReservationEndDate(LocalDate startDate)` // will likely overload for update feature
+    * `public Category chooseState`
+    * `public String getHostEmail`
+    * `public String getGuestEmail`
+    * `private String getEmail`
+    * `public int getReservationId`
+    * `public Reservation makeReservation`
+    * `public Reservation updateReservation(Reservation reservation)`
+    * `public Reservation cancelReservation(Reservation reservation)`
+    * `public void enterToContinue`
+    * `public displayHeader`
+    * `displayException`
+    * `displayStatus` // will likely overload for List<String> and just String
+    * `displayReservations`
+    * // If time allows, will add more viewing, creating, updating, and deleting methods for Guest and Host objects
+  * Time to Complete
+    * Estimated Time: 3 hours
+    * Actual Time:
+
+### Inject Spring Dependency
+- [ ] Use Annotations to perform Spring dependency injection
+* Time to Complete
+  * Estimated Time: 1 hour
+  * Actual Time:
+
+## Additional Tasks
+
+### Bugs found
+- [ ] tbd
+  * Issue: 
+  * Solution: 
+
+### Research Required
+- [ ] tbd
