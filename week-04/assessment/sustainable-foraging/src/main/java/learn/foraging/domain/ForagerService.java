@@ -56,7 +56,7 @@ public class ForagerService {
         boolean isDuplicate = checkForDuplicate(forager, true);
         if (isDuplicate) {
             result.addErrorMessage(String.format("Forager %s %s from %s already exists.",
-                    forager.getFirstName(), forager.getLastName(), forager.getState().getAbbreviation()));
+                    forager.getFirstName().trim(), forager.getLastName().trim(), forager.getState().getAbbreviation()));
             return result;
         }
 
