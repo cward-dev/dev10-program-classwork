@@ -26,8 +26,48 @@ public class ItemService {
     }
 
     public Result<Item> add(Item item) throws DataException {
+        Result<Item> result = validate(item);
+        if (!result.isSuccess()) {
+            return result;
+        }
 
+        boolean duplicate = checkForDuplicate(item);
+        if (duplicate) {
+            result.addErrorMessage(String.format("Item '%s' already exists.", item.getName()));
+            return result;
+        }
+
+        item = repository.add(item);
+        result.setPayload(item);
+
+        return result;
+    }
+
+    public Result<Item> update(Item item) throws DataException {
+        Result<Item> result = validate(item);
+        if (!result.isSuccess()) {
+            return result;
+        }
+
+        boolean duplicate = checkForDuplicate(item, true);
+        if (duplicate) {
+            result.addErrorMessage(String.format("Item '%s' already exists.", item.getName()));
+            return result;
+        }
+
+        boolean success = repository.update(item);
+        if (!success) {
+            result.addErrorMessage(String.format("Item Id %s not found.", item.getId()));
+        }
+        result.setPayload(item);
+
+        return result;
+
+    }
+
+    private Result<Item> validate(Item item) {
         Result<Item> result = new Result<>();
+
         if (item == null) {
             result.addErrorMessage("Item must not be null.");
             return result;
@@ -35,9 +75,6 @@ public class ItemService {
 
         if (item.getName() == null || item.getName().isBlank()) {
             result.addErrorMessage("Item name is required.");
-        } else if (repository.findAll().stream()
-                .anyMatch(i -> i.getName().equalsIgnoreCase(item.getName()))) {
-            result.addErrorMessage(String.format("Item '%s' is a duplicate.", item.getName()));
         }
 
         if (item.getCategory() == null) {
@@ -51,12 +88,28 @@ public class ItemService {
             result.addErrorMessage("%/Kg must be between 0.00 and 7500.00.");
         }
 
-        if (!result.isSuccess()) {
-            return result;
+        return result;
+    }
+
+    private boolean checkForDuplicate(Item item) {
+        return repository.findAll().stream()
+                .anyMatch(i -> i.getName().equalsIgnoreCase(item.getName()));
+    }
+
+    // Overloaded for update
+    private boolean checkForDuplicate(Item item, boolean forUpdate) {
+        List<Item> items = repository.findAll();
+
+        if (forUpdate) {
+            for (int i = 0; i < items.size(); i++) {
+                if (items.get(i).getId() == item.getId()) {
+                    items.remove(i);
+                    break;
+                }
+            }
         }
 
-        result.setPayload(repository.add(item));
-
-        return result;
+        return items.stream()
+                .anyMatch(i -> i.getName().equalsIgnoreCase(item.getName()));
     }
 }

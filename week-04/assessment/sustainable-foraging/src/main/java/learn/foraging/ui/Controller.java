@@ -9,8 +9,10 @@ import learn.foraging.models.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class Controller {
@@ -68,6 +70,9 @@ public class Controller {
                     break;
                 case ADD_ITEM:
                     addItem();
+                    break;
+                case UPDATE_ITEM:
+                    updateItem();
                     break;
                 case REPORT_KG_PER_ITEM:
                     reportKgPerItem();
@@ -128,6 +133,7 @@ public class Controller {
             String successMessage = String.format("Forager %s created.", result.getPayload().getId());
             view.displayStatus(true, successMessage);
         }
+        view.enterToContinue();
     }
 
     private void addItem() throws DataException {
@@ -141,6 +147,22 @@ public class Controller {
         }
     }
 
+    private void updateItem() throws DataException {
+        Category category = view.getItemCategory();
+        Item item = view.chooseItem(itemService.findByCategory(category));
+
+        item = view.updateItem(item);
+
+        Result<Item> result = itemService.update(item);
+        if (!result.isSuccess()) {
+            view.displayStatus(false, result.getErrorMessages());
+        } else {
+            String successMessage = String.format("Item %s updated.", result.getPayload().getId());
+            view.displayStatus(true, successMessage);
+        }
+        view.enterToContinue();
+    }
+
     private void generate() throws DataException {
         GenerateRequest request = view.getGenerateRequest();
         if (request != null) {
@@ -151,17 +173,29 @@ public class Controller {
 
     private void reportKgPerItem() {
         LocalDate date = view.getForageDate();
-        List<String> itemsKgCollected =
-                reportService.reportKilogramsOfEachItemCollected(date);
-        view.displayReport(itemsKgCollected, date, "Kilograms of Each Item");
+
+        Result<Map<Item, Double>> itemsKgCollectedResult = reportService.getKilogramsOfEachItemCollected(date);
+        Result<List<String>> reportLines = ConsoleIOReport.reportKilogramsOfEachItemCollected(itemsKgCollectedResult);
+
+        if (!reportLines.isSuccess()) {
+            view.displayStatus(false, reportLines.getErrorMessages());
+        } else {
+            view.displayReport(reportLines.getPayload(), date, "Kilograms of Each Item");
+        }
         view.enterToContinue();
     }
 
     private void reportTotalValueEachCategory() {
         LocalDate date = view.getForageDate();
-        List<String> totalValueOfEachCategoryCollected =
-                reportService.reportTotalValueOfEachCategoryCollected(date);
-        view.displayReport(totalValueOfEachCategoryCollected, date, "Total Value of Each Category");
+
+        Result<Map<String, BigDecimal>> valueOfCategoriesCollectedResult = reportService.getTotalValueOfEachCategoryCollected(date);
+        Result<List<String>> result = ConsoleIOReport.reportTotalValueOfEachCategoryCollected(valueOfCategoriesCollectedResult);
+
+        if (!result.isSuccess()) {
+            view.displayStatus(false, result.getErrorMessages());
+        } else {
+            view.displayReport(result.getPayload(), date, "Total Value of Each Category");
+        }
         view.enterToContinue();
     }
 

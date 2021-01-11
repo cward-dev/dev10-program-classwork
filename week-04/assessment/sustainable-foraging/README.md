@@ -236,6 +236,11 @@
   * Solution
     * Added a validation if statement to ensure that Category is not null. If null, an error message is added to result.
     * Added test `ItemServiceTest::shouldNotSaveNullCategory` to confirm behavior is correct
+- [x] `ForageFileRepository::deserialize` attaches Item and Forager objects with correct Id but otherwise null values
+  * Issue
+    * Generates errors when using `findByDate` or other methods to generate a List of Forage objects and view their fields
+  * Solution
+    * Modified the deserialize method so that it searches for each Forage object's attached Forager and Item objects by Id, and inserts them
 
 ### Research
 - [ ] TBD

@@ -10,4 +10,6 @@ public interface ItemRepository {
     Item findById(int id);
 
     Item add(Item item) throws DataException;
+
+    boolean update(Item item) throws DataException;
 }

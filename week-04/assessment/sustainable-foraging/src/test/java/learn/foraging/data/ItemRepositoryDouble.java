@@ -43,4 +43,21 @@ public class ItemRepositoryDouble implements ItemRepository {
         items.add(item);
         return item;
     }
+
+    @Override
+    public boolean update(Item item) throws DataException {
+
+        if (item == null) {
+            return false;
+        }
+
+        for (int i = 0; i < items.size(); i++) {
+            if (item.getId() == items.get(i).getId()) {
+                items.set(i, item);
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

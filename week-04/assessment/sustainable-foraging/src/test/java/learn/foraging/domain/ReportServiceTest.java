@@ -1,15 +1,13 @@
 package learn.foraging.domain;
 
-import learn.foraging.data.DataException;
-import learn.foraging.data.ForageRepository;
-import learn.foraging.data.ForageRepositoryDouble;
+import learn.foraging.data.*;
 import learn.foraging.models.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -60,25 +58,32 @@ class ReportServiceTest {
     }
 
     @Test
-    void shouldGetReportOfKgCollected() {
-        List<String> itemsKgCollected = reports.reportKilogramsOfEachItemCollected(date);
-        assertEquals("|  ID#|  Category|      Item Name| Kilograms |", itemsKgCollected.get(0));
-        assertEquals("|    1|    Edible|          Ramps|   20.00kg |", itemsKgCollected.get(1));
-        assertEquals("|    2|    Edible|       Purslane|   21.85kg |", itemsKgCollected.get(2));
-        assertEquals("|    8|    Edible| Chicken of the|   12.50kg |", itemsKgCollected.get(3));
+    void shouldGetMapOfAllItemsAndAmountCollectedOnDate() {
+        Result<Map<Item, Double>> actual = reports.getKilogramsOfEachItemCollected(date);
+        assertTrue(actual.isSuccess());
+        assertEquals(20.00, actual.getPayload().get(RAMPS));
+        assertEquals(21.85, actual.getPayload().get(PURSLANE));
+        assertEquals(12.50, actual.getPayload().get(MUSHROOM));
+    }
 
-        itemsKgCollected = reports.reportKilogramsOfEachItemCollected(LocalDate.of(2020,6,26));
-        assertEquals("|    1|    Edible|    Chanterelle|    1.25kg |", itemsKgCollected.get(1));
-
+    @Test
+    void shouldReturnNullPayloadIfNoForagesForReportOfKgCollected() {
+        Result<Map<Item, Double>> actual = reports.getKilogramsOfEachItemCollected(LocalDate.of(1987,1,1));
+        assertFalse(actual.isSuccess());
+        assertNull(actual.getPayload());
     }
 
     @Test
     void shouldGetReportOfTotalValueByCategory() {
-        List<String> totalValueOfEachCategoryCollected = reports.reportTotalValueOfEachCategoryCollected(date);
-        assertEquals("|                          Category|   Total Value |", totalValueOfEachCategoryCollected.get(0));
-        assertEquals("|                            Edible|       $351.33 |", totalValueOfEachCategoryCollected.get(1));
+        Result<Map<String, BigDecimal>> actual = reports.getTotalValueOfEachCategoryCollected(date);
+        assertTrue(actual.isSuccess());
+        assertEquals(351.33, actual.getPayload().get(Category.EDIBLE.getName()).doubleValue(), 0.01);
+    }
 
-        totalValueOfEachCategoryCollected = reports.reportTotalValueOfEachCategoryCollected(LocalDate.of(2020,6,26));
-        assertEquals("|                            Edible|        $12.49 |", totalValueOfEachCategoryCollected.get(1));
+    @Test
+    void shouldReturnNullPayloadIfNoForagesForReportOfTotalValueByCategory() {
+        Result<Map<String, BigDecimal>> actual = reports.getTotalValueOfEachCategoryCollected(LocalDate.of(1987,1,1));
+        assertFalse(actual.isSuccess());
+        assertNull(actual.getPayload());
     }
 }

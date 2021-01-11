@@ -4,6 +4,7 @@ import learn.foraging.models.*;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -78,7 +79,21 @@ public class View {
             io.printf("%s: %s%n", index++, c);
         }
         index--;
+
         String message = String.format("Select a Category [1-%s]: ", index);
+        return Category.values()[io.readInt(message, 1, index) - 1];
+    }
+
+    //Overloaded for update
+    public Category getItemCategory(Item item) {
+        displayHeader("Item Categories");
+        int index = 1;
+        for (Category c : Category.values()) {
+            io.printf("%s: %s%n", index++, c);
+        }
+        index--;
+
+        String message = String.format("Select a Category [%s]: ", item.getCategory().getName());
         return Category.values()[io.readInt(message, 1, index) - 1];
     }
 
@@ -131,6 +146,16 @@ public class View {
         item.setName(io.readRequiredString("Item Name: "));
         item.setDollarPerKilogram(io.readBigDecimal("$/Kg: ", BigDecimal.ZERO, new BigDecimal("7500.00")));
         return item;
+    }
+
+    public Item updateItem(Item item) {
+        displayHeader(MainMenuOption.UPDATE_ITEM.getMessage());
+        Item updatedItem = item;
+        updatedItem.setCategory(getItemCategory(updatedItem));
+        updatedItem.setName(io.readRequiredString(String.format("Item Name [%s]: ", item.getName())));
+        updatedItem.setDollarPerKilogram(io.readBigDecimal(String.format("$/Kg [$%s]: ",
+                item.getDollarPerKilogram().setScale(2, RoundingMode.HALF_EVEN))));
+        return updatedItem;
     }
 
     public GenerateRequest getGenerateRequest() {

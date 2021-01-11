@@ -21,8 +21,16 @@ public class ForageFileRepository implements ForageRepository {
     private final String DELIMITER = ",";
     private final String DELIMITER_REPLACEMENT = "@@@";
 
-    public ForageFileRepository(@Value("${forageFilePath}")String directory) {
+    private final ForagerRepository foragerRepository;
+    private final ItemRepository itemRepository;
+
+    public ForageFileRepository(
+            @Value("${forageFilePath}") String directory,
+            ForagerRepository foragerRepository,
+            ItemRepository itemRepository) {
         this.directory = directory;
+        this.foragerRepository = foragerRepository;
+        this.itemRepository = itemRepository;
     }
 
     @Override
@@ -102,12 +110,19 @@ public class ForageFileRepository implements ForageRepository {
         result.setDate(date);
         result.setKilograms(Double.parseDouble(fields[3]));
 
-        Forager forager = new Forager();
-        forager.setId(fields[1]);
+        Forager forager = foragerRepository.findById(fields[1]);
+        if (forager == null) {
+            forager = new Forager();
+            forager.setId(fields[1]);
+        }
         result.setForager(forager);
 
-        Item item = new Item();
-        item.setId(Integer.parseInt(fields[2]));
+        Item item = itemRepository.findById(Integer.parseInt(fields[2]));
+        if (item == null) {
+            item = new Item();
+            item.setId(Integer.parseInt(fields[2]));
+        }
+
         result.setItem(item);
         return result;
     }

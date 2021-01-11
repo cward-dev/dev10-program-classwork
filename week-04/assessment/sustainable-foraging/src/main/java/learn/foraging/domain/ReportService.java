@@ -1,6 +1,7 @@
 package learn.foraging.domain;
 
 import learn.foraging.data.ForageRepository;
+import learn.foraging.data.ForagerRepository;
 import learn.foraging.data.ItemRepository;
 import learn.foraging.models.Forage;
 import learn.foraging.models.Item;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -20,56 +22,47 @@ public class ReportService {
 
     private final ForageRepository forageRepository;
 
+    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+
+
     public ReportService(ForageRepository forageRepository) {
         this.forageRepository = forageRepository;
     }
 
-    public List<String> reportKilogramsOfEachItemCollected(LocalDate date) {
-        Map<Item, Double> itemsKgCollected = getKilogramsOfEachItemCollected(date);
+    public Result<Map<Item, Double>> getKilogramsOfEachItemCollected(LocalDate date) {
+        List<Forage> forages = forageRepository.findByDate(date);
 
-        List<String> reportLines = new ArrayList<>();
-        reportLines.add(String.format("| %4s| %9s| %14s| %9s |", "ID#", "Category", "Item Name", "Kilograms"));
+        Result<Map<Item, Double>> result = new Result<>();
 
-        itemsKgCollected.entrySet().stream()
-                .sorted(Comparator.comparing(e -> e.getKey().getId()))
-                .forEach(e -> reportLines.add(String.format("| %4s| %9s| %14s| %7.2fkg |",
-                        e.getKey().getId(),
-                        e.getKey().getCategory().getName()
-                                .substring(0, Math.min(e.getKey().getCategory().getName().length(), 9)),
-                        e.getKey().getName()
-                                .substring(0, Math.min(e.getKey().getName().length(), 14)),
-                        e.getValue())));
+        if (forages == null || forages.size() == 0) {
+            result.addErrorMessage(String.format("No forages are recorded for %s.", date.format(dateFormatter)));
+            return result;
+        }
 
-        return reportLines;
-    }
-
-    public List<String> reportTotalValueOfEachCategoryCollected(LocalDate date) {
-        Map<String, BigDecimal> valueOfCategoriesCollected = getTotalValueOfEachCategoryCollected(date);
-
-        List<String> reportLines = new ArrayList<>();
-
-        reportLines.add(String.format("| %33s| %13s |", "Category", "Total Value"));
-        valueOfCategoriesCollected.entrySet().stream()
-                .sorted(Map.Entry.comparingByKey())
-                .forEach(e -> reportLines.add(String.format("| %33s| %13s |",
-                        e.getKey(),
-                        String.format("$%s", e.getValue().setScale(2, RoundingMode.HALF_EVEN)))));
-
-        return reportLines;
-    }
-
-    public Map<Item, Double> getKilogramsOfEachItemCollected(LocalDate date) {
-        return forageRepository.findByDate(date).stream()
+        result.setPayload(forages.stream()
                 .filter(f -> f.getDate().equals(date))
                 .sorted(Comparator.comparing(f -> f.getItem().getId()))
-                .collect(Collectors.groupingBy(Forage::getItem, Collectors.summingDouble(Forage::getKilograms)));
+                .collect(Collectors.groupingBy(Forage::getItem, Collectors.summingDouble(Forage::getKilograms))));
+
+        return result;
     }
 
-    public Map<String, BigDecimal> getTotalValueOfEachCategoryCollected(LocalDate date) {
-        return getKilogramsOfEachItemCollected(date).entrySet().stream()
+    public Result<Map<String, BigDecimal>> getTotalValueOfEachCategoryCollected(LocalDate date) {
+        Result<Map<Item, Double>> itemsAndKgCollectedResult = getKilogramsOfEachItemCollected(date);
+
+        Result<Map<String, BigDecimal>> result = new Result<>();
+
+        if (!itemsAndKgCollectedResult.isSuccess()) {
+            itemsAndKgCollectedResult.getErrorMessages().forEach(result::addErrorMessage);
+            return result;
+        }
+
+        result.setPayload(itemsAndKgCollectedResult.getPayload().entrySet().stream()
                 .collect(Collectors.groupingBy(e -> e.getKey().getCategory().getName(), Collectors.reducing(
                         BigDecimal.ZERO,
                         e -> e.getKey().getDollarPerKilogram().multiply(new BigDecimal(e.getValue())),
-                        BigDecimal::add)));
+                        BigDecimal::add))));
+
+        return result;
     }
 }

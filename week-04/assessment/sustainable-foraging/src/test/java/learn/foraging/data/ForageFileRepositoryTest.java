@@ -27,7 +27,7 @@ class ForageFileRepositoryTest {
 
     final LocalDate date = LocalDate.of(2020, 6, 26);
 
-    ForageFileRepository repository = new ForageFileRepository(TEST_DIR_PATH);
+    ForageFileRepository repository = new ForageFileRepository(TEST_DIR_PATH, new ForagerFileRepository("./data/test/foragers-test.csv"), new ItemFileRepository("./data/items-test"));
 
     @BeforeEach
     void setup() throws IOException {
