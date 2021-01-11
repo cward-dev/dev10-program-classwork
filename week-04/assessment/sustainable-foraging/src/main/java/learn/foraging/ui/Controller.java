@@ -175,7 +175,8 @@ public class Controller {
         LocalDate date = view.getForageDate();
 
         Result<Map<Item, Double>> itemsKgCollectedResult = reportService.getKilogramsOfEachItemCollected(date);
-        Result<List<String>> reportLines = ConsoleIOReport.reportKilogramsOfEachItemCollected(itemsKgCollectedResult);
+
+        Result<List<String>> reportLines = view.getReportLinesForKgEachItem(itemsKgCollectedResult);
 
         if (!reportLines.isSuccess()) {
             view.displayStatus(false, reportLines.getErrorMessages());
@@ -189,7 +190,7 @@ public class Controller {
         LocalDate date = view.getForageDate();
 
         Result<Map<String, BigDecimal>> valueOfCategoriesCollectedResult = reportService.getTotalValueOfEachCategoryCollected(date);
-        Result<List<String>> result = ConsoleIOReport.reportTotalValueOfEachCategoryCollected(valueOfCategoriesCollectedResult);
+        Result<List<String>> result = view.getReportLinesForTotalValueEachCategory(valueOfCategoriesCollectedResult);
 
         if (!result.isSuccess()) {
             view.displayStatus(false, result.getErrorMessages());

@@ -10,9 +10,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-public class ConsoleIOReport {
+public class ConsoleFormatReport {
 
-    public static Result<List<String>> reportKilogramsOfEachItemCollected(Result<Map<Item, Double>> itemsKgCollectedResult) {
+    public Result<List<String>> reportKilogramsOfEachItemCollected(Result<Map<Item, Double>> itemsKgCollectedResult) {
         Result<List<String>> result = new Result<>();
 
         if (!itemsKgCollectedResult.isSuccess()) {
@@ -36,8 +36,7 @@ public class ConsoleIOReport {
         return result;
     }
 
-    public static Result<List<String>> reportTotalValueOfEachCategoryCollected(Result<Map<String, BigDecimal>> valueOfCategoriesCollectedResult) {
-
+    public Result<List<String>> reportTotalValueOfEachCategoryCollected(Result<Map<String, BigDecimal>> valueOfCategoriesCollectedResult) {
         Result<List<String>> result = new Result<>();
 
         if (!valueOfCategoriesCollectedResult.isSuccess()) {

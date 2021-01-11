@@ -1,5 +1,6 @@
 package learn.foraging.ui;
 
+import learn.foraging.domain.Result;
 import learn.foraging.models.*;
 import org.springframework.stereotype.Component;
 
@@ -239,5 +240,17 @@ public class View {
         displayHeader(String.format("%s Collected on %s", reportTitle, date.format(dateFormatter)));
 
         reportLines.forEach(io::println);
+    }
+
+    public Result<List<String>> getReportLinesForKgEachItem(Result<Map<Item, Double>> itemsKgCollectedResult) {
+        ConsoleFormatReport formatReport = new ConsoleFormatReport();
+
+        return formatReport.reportKilogramsOfEachItemCollected(itemsKgCollectedResult);
+    }
+
+    public Result<List<String>> getReportLinesForTotalValueEachCategory(Result<Map<String, BigDecimal>> valueOfCategoriesCollectedResult) {
+        ConsoleFormatReport formatReport = new ConsoleFormatReport();
+
+        return formatReport.reportTotalValueOfEachCategoryCollected(valueOfCategoriesCollectedResult);
     }
 }
