@@ -46,8 +46,8 @@ public class Forager {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Forager forager = (Forager) o;
-        return Objects.equals(this.getFirstName(), forager.getFirstName()) &&
-                Objects.equals(this.getLastName(), forager.getLastName()) &&
+        return Objects.equals(this.getFirstName().trim().toLowerCase(), forager.getFirstName().trim().toLowerCase()) &&
+                Objects.equals(this.getLastName().trim().toLowerCase(), forager.getLastName().trim().toLowerCase()) &&
                 Objects.equals(this.getState(), forager.getState());
     }
 

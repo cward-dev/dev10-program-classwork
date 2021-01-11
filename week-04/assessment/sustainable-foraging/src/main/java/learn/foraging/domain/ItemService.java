@@ -93,7 +93,7 @@ public class ItemService {
 
     private boolean checkForDuplicate(Item item) {
         return repository.findAll().stream()
-                .anyMatch(i -> i.getName().equalsIgnoreCase(item.getName()));
+                .anyMatch(i -> i.getName().trim().toLowerCase().equalsIgnoreCase(item.getName().trim().toLowerCase()));
     }
 
     // Overloaded for update

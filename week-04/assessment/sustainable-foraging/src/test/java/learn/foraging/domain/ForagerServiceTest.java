@@ -104,4 +104,99 @@ class ForagerServiceTest {
         assertNull(result2.getPayload());
         assertEquals("Forager John Doe from WI already exists.", result2.getErrorMessages().get(0));
     }
+
+    @Test
+    void shouldUpdate() throws DataException {
+        Forager forager = new Forager();
+
+        forager.setId("AAAA-1111-2222-FFFF");
+        forager.setFirstName("John");
+        forager.setLastName("Doe");
+        forager.setState(State.WISCONSIN);
+
+        Result<Forager> result = service.add(forager);
+        assertTrue(result.isSuccess());
+
+        forager.setLastName("Deer");
+        result = service.update(forager);
+
+        assertTrue(result.isSuccess());
+        assertEquals(forager, result.getPayload());
+    }
+
+    @Test
+    void shouldNotUpdateNull() throws DataException {
+        Forager forager = new Forager();
+
+        forager.setId("AAAA-1111-2222-FFFF");
+        forager.setFirstName("John");
+        forager.setLastName("Doe");
+        forager.setState(State.WISCONSIN);
+
+        Result<Forager> result = service.add(forager);
+        assertTrue(result.isSuccess());
+
+        forager = null;
+        result = service.update(forager);
+
+        assertFalse(result.isSuccess());
+        assertNull(result.getPayload());
+    }
+
+    @Test
+    void shouldNotUpdateMissingFirstName() throws DataException {
+        Forager forager = new Forager();
+
+        forager.setId("AAAA-1111-2222-FFFF");
+        forager.setFirstName("John");
+        forager.setLastName("Doe");
+        forager.setState(State.WISCONSIN);
+
+        Result<Forager> result = service.add(forager);
+        assertTrue(result.isSuccess());
+
+        forager.setFirstName(" ");
+        result = service.update(forager);
+
+        assertFalse(result.isSuccess());
+        assertNull(result.getPayload());
+    }
+
+    @Test
+    void shouldNotUpdateMissingLastName() throws DataException {
+        Forager forager = new Forager();
+
+        forager.setId("AAAA-1111-2222-FFFF");
+        forager.setFirstName("John");
+        forager.setLastName("Doe");
+        forager.setState(State.WISCONSIN);
+
+        Result<Forager> result = service.add(forager);
+        assertTrue(result.isSuccess());
+
+        forager.setLastName(" ");
+        result = service.update(forager);
+
+        assertFalse(result.isSuccess());
+        assertNull(result.getPayload());
+    }
+
+    @Test
+    void shouldNotUpdateNullState() throws DataException {
+        Forager forager = new Forager();
+
+        forager.setId("AAAA-1111-2222-FFFF");
+        forager.setFirstName("John");
+        forager.setLastName("Doe");
+        forager.setState(State.WISCONSIN);
+
+        Result<Forager> result = service.add(forager);
+        assertTrue(result.isSuccess());
+
+        forager.setState(null);
+        result = service.update(forager);
+
+        assertFalse(result.isSuccess());
+        assertNull(result.getPayload());
+    }
 }

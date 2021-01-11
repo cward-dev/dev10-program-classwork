@@ -1,5 +1,5 @@
 id,name,category,dollars/kilogram
-1,Ramps,EDIBLE,5.00
+1,Romps,EDIBLE,4.50
 2,Purslane,EDIBLE,2.95
 3,Cattail,EDIBLE,4.99
 4,Chicory,EDIBLE,1.99

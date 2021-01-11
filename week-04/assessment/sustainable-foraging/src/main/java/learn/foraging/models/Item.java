@@ -58,7 +58,7 @@ public class Item {
         if (o == null || getClass() != o.getClass()) return false;
         Item item = (Item) o;
         return id == item.id &&
-                Objects.equals(name, item.name) &&
+                Objects.equals(name.trim().toLowerCase(), item.name.trim().toLowerCase()) &&
                 category == item.category &&
                 Objects.equals(dollarPerKilogram, item.dollarPerKilogram);
     }

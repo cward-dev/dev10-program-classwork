@@ -39,7 +39,7 @@ public class ForagerService {
         boolean isDuplicate = checkForDuplicate(forager);
         if (isDuplicate) {
             result.addErrorMessage(String.format("Forager %s %s from %s already exists.",
-                    forager.getFirstName(), forager.getLastName(), forager.getState().getAbbreviation()));
+                    forager.getFirstName().trim(), forager.getLastName().trim(), forager.getState().getAbbreviation()));
             return result;
         }
 
@@ -53,7 +53,7 @@ public class ForagerService {
             return result;
         }
 
-        boolean isDuplicate = checkForDuplicate(forager);
+        boolean isDuplicate = checkForDuplicate(forager, true);
         if (isDuplicate) {
             result.addErrorMessage(String.format("Forager %s %s from %s already exists.",
                     forager.getFirstName(), forager.getLastName(), forager.getState().getAbbreviation()));
@@ -94,6 +94,23 @@ public class ForagerService {
 
     private boolean checkForDuplicate(Forager forager) {
         List<Forager> all = repository.findAll();
+
+        return all.stream()
+                .anyMatch(f -> f.equals(forager));
+    }
+
+    // Overloaded for Update Forager
+    private boolean checkForDuplicate(Forager forager, boolean forUpdate) {
+        List<Forager> all = repository.findAll();
+
+        if (forUpdate) {
+            for (int i = 0; i < all.size(); i++) {
+                if (all.get(i).getId().equals(forager.getId())) {
+                    all.remove(i);
+                    break;
+                }
+            }
+        }
 
         return all.stream()
                 .anyMatch(f -> f.equals(forager));

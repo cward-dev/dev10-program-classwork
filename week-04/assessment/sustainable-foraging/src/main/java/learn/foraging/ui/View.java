@@ -39,6 +39,11 @@ public class View {
         return MainMenuOption.fromValue(io.readInt(message, min, max));
     }
 
+
+    public State getState() {
+        return io.readState("State Name or Abbreviation: ");
+    }
+
     public LocalDate getForageDate() {
         displayHeader(MainMenuOption.VIEW_FORAGES_BY_DATE.getMessage());
         return io.readLocalDate("Select a date [MM/dd/yyyy]: ");
@@ -148,15 +153,15 @@ public class View {
         Forager updatedForager = new Forager();
 
         updatedForager.setId(forager.getId());
-        updatedForager.setFirstName(io.readString("Forager First Name: "));
+        updatedForager.setFirstName(io.readString(String.format("Forager First Name [%s]: ", forager.getFirstName())));
         if (updatedForager.getFirstName().trim().length() == 0) {
             updatedForager.setFirstName(forager.getFirstName());
         }
-        updatedForager.setLastName(io.readString("Forager Last Name: "));
+        updatedForager.setLastName(io.readString(String.format("Forager Last Name [%s]: ", forager.getLastName())));
         if (updatedForager.getLastName().trim().length() == 0) {
             updatedForager.setLastName(forager.getLastName());
         }
-        updatedForager.setState(io.readState("Forager State: ", forager));
+        updatedForager.setState(io.readState(String.format("Forager State Name or Abbreviation [%s]: ", forager.getState().getAbbreviation()), forager));
 
         return updatedForager;
     }
@@ -250,6 +255,26 @@ public class View {
                     forage.getItem().getCategory(),
                     forage.getValue()
             );
+        }
+    }
+
+    public void displayForagers(List<Forager> foragers) {
+        if (foragers == null || foragers.size() == 0) {
+            io.println("No foragers found");
+            return;
+        }
+
+        for (Forager forager : foragers.stream().sorted(Comparator.comparing(Forager::getLastName))
+                .limit(25).collect(Collectors.toList())) {
+            io.printf("%s %s - %s%n",
+                    forager.getFirstName(),
+                    forager.getLastName(),
+                    forager.getState().getAbbreviation()
+            );
+        }
+
+        if (foragers.size() > 25) {
+            io.println("More than 25 foragers found. Showing first 25. Please refine your search.");
         }
     }
 
