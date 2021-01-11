@@ -76,7 +76,7 @@
 # Assessment Planning
 
 ### How will I review the provided code?
-- [ ] Completed
+- [x] Completed
   * I will first run the application to get a feel for how the program is intended to be used at the user level
   * I will look at the data files to see how the data is stored
     * foragers.csv
@@ -90,49 +90,49 @@
   * I will run the application again to see the user experience with more context of how the code works
 
 ### How will I ensure that the provided code meets the requirements for each implemented feature?
-- [ ] Completed
+- [x] Completed
   * I will reference the tests to ensure that thorough tests are for each method relevant to an implemented feature
     * If relevant tests are not present, I will create tests to ensure that the methods function as intended
   * If any methods do not function as intended, I will debug them and rerun the tests
 
 ### How will I document issues or bugs as I discover them?
-- [ ] Completed
+- [x] Completed
   * At the end of this README, I will log all issues and bugs in a TODO section
     * The TODO will include all bugs found (and what was changed to fix them), features to be implemented (and strategies), and other tasks that arise
 
 ### To implement the new features, what packages, classes, and methods will I write?
-- [ ] Completed
+- [x] Completed
   * Once I review the provided code, I will have a fuller understanding of what new packages, classes, and methods will be needed
     * I will include these in the TODO section of this README
 
 ### What unit tests do I need to write to ensure that my code behaves as expected?
-- [ ] Completed
+- [x] Completed
   * For all methods that I alter/implement, I will need to write both positive and negative unit tests to ensure that they behave as expected
     * I will create unit tests as I alter/implement methods, keeping track of tests made in the TODO section of this README
 
 ### Do I have to do any research?
-- [ ] Completed
+- [x] Completed
   * I am not aware of any research that will need completed, but if any arises I will include it in the TODO section of this README
 
 ### Are there any unknowns? What do I need to do to get clarity?
-- [ ] Completed
+- [x] Completed
   * Once I review the provided code I will have a fuller understanding of what I do not know
     * I will add any needed research/other further steps to the TODO section of this README
 
 ### What are my primary tasks?
-- [ ] Completed
-  - [ ] Review and understand the provided code
-  - [ ] Add Spring dependency injection (either XML or annotations)
-  - [ ] Identify and fix any existing bugs
-  - [ ] Implement missing features
-  - [ ] Create reports (will use streams as primary tool)
+- [x] Completed
+  - [x] Review and understand the provided code
+  - [x] Add Spring dependency injection (either XML or annotations)
+  - [x] Identify and fix any existing bugs
+  - [x] Implement missing features
+  - [x] Create reports (will use streams as primary tool)
 
 ### How long do I estimate each of those tasks will take?
-- [ ] Completed
+- [x] Completed
   * This will be covered in the TODO-Workflow section of this README
 
 ### Are there any dependencies between tasks? What order do I need to complete the tasks in?
-- [ ] Completed
+- [x] Completed
   * I will need to fully inspect and debug the existing code before I am ready to add missing features
   * I will need to add missing features / complete the CRUD features before I move on to generating reports
   * Before I generate reports, I will need to plan their code structure
@@ -190,14 +190,14 @@
   * Actual Time: 2 hours
   * Goal: Ensure that all provided methods function as intended
     * Will also create thorough tests for all altered/new methods
-- [ ] Implement missing features
+- [x] Implement missing features
   * Estimated Time: 2.5 hours
-  * Actual Time: 3 hours
+  * Actual Time: 6 hours
   * Goal: Add missing features to ensure the application is fully CRUD-enabled
     * Will also create thorough tests for all new methods
-- [ ] Tackle stretch goals
+- [x] Tackle stretch goals
   * Estimated Time: Depends on actual time of other tasks
-  * Actual Time: 
+  * Actual Time: 1 hour
   * Goal: Get a head-start of Version 2 features for our overly ambitious client
   
 ### Bugs Found
@@ -243,7 +243,7 @@
     * Modified the deserialize method so that it searches for each Forage object's attached Forager and Item objects by Id, and inserts them
 
 ### Research
-- [ ] TBD
+- [x] NA
   * Solution:
 
 ### Additional Tasks
@@ -265,8 +265,9 @@
   * Added a ReportService class that generates List<String> reports to print
     * Added methods to Controller and View to run and display these reports for the user
 - [ ] Create breakout menus for each type of data being accessed (Main -> Forages || Foragers || Items) --> View || Add || Etc
-- [ ] Stretch Goals
-  - [ ] Update an existing Item.
+  * Scrapped due to time constraints
+- [x] Stretch Goals
+  - [x] Update an existing Item.
   - [ ] Delete an Item. (Careful with this one. If an Item is deleted, one of two things should happen: 1. All Forages that include that Item should also be deleted. Forages without a valid Item are not allowed. 2. Make it a "soft" delete. Add an Item status and hide all Items with a deleted status from search results.)
   - [ ] Update a Forager.
   - [ ] Delete a Forager. (See Item deletion.)
