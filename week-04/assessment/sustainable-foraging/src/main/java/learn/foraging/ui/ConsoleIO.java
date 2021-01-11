@@ -1,5 +1,6 @@
 package learn.foraging.ui;
 
+import learn.foraging.models.Forager;
 import learn.foraging.models.State;
 import org.springframework.stereotype.Component;
 
@@ -131,6 +132,28 @@ public class ConsoleIO {
         while (true) {
             String input = readRequiredString(prompt);
             try {
+                if (input.trim().length() == 2) {
+                    state = State.getStateFromAbbreviation(input);
+                } else {
+                    state = State.getStateFromName(input.toUpperCase());
+                }
+                if (state != null) return state;
+                println(INVALID_STATE);
+            } catch (IllegalArgumentException ex) {
+                println(INVALID_STATE);
+            }
+        }
+    }
+
+    // Overloaded for Update Forager
+    public State readState(String prompt, Forager forager) {
+        State state;
+        while (true) {
+            String input = readString(prompt);
+            try {
+                if (input.trim().length() == 0) {
+                    return forager.getState();
+                }
                 if (input.trim().length() == 2) {
                     state = State.getStateFromAbbreviation(input);
                 } else {

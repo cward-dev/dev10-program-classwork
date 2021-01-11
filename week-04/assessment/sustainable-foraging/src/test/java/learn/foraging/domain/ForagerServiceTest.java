@@ -102,6 +102,6 @@ class ForagerServiceTest {
 
         assertFalse(result2.isSuccess());
         assertNull(result2.getPayload());
-        assertEquals("Forager John Doe is a duplicate.", result2.getErrorMessages().get(0));
+        assertEquals("Forager John Doe from WI already exists.", result2.getErrorMessages().get(0));
     }
 }

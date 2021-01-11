@@ -1,5 +1,6 @@
 package learn.foraging.data;
 
+import learn.foraging.models.Forage;
 import learn.foraging.models.Forager;
 import learn.foraging.models.State;
 
@@ -21,6 +22,22 @@ public class ForagerRepositoryDouble implements ForagerRepository {
     public Forager add(Forager forager) {
         foragers.add(forager);
         return forager;
+    }
+
+    @Override
+    public boolean update(Forager forager) throws DataException {
+        forager.setId(java.util.UUID.randomUUID().toString());
+        foragers.add(forager);
+
+        for (int i = 0; i < foragers.size(); i++) {
+            if (forager.getId().equals(foragers.get(i).getId())) {
+                foragers.remove(i);
+                foragers.add(forager);
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override

@@ -66,6 +66,48 @@ class ItemFileRepositoryTest {
     }
 
     @Test
+    void shouldUpdate() throws DataException {
+
+        Item expected = new Item();
+        expected.setName("Catalpa Test");
+        expected.setCategory(Category.INEDIBLE);
+        expected.setDollarPerKilogram(BigDecimal.ZERO);
+        expected.setId(NEXT_ID);
+
+        Item item = new Item();
+        item.setName("Catalpa");
+        item.setCategory(Category.INEDIBLE);
+        item.setDollarPerKilogram(BigDecimal.ZERO);
+
+        Item actual = repository.add(item);
+
+        actual.setName("Catalpa Test");
+        boolean success = repository.update(actual);
+
+        assertTrue(success);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void shouldNotUpdateNull() throws DataException {
+
+        Item expected = null;
+
+        Item item = new Item();
+        item.setName("Catalpa");
+        item.setCategory(Category.INEDIBLE);
+        item.setDollarPerKilogram(BigDecimal.ZERO);
+
+        Item actual = repository.add(item);
+
+        actual = null;
+        boolean success = repository.update(actual);
+
+        assertFalse(success);
+        assertEquals(expected, actual);
+    }
+
+    @Test
     void shouldCreateNewFile() throws DataException {
         String path = "./data/items-new.txt";
         File file = new File(path);

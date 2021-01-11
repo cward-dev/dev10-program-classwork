@@ -4,6 +4,7 @@ import learn.foraging.data.DataException;
 import learn.foraging.data.ForagerRepository;
 import learn.foraging.models.Forage;
 import learn.foraging.models.Forager;
+import learn.foraging.models.Item;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -37,12 +38,35 @@ public class ForagerService {
 
         boolean isDuplicate = checkForDuplicate(forager);
         if (isDuplicate) {
-            result.addErrorMessage(String.format("Forager %s %s is a duplicate.",
-                    forager.getFirstName(), forager.getLastName()));
+            result.addErrorMessage(String.format("Forager %s %s from %s already exists.",
+                    forager.getFirstName(), forager.getLastName(), forager.getState().getAbbreviation()));
             return result;
         }
 
         result.setPayload(repository.add(forager));
+        return result;
+    }
+
+    public Result<Forager> update(Forager forager) throws DataException {
+        Result<Forager> result = validate(forager);
+        if (!result.isSuccess()) {
+            return result;
+        }
+
+        boolean isDuplicate = checkForDuplicate(forager);
+        if (isDuplicate) {
+            result.addErrorMessage(String.format("Forager %s %s from %s already exists.",
+                    forager.getFirstName(), forager.getLastName(), forager.getState().getAbbreviation()));
+            return result;
+        }
+
+        boolean success = repository.update(forager);
+        if (!success) {
+            result.addErrorMessage(String.format("Forager Id %s not found.",
+                    forager.getId()));
+        }
+
+        result.setPayload(forager);
         return result;
     }
 

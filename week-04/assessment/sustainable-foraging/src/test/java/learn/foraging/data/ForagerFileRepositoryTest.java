@@ -49,6 +49,42 @@ class ForagerFileRepositoryTest {
     }
 
     @Test
+    void shouldUpdate() throws DataException {
+        Forager forager = new Forager();
+
+        forager.setId("AAAA-1111-2222-FFFF");
+        forager.setFirstName("John");
+        forager.setLastName("Doe");
+        forager.setState(State.WISCONSIN);
+
+        forager = repository.add(forager);
+
+        forager.setLastName("Deer");
+        boolean success = repository.update(forager);
+
+        assertTrue(success);
+        assertEquals(1001, repository.findAll().size());
+    }
+
+    @Test
+    void shouldNotUpdateNull() throws DataException {
+        Forager forager = new Forager();
+
+        forager.setId("AAAA-1111-2222-FFFF");
+        forager.setFirstName("John");
+        forager.setLastName("Doe");
+        forager.setState(State.WISCONSIN);
+
+        forager = repository.add(forager);
+
+        forager = null;
+        boolean success = repository.update(forager);
+
+        assertFalse(success);
+        assertEquals(1001, repository.findAll().size());
+    }
+
+    @Test
     void shouldSerializeAndDeserializeStringWithCommaCorrectly() throws DataException {
         Forager forager = new Forager();
 

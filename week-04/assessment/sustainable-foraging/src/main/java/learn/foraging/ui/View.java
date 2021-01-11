@@ -140,6 +140,24 @@ public class View {
         return forager;
     }
 
+    public Forager updateForager(Forager forager) {
+        displayHeader(MainMenuOption.UPDATE_FORAGER.getMessage());
+        Forager updatedForager = new Forager();
+
+        updatedForager.setId(forager.getId());
+        updatedForager.setFirstName(io.readString("Forager First Name: "));
+        if (updatedForager.getFirstName().trim().length() == 0) {
+            updatedForager.setFirstName(forager.getFirstName());
+        }
+        updatedForager.setLastName(io.readString("Forager Last Name: "));
+        if (updatedForager.getLastName().trim().length() == 0) {
+            updatedForager.setLastName(forager.getLastName());
+        }
+        updatedForager.setState(io.readState("Forager State: ", forager));
+
+        return updatedForager;
+    }
+
     public Item makeItem() {
         displayHeader(MainMenuOption.ADD_ITEM.getMessage());
         Item item = new Item();

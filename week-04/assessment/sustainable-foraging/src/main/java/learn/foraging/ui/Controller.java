@@ -68,6 +68,9 @@ public class Controller {
                 case ADD_FORAGER:
                     addForager();
                     break;
+                case UPDATE_FORAGER:
+                    updateForager();
+                    break;
                 case ADD_ITEM:
                     addItem();
                     break;
@@ -131,6 +134,24 @@ public class Controller {
             view.displayStatus(false, result.getErrorMessages());
         } else {
             String successMessage = String.format("Forager %s created.", result.getPayload().getId());
+            view.displayStatus(true, successMessage);
+        }
+        view.enterToContinue();
+    }
+
+    private void updateForager() throws DataException {
+        view.displayHeader(MainMenuOption.UPDATE_FORAGER.getMessage());
+        Forager forager = getForager();
+        if (forager == null) {
+            return;
+        }
+
+        Forager updatedForager = view.updateForager(forager);
+        Result<Forager> result = foragerService.update(updatedForager);
+        if (!result.isSuccess()) {
+            view.displayStatus(false, result.getErrorMessages());
+        } else {
+            String successMessage = String.format("Forager %s updated.", result.getPayload().getId());
             view.displayStatus(true, successMessage);
         }
         view.enterToContinue();

@@ -1,6 +1,7 @@
 package learn.foraging.data;
 
 import learn.foraging.models.Forager;
+import learn.foraging.models.Item;
 import learn.foraging.models.State;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -71,6 +72,25 @@ public class ForagerFileRepository implements ForagerRepository {
         all.add(forager);
         writeAll(all);
         return forager;
+    }
+
+    @Override
+    public boolean update(Forager forager) throws DataException {
+
+        if (forager == null) {
+            return false;
+        }
+
+        List<Forager> all = findAll();
+        for (int i = 0; i < all.size(); i++) {
+            if (forager.getId().equals(all.get(i).getId())) {
+                all.set(i, forager);
+                writeAll(all);
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void writeAll(List<Forager> all) throws DataException {

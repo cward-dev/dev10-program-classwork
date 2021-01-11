@@ -7,17 +7,18 @@ public enum MainMenuOption {
     VIEW_ITEMS(2, "View Items", false),
     ADD_FORAGE(3, "Add a Forage", false),
     ADD_FORAGER(4, "Add a Forager", false),
-    ADD_ITEM(5, "Add an Item", false),
-    UPDATE_ITEM(6, "Update an Item", false),
-    REPORT_KG_PER_ITEM(7, "Report: Kilograms of Item", false),
-    REPORT_CATEGORY_VALUE(8, "Report: Item Category Value", false),
-    GENERATE(9, "Generate Random Forages", true);
+    UPDATE_FORAGER(5, "Update a Forager", false),
+    ADD_ITEM(6, "Add an Item", false),
+    UPDATE_ITEM(7, "Update an Item", false),
+    REPORT_KG_PER_ITEM(8, "Report: Kilograms of Item", false),
+    REPORT_CATEGORY_VALUE(9, "Report: Item Category Value", false),
+    GENERATE(10, "Generate Random Forages", true);
 
     private int value;
     private String message;
     private boolean hidden;
 
-    private MainMenuOption(int value, String message, boolean hidden) {
+    MainMenuOption(int value, String message, boolean hidden) {
         this.value = value;
         this.message = message;
         this.hidden = hidden;
