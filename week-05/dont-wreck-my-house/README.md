@@ -127,7 +127,7 @@ Validation
 
 ## Tasks
 
-// Note: My times seem ex
+// Note: My estimated times seem very optimistic. We will see how they go (and try to give ourselves plenty of time to play catch up as we go)
 
 ### Total Time to Complete
   * Estimated Time: 29 hours (before stretch goals)
@@ -202,7 +202,7 @@ Validation
     * Actual Time:
 
 ### Data Layer
-- [ ] Create `DataException` class (extends `Exception`)
+- [ ] Create `DataException` class (extends `Exception`) --- provides us with a general exception in accessing/using data files, so that we may display a critical error to the user should we encounter it
   * Time to Complete
     * Estimated Time: 5 minutes
     * Actual Time:  
@@ -214,8 +214,7 @@ Validation
     * Actual Time:
   
 
-- [ ] Create `GuestFileRepository` class and tests
-  * Dependencies: n/a
+- [ ] Create `GuestFileRepository` class and tests (implements GuestRepository)
     * Fields
       * `private static final String HEADER = "guest_id,first_name,last_name,email,phone,state"`
       * `private final String filePath` --- constructor arg
@@ -239,8 +238,7 @@ Validation
     * Actual Time:    
   
 
-- [ ] Create `HostFileRepository` class and tests
-  * Dependencies: n/a
+- [ ] Create `HostFileRepository` class and tests (implements HostRepository)
   * Fields
     * `private static final String HEADER = "guest_id,first_name,last_name,email,phone,state"`
     * `private final String filePath` --- constructor arg
@@ -264,8 +262,8 @@ Validation
     * Actual Time:  
   
 
-- [ ] Create `ReservationFileRepository` class and tests
-  * Dependencies: `GuestRepository`, `HostRepository`
+- [ ] Create `ReservationFileRepository` class and tests (implements ReservationRepository)
+  * Dependencies: `GuestRepository`, `HostRepository` --- attaches the Guest and Host for the reservation based on Id
   * Fields
     * `private static final String HEADER = "id,start_date,end_date,guest_id,total"`
     * `private final String directory` --- constructor arg
@@ -292,7 +290,7 @@ Validation
   
 ### Domain Layer
 - [ ] Create `GuestService` class and tests
-  * Dependencies: `GuestFileRepository`
+  * Dependencies: `GuestFileRepository` --- acts as the gatekeeper for all requests to access GuestFileRepository, validates data
   * Fields
     * `private final GuestRepository guestRepository` --- constructor arg
   * Methods
@@ -311,7 +309,7 @@ Validation
 
 
 - [ ] Create `HostService` class and tests
-  * Dependencies: `HostFileRepository`
+  * Dependencies: `HostFileRepository` --- acts as the gatekeeper for all requests to access HostFileRepository, validates data
   * Fields
     * `private final HostRepository hostRepository` --- constructor arg
   * Methods
@@ -330,7 +328,7 @@ Validation
 
 
 - [ ] Create `ReservationService` class and tests
-  * Dependencies: `ReservationRepository`, `GuestRepository`, `HostRepository`
+  * Dependencies: `ReservationRepository`, `GuestRepository`, `HostRepository`  --- acts as the gatekeeper for all requests to access ReservationFileRepository, validates data
   * Fields
     * `private final ReservationRepository reservationRepository` --- constructor arg
     * `private final GuestRepository guestRepository` --- constructor arg
@@ -356,7 +354,7 @@ Validation
     * Actual Time: 
 
   
-- [ ] Create `Result<T>` class (extends `Response`)
+- [ ] Create `Result<T>` class (extends `Response`) --- allows us to create instances of Result with different types
   * Fields
     * `private T payload`
     * `getter`
@@ -366,7 +364,7 @@ Validation
     * Actual Time:
   
 
-- [ ] Create `Response` class (extends `Response`)
+- [ ] Create `Response` class (extends `Response`) --- allows us to create a Result instance containing errorMessages and a payload object
   * Fields
     * `private ArrayList<String> messages = new ArrayList<>()`
     * `public boolean isSuccess` --- `(return messages.size() == 0)`
@@ -378,7 +376,7 @@ Validation
 
 ### UI Layer
 - [ ] Create `Controller` class
-  * Dependencies: `GuestService`, `HostService`, `ReservationService`, `View`
+  * Dependencies: `GuestService`, `HostService`, `ReservationService`, `View` --- passes information between the view and domain layer
   * Fields
     * `private final GuestService guestService` --- constructor arg
     * `private final HostService guestService` --- constructor arg
@@ -402,8 +400,7 @@ Validation
     * Actual Time:
   
 
-- [ ] Create `ConsoleIO` class
-  * Dependencies: n/a
+- [ ] Create `ConsoleIO` class --- provides us with methods for displaying and getting information using the console
   * Fields
     * `private static final String INVALID_(CASE)` --- will give [Invalid] message for each type of invalid input
     * `private final Scanner scanner`
@@ -424,8 +421,7 @@ Validation
     * Estimated Time: 2 hours
     * Actual Time:
 
-- [ ] Create `MainMenuOption` enumerator
-  * Dependencies:
+- [ ] Create `MainMenuOption` enumerator --- provides discrete values for the main menu options
   * Values
     * `EXIT`
     * `VIEW_RESERVATIONS_FOR_HOST`
@@ -444,7 +440,7 @@ Validation
     * Actual Time:
 
 - [ ] Create `View` class
-  * Dependencies: `ConsoleIO`
+  * Dependencies: `ConsoleIO` --- uses methods from the ConsoleIO to display and receive information using the console. View class never directly interacts with the console.
   * Fields
     * `private final ConsoleIO io` --- constructor arg
   * Methods
