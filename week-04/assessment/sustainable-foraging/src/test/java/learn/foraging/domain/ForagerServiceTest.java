@@ -106,6 +106,25 @@ class ForagerServiceTest {
     }
 
     @Test
+    void shouldNotAddDuplicateWhiteSpace() throws DataException {
+        Forager forager1 = new Forager();
+        forager1.setId("AAAA-1111-2222-FFFF");
+        forager1.setFirstName("John");
+        forager1.setLastName("Doe");
+        forager1.setState(State.WISCONSIN);
+
+        Result<Forager> result1 = service.add(forager1);
+        assertTrue(result1.isSuccess());
+
+        forager1.setFirstName("John      ");
+        Result<Forager> result2 = service.add(forager1);
+
+        assertFalse(result2.isSuccess());
+        assertNull(result2.getPayload());
+        assertEquals("Forager John Doe from WI already exists.", result2.getErrorMessages().get(0));
+    }
+
+    @Test
     void shouldUpdate() throws DataException {
         Forager forager = new Forager();
 
