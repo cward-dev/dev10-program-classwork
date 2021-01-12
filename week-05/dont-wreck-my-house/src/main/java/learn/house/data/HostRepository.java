@@ -15,5 +15,5 @@ public interface HostRepository {
 
     boolean update(Host host) throws DataException;
 
-    boolean delete(Host host) throws DataException;
+    boolean deleteById(String id) throws DataException;
 }

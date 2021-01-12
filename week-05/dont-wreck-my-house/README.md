@@ -364,7 +364,7 @@ Validation
     * Actual Time:
   
 
-- [ ] Create `Response` class (extends `Response`) --- allows us to create a Result instance containing errorMessages and a payload object
+- [ ] Create `Response` class --- allows us to create a Result instance containing errorMessages and a payload object
   * Fields
     * `private ArrayList<String> messages = new ArrayList<>()`
     * `public boolean isSuccess` --- `(return messages.size() == 0)`
