@@ -31,9 +31,9 @@ class GuestFileRepositoryTest {
 
     @Test
     void shouldFindAll() {
-        List<Guest> actual = repository.findAll();
+        List<Guest> result = repository.findAll();
 
-        assertEquals(1000, actual.size());
+        assertEquals(1000, result.size());
     }
 
     @Test

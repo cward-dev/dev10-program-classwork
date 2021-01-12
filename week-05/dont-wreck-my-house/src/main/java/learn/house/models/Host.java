@@ -117,8 +117,7 @@ public class Host {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Host host = (Host) o;
-        return Objects.equals(lastName.trim().toLowerCase(), host.lastName.trim().toLowerCase())
-                && Objects.equals(email.trim().toLowerCase(), host.email.trim().toLowerCase());
+        return Objects.equals(email.trim().toLowerCase(), host.email.trim().toLowerCase());
     }
 
     @Override

@@ -76,9 +76,7 @@ public class Guest {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Guest guest = (Guest) o;
-        return Objects.equals(firstName.trim().toLowerCase(), guest.firstName.trim().toLowerCase())
-                && Objects.equals(lastName.trim().toLowerCase(), guest.lastName.trim().toLowerCase())
-                && Objects.equals(email.trim().toLowerCase(), guest.email.trim().toLowerCase());
+        return Objects.equals(email.trim().toLowerCase(), guest.email.trim().toLowerCase());
     }
 
     @Override
