@@ -193,7 +193,8 @@ Validation
     * `String id`
     * `LocalDate startDate`
     * `LocalDate endDate`
-    * `int guestID`
+    * `Host host`
+    * `Guest guest`
     * `BigDecimal total`
   * Methods
     * `getters`
@@ -289,7 +290,7 @@ Validation
     * Actual Time: 1.5 hours
   
 ### Domain Layer
-- [ ] Create `GuestService` class and tests
+- [x] Create `GuestService` class and tests
   * Dependencies: `GuestFileRepository` --- acts as the gatekeeper for all requests to access GuestFileRepository, validates data
   * Fields
     * `private final GuestRepository guestRepository` --- constructor arg
@@ -305,7 +306,7 @@ Validation
       * `checkForDuplicate`
   * Time to Complete
     * Estimated Time: 1.5 hours
-    * Actual Time:
+    * Actual Time: 2 hours
 
 
 - [ ] Create `HostService` class and tests

@@ -140,7 +140,7 @@ class HostFileRepositoryTest {
     @Test
     void shouldDeleteById() throws DataException {
         String hostId = "3edda6bc-ab95-49a8-8962-d50b53f84b15";
-        boolean success = repository.deleteById("3edda6bc-ab95-49a8-8962-d50b53f84b15");
+        boolean success = repository.deleteById(hostId);
 
         assertTrue(success);
         assertNull(repository.findById("3edda6bc-ab95-49a8-8962-d50b53f84b15"));
