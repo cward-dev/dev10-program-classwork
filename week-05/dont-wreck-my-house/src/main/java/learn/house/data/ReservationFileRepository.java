@@ -1,5 +1,6 @@
 package learn.house.data;
 
+import learn.house.models.Guest;
 import learn.house.models.Host;
 import learn.house.models.Reservation;
 
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class ReservationFileRepository implements ReservationRepository {
 
-    private static final String HEADER = "id,last_name,email,phone,address,city,state,postal_code,standard_rate,weekend_rate";
+    private static final String HEADER = "id,start_date,end_date,guest_id,total";
     private final String directory;
     private final String DELIMITER = ",";
     private final String DELIMITER_REPLACEMENT = "@@@";
@@ -29,11 +30,12 @@ public class ReservationFileRepository implements ReservationRepository {
 
     @Override
     public List<Reservation> findByHost(Host host) {
+        ArrayList<Reservation> result = new ArrayList<>();
+
         if (host == null) {
-            return null;
+            return result;
         }
 
-        ArrayList<Reservation> result = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(getFilePath(host.getId())))) {
 
             reader.readLine();
@@ -42,7 +44,7 @@ public class ReservationFileRepository implements ReservationRepository {
                 String[] fields = line.split(DELIMITER, -1);
 
                 if (fields.length == 5) {
-                    result.add(deserialize(fields));
+                    result.add(deserialize(fields, host.getId()));
                 }
             }
         } catch (IOException exception) {
@@ -52,13 +54,13 @@ public class ReservationFileRepository implements ReservationRepository {
     }
 
     @Override
-    public Reservation add(Host host, Reservation reservation) throws DataException {
+    public Reservation add(Reservation reservation) throws DataException {
 
-        if (host == null || reservation == null) {
+        if (reservation == null || reservation.getHost() == null) {
             return null;
         }
 
-        List<Reservation> all = findByHost(host);
+        List<Reservation> all = findByHost(reservation.getHost());
 
         int nextId = all.stream()
                 .mapToInt(Reservation::getId)
@@ -68,26 +70,26 @@ public class ReservationFileRepository implements ReservationRepository {
         reservation.setId(nextId);
 
         String[] fields = serialize(reservation).split(DELIMITER); // removes DELIMITER_REPLACEMENT and replaces with DELIMITER
-        reservation = deserialize(fields); // TODO research why this is necessary - noticed we used this technique in Sustainable Foraging
+        reservation = deserialize(fields, reservation.getHost().getId()); // TODO research why this is necessary - noticed we used this technique in Sustainable Foraging
 
-        all.add(deserialize(fields));
-        writeAll(host, all);
+        all.add(deserialize(fields, reservation.getHost().getId()));
+        writeAll(all);
 
         return reservation;
     }
 
     @Override
-    public boolean update(Host host, Reservation reservation) throws DataException {
+    public boolean update(Reservation reservation) throws DataException {
 
-        if (host == null || reservation == null) {
+        if (reservation == null || reservation.getHost() == null) {
             return false;
         }
 
-        List<Reservation> all = findByHost(host);
+        List<Reservation> all = findByHost(reservation.getHost());
         for (int i = 0; i < all.size(); i++) {
             if (reservation.getId() == all.get(i).getId()) {
                 all.set(i, reservation);
-                writeAll(host, all);
+                writeAll(all);
                 return true;
             }
         }
@@ -96,17 +98,17 @@ public class ReservationFileRepository implements ReservationRepository {
     }
 
     @Override
-    public boolean delete(Host host, Reservation reservation) throws DataException {
+    public boolean delete(Reservation reservation) throws DataException {
 
-        if (host == null) {
+        if (reservation == null || reservation.getHost() == null) {
             return false;
         }
 
-        List<Reservation> all = findByHost(host);
+        List<Reservation> all = findByHost(reservation.getHost());
         for (int i = 0; i < all.size(); i++) {
             if (reservation.getId() == all.get(i).getId()) {
                 all.remove(i);
-                writeAll(host, all);
+                writeAll(all);
                 return true;
             }
         }
@@ -114,8 +116,14 @@ public class ReservationFileRepository implements ReservationRepository {
         return false;
     }
 
-    private void writeAll(Host host, List<Reservation> reservations) throws DataException {
-        try (PrintWriter writer = new PrintWriter(getFilePath(host.getId()))) {
+    private void writeAll(List<Reservation> reservations) throws DataException {
+        Host host = reservations.get(0).getHost();
+
+        if (host == null) {
+            return;
+        }
+
+        try (PrintWriter writer = new PrintWriter(getFilePath(reservations.get(0).getHost().getId()))) {
 
             writer.println(HEADER);
             reservations.stream()
@@ -132,11 +140,11 @@ public class ReservationFileRepository implements ReservationRepository {
                 reservation.getId(),
                 reservation.getStartDate(),
                 reservation.getEndDate(),
-                reservation.getGuestId(),
+                reservation.getGuest().getId(),
                 reservation.getTotal());
     }
 
-    private Reservation deserialize(String[] fields) {
+    private Reservation deserialize(String[] fields, String hostId) {
         Reservation reservation = new Reservation();
 
         reservation.setId(Integer.parseInt(fields[0]));
@@ -148,12 +156,25 @@ public class ReservationFileRepository implements ReservationRepository {
                 Integer.parseInt(startDate[2])));
 
         String[] endDate = fields[2].split("-"); // { year, month, day }
-        reservation.setStartDate(LocalDate.of(
+        reservation.setEndDate(LocalDate.of(
                 Integer.parseInt(endDate[0]),
                 Integer.parseInt(endDate[1]),
                 Integer.parseInt(endDate[2])));
 
-        reservation.setGuestId(Integer.parseInt(fields[3]));
+        Host host = hostRepository.findById(hostId); // TODO GET ID
+        if (host == null) {
+            host = new Host();
+            host.setId(hostId);
+        }
+        reservation.setHost(host);
+
+        Guest guest = guestRepository.findById(Integer.parseInt(fields[3]));
+        if (guest == null) {
+            guest = new Guest();
+            guest.setId(Integer.parseInt(fields[3]));
+        }
+        reservation.setGuest(guest);
+
         reservation.setTotal(new BigDecimal(fields[4]));
         return reservation;
     }
