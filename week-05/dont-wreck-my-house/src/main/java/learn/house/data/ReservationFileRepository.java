@@ -1,9 +1,7 @@
 package learn.house.data;
 
-import learn.house.models.Guest;
 import learn.house.models.Host;
 import learn.house.models.Reservation;
-import learn.house.models.State;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -12,7 +10,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ReservationFileRepository implements ReservationRepository {
 
@@ -67,6 +64,8 @@ public class ReservationFileRepository implements ReservationRepository {
                 .mapToInt(Reservation::getId)
                 .max()
                 .orElse(0) + 1;;
+
+        reservation.setId(nextId);
 
         String[] fields = serialize(reservation).split(DELIMITER); // removes DELIMITER_REPLACEMENT and replaces with DELIMITER
         reservation = deserialize(fields); // TODO research why this is necessary - noticed we used this technique in Sustainable Foraging
