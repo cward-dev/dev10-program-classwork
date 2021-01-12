@@ -16,8 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ReservationFileRepositoryTest {
 
-    private final static String TEST_FILE_PATH = "./data/testing/reservations-test/2e25f6f7-3ef0-4f38-8a1a-2b5eea81409c.csv";
-    private final static String SEED_FILE_PATH = "./data/testing/reservations-seed/2e25f6f7-3ef0-4f38-8a1a-2b5eea81409c.csv";
+    private final static String TEST_FILE_PATH = "./data/testing/2e25f6f7-3ef0-4f38-8a1a-2b5eea81409c-test.csv";
+    private final static String SEED_FILE_PATH = "./data/testing/2e25f6f7-3ef0-4f38-8a1a-2b5eea81409c-seed.csv";
     private final static String TEST_DIR_PATH = "./data/testing/reservations-test/";
 
     HostRepository hostRepository = new HostFileRepository("./data/testing/hosts-test.csv");

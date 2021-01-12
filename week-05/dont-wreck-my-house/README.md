@@ -272,8 +272,6 @@ Validation
     * `private final GuestRepository guestRepository` --- constructor arg
     * `private final HostRepository hostRepository` --- constructor arg
   * Methods
-    * `findAll` --- will implement towards the end if time allows (for stretch goals)
-    * `findById` --- will implement towards the end if time allows (for stretch goals)
     * `findByHost`
     * `add`
     * `update`
@@ -333,9 +331,8 @@ Validation
     * `private final ReservationRepository reservationRepository` --- constructor arg
     * `private final GuestRepository guestRepository` --- constructor arg
     * `private final HostRepository hostRepository` --- constructor arg
-    * `findAll` --- will implement towards the end if time allows (for stretch goals)
-    * `findById` --- will implement towards the end if time allows (for stretch goals)
     * `findByHost`
+    * `findById` --- will take both Host host and int id as arguments
     * `add`
     * `update`
     * `delete`
