@@ -148,18 +148,8 @@ public class ReservationFileRepository implements ReservationRepository {
         Reservation reservation = new Reservation();
 
         reservation.setId(Integer.parseInt(fields[0]));
-
-        String[] startDate = fields[1].split("-"); // { year, month, day }
-        reservation.setStartDate(LocalDate.of(
-                Integer.parseInt(startDate[0]),
-                Integer.parseInt(startDate[1]),
-                Integer.parseInt(startDate[2])));
-
-        String[] endDate = fields[2].split("-"); // { year, month, day }
-        reservation.setEndDate(LocalDate.of(
-                Integer.parseInt(endDate[0]),
-                Integer.parseInt(endDate[1]),
-                Integer.parseInt(endDate[2])));
+        reservation.setStartDate(LocalDate.parse(fields[1]));
+        reservation.setEndDate(LocalDate.parse(fields[2]));
 
         Host host = hostRepository.findById(hostId); // TODO GET ID
         if (host == null) {
