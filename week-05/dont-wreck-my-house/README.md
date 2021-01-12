@@ -133,6 +133,8 @@ Validation
   * Estimated Time: 28 hours (before stretch goals)
   * Actual Time: 
 
+
+
 ### Models
 - [x] Create `State` enumerator
   * Values - one for each of the 50 states, plus Washington DC
@@ -214,7 +216,7 @@ Validation
     * Actual Time: 30 minutes
   
 
-- [ ] Create `GuestFileRepository` class and tests (implements GuestRepository)
+- [x] Create `GuestFileRepository` class and tests (implements GuestRepository)
     * Fields
       * `private static final String HEADER = "guest_id,first_name,last_name,email,phone,state"`
       * `private final String filePath` --- constructor arg
@@ -238,7 +240,7 @@ Validation
     * Actual Time: 1.5 hours
   
 
-- [ ] Create `HostFileRepository` class and tests (implements HostRepository)
+- [x] Create `HostFileRepository` class and tests (implements HostRepository)
   * Fields
     * `private static final String HEADER = "guest_id,first_name,last_name,email,phone,state"`
     * `private final String filePath` --- constructor arg
@@ -259,10 +261,10 @@ Validation
       * `restore`
   * Time to Complete
     * Estimated Time: 2 hours
-    * Actual Time:  
+    * Actual Time: 1 hour
   
 
-- [ ] Create `ReservationFileRepository` class and tests (implements ReservationRepository)
+- [x] Create `ReservationFileRepository` class and tests (implements ReservationRepository)
   * Dependencies: `GuestRepository`, `HostRepository` --- attaches the Guest and Host for the reservation based on Id
   * Fields
     * `private static final String HEADER = "id,start_date,end_date,guest_id,total"`
@@ -284,7 +286,7 @@ Validation
       * `restore`
   * Time to Complete
     * Estimated Time: 4 hours
-    * Actual Time: 
+    * Actual Time: 1.5 hours
   
 ### Domain Layer
 - [ ] Create `GuestService` class and tests
