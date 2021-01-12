@@ -45,7 +45,7 @@ class GuestServiceTest {
     }
 
     @Test
-    void shouldNotFindByIdThatDoesntExist() {
+    void shouldFindNullByIdThatDoesntExist() {
         Guest result = service.findById(100000);
 
         assertNull(result);
