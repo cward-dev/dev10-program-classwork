@@ -26,3 +26,5 @@ id,name,category,dollars/kilogram
 25,False Hellebore,POISONOUS,0.0
 26,Fibercaps,POISONOUS,0.0
 27,Black nightshade,POISONOUS,0.00
+28,Purple Pollen,EDIBLE,1
+29,Purple@@@ Pollen,EDIBLE,1

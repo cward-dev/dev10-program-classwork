@@ -235,7 +235,7 @@ Validation
       * `restore`
   * Time to Complete
     * Estimated Time: 2 hours
-    * Actual Time:    
+    * Actual Time: 1.5 hours
   
 
 - [ ] Create `HostFileRepository` class and tests (implements HostRepository)

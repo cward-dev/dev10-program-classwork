@@ -16,5 +16,5 @@ public interface GuestRepository {
 
     boolean update(Guest guest) throws DataException;
 
-    boolean delete(Guest guest) throws DataException;
+    boolean deleteById(int id) throws DataException;
 }
