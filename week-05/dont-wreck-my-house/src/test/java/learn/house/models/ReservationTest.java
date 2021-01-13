@@ -27,6 +27,17 @@ class ReservationTest {
             LocalDate.of(2020,10,17),
             host, guest, new BigDecimal("720")); // total should be 720
 
+    Reservation test = new Reservation(1,
+            LocalDate.of(2021,1,15),
+            LocalDate.of(2021,1,16),
+            host, guest, new BigDecimal("450")); // total should be 720
+
+//    @Test
+//    void shouldGetTotalTest() {
+//        BigDecimal total = test.calculateTotal();
+//        assertEquals(test.getTotal(), total);
+//    }
+
     @Test
     void shouldGetTotal() {
         BigDecimal total = reservation.calculateTotal();

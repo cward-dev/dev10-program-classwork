@@ -7,6 +7,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GuestFileRepository implements GuestRepository {
 
@@ -102,10 +103,13 @@ public class GuestFileRepository implements GuestRepository {
         List<Guest> all = findAll();
 
         Guest deletedGuest = findDeletedByEmail(guest.getEmail());
-        if (deletedGuest!= null) {
-            guest.setId(deletedGuest.getId()); // TODO need to remove deleted guest from "deleted" file
+        if (deletedGuest != null) {
+            guest.setId(deletedGuest.getId()); // TODO make sure this works!
         } else {
-            int nextId = all.stream()
+            List<Guest> allDeleted = findAllDeleted();
+            List<Guest> allCombined = findAll();
+            allCombined.addAll(allDeleted);
+            int nextId = allCombined.stream()
                     .mapToInt(Guest::getId)
                     .max()
                     .orElse(0) + 1;
@@ -117,6 +121,7 @@ public class GuestFileRepository implements GuestRepository {
 
         all.add(deserialize(fields));
         writeAll(all);
+        removeReactivatedGuestFromDeleted(deletedGuest); // TODO need to remove deleted guest from "deleted" file - make sure this works
 
         return guest;
     }
@@ -176,6 +181,26 @@ public class GuestFileRepository implements GuestRepository {
 
         List<Guest> allDeleted = findAllDeleted();
         allDeleted.add(guestToDelete);
+
+        try (PrintWriter writer = new PrintWriter(getDeletedFilePath())) {
+
+            writer.println(HEADER);
+            allDeleted.forEach(guest -> writer.println(serialize(guest)));
+
+        } catch (FileNotFoundException e) {
+            throw new DataException(e);
+        }
+    }
+
+    private void removeReactivatedGuestFromDeleted(Guest guestToRemove) throws DataException {
+        if (guestToRemove == null) {
+            return;
+        }
+
+        List<Guest> allDeleted = findAllDeleted();
+        allDeleted = allDeleted.stream()
+                .filter(g -> g.getId() != guestToRemove.getId())
+                .collect(Collectors.toList());
 
         try (PrintWriter writer = new PrintWriter(getDeletedFilePath())) {
 

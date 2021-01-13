@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class HostFileRepository implements HostRepository {
 
@@ -103,13 +104,19 @@ public class HostFileRepository implements HostRepository {
 
         List<Host> all = findAll();
 
-        host.setId(java.util.UUID.randomUUID().toString());
+        Host deletedHost = findDeletedByEmail(host.getEmail());
+        if (deletedHost != null) {
+            host.setId(deletedHost.getId()); // TODO make sure this works!
+        } else {
+            host.setId(java.util.UUID.randomUUID().toString());
+        }
 
         String[] fields = serialize(host).split(DELIMITER); // removes DELIMITER_REPLACEMENT and replaces with DELIMITER
         host = deserialize(fields); // TODO research why this is necessary - noticed we used this technique in Sustainable Foraging
 
         all.add(deserialize(fields));
         writeAll(all);
+        removeReactivatedHostFromDeleted(deletedHost); // TODO need to remove deleted host from "deleted" file - make sure this works
 
         return host;
     }
@@ -176,6 +183,26 @@ public class HostFileRepository implements HostRepository {
 
             writer.println(HEADER);
             allDeleted.forEach(host -> writer.println(serialize(host)));
+
+        } catch (FileNotFoundException e) {
+            throw new DataException(e);
+        }
+    }
+
+    private void removeReactivatedHostFromDeleted(Host hostToRemove) throws DataException {
+        if (hostToRemove == null) {
+            return;
+        }
+
+        List<Host> allDeleted = findAllDeleted();
+        allDeleted = allDeleted.stream()
+                .filter(g -> !g.getId().equals(hostToRemove.getId()))
+                .collect(Collectors.toList());
+
+        try (PrintWriter writer = new PrintWriter(getDeletedFilePath())) {
+
+            writer.println(HEADER);
+            allDeleted.forEach(guest -> writer.println(serialize(guest)));
 
         } catch (FileNotFoundException e) {
             throw new DataException(e);
