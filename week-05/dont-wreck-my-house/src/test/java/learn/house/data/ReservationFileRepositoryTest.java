@@ -89,7 +89,7 @@ class ReservationFileRepositoryTest {
     void shouldAdd() throws DataException {
         Reservation reservation = new Reservation();
         reservation.setStartDate(LocalDate.of(2025, 1, 1));
-        reservation.setEndDate(LocalDate.of(2020, 1, 3));
+        reservation.setEndDate(LocalDate.of(2025, 1, 3));
 
         Host host = new Host();
         host.setId("2e25f6f7-3ef0-4f38-8a1a-2b5eea81409c");
@@ -120,7 +120,7 @@ class ReservationFileRepositoryTest {
     void shouldUpdate() throws DataException {
         Reservation reservation = new Reservation();
         reservation.setStartDate(LocalDate.of(2025, 1, 1));
-        reservation.setEndDate(LocalDate.of(2020, 1, 3));
+        reservation.setEndDate(LocalDate.of(2025, 1, 3));
 
         reservation.setHost(HOST);
 
@@ -154,7 +154,7 @@ class ReservationFileRepositoryTest {
     void shouldNotUpdateReservationThatDoesntExist() throws DataException {
         Reservation reservation = new Reservation();
         reservation.setStartDate(LocalDate.of(2025, 1, 1));
-        reservation.setEndDate(LocalDate.of(2020, 1, 3));
+        reservation.setEndDate(LocalDate.of(2025, 1, 3));
 
         reservation.setHost(HOST);
 
@@ -173,7 +173,7 @@ class ReservationFileRepositoryTest {
     void shouldNotUpdateHostWithNoReservationsFile() throws DataException {
         Reservation reservation = new Reservation();
         reservation.setStartDate(LocalDate.of(2025, 1, 1));
-        reservation.setEndDate(LocalDate.of(2020, 1, 3));
+        reservation.setEndDate(LocalDate.of(2025, 1, 3));
 
         reservation.setHost(HOST_WITHOUT_RESERVATIONS);
 

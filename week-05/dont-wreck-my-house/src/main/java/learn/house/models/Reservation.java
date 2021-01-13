@@ -77,8 +77,8 @@ public class Reservation {
     }
 
     public boolean checkForOverlapWith(Reservation reservation) {
-        return this.startDate.isBefore(reservation.endDate)
-                || this.endDate.isAfter(reservation.startDate)
+        return (this.startDate.isBefore(reservation.endDate) && this.endDate.isAfter(reservation.startDate))
+                || (this.endDate.isAfter(reservation.startDate) && this.startDate.isBefore(reservation.endDate))
                 || (!this.startDate.isAfter(reservation.startDate) && !this.endDate.isBefore(reservation.endDate));
     }
 

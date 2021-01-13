@@ -364,5 +364,4 @@ class HostServiceTest {
         assertFalse(result.isSuccess());
         assertNull(result.getPayload());
     }
-
 }

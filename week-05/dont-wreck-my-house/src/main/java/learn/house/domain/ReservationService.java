@@ -25,7 +25,7 @@ public class ReservationService {
         this.guestRepository = guestRepository;
     }
 
-    public List<Reservation> findAll(Host host) {
+    public List<Reservation> findByHost(Host host) {
         return repository.findByHost(host);
     }
 
@@ -38,14 +38,8 @@ public class ReservationService {
 
         boolean overlapsAnotherReservation = checkForOverlap(reservation);
         if (overlapsAnotherReservation) {
-            result.addErrorMessage(String.format("Reservation conflicts with an existing reservation.%n" +
-                            "Host: %s%n" +
-                            "Guest: %s%n" +
-                            "Dates: %s - %s",
-                    reservation.getHost().getEmail(),
-                    reservation.getGuest().getEmail(),
-                    formatter.format(reservation.getStartDate()),
-                    formatter.format(reservation.getEndDate())));
+            result.addErrorMessage("Reservation conflicts with an existing reservation.");
+            return result;
         }
 
         result.setPayload(repository.add(reservation));
@@ -59,28 +53,23 @@ public class ReservationService {
             return result;
         }
 
+        boolean reservationExists = validateReservationExists(reservation);
+        if (!reservationExists) {
+            result.addErrorMessage(String.format("Reservation Id %s not found for Host '%s'.",
+                    reservation.getId(), reservation.getHost().getEmail()));
+            return result;
+        }
+
         boolean overlapsAnotherReservation = checkForOverlap(reservation);
         if (overlapsAnotherReservation) {
-            result.addErrorMessage(String.format("Reservation conflicts with an existing reservation.%n" +
-                            "Host: %s%n" +
-                            "Guest: %s%n" +
-                            "Dates: %s - %s",
-                    reservation.getHost().getEmail(),
-                    reservation.getGuest().getEmail(),
-                    formatter.format(reservation.getStartDate()),
-                    formatter.format(reservation.getEndDate())));
+            result.addErrorMessage("Reservation conflicts with an existing reservation.");
+            return result;
         }
 
         boolean success = repository.update(reservation);
         if (!success) {
-            result.addErrorMessage(String.format("Reservation not found.%n" +
-                            "Host: %s%n" +
-                            "Guest: %s%n" +
-                            "Dates: %s - %s",
-                    reservation.getHost().getEmail(),
-                    reservation.getGuest().getEmail(),
-                    formatter.format(reservation.getStartDate()),
-                    formatter.format(reservation.getEndDate())));
+            result.addErrorMessage(String.format("Reservation Id %s not found for Host '%s'.",
+                    reservation.getId(), reservation.getHost().getEmail()));
         }
 
         result.setPayload(reservation);
@@ -94,16 +83,17 @@ public class ReservationService {
             return result;
         }
 
+        boolean reservationExists = validateReservationExists(reservation);
+        if (!reservationExists) {
+            result.addErrorMessage(String.format("Reservation Id %s not found for Host '%s'.",
+                    reservation.getId(), reservation.getHost().getEmail()));
+            return result;
+        }
+
         boolean success = repository.delete(reservation);
         if (!success) {
-            result.addErrorMessage(String.format("Reservation not found.%n" +
-                    "Host: %s%n" +
-                    "Guest: %s%n" +
-                    "Dates: %s - %s",
-                    reservation.getHost().getEmail(),
-                    reservation.getGuest().getEmail(),
-                    formatter.format(reservation.getStartDate()),
-                    formatter.format(reservation.getEndDate())));
+            result.addErrorMessage(String.format("Reservation Id %s not found for Host '%s'.",
+                    reservation.getId(), reservation.getHost().getEmail()));
         }
 
         result.setPayload(reservation);
@@ -128,7 +118,6 @@ public class ReservationService {
     }
 
     private void validateNulls(Reservation reservation, Result<Reservation> result) {
-
         if (reservation == null) {
             result.addErrorMessage("No reservation to save.");
             return;
@@ -152,9 +141,8 @@ public class ReservationService {
     }
 
     private void validateFields(Reservation reservation, Result<Reservation> result) {
-
-        if (reservation.getStartDate().isAfter(LocalDate.now())) {
-            result.addErrorMessage("Reservation start date cannot be in the future.");
+        if (reservation.getStartDate().isBefore(LocalDate.now())) {
+            result.addErrorMessage("Reservation start date cannot be in the past.");
         }
 
         if (!reservation.getEndDate().isAfter(reservation.getStartDate())) {
@@ -170,6 +158,11 @@ public class ReservationService {
         if (reservation.getGuest().getId() <= 0 || guestRepository.findById(reservation.getGuest().getId()) == null) {
             result.addErrorMessage("Guest does not exist.");
         }
+    }
+
+    private boolean validateReservationExists(Reservation reservation) {
+        return repository.findByHost(reservation.getHost()).stream()
+                .anyMatch(r -> reservation.getId() == r.getId());
     }
 
     private boolean checkForOverlap(Reservation reservation) {
