@@ -104,6 +104,7 @@ class ReservationFileRepositoryTest {
         reservation = repository.add(reservation);
 
         assertNotNull(reservation);
+        assertEquals(14, reservation.getId());
         assertEquals(14, repository.findByHost(host).size());
     }
 
