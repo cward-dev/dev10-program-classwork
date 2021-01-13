@@ -9,6 +9,7 @@ import java.util.List;
 public class GuestRepositoryDouble implements GuestRepository {
 
     private List<Guest> guests = new ArrayList<>();
+    private List<Guest> guestsDeleted = new ArrayList<>();
 
     public GuestRepositoryDouble() {
         guests.add(new Guest(1, "Sullivan", "Lomas",
@@ -31,6 +32,19 @@ public class GuestRepositoryDouble implements GuestRepository {
     @Override
     public Guest findById(int id) {
         return guests.stream()
+                .filter(guest -> guest.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public List<Guest> findAllDeleted() {
+        return guestsDeleted;
+    }
+
+    @Override
+    public Guest findDeletedById(int id) {
+        return guestsDeleted.stream()
                 .filter(guest -> guest.getId() == id)
                 .findFirst()
                 .orElse(null);
@@ -74,6 +88,7 @@ public class GuestRepositoryDouble implements GuestRepository {
     public boolean deleteById(int id) {
         for (int i = 0; i < guests.size(); i++) {
             if (id == guests.get(i).getId()) {
+                guestsDeleted.add(guests.get(i));
                 guests.remove(i);
                 return true;
             }

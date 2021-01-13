@@ -153,12 +153,18 @@ public class ReservationFileRepository implements ReservationRepository {
 
         Host host = hostRepository.findById(hostId); // TODO GET ID
         if (host == null) {
+            host = hostRepository.findDeletedById(hostId);
+        }
+        if (host == null) {
             host = new Host();
             host.setId(hostId);
         }
         reservation.setHost(host);
 
         Guest guest = guestRepository.findById(Integer.parseInt(fields[3]));
+        if (guest == null) {
+            guest = guestRepository.findDeletedById(Integer.parseInt(fields[3]));
+        }
         if (guest == null) {
             guest = new Guest();
             guest.setId(Integer.parseInt(fields[3]));

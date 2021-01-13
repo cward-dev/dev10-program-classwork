@@ -50,6 +50,35 @@ public class HostFileRepository implements HostRepository {
     }
 
     @Override
+    public List<Host> findAllDeleted() {
+        ArrayList<Host> result = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(getDeletedFilePath()))) {
+
+            reader.readLine();
+
+            for (String line = reader.readLine(); line != null; line = reader.readLine()) {
+                String[] fields = line.split(DELIMITER, -1);
+
+                if (fields.length == 10) {
+                    result.add(deserialize(fields));
+                }
+            }
+        } catch (IOException exception) {
+            // not throwing on read
+        }
+        return result;
+    }
+
+    @Override
+    public Host findDeletedById(String id) {
+        return findAllDeleted().stream()
+                .filter(host -> host.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
     public Host findByEmail(String email) {
         return findAll().stream()
                 .filter(host -> host.getEmail().equalsIgnoreCase(email))
@@ -80,7 +109,7 @@ public class HostFileRepository implements HostRepository {
     @Override
     public boolean update(Host host) throws DataException {
 
-        if (host == null) {
+        if (host == null || host.getId() == null || host.getId().trim().length() == 0) {
             return false;
         }
 
@@ -97,11 +126,16 @@ public class HostFileRepository implements HostRepository {
     }
 
     @Override
-    public boolean deleteById(String id) throws DataException {
+    public boolean deleteById(String hostId) throws DataException {
+
+        if (hostId == null || hostId.trim().length() == 0) {
+            return false;
+        }
 
         List<Host> all = findAll();
         for (int i = 0; i < all.size(); i++) {
-            if (id.equals(all.get(i).getId())) {
+            if (hostId.equals(all.get(i).getId())) {
+                moveDeletedHost(all.get(i));
                 all.remove(i);
                 writeAll(all);
                 return true;
@@ -115,9 +149,25 @@ public class HostFileRepository implements HostRepository {
         try (PrintWriter writer = new PrintWriter(filePath)) {
 
             writer.println(HEADER);
-            hosts.stream()
-                    .sorted(Comparator.comparing(Host::getId))
-                    .forEach(host -> writer.println(serialize(host)));
+            hosts.forEach(host -> writer.println(serialize(host)));
+
+        } catch (FileNotFoundException e) {
+            throw new DataException(e);
+        }
+    }
+
+    private void moveDeletedHost(Host hostToDelete) throws DataException {
+        if (hostToDelete == null) {
+            return;
+        }
+
+        List<Host> allDeleted = findAllDeleted();
+        allDeleted.add(hostToDelete);
+
+        try (PrintWriter writer = new PrintWriter(getDeletedFilePath())) {
+
+            writer.println(HEADER);
+            allDeleted.forEach(host -> writer.println(serialize(host)));
 
         } catch (FileNotFoundException e) {
             throw new DataException(e);
@@ -157,4 +207,8 @@ public class HostFileRepository implements HostRepository {
     private String clean(String value) { return value.replace(DELIMITER, DELIMITER_REPLACEMENT); }
 
     private String restore(String value) { return value.replace(DELIMITER_REPLACEMENT, DELIMITER); }
+
+    private String getDeletedFilePath() {
+        return filePath.substring(0, filePath.length() - 4) + "-deleted.csv";
+    }
 }

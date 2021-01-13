@@ -28,6 +28,11 @@ class HostFileRepositoryTest {
         Path seedPath = Paths.get(SEED_PATH);
 
         Files.copy(seedPath, testPath, StandardCopyOption.REPLACE_EXISTING);
+        try {
+            Files.delete(Paths.get(getDeletedFilePath()));
+        } catch (IOException exception) {
+            // if file not found then it is already gone
+        }
     }
 
     @Test
@@ -144,6 +149,15 @@ class HostFileRepositoryTest {
 
         assertTrue(success);
         assertNull(repository.findById("3edda6bc-ab95-49a8-8962-d50b53f84b15"));
+        assertEquals(1, repository.findAllDeleted().size());
+    }
+
+    @Test
+    void shouldNotDeleteIfIdNull() throws DataException {
+        String hostId = null;
+        boolean success = repository.deleteById(hostId);
+
+        assertFalse(success);
     }
 
     @Test
@@ -153,5 +167,10 @@ class HostFileRepositoryTest {
 
         assertFalse(success);
     }
+
+    private String getDeletedFilePath() {
+        return TEST_PATH.substring(0, TEST_PATH.length() - 4) + "-deleted.csv";
+    }
+
 
 }

@@ -48,6 +48,35 @@ public class GuestFileRepository implements GuestRepository {
     }
 
     @Override
+    public List<Guest> findAllDeleted() {
+        ArrayList<Guest> result = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(getDeletedFilePath()))) {
+
+            reader.readLine();
+
+            for (String line = reader.readLine(); line != null; line = reader.readLine()) {
+                String[] fields = line.split(DELIMITER, -1);
+
+                if (fields.length == 10) {
+                    result.add(deserialize(fields));
+                }
+            }
+        } catch (IOException exception) {
+            // not throwing on read
+        }
+        return result;
+    }
+
+    @Override
+    public Guest findDeletedById(int id) {
+        return findAllDeleted().stream()
+                .filter(guest -> guest.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
     public Guest findByEmail(String email) {
         return findAll().stream()
                 .filter(guest -> guest.getEmail().equalsIgnoreCase(email))
@@ -105,6 +134,7 @@ public class GuestFileRepository implements GuestRepository {
         List<Guest> all = findAll();
         for (int i = 0; i < all.size(); i++) {
             if (id == all.get(i).getId()) {
+                moveDeletedGuest(all.get(i));
                 all.remove(i);
                 writeAll(all);
                 return true;
@@ -121,6 +151,24 @@ public class GuestFileRepository implements GuestRepository {
             guests.stream()
                     .sorted(Comparator.comparing(Guest::getId))
                     .forEach(guest -> writer.println(serialize(guest)));
+
+        } catch (FileNotFoundException e) {
+            throw new DataException(e);
+        }
+    }
+
+    private void moveDeletedGuest(Guest guestToDelete) throws DataException {
+        if (guestToDelete == null) {
+            return;
+        }
+
+        List<Guest> allDeleted = findAllDeleted();
+        allDeleted.add(guestToDelete);
+
+        try (PrintWriter writer = new PrintWriter(getDeletedFilePath())) {
+
+            writer.println(HEADER);
+            allDeleted.forEach(guest -> writer.println(serialize(guest)));
 
         } catch (FileNotFoundException e) {
             throw new DataException(e);
@@ -153,4 +201,8 @@ public class GuestFileRepository implements GuestRepository {
     private String clean(String value) { return value.replace(DELIMITER, DELIMITER_REPLACEMENT); }
 
     private String restore(String value) { return value.replace(DELIMITER_REPLACEMENT, DELIMITER); }
+
+    private String getDeletedFilePath() {
+        return filePath.substring(0, filePath.length() - 4) + "-deleted.csv";
+    }
 }

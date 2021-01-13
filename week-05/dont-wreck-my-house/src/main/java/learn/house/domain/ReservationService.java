@@ -47,16 +47,9 @@ public class ReservationService {
     }
 
     public Result<Reservation> update(Reservation reservation) throws DataException {
-        Result<Reservation> result = validate(reservation);
+        Result<Reservation> result = validateForAltering(reservation);
 
         if (!result.isSuccess()) {
-            return result;
-        }
-
-        boolean reservationExists = validateReservationExists(reservation);
-        if (!reservationExists) {
-            result.addErrorMessage(String.format("Reservation Id %s not found for Host '%s'.",
-                    reservation.getId(), reservation.getHost().getEmail()));
             return result;
         }
 
@@ -77,16 +70,9 @@ public class ReservationService {
     }
 
     public Result<Reservation> delete(Reservation reservation) throws DataException {
-        Result<Reservation> result = validate(reservation);
+        Result<Reservation> result = validateForAltering(reservation);
 
         if (!result.isSuccess()) {
-            return result;
-        }
-
-        boolean reservationExists = validateReservationExists(reservation);
-        if (!reservationExists) {
-            result.addErrorMessage(String.format("Reservation Id %s not found for Host '%s'.",
-                    reservation.getId(), reservation.getHost().getEmail()));
             return result;
         }
 
@@ -108,7 +94,43 @@ public class ReservationService {
             return result;
         }
 
-        validateFields(reservation, result);
+        validateDates(reservation, result);
+        if (!result.isSuccess()) {
+            return result;
+        }
+
+        validateChildrenExist(reservation, result);
+        return result;
+    }
+
+    private Result<Reservation> validateForAltering(Reservation reservation) {
+        Result<Reservation> result = new Result<>();
+
+        validateNulls(reservation, result);
+        if (!result.isSuccess()) {
+            return result;
+        }
+
+        Reservation reservationExists = checkIfReservationExists(reservation);
+        if (reservationExists == null) {
+            result.addErrorMessage(String.format("Reservation Id %s not found for Host '%s'.",
+                    reservation.getId(), reservation.getHost().getEmail()));
+            return result;
+        }
+
+        boolean reservationHasPassed = checkIfReservationHasPassed(reservationExists);
+        if (reservationHasPassed) {
+            result.addErrorMessage("Cannot alter a past reservation.");
+            return result;
+        }
+
+        boolean reservationIsOngoing = checkIfReservationIsOngoing(reservationExists);
+        if (reservationIsOngoing) {
+            result.addErrorMessage("Cannot alter a reservation that has already started.");
+            return result;
+        }
+
+        validateDates(reservation, result);
         if (!result.isSuccess()) {
             return result;
         }
@@ -140,7 +162,7 @@ public class ReservationService {
         }
     }
 
-    private void validateFields(Reservation reservation, Result<Reservation> result) {
+    private void validateDates(Reservation reservation, Result<Reservation> result) {
         if (reservation.getStartDate().isBefore(LocalDate.now())) {
             result.addErrorMessage("Reservation start date cannot be in the past.");
         }
@@ -160,9 +182,23 @@ public class ReservationService {
         }
     }
 
-    private boolean validateReservationExists(Reservation reservation) {
+    private Reservation checkIfReservationExists(Reservation reservation) {
         return repository.findByHost(reservation.getHost()).stream()
-                .anyMatch(r -> reservation.getId() == r.getId());
+                .filter(r -> reservation.getId() == r.getId())
+                .findFirst()
+                .orElse(null);
+    }
+
+    private boolean checkIfReservationIsOngoing(Reservation reservation) {
+
+        return repository.findByHost(reservation.getHost()).stream()
+                .anyMatch(r -> reservation.getStartDate().isBefore(LocalDate.now())
+                        && !reservation.getEndDate().isBefore(LocalDate.now()));
+    }
+
+    private boolean checkIfReservationHasPassed(Reservation reservation) {
+        return repository.findByHost(reservation.getHost()).stream()
+                .anyMatch(r -> reservation.getEndDate().isBefore(LocalDate.now()));
     }
 
     private boolean checkForOverlap(Reservation reservation) {

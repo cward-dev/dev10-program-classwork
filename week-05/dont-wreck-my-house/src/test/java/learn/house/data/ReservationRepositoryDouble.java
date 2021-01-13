@@ -37,6 +37,13 @@ public class ReservationRepositoryDouble implements ReservationRepository {
                 HOST,
                 GUEST,
                 new BigDecimal("360")));
+
+        reservations.add(new Reservation(2,
+                START_DATE.minusMonths(2),
+                END_DATE.minusMonths(2),
+                HOST,
+                GUEST,
+                new BigDecimal("360")));
     }
 
     @Override

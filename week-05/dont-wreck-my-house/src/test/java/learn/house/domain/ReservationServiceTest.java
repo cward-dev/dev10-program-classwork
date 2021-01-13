@@ -57,7 +57,7 @@ class ReservationServiceTest {
     void shouldFindByHost() {
         List<Reservation> result = service.findByHost(HOST);
 
-        assertEquals(1, result.size());
+        assertEquals(2, result.size());
     }
 
     @Test
@@ -95,7 +95,7 @@ class ReservationServiceTest {
 
         assertTrue(result.isSuccess());
         assertNotNull(result.getPayload());
-        assertEquals(2, result.getPayload().getId());
+        assertEquals(3, result.getPayload().getId());
     }
 
     @Test
@@ -110,7 +110,7 @@ class ReservationServiceTest {
 
         assertTrue(result.isSuccess());
         assertNotNull(result.getPayload());
-        assertEquals(2, result.getPayload().getId());
+        assertEquals(3, result.getPayload().getId());
     }
 
     @Test
@@ -125,7 +125,7 @@ class ReservationServiceTest {
 
         assertTrue(result.isSuccess());
         assertNotNull(result.getPayload());
-        assertEquals(2, result.getPayload().getId());
+        assertEquals(3, result.getPayload().getId());
     }
 
     @Test
@@ -330,6 +330,21 @@ class ReservationServiceTest {
     }
 
     @Test
+    void shouldNotUpdateReservationThatHasPassed() throws DataException {
+        Reservation reservation = new Reservation(2,
+                START_DATE.minusMonths(2),
+                END_DATE.minusMonths(2),
+                HOST,
+                GUEST,
+                new BigDecimal("360"));
+        Result<Reservation> result = service.update(reservation);
+
+        assertFalse(result.isSuccess());
+        assertNull(result.getPayload());
+        assertEquals("Cannot alter a past reservation.", result.getErrorMessages().get(0));
+    }
+
+    @Test
     void shouldNotUpdateNullHost() throws DataException {
         Reservation reservation = new Reservation(1,
                 START_DATE.minusDays(5),
@@ -462,7 +477,7 @@ class ReservationServiceTest {
 
         assertFalse(result.isSuccess());
         assertNull(result.getPayload());
-        assertEquals("Host does not exist.", result.getErrorMessages().get(0));
+        assertEquals("Reservation Id 1 not found for Host 'jdoe@gmail.com'.", result.getErrorMessages().get(0));
     }
 
     @Test
@@ -548,7 +563,23 @@ class ReservationServiceTest {
         assertTrue(result.isSuccess());
         assertNotNull(result.getPayload());
         assertEquals(1, result.getPayload().getId());
-        assertEquals(0, service.findByHost(HOST).size());
+        assertEquals(1, service.findByHost(HOST).size());
+    }
+
+    @Test
+    void shouldNotDeletePastReservation() throws DataException {
+        Reservation reservation = new Reservation(2,
+                START_DATE.minusMonths(2).minusDays(5),
+                END_DATE.minusMonths(2).minusDays(5),
+                HOST,
+                GUEST,
+                new BigDecimal("360"));
+
+        Result<Reservation> result = service.delete(reservation);
+
+        assertFalse(result.isSuccess());
+        assertNull(result.getPayload());
+        assertEquals(2, service.findByHost(HOST).size());
     }
 
     @Test
@@ -557,7 +588,7 @@ class ReservationServiceTest {
 
         assertFalse(result.isSuccess());
         assertNull(result.getPayload());
-        assertEquals(1, service.findByHost(HOST).size());
+        assertEquals(2, service.findByHost(HOST).size());
     }
 
     @Test
@@ -574,7 +605,7 @@ class ReservationServiceTest {
 
         assertFalse(result.isSuccess());
         assertNull(result.getPayload());
-        assertEquals(1, service.findByHost(HOST).size());
+        assertEquals(2, service.findByHost(HOST).size());
     }
 
     @Test
@@ -591,7 +622,7 @@ class ReservationServiceTest {
 
         assertFalse(result.isSuccess());
         assertNull(result.getPayload());
-        assertEquals(1, service.findByHost(HOST).size());
+        assertEquals(2, service.findByHost(HOST).size());
     }
 
     @Test
@@ -608,7 +639,7 @@ class ReservationServiceTest {
 
         assertFalse(result.isSuccess());
         assertNull(result.getPayload());
-        assertEquals(1, service.findByHost(HOST).size());
+        assertEquals(2, service.findByHost(HOST).size());
     }
 
     @Test
@@ -625,7 +656,7 @@ class ReservationServiceTest {
 
         assertFalse(result.isSuccess());
         assertNull(result.getPayload());
-        assertEquals(1, service.findByHost(HOST).size());
+        assertEquals(2, service.findByHost(HOST).size());
     }
 
     @Test
@@ -642,6 +673,6 @@ class ReservationServiceTest {
 
         assertFalse(result.isSuccess());
         assertNull(result.getPayload());
-        assertEquals(1, service.findByHost(HOST).size());
+        assertEquals(2, service.findByHost(HOST).size());
     }
 }

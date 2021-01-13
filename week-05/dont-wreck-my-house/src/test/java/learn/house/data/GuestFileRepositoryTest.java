@@ -27,6 +27,11 @@ class GuestFileRepositoryTest {
         Path seedPath = Paths.get(SEED_PATH);
 
         Files.copy(seedPath, testPath, StandardCopyOption.REPLACE_EXISTING);
+        try {
+            Files.delete(Paths.get(getDeletedFilePath()));
+        } catch (IOException exception) {
+            // if file not found then it is already gone
+        }
     }
 
     @Test
@@ -126,4 +131,9 @@ class GuestFileRepositoryTest {
 
         assertFalse(success);
     }
+
+    private String getDeletedFilePath() {
+        return TEST_PATH.substring(0, TEST_PATH.length() - 4) + "-deleted.csv";
+    }
+
 }
