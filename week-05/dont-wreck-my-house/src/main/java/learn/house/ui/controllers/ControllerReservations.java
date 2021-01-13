@@ -51,12 +51,12 @@ public class ControllerReservations {
         } while (option != ReservationMenuOption.EXIT);
     }
 
-    private void viewReservationsForHost() {
+    private void viewReservationsForHost() { // TODO: just displays Host Information as a test right now, need to fix
         String hostEmail = view.getHostEmail();
         Host host = hostService.findByEmail(hostEmail);
         if (host != null) {
-            List<Reservation> all = service.findByHost(host);
-            view.displayHostInformation(host);
+            List<Reservation> reservations = service.findByHost(host);
+            view.displayReservations(reservations, host);
         } else {
             view.displayStatus(false, String.format("No host found with email address '%s'.",
                     hostEmail));

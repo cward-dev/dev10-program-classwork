@@ -1,16 +1,21 @@
 package learn.house.ui;
 
 import learn.house.models.Host;
+import learn.house.models.Reservation;
 import learn.house.ui.menu.GuestMenuOption;
 import learn.house.ui.menu.HostMenuOption;
 import learn.house.ui.menu.MainMenuOption;
 import learn.house.ui.menu.ReservationMenuOption;
 import org.springframework.stereotype.Component;
 
+import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 
 @Component
 public class View {
+
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
     private final ConsoleIO io;
 
@@ -120,6 +125,17 @@ public class View {
         io.printf("Address: %s, %s, %s %s%n", host.getAddress(), host.getCity(), host.getState().getAbbreviation(), host.getPostalCode());
         io.printf("Standard Rate: $%s per night%n", host.getStandardRate());
         io.printf("Weekend Rate: $%s per night%n", host.getWeekendRate());
+    }
+
+    public void displayReservations(List<Reservation> reservations, Host host) { // TODO Delete this tip: fpostlethwaitebh@sakura.ne.jp has reservations for testing
+        displayHeader(String.format("Reservations for Host %s (%s)", host.getLastName(), host.getEmail()));
+        reservations.stream()
+                .sorted(Comparator.comparing(Reservation::getStartDate).thenComparing(Reservation::getEndDate))
+                .forEach(r -> io.printf("%10s - %-10s : Guest: %s %s : Total: $%s%n",
+                        formatter.format(r.getStartDate()), formatter.format(r.getEndDate()),
+                        r.getGuest().getFirstName(), r.getGuest().getLastName(),
+                        r.getTotal())
+                );
     }
 
     public void enterToContinue() {
