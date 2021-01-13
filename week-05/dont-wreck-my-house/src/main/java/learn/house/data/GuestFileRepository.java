@@ -99,16 +99,18 @@ public class GuestFileRepository implements GuestRepository {
             return null;
         }
 
-
-
         List<Guest> all = findAll();
 
-        int nextId = all.stream()
-                .mapToInt(Guest::getId)
-                .max()
-                .orElse(0) + 1;
-
-        guest.setId(nextId);
+        Guest deletedGuest = findDeletedByEmail(guest.getEmail());
+        if (deletedGuest!= null) {
+            guest.setId(deletedGuest.getId()); // TODO need to remove deleted guest from "deleted" file
+        } else {
+            int nextId = all.stream()
+                    .mapToInt(Guest::getId)
+                    .max()
+                    .orElse(0) + 1;
+            guest.setId(nextId);
+        }
 
         String[] fields = serialize(guest).split(DELIMITER); // removes DELIMITER_REPLACEMENT and replaces with DELIMITER
         guest = deserialize(fields); // TODO research why this is necessary - noticed we used this technique in Sustainable Foraging
