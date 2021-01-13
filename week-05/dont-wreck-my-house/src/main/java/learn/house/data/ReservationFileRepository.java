@@ -6,6 +6,7 @@ import learn.house.models.Reservation;
 
 import java.io.*;
 import java.math.BigDecimal;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -73,7 +74,7 @@ public class ReservationFileRepository implements ReservationRepository {
         reservation = deserialize(fields, reservation.getHost().getId()); // TODO research why this is necessary - noticed we used this technique in Sustainable Foraging
 
         all.add(deserialize(fields, reservation.getHost().getId()));
-        writeAll(all);
+        writeAll(all, reservation.getHost());
 
         return reservation;
     }
@@ -81,7 +82,8 @@ public class ReservationFileRepository implements ReservationRepository {
     @Override
     public boolean update(Reservation reservation) throws DataException {
 
-        if (reservation == null || reservation.getHost() == null) {
+        if (reservation == null || reservation.getHost() == null
+                || reservation.getHost().getId() == null || reservation.getHost().getId().trim().length() == 0) {
             return false;
         }
 
@@ -89,7 +91,7 @@ public class ReservationFileRepository implements ReservationRepository {
         for (int i = 0; i < all.size(); i++) {
             if (reservation.getId() == all.get(i).getId()) {
                 all.set(i, reservation);
-                writeAll(all);
+                writeAll(all, reservation.getHost());
                 return true;
             }
         }
@@ -100,7 +102,8 @@ public class ReservationFileRepository implements ReservationRepository {
     @Override
     public boolean delete(Reservation reservation) throws DataException {
 
-        if (reservation == null || reservation.getHost() == null) {
+        if (reservation == null || reservation.getHost() == null
+                || reservation.getHost().getId() == null || reservation.getHost().getId().trim().length() == 0) {
             return false;
         }
 
@@ -108,7 +111,7 @@ public class ReservationFileRepository implements ReservationRepository {
         for (int i = 0; i < all.size(); i++) {
             if (reservation.getId() == all.get(i).getId()) {
                 all.remove(i);
-                writeAll(all);
+                writeAll(all, reservation.getHost());
                 return true;
             }
         }
@@ -116,14 +119,17 @@ public class ReservationFileRepository implements ReservationRepository {
         return false;
     }
 
-    private void writeAll(List<Reservation> reservations) throws DataException {
-        Host host = reservations.get(0).getHost();
-
-        if (host == null) {
+    private void writeAll(List<Reservation> reservations, Host host) throws DataException {
+        if (reservations.size() == 0) {
+            try {
+                Files.delete(Paths.get(getFilePath(host.getId())));
+            } catch (IOException exception) {
+                // if host reservations file not found, then no need to delete
+            }
             return;
         }
 
-        try (PrintWriter writer = new PrintWriter(getFilePath(reservations.get(0).getHost().getId()))) {
+        try (PrintWriter writer = new PrintWriter(getFilePath(host.getId()))) {
 
             writer.println(HEADER);
             reservations.stream()

@@ -21,10 +21,13 @@ class ReservationFileRepositoryTest {
 
     private final static String SEED_FILE_PATH = "./data/testing/2e25f6f7-3ef0-4f38-8a1a-2b5eea81409c-seed.csv";
     private final static String TEST_FILE_PATH = "./data/testing/reservations-test/2e25f6f7-3ef0-4f38-8a1a-2b5eea81409c.csv";
+    private final static String SEED_ONE_RESERVATION_FILE_PATH = "./data/testing/4b8194a3-b61d-4a39-bc8c-d4d1b8866476-seed.csv";
+    private final static String TEST_ONE_RESERVATION_FILE_PATH = "./data/testing/reservations-test/4b8194a3-b61d-4a39-bc8c-d4d1b8866476.csv";
     private final static String TEST_DIR_PATH = "./data/testing/reservations-test/";
 
     HostRepository hostRepository = new HostFileRepository("./data/testing/hosts-test.csv");
     Host HOST = hostRepository.findById("2e25f6f7-3ef0-4f38-8a1a-2b5eea81409c"); // line 322 in hosts-test.csv
+    Host HOST_WITH_ONE_RESERVATION = hostRepository.findById("4b8194a3-b61d-4a39-bc8c-d4d1b8866476");
     Host HOST_WITHOUT_RESERVATIONS = hostRepository.findById("3edda6bc-ab95-49a8-8962-d50b53f84b15");
 
     ReservationRepository repository = new ReservationFileRepository(
@@ -36,6 +39,8 @@ class ReservationFileRepositoryTest {
     void setup() throws IOException {
         Path testPath = Paths.get(TEST_FILE_PATH);
         Path seedPath = Paths.get(SEED_FILE_PATH);
+        Path testOneReservationPath = Paths.get(TEST_ONE_RESERVATION_FILE_PATH);
+        Path seedOneReservationPath = Paths.get(SEED_ONE_RESERVATION_FILE_PATH);
 
         try {
             Files.delete(Paths.get("./data/testing/2e25f6f7-3ef0-4f38-8a1a-2b5eea81409c.csv"));
@@ -44,6 +49,7 @@ class ReservationFileRepositoryTest {
         }
 
         Files.copy(seedPath, testPath, StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(seedOneReservationPath, testOneReservationPath, StandardCopyOption.REPLACE_EXISTING);
     }
 
 //    @Test
@@ -199,6 +205,18 @@ class ReservationFileRepositoryTest {
 
         assertTrue(success);
         assertEquals(12, repository.findByHost(HOST).size());
+    }
+
+    @Test
+    void shouldDeleteReservationFileIfLastReservationIsDeleted() throws DataException {
+        Reservation reservation = new Reservation();
+        reservation.setId(1);
+        reservation.setHost(HOST_WITH_ONE_RESERVATION);
+
+        boolean success = repository.delete(reservation);
+
+        assertTrue(success);
+        assertEquals(0, repository.findByHost(HOST_WITH_ONE_RESERVATION).size());
     }
 
     @Test
