@@ -41,6 +41,7 @@ class GuestServiceTest {
     void shouldFindById() {
         Guest result = service.findById(1);
 
+        assertNotNull(result);
         assertEquals(1, result.getId());
     }
 
@@ -66,7 +67,7 @@ class GuestServiceTest {
     }
 
     @Test
-    void shouldFindNullByNotPresentEmail() {
+    void shouldFindNullByEmailThatDoesntExist() {
         Guest result = service.findByEmail("thisisatestandisntpresent@testing.com");
 
         assertNull(result);
@@ -95,7 +96,8 @@ class GuestServiceTest {
     @Test
     void shouldNotAddGuestMissingFirstName() throws DataException {
         Guest guest = new Guest(0," ","Doe",
-                "jdoe@gmail.com","(111) 2223333", State.WISCONSIN);        Result<Guest> result = service.add(guest);
+                "jdoe@gmail.com","(111) 2223333", State.WISCONSIN);
+        Result<Guest> result = service.add(guest);
 
         assertFalse(result.isSuccess());
         assertEquals("Guest first name is required.",result.getErrorMessages().get(0));
@@ -105,7 +107,8 @@ class GuestServiceTest {
     @Test
     void shouldNotAddGuestMissingLastName() throws DataException {
         Guest guest = new Guest(0,"John"," ",
-                "jdoe@gmail.com","(111) 2223333", State.WISCONSIN);        Result<Guest> result = service.add(guest);
+                "jdoe@gmail.com","(111) 2223333", State.WISCONSIN);
+        Result<Guest> result = service.add(guest);
 
         assertFalse(result.isSuccess());
         assertEquals("Guest last name is required.",result.getErrorMessages().get(0));
@@ -115,7 +118,8 @@ class GuestServiceTest {
     @Test
     void shouldNotAddGuestMissingEmail() throws DataException {
         Guest guest = new Guest(0,"John","Doe",
-                " ","(111) 2223333", State.WISCONSIN);        Result<Guest> result = service.add(guest);
+                " ","(111) 2223333", State.WISCONSIN);
+        Result<Guest> result = service.add(guest);
 
         assertFalse(result.isSuccess());
         assertEquals("Guest email is required.",result.getErrorMessages().get(0));
@@ -125,7 +129,8 @@ class GuestServiceTest {
     @Test
     void shouldNotAddGuestMissingPhone() throws DataException {
         Guest guest = new Guest(0,"John","Doe",
-                "jdoe@gmail.com"," ", State.WISCONSIN);        Result<Guest> result = service.add(guest);
+                "jdoe@gmail.com"," ", State.WISCONSIN);
+        Result<Guest> result = service.add(guest);
 
         assertFalse(result.isSuccess());
         assertEquals("Guest phone is required.",result.getErrorMessages().get(0));
@@ -135,7 +140,8 @@ class GuestServiceTest {
     @Test
     void shouldNotAddGuestWithNullState() throws DataException {
         Guest guest = new Guest(0,"John","Doe",
-                "jdoe@gmail.com","(111) 2223333", null);        Result<Guest> result = service.add(guest);
+                "jdoe@gmail.com","(111) 2223333", null);
+        Result<Guest> result = service.add(guest);
 
         assertFalse(result.isSuccess());
         assertEquals("Guest state is required.",result.getErrorMessages().get(0));

@@ -41,8 +41,8 @@ public class GuestService {
 
         boolean isDuplicate = checkForDuplicate(guest);
         if (isDuplicate) {
-            result.addErrorMessage(String.format("Guest '%s %s (%s)' already exists",
-                    guest.getFirstName(), guest.getLastName(), guest.getEmail()));
+            result.addErrorMessage(String.format("Guest email '%s' is already in use.",
+                    guest.getEmail()));
             return result;
         }
 
@@ -66,7 +66,7 @@ public class GuestService {
 
         boolean success = repository.update(guest);
         if (!success) {
-            result.addErrorMessage(String.format("Guest Id '%s' not found.", guest.getId()));
+            result.addErrorMessage(String.format("Guest email '%s' not found.", guest.getEmail()));
         }
 
         result.setPayload(guest);
@@ -83,7 +83,7 @@ public class GuestService {
 
         boolean success = repository.deleteById(guestId);
         if (!success) {
-            result.addErrorMessage(String.format("Guest Id '%s' not found.", guest.getId()));
+            result.addErrorMessage(String.format("Guest email '%s' not found.", guest.getEmail()));
         }
 
         result.setPayload(guest);
