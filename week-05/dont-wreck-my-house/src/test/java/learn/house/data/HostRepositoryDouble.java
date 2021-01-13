@@ -68,6 +68,14 @@ public class HostRepositoryDouble implements HostRepository {
     }
 
     @Override
+    public Host findByEmail(String email) {
+        return hosts.stream()
+                .filter(host -> host.getEmail().equalsIgnoreCase(email))
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
     public List<Host> findAllDeleted() {
         return hostsDeleted;
     }
@@ -81,8 +89,8 @@ public class HostRepositoryDouble implements HostRepository {
     }
 
     @Override
-    public Host findByEmail(String email) {
-        return hosts.stream()
+    public Host findDeletedByEmail(String email) {
+        return hostsDeleted.stream()
                 .filter(host -> host.getEmail().equalsIgnoreCase(email))
                 .findFirst()
                 .orElse(null);

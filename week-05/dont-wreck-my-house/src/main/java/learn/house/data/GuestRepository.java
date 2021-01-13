@@ -10,11 +10,13 @@ public interface GuestRepository {
 
     Guest findById(int id);
 
+    Guest findByEmail(String email);
+
     List<Guest> findAllDeleted();
 
     Guest findDeletedById(int id);
 
-    Guest findByEmail(String email);
+    Guest findDeletedByEmail(String email);
 
     Guest add(Guest guest) throws DataException;
 

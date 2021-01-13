@@ -38,6 +38,14 @@ public class GuestRepositoryDouble implements GuestRepository {
     }
 
     @Override
+    public Guest findByEmail(String email) {
+        return guests.stream()
+                .filter(guest -> guest.getEmail().equalsIgnoreCase(email))
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
     public List<Guest> findAllDeleted() {
         return guestsDeleted;
     }
@@ -51,8 +59,8 @@ public class GuestRepositoryDouble implements GuestRepository {
     }
 
     @Override
-    public Guest findByEmail(String email) {
-        return guests.stream()
+    public Guest findDeletedByEmail(String email) {
+        return guestsDeleted.stream()
                 .filter(guest -> guest.getEmail().equalsIgnoreCase(email))
                 .findFirst()
                 .orElse(null);

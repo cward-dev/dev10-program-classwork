@@ -9,11 +9,13 @@ public interface HostRepository {
 
     Host findById(String id);
 
+    Host findByEmail(String email);
+
     List<Host> findAllDeleted();
 
     Host findDeletedById(String id);
 
-    Host findByEmail(String email);
+    Host findDeletedByEmail(String email);
 
     Host add(Host host) throws DataException;
 
