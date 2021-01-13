@@ -7,7 +7,6 @@ import learn.house.data.ReservationRepository;
 import learn.house.models.Host;
 import learn.house.models.Reservation;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -16,8 +15,6 @@ public class ReservationService {
     private final ReservationRepository repository;
     private final HostRepository hostRepository;
     private final GuestRepository guestRepository;
-
-    private final SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 
     public ReservationService(ReservationRepository repository, HostRepository hostRepository, GuestRepository guestRepository) {
         this.repository = repository;
