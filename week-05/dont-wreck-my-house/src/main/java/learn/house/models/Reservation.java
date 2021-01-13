@@ -1,7 +1,10 @@
 package learn.house.models;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 public class Reservation {
@@ -66,16 +69,48 @@ public class Reservation {
     }
 
     public BigDecimal getTotal() {
-        return total;
+        return total.setScale(2, RoundingMode.HALF_EVEN);
     }
 
     public void setTotal(BigDecimal total) {
         this.total = total;
     }
 
-    public boolean overlapsReservation(Reservation reservation) {
+    public boolean checkForOverlapWith(Reservation reservation) {
         return this.startDate.isBefore(reservation.endDate)
-                || this.endDate.isAfter(reservation.startDate);
+                || this.endDate.isAfter(reservation.startDate)
+                || (!this.startDate.isAfter(reservation.startDate) && !this.endDate.isBefore(reservation.endDate));
+    }
+
+    public BigDecimal calculateTotal() {
+        BigDecimal total = new BigDecimal("0.00");
+        BigDecimal standardRate = host.getStandardRate();
+        BigDecimal weekendRate = host.getWeekendRate();
+        DayOfWeek dayOfWeek;
+
+        if (startDate == null || endDate == null || !startDate.isBefore(endDate)) {
+            return null;
+        }
+
+        if (standardRate == null || standardRate.compareTo(BigDecimal.ZERO) < 0) {
+            return null;
+        }
+
+        if (weekendRate == null || weekendRate.compareTo(BigDecimal.ZERO) < 0) {
+            return null;
+        }
+
+        for (int i = 0; i < startDate.until(endDate, ChronoUnit.DAYS); i++) {
+            dayOfWeek = startDate.plusDays(-1 + i).getDayOfWeek(); // TODO THIS SEEMS LIKE A BUG, MATH WORKS BUT WHY -1 + i?
+            if (dayOfWeek == DayOfWeek.FRIDAY
+                    || dayOfWeek == DayOfWeek.SATURDAY) {
+                total = total.add(weekendRate);
+            } else {
+                total = total.add(standardRate);
+            }
+        }
+
+        return total.setScale(2, RoundingMode.HALF_EVEN);
     }
 
     @Override

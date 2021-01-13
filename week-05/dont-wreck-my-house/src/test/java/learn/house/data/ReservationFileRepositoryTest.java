@@ -46,6 +46,21 @@ class ReservationFileRepositoryTest {
         Files.copy(seedPath, testPath, StandardCopyOption.REPLACE_EXISTING);
     }
 
+//    @Test
+//    void testingReservationModelCalculateTotal() { // TODO MATH SEEMS BUGGY BUT WORKS?
+//        String hostId = "2e25f6f7-3ef0-4f38-8a1a-2b5eea81409c";
+//        ReservationRepository testRepository = new ReservationFileRepository(
+//                "./data/testing/" + hostId + ".csv",
+//                new GuestFileRepository("./data/testing/guests-test.csv"),
+//                new HostFileRepository("./data/testing/hosts-test.csv"));
+//
+//        List<Reservation> reservations = repository.findByHost(HOST);
+//
+//        for (Reservation reservation : reservations) {
+//            assertEquals(reservation.getTotal(), reservation.calculateTotal());
+//        }
+//    }
+
     @Test
     void shouldFindByHost() {
         List<Reservation> reservations = repository.findByHost(HOST);
