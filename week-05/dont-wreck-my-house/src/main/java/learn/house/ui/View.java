@@ -1,12 +1,15 @@
 package learn.house.ui;
 
+import learn.house.models.Host;
 import learn.house.ui.menu.GuestMenuOption;
 import learn.house.ui.menu.HostMenuOption;
 import learn.house.ui.menu.MainMenuOption;
 import learn.house.ui.menu.ReservationMenuOption;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class View {
 
     private final ConsoleIO io;
@@ -79,6 +82,14 @@ public class View {
         return GuestMenuOption.fromValue(io.readInt(message, min, max));
     }
 
+    public String getHostEmail() {
+        return io.readRequiredString("Host Email: ");
+    }
+
+
+
+
+
     // display only
     public void displayHeader(String message) {
         io.println("");
@@ -100,5 +111,18 @@ public class View {
         for (String message : messages) {
             io.println(message);
         }
+    }
+
+    public void displayHostInformation(Host host) {
+        io.printf("Last Name: %s%n", host.getLastName());
+        io.printf("Email: %s%n", host.getEmail());
+        io.printf("Phone: %s%n", host.getPhone());
+        io.printf("Address: %s, %s, %s %s%n", host.getAddress(), host.getCity(), host.getState().getAbbreviation(), host.getPostalCode());
+        io.printf("Standard Rate: $%s per night%n", host.getStandardRate());
+        io.printf("Weekend Rate: $%s per night%n", host.getWeekendRate());
+    }
+
+    public void enterToContinue() {
+        io.readString("Press [Enter] to continue.");
     }
 }

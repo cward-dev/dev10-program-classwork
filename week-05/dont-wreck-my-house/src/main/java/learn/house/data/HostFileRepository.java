@@ -1,16 +1,18 @@
 package learn.house.data;
 
-import learn.house.models.Guest;
 import learn.house.models.Host;
 import learn.house.models.State;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
 
 import java.io.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Repository
 public class HostFileRepository implements HostRepository {
 
     private static final String HEADER = "id,last_name,email,phone,address,city,state,postal_code,standard_rate,weekend_rate";
@@ -18,7 +20,7 @@ public class HostFileRepository implements HostRepository {
     private final String DELIMITER = ",";
     private final String DELIMITER_REPLACEMENT = "@@@";
 
-    public HostFileRepository(String filePath) {
+    public HostFileRepository(@Value("${hostsFilePath}") String filePath) {
         this.filePath = filePath;
     }
 
@@ -234,8 +236,8 @@ public class HostFileRepository implements HostRepository {
         host.setCity(restore(fields[5]));
         host.setState(State.getStateFromAbbreviation(fields[6]));
         host.setPostalCode(Integer.parseInt(fields[7]));
-        host.setStandardRate(new BigDecimal(fields[8]));
-        host.setWeekendRate(new BigDecimal(fields[9]));
+        host.setStandardRate(new BigDecimal(fields[8]).setScale(2, RoundingMode.HALF_EVEN));
+        host.setWeekendRate(new BigDecimal(fields[9]).setScale(2, RoundingMode.HALF_EVEN));
         return host;
     }
 

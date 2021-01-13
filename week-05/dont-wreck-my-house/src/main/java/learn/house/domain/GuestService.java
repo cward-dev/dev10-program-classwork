@@ -4,10 +4,12 @@ import learn.house.data.DataException;
 import learn.house.data.GuestRepository;
 import learn.house.models.Guest;
 import learn.house.models.State;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class GuestService {
 
     private final GuestRepository repository;

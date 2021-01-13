@@ -3,9 +3,12 @@ package learn.house.data;
 import learn.house.models.Guest;
 import learn.house.models.Host;
 import learn.house.models.Reservation;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
 
 import java.io.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
@@ -13,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+@Repository
 public class ReservationFileRepository implements ReservationRepository {
 
     private static final String HEADER = "id,start_date,end_date,guest_id,total";
@@ -23,7 +27,9 @@ public class ReservationFileRepository implements ReservationRepository {
     private final GuestRepository guestRepository;
     private final HostRepository hostRepository;
 
-    public ReservationFileRepository(String directory, GuestRepository guestRepository, HostRepository hostRepository) {
+    public ReservationFileRepository(@Value("${reservationsDirPath}") String directory,
+                                     GuestRepository guestRepository,
+                                     HostRepository hostRepository) {
         this.directory = directory;
         this.guestRepository = guestRepository;
         this.hostRepository = hostRepository;
@@ -177,7 +183,7 @@ public class ReservationFileRepository implements ReservationRepository {
         }
         reservation.setGuest(guest);
 
-        reservation.setTotal(new BigDecimal(fields[4]));
+        reservation.setTotal(new BigDecimal(fields[4]).setScale(2, RoundingMode.HALF_EVEN));
         return reservation;
     }
 

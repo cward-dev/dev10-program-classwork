@@ -1,18 +1,21 @@
 package learn.house.ui.controllers;
 
-import learn.house.data.DataException;
 import learn.house.domain.GuestService;
-import learn.house.domain.ReservationService;
 import learn.house.ui.View;
 import learn.house.ui.menu.GuestMenuOption;
-import learn.house.ui.menu.HostMenuOption;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ControllerGuests {
 
+    @Autowired
     private final GuestService service;
 
+    @Autowired
     private final View view;
 
+    @Autowired
     public ControllerGuests(GuestService service, View view) {
         this.service = service;
         this.view = view;

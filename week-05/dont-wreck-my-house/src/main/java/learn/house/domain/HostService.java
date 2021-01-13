@@ -4,11 +4,13 @@ import learn.house.data.DataException;
 import learn.house.data.HostRepository;
 import learn.house.models.Host;
 import learn.house.models.State;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class HostService {
 
     private final HostRepository repository;

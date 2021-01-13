@@ -2,6 +2,8 @@ package learn.house.data;
 
 import learn.house.models.Guest;
 import learn.house.models.State;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -9,6 +11,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Repository
 public class GuestFileRepository implements GuestRepository {
 
     private static final String HEADER = "guest_id,first_name,last_name,email,phone,state";
@@ -16,7 +19,7 @@ public class GuestFileRepository implements GuestRepository {
     private final String DELIMITER = ",";
     private final String DELIMITER_REPLACEMENT = "@@@";
 
-    public GuestFileRepository(String filePath) {
+    public GuestFileRepository(@Value("${guestsFilePath}") String filePath) {
         this.filePath = filePath;
     }
 

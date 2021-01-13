@@ -1,8 +1,11 @@
 package learn.house.ui;
 
+import org.springframework.stereotype.Component;
+
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
+@Component
 public class ConsoleIO {
 
     private static final String INVALID_NUMBER

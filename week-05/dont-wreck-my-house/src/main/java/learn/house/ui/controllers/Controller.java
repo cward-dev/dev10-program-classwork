@@ -3,19 +3,29 @@ package learn.house.ui.controllers;
 import learn.house.data.DataException;
 import learn.house.ui.View;
 import learn.house.ui.menu.MainMenuOption;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-public class ControllerMainMenu {
+@Component
+public class Controller {
 
+    @Autowired
     private final ControllerGuests controllerGuestsMenu;
+
+    @Autowired
     private final ControllerHosts controllerHostsMenu;
+
+    @Autowired
     private final ControllerReservations controllerReservationsMenu;
 
+    @Autowired
     private final View view;
 
-    public ControllerMainMenu(ControllerGuests controllerGuestsMenu,
-                              ControllerHosts controllerHostsMenu,
-                              ControllerReservations controllerReservationsMenu,
-                              View view) {
+    @Autowired
+    public Controller(ControllerGuests controllerGuestsMenu,
+                      ControllerHosts controllerHostsMenu,
+                      ControllerReservations controllerReservationsMenu,
+                      View view) {
         this.controllerGuestsMenu = controllerGuestsMenu;
         this.controllerHostsMenu = controllerHostsMenu;
         this.controllerReservationsMenu = controllerReservationsMenu;

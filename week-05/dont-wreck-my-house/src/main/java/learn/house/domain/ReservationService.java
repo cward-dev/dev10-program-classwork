@@ -6,10 +6,12 @@ import learn.house.data.HostRepository;
 import learn.house.data.ReservationRepository;
 import learn.house.models.Host;
 import learn.house.models.Reservation;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Service
 public class ReservationService {
 
     private final ReservationRepository repository;
