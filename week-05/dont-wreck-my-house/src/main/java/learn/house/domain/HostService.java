@@ -67,6 +67,12 @@ public class HostService {
             return result;
         }
 
+        boolean emailIsTakenByInactive = checkEmailBelongsToDeletedHost(host.getEmail());
+        if (emailIsTakenByInactive) {
+            result.addErrorMessage(String.format("An inactive host shares the email '%s'.%nIf you wish to use this email, you must make a new Host.",
+                    host.getEmail()));
+        }
+
         boolean success = repository.update(host);
         if (!success) {
             result.addErrorMessage(String.format("Host email '%s' not found.", host.getEmail()));
@@ -138,6 +144,10 @@ public class HostService {
         }
 
         return result;
+    }
+
+    private boolean checkEmailBelongsToDeletedHost(String email) {
+        return repository.findDeletedByEmail(email) != null;
     }
 
     private boolean checkForDuplicate(Host host) {

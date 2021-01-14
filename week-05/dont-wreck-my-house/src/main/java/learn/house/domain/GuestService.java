@@ -66,6 +66,12 @@ public class GuestService {
             return result;
         }
 
+        boolean emailIsTakenByInactive = checkEmailBelongsToDeletedGuest(guest.getEmail());
+        if (emailIsTakenByInactive) {
+            result.addErrorMessage(String.format("An inactive host shares the email '%s'.%nIf you wish to use this email, you must make a new Host.",
+                    guest.getEmail()));
+        }
+
         boolean success = repository.update(guest);
         if (!success) {
             result.addErrorMessage(String.format("Guest email '%s' not found.", guest.getEmail()));
@@ -121,6 +127,10 @@ public class GuestService {
         }
 
         return result;
+    }
+
+    private boolean checkEmailBelongsToDeletedGuest(String email) {
+        return repository.findDeletedByEmail(email) != null;
     }
 
     private boolean checkForDuplicate(Guest guest) {

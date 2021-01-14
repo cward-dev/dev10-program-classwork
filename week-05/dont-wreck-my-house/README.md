@@ -118,8 +118,8 @@ Validation
 
 ## Expected Workflow
 - [x] Day 1 (Monday): Planning and prepare, begin setting up models
-- [ ] Day 2 (Tuesday): Finish models, begin data layer development
-- [ ] Day 3 (Wednesday): Progress presentation, finish data layer, begin domain layer development
+- [x] Day 2 (Tuesday): Finish models, begin data layer development
+- [x] Day 3 (Wednesday): Progress presentation, finish data layer, begin domain layer development
 - [ ] Day 4 (Thursday): Finish domain layer, go through testing and ensure that tests are comprehensive
 - [ ] Day 5 (Friday): Progress presentation, begin ui layer development
 - [ ] Day 6 (Saturday): Finish ui layer, let the bug hunt begin (don't forget targeted tests!)
@@ -131,9 +131,7 @@ Validation
 
 ### Total Time to Complete
   * Estimated Time: 28 hours (before stretch goals)
-  * Actual Time: 
-
-
+  * Actual Time:
 
 ### Models
 - [x] Create `State` enumerator
@@ -309,7 +307,7 @@ Validation
     * Actual Time: 2 hours
 
 
-- [ ] Create `HostService` class and tests
+- [x] Create `HostService` class and tests
   * Dependencies: `HostFileRepository` --- acts as the gatekeeper for all requests to access HostFileRepository, validates data
   * Fields
     * `private final HostRepository hostRepository` --- constructor arg
@@ -325,10 +323,10 @@ Validation
       * `checkForDuplicate`
   * Time to Complete
     * Estimated Time: 1.5 hours
-    * Actual Time:
+    * Actual Time: 1.5 hours
 
 
-- [ ] Create `ReservationService` class and tests
+- [x] Create `ReservationService` class and tests
   * Dependencies: `ReservationRepository`, `GuestRepository`, `HostRepository`  --- acts as the gatekeeper for all requests to access ReservationFileRepository, validates data
   * Fields
     * `private final ReservationRepository reservationRepository` --- constructor arg
@@ -351,7 +349,7 @@ Validation
       * `checkForOverlap`
   * Time to Complete
     * Estimated Time: 3 hours
-    * Actual Time: 
+    * Actual Time: 5 hours
 
   
 - [ ] Create `Result<T>` class (extends `Response`) --- allows us to create instances of Result with different types
@@ -359,20 +357,13 @@ Validation
     * `private T payload`
     * `getter`
     * `setter`
-  * Time to Complete
-    * Estimated Time: 0.25 hours
-    * Actual Time:
-  
-
-- [ ] Create `Response` class --- allows us to create a Result instance containing errorMessages and a payload object
-  * Fields
     * `private ArrayList<String> messages = new ArrayList<>()`
     * `public boolean isSuccess` --- `(return messages.size() == 0)`
     * `public List<String> getErrorMessages` --- `(return new ArrayList<>(messages))`
     * `public void addErrorMessage(String message)` --- `(messages.add(message))`
   * Time to Complete
-    * Estimated Time: 0.5 hours
-    * Actual Time:
+    * Estimated Time: 0.75 hours
+    * Actual Time: 10 minutes
 
 ### UI Layer
 - [ ] Create `Controller` class
@@ -397,7 +388,7 @@ Validation
         * `getReservation`
   * Time to Complete
     * Estimated Time: 2 hours
-    * Actual Time:
+    * Actual Time: 2 hours
   
 
 - [ ] Create `ConsoleIO` class --- provides us with methods for displaying and getting information using the console
@@ -419,7 +410,7 @@ Validation
     * `readBigDecimal`
   * Time to Complete
     * Estimated Time: 2 hours
-    * Actual Time:
+    * Actual Time: 1 hour
 
 - [ ] Create `MainMenuOption` enumerator --- provides discrete values for the main menu options
   * Values
@@ -437,7 +428,7 @@ Validation
     * `getters`
   * Time to Complete
     * Estimated Time: 1 hours
-    * Actual Time:
+    * Actual Time: 1 hour
 
 - [ ] Create `View` class
   * Dependencies: `ConsoleIO` --- uses methods from the ConsoleIO to display and receive information using the console. View class never directly interacts with the console.
@@ -463,13 +454,13 @@ Validation
     * // If time allows, will add more viewing, creating, updating, and deleting methods for Guest and Host objects
   * Time to Complete
     * Estimated Time: 3 hours
-    * Actual Time:
+    * Actual Time: 30 minutes
 
 ### Inject Spring Dependency
-- [ ] Use Annotations to perform Spring dependency injection
+- [x] Use Annotations to perform Spring dependency injection
 * Time to Complete
   * Estimated Time: 1 hour
-  * Actual Time:
+  * Actual Time: 30 minutes
 
 ## Additional Tasks
 
