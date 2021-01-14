@@ -161,7 +161,7 @@ class HostFileRepositoryTest {
     }
 
     @Test
-    void shouldNotDeleteIfIdNotPresent() throws DataException {
+    void shouldNotDeleteIfHostNotPresent() throws DataException {
         String hostId = "thisisno-tava-lidi-dand-shouldnotrun";
         boolean success = repository.delete(repository.findById(hostId));
 
@@ -169,7 +169,7 @@ class HostFileRepositoryTest {
     }
 
     private String getDeletedFilePath() {
-        return TEST_PATH.substring(0, TEST_PATH.length() - 4) + "-deleted.csv";
+        return TEST_PATH.substring(0, TEST_PATH.length() - 4) + "-inactivated.csv";
     }
 
 

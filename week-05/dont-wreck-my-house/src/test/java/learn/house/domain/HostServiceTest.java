@@ -55,7 +55,7 @@ class HostServiceTest {
 
     @Test
     void shouldFindByLastName() {
-        List<Host> result = service.findByLastName("Postlethwaite");
+        List<Host> result = service.findByLastName("Yearnes");
 
         assertEquals(1, result.size());
     }
@@ -218,12 +218,12 @@ class HostServiceTest {
     }
 
     @Test
-    void shouldNotAddHostWithInvalidPostalCode() throws DataException {
+    void shouldNotAddHostWithNullPostalCode() throws DataException {
         Host host = new Host("will generate",
                 "Doe",
                 "jdoe@gmail.com",
                 "(111) 2223333",
-                "123 North Parkway", "Milwaukee", State.WISCONSIN, "0",
+                "123 North Parkway", "Milwaukee", State.WISCONSIN, null,
                 new BigDecimal("100.00"),
                 new BigDecimal("150.00"));
         Result<Host> result = service.add(host);
@@ -289,7 +289,7 @@ class HostServiceTest {
                 "(111) 2223333",
                 "123 North Parkway", "Milwaukee", State.WISCONSIN, "53208",
                 new BigDecimal("100.00"),
-                new BigDecimal("-1.00.00"));
+                new BigDecimal("-1.00"));
         Result<Host> result = service.add(host);
 
         assertFalse(result.isSuccess());

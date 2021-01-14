@@ -42,6 +42,17 @@ public class GuestService {
         return repository.findByEmail(guestEmail);
     }
 
+    public List<Guest> findAllDeleted() {
+        return repository.findAllDeleted();
+    }
+
+    public List<Guest> findDeletedByLastName(String lastName) {
+        return repository.findAllDeleted().stream()
+                .filter(g -> g.getLastName().trim()
+                        .substring(0,Math.min(g.getLastName().trim().length(), lastName.trim().length()))
+                        .equalsIgnoreCase(lastName.trim()))
+                .collect(Collectors.toList());    }
+
     public Result<Guest> add(Guest guest) throws DataException {
         Result<Guest> result = validate(guest);
 

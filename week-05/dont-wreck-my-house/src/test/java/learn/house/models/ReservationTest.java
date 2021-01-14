@@ -18,7 +18,7 @@ class ReservationTest {
     Host host = new Host("2e25f6f7-3ef0-4f38-8a1a-2b5eea81409c",
             "Rosenkranc",
             "irosenkranc8w@reverbnation.com",
-            "(970) 7391162", "7 Kennedy Plaza", "Greeley", State.COLORADO, 80638,
+            "(970) 7391162", "7 Kennedy Plaza", "Greeley", State.COLORADO, "80638",
             new BigDecimal("180"),
             new BigDecimal("225"));
 

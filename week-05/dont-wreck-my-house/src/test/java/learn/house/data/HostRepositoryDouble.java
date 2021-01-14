@@ -10,7 +10,7 @@ import java.util.List;
 public class HostRepositoryDouble implements HostRepository {
 
     private List<Host> hosts = new ArrayList<>();
-    private List<Host> hostsDeleted = new ArrayList<>();
+    private List<Host> hostsInactivated = new ArrayList<>();
 
     public HostRepositoryDouble() {
         hosts.add(new Host("3edda6bc-ab95-49a8-8962-d50b53f84b15",
@@ -77,12 +77,12 @@ public class HostRepositoryDouble implements HostRepository {
 
     @Override
     public List<Host> findAllDeleted() {
-        return hostsDeleted;
+        return hostsInactivated;
     }
 
     @Override
     public Host findDeletedById(String id) {
-        return hostsDeleted.stream()
+        return hostsInactivated.stream()
                 .filter(host -> host.getId().equals(id))
                 .findFirst()
                 .orElse(null);
@@ -90,7 +90,7 @@ public class HostRepositoryDouble implements HostRepository {
 
     @Override
     public Host findDeletedByEmail(String email) {
-        return hostsDeleted.stream()
+        return hostsInactivated.stream()
                 .filter(host -> host.getEmail().equalsIgnoreCase(email))
                 .findFirst()
                 .orElse(null);
@@ -119,7 +119,7 @@ public class HostRepositoryDouble implements HostRepository {
     public boolean delete(Host host) throws DataException {
         for (int i = 0; i < hosts.size(); i++) {
             if (host.getId().equals(hosts.get(i).getId())) {
-                hostsDeleted.add(hosts.get(i));
+                hostsInactivated.add(hosts.get(i));
                 hosts.remove(i);
                 return true;
             }

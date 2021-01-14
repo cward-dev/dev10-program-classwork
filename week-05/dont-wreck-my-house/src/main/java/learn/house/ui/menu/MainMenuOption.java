@@ -5,7 +5,7 @@ public enum MainMenuOption {
     EXIT(0, "Exit", false),
     RESERVATIONS(1, "Reservations Menu", false),
     GUESTS(2,"Guests Menu", false),
-    HOSTS(3,"Hosts", false);
+    HOSTS(3,"Hosts Menu", false);
 
     private final int value;
     private final String message;

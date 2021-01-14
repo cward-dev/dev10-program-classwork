@@ -197,15 +197,23 @@ public class View {
         return io.readBoolean("Are you sure you wish to delete this reservation? [y/n]: ");
     }
 
+    public boolean confirmHostInactivation() {
+        return io.readBoolean("Are you sure you wish to inactivate this host? [y/n]: ");
+    }
+
+    public boolean confirmHostReactivation() {
+        return io.readBoolean("Are you sure you wish to reactivate this host? [y/n]: ");
+    }
+
     public Host makeHost() {
         Host host = new Host();
-        host.setLastName(getStringValue("Host Last Name: "));
-        host.setEmail(getStringValue("Host Email: "));
-        host.setPhone(getStringValue("Host Phone Number [(111) 2223333]: "));
-        host.setAddress(getStringValue("Host Street Address: "));
-        host.setCity(getStringValue("Host City: "));
+        host.setLastName(getStringValue("Host Last Name"));
+        host.setEmail(getStringValue("Host Email"));
+        host.setPhone(getStringValue("Host Phone Number [(111) 2223333]"));
+        host.setAddress(getStringValue("Host Street Address"));
+        host.setCity(getStringValue("Host City"));
         host.setState(io.readState("Host State Name/Abbreviation: "));
-        host.setPostalCode(getStringValue("Host Postal Code [12345]: "));
+        host.setPostalCode(getStringValue("Host Postal Code [12345]"));
         host.setStandardRate(io.readBigDecimal("Standard Rate: $"));
         host.setWeekendRate(io.readBigDecimal("Weekend Rate: $"));
         return host;
@@ -215,15 +223,15 @@ public class View {
         Host updatedHost = new Host();
 
         updatedHost.setId(host.getId());
-        updatedHost.setLastName(getStringValue(String.format("Host Last Name [%s]: ", host.getLastName())));
-        updatedHost.setEmail(getStringValue(String.format("Host Email [%s]: ", host.getEmail())));
-        updatedHost.setPhone(getStringValue(String.format("Host Phone Number [%s]: ", host.getPhone())));
-        updatedHost.setAddress(getStringValue(String.format("Host Street Address [%s]: ", host.getAddress())));
-        updatedHost.setCity(getStringValue(String.format("Host City [%s]: ", host.getCity())));
-        updatedHost.setState(io.readState(String.format("Host State [%s]: ", host.getState())));
-        updatedHost.setPostalCode(getStringValue(String.format("Host Postal Code [%s]: ", host.getPostalCode())));
-        updatedHost.setStandardRate(io.readBigDecimal(String.format("Standard Rate [$%s]: $", host.getStandardRate())));
-        updatedHost.setWeekendRate(io.readBigDecimal(String.format("Weekend Rate [$%s]: $", host.getWeekendRate())));
+        updatedHost.setLastName(getStringValue("Host Last Name", host.getLastName()));
+        updatedHost.setEmail(getStringValue("Host Email", host.getEmail()));
+        updatedHost.setPhone(getStringValue("Host Phone Number", host.getPhone()));
+        updatedHost.setAddress(getStringValue("Host Street Address", host.getAddress()));
+        updatedHost.setCity(getStringValue("Host City", host.getCity()));
+        updatedHost.setState(io.readState(String.format("Host State [%s]: ", host.getState().getAbbreviation()), host.getState()));
+        updatedHost.setPostalCode(getStringValue("Host Postal Code", host.getPostalCode()));
+        updatedHost.setStandardRate(io.readBigDecimal(String.format("Standard Rate [$%s]: $", host.getStandardRate()), host.getStandardRate()));
+        updatedHost.setWeekendRate(io.readBigDecimal(String.format("Weekend Rate [$%s]: $", host.getWeekendRate()), host.getWeekendRate()));
 
         return updatedHost;
     }
@@ -282,12 +290,12 @@ public class View {
 
     public void displayHostInformation(Host host) {
         displaySubHeader("HOST INFORMATION");
-        io.printf("Last Name: %s%n", host.getLastName());
-        io.printf("Email: %s%n", host.getEmail());
-        io.printf("Phone: %s%n", host.getPhone());
-        io.printf("Address: %s, %s, %s %s%n", host.getAddress(), host.getCity(), host.getState().getAbbreviation(), host.getPostalCode());
-        io.printf("Standard Rate: $%s per night%n", host.getStandardRate());
-        io.printf("Weekend Rate: $%s per night%n", host.getWeekendRate());
+        io.printf("    Name: %s%n", host.getLastName());
+        io.printf("   Email: %s%n", host.getEmail());
+        io.printf("   Phone: %s%n", host.getPhone());
+        io.printf(" Address: %s, %s, %s %s%n", host.getAddress(), host.getCity(), host.getState().getAbbreviation(), host.getPostalCode());
+        io.printf("Standard: $%s per night%n", host.getStandardRate());
+        io.printf(" Weekend: $%s per night%n", host.getWeekendRate());
     }
 
     public void displayHosts(List<Host> hosts) {
@@ -312,7 +320,7 @@ public class View {
 
     public void displayGuestInformation(Guest guest) {
         displaySubHeader("GUEST INFORMATION");
-        io.printf("Name: %s, %s%n", guest.getLastName(), guest.getFirstName());
+        io.printf(" Name: %s, %s%n", guest.getLastName(), guest.getFirstName());
         io.printf("Email: %s%n", guest.getEmail());
         io.printf("Phone: %s%n", guest.getPhone());
         io.printf("State: %s%n", guest.getState().getAbbreviation());

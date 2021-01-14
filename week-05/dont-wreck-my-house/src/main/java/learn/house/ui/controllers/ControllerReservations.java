@@ -52,6 +52,9 @@ public class ControllerReservations {
                 case CANCEL_RESERVATION:
                     cancelReservation();
                     break;
+                case VIEW_RESERVATIONS_FOR_INACTIVE_HOST:
+                    viewReservationsForInactiveHost();
+                    break;
             }
         } while (option != ReservationMenuOption.EXIT);
     }
@@ -64,6 +67,23 @@ public class ControllerReservations {
 
         if (reservations.size() == 0) {
             view.displayStatus(false, String.format("No reservations found for Host %s (%s)",
+                    host.getLastName(),
+                    host.getEmail()));
+        } else {
+            view.displayReservationsByStartDate(reservations, host);
+        }
+
+        view.enterToContinue();
+    }
+
+    private void viewReservationsForInactiveHost() {
+        view.displayHeader(ReservationMenuOption.VIEW_RESERVATIONS_FOR_INACTIVE_HOST.getMessage());
+        Host host = helper.getInactiveHostByLastName();
+
+        List<Reservation> reservations = service.findByHost(host);
+
+        if (reservations.size() == 0) {
+            view.displayStatus(false, String.format("No reservations found for Inactive Host %s (%s)",
                     host.getLastName(),
                     host.getEmail()));
         } else {

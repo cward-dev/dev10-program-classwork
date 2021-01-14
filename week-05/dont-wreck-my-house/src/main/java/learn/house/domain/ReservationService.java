@@ -29,12 +29,13 @@ public class ReservationService {
     }
 
     public Result<Reservation> add(Reservation reservation) throws DataException {
-        reservation.setTotal(reservation.calculateTotal());
         Result<Reservation> result = validate(reservation);
-
         if (!result.isSuccess()) {
             return result;
         }
+
+        reservation.setTotal(reservation.calculateTotal());
+
 
         boolean overlapsAnotherReservation = checkForOverlap(reservation);
         if (overlapsAnotherReservation) {
@@ -47,12 +48,12 @@ public class ReservationService {
     }
 
     public Result<Reservation> update(Reservation reservation) throws DataException {
-        reservation.setTotal(reservation.calculateTotal());
         Result<Reservation> result = validateForAltering(reservation);
-
         if (!result.isSuccess()) {
             return result;
         }
+
+        reservation.setTotal(reservation.calculateTotal());
 
         boolean overlapsAnotherReservation = checkForOverlap(reservation);
         if (overlapsAnotherReservation) {

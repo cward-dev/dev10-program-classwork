@@ -59,6 +59,9 @@ public class ControllerHelper {
 
         do {
             hostLastName = view.getStringValue("Host Last Name");
+            if (hostLastName.equals("!exit")) {
+                return null;
+            }
             hosts = hostService.findByLastName(hostLastName);
 
             if (hosts.size() == 0) {
@@ -81,6 +84,9 @@ public class ControllerHelper {
 
         do {
             hostLastName = view.getStringValue("Host Last Name", existingHost.getLastName());
+            if (hostLastName.equals("!exit")) {
+                return null;
+            }
             if (hostLastName.trim().equalsIgnoreCase(existingHost.getLastName().trim())) {
                 return existingHost;
             }
@@ -100,12 +106,39 @@ public class ControllerHelper {
         return host;
     }
 
+    public Host getInactiveHostByLastName() {
+        String hostLastName;
+        List<Host> hosts;
+
+        do {
+            hostLastName = view.getStringValue("Inactive Host Last Name");
+            if (hostLastName.equals("!exit")) {
+                return null;
+            }
+            hosts = hostService.findDeletedByLastName(hostLastName);
+
+            if (hosts.size() == 0) {
+                view.displayStatus(false, String.format("No hosts matching last name '%s'. Please try again.", hostLastName));
+            }
+        } while (hosts.size() == 0);
+
+        Host host = view.chooseHost(hosts);
+        if (host == null) {
+            host = getInactiveHostByLastName();
+            return host;
+        }
+        return host;
+    }
+
     public Guest getGuestByLastName() {
         String guestLastName;
         List<Guest> guests;
 
         do {
             guestLastName = view.getStringValue("Guest Last Name");
+            if (guestLastName.equals("!exit")) {
+                return null;
+            }
             guests = guestService.findByLastName(guestLastName);
 
             if (guests.size() == 0) {
@@ -128,6 +161,9 @@ public class ControllerHelper {
 
         do {
             guestLastName = view.getStringValue("Guest Last Name", existingGuest.getLastName());
+            if (guestLastName.equals("!exit")) {
+                return null;
+            }
             if (guestLastName.trim().equalsIgnoreCase(existingGuest.getLastName().trim())) {
                 return existingGuest;
             }
@@ -142,6 +178,30 @@ public class ControllerHelper {
         Guest guest = view.chooseGuest(guests);
         if (guest == null) {
             guest = getGuestByLastName();
+            return guest;
+        }
+        return guest;
+    }
+
+    public Guest getInactiveGuestByLastName() {
+        String guestLastName;
+        List<Guest> guests;
+
+        do {
+            guestLastName = view.getStringValue("Inactive Guest Last Name");
+            if (guestLastName.equals("!exit")) {
+                return null;
+            }
+            guests = guestService.findDeletedByLastName(guestLastName);
+
+            if (guests.size() == 0) {
+                view.displayStatus(false, String.format("No guests matching last name '%s'. Please try again.", guestLastName));
+            }
+        } while (guests.size() == 0);
+
+        Guest guest = view.chooseGuest(guests);
+        if (guest == null) {
+            guest = getInactiveGuestByLastName();
             return guest;
         }
         return guest;

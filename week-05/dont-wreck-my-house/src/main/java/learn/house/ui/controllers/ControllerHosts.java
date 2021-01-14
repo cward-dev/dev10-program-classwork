@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 @Component
@@ -52,6 +53,9 @@ public class ControllerHosts {
                 case INACTIVATE_HOST:
                     inactivateHost();
                     break;
+                case REACTIVATE_HOST:
+                    reactivateHost();
+                    break;
             }
         } while (option != HostMenuOption.EXIT);
     }
@@ -63,11 +67,11 @@ public class ControllerHosts {
         List<Host> hosts = service.findByState(state);
 
         if (hosts.size() == 0) {
-            view.displayStatus(false, String.format("No hosts found in %s.",
-                    state.getAbbreviation()));
-        } else {
-            view.displayHosts(hosts);
+            view.displayStatus(false, String.format("No hosts found in %s.", state.getAbbreviation()));
+            view.enterToContinue();
+            return;
         }
+        view.displayHosts(hosts);
 
         view.enterToContinue();
     }
@@ -110,15 +114,61 @@ public class ControllerHosts {
     private void inactivateHost() throws DataException {
         view.displayHeader(HostMenuOption.INACTIVATE_HOST.getMessage());
 
+        Result<Host> result = new Result<>();
         Host host = helper.getHostByLastName();
-        Result<Host> result = service.delete(host);
-
-        if (!result.isSuccess()) {
+        if (host == null) {
+            result.addErrorMessage("Host not reactivated.");
             view.displayStatus(false, result.getErrorMessages());
+            view.enterToContinue();
+            return;
+        }
+
+        view.displayHostInformation(host);
+
+        boolean inactivateHost = view.confirmHostInactivation();
+        if (inactivateHost) {
+            result = service.delete(host);
+            if (result.isSuccess()) {
+                String successMessage = "Host inactivated successfully.";
+                view.displayStatus(true, successMessage);
+            } else {
+                view.displayStatus(false, result.getErrorMessages());
+            }
         } else {
-            String successMessage = "Host inactivated successfully.";
-            view.displayStatus(true, successMessage);
-            view.displayHostInformation(result.getPayload());
+            result.addErrorMessage("Host not inactivated.");
+            view.displayStatus(false, result.getErrorMessages());
+        }
+
+        view.enterToContinue();
+    }
+
+    private void reactivateHost() throws DataException {
+        view.displayHeader(HostMenuOption.REACTIVATE_HOST.getMessage());
+
+        Result<Host> result = new Result<>();
+        Host host = helper.getInactiveHostByLastName();
+
+        if (host == null) {
+            result.addErrorMessage("Exiting.");
+            view.displayStatus(false, result.getErrorMessages());
+            view.enterToContinue();
+            return;
+        }
+
+        view.displayHostInformation(host);
+
+        boolean reactivateHost = view.confirmHostReactivation();
+        if (reactivateHost) {
+            result = service.add(host);
+            if (result.isSuccess()) {
+                String successMessage = "Host reactivated successfully.";
+                view.displayStatus(true, successMessage);
+            } else {
+                view.displayStatus(false, result.getErrorMessages());
+            }
+        } else {
+            result.addErrorMessage("Host not reactivated.");
+            view.displayStatus(false, result.getErrorMessages());
         }
 
         view.enterToContinue();

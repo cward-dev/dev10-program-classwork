@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,6 +34,18 @@ public class HostService {
                         .substring(0,Math.min(h.getLastName().trim().length(), lastName.trim().length()))
                         .equalsIgnoreCase(lastName.trim()))
                 .collect(Collectors.toList());
+    }
+
+    public List<Host> findAllDeleted() {
+        return repository.findAllDeleted();
+    }
+
+    public List<Host> findDeletedByLastName(String lastName) {
+            return repository.findAllDeleted().stream()
+                    .filter(h -> h.getLastName().trim()
+                            .substring(0,Math.min(h.getLastName().trim().length(), lastName.trim().length()))
+                            .equalsIgnoreCase(lastName.trim()))
+                    .collect(Collectors.toList());
     }
 
     public Host findById(String hostId) {

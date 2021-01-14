@@ -144,6 +144,10 @@ public class HostFileRepository implements HostRepository {
 
     @Override
     public boolean delete(Host host) throws DataException {
+        if (host == null) {
+            return false;
+        }
+
         String hostId = host.getId();
 
         if (hostId == null || hostId.trim().length() == 0) {
@@ -247,6 +251,6 @@ public class HostFileRepository implements HostRepository {
     private String restore(String value) { return value.replace(DELIMITER_REPLACEMENT, DELIMITER); }
 
     private String getDeletedFilePath() {
-        return filePath.substring(0, filePath.length() - 4) + "-deleted.csv";
+        return filePath.substring(0, filePath.length() - 4) + "-inactivated.csv";
     }
 }
