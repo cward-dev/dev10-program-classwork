@@ -50,8 +50,8 @@ class HostFileRepositoryTest {
                 "eyearnes0@sfgate.com",
                 "(806) 1783815",
                 "3 Nova Trail", "Amarillo", State.TEXAS, 79182,
-                new BigDecimal("340"),
-                new BigDecimal("425"));
+                new BigDecimal("340.00"),
+                new BigDecimal("425.00"));
 
         assertEquals(expected, actual);
         assertEquals(expected.getId(), actual.getId());
@@ -77,8 +77,8 @@ class HostFileRepositoryTest {
                 "eyearnes0@sfgate.com",
                 "(806) 1783815",
                 "3 Nova Trail", "Amarillo", State.TEXAS, 79182,
-                new BigDecimal("340"),
-                new BigDecimal("425"));
+                new BigDecimal("340.00"),
+                new BigDecimal("425.00"));
 
         assertEquals(expected, actual);
         assertEquals("3edda6bc-ab95-49a8-8962-d50b53f84b15", actual.getId());
@@ -100,8 +100,8 @@ class HostFileRepositoryTest {
                 "cward@dev-10.com",
                 "(806) 1783815",
                 "123 Wisconsin Street", "Milwaukee", State.WISCONSIN, 53208,
-                new BigDecimal("150"),
-                new BigDecimal("250"));
+                new BigDecimal("150.00"),
+                new BigDecimal("250.00"));
 
         actual = repository.add(actual);
 
@@ -125,8 +125,8 @@ class HostFileRepositoryTest {
                 "eyearnes0@sfgate.com",
                 "(806) 1783815",
                 "3 Nova Trail", "Amarillo", State.TEXAS, 79182,
-                new BigDecimal("340"),
-                new BigDecimal("425"));
+                new BigDecimal("340.00"),
+                new BigDecimal("425.00"));
 
         boolean success = repository.update(actual);
 

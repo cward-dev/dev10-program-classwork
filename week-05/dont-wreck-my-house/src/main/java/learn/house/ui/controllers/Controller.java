@@ -10,25 +10,25 @@ import org.springframework.stereotype.Component;
 public class Controller {
 
     @Autowired
-    private final ControllerGuests controllerGuestsMenu;
+    private final ControllerGuests controllerGuests;
 
     @Autowired
-    private final ControllerHosts controllerHostsMenu;
+    private final ControllerHosts controllerHosts;
 
     @Autowired
-    private final ControllerReservations controllerReservationsMenu;
+    private final ControllerReservations controllerReservations;
 
     @Autowired
     private final View view;
 
     @Autowired
-    public Controller(ControllerGuests controllerGuestsMenu,
-                      ControllerHosts controllerHostsMenu,
-                      ControllerReservations controllerReservationsMenu,
+    public Controller(ControllerGuests controllerGuests,
+                      ControllerHosts controllerHosts,
+                      ControllerReservations controllerReservations,
                       View view) {
-        this.controllerGuestsMenu = controllerGuestsMenu;
-        this.controllerHostsMenu = controllerHostsMenu;
-        this.controllerReservationsMenu = controllerReservationsMenu;
+        this.controllerGuests = controllerGuests;
+        this.controllerHosts = controllerHosts;
+        this.controllerReservations = controllerReservations;
         this.view = view;
     }
 
@@ -48,13 +48,13 @@ public class Controller {
             option = view.selectMainMenuOption();
             switch (option) {
                 case RESERVATIONS:
-                    controllerReservationsMenu.runMenu();
+                    controllerReservations.runMenu();
                     break;
                 case GUESTS:
-                    controllerGuestsMenu.runMenu();
+                    controllerGuests.runMenu();
                     break;
                 case HOSTS:
-                    controllerHostsMenu.runMenu();
+                    controllerHosts.runMenu();
                     break;
             }
         } while (option != MainMenuOption.EXIT);

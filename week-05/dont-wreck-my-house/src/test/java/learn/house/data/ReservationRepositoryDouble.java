@@ -24,8 +24,8 @@ public class ReservationRepositoryDouble implements ReservationRepository {
             "eyearnes0@sfgate.com",
             "(806) 1783815",
             "3 Nova Trail", "Amarillo", State.TEXAS, 79182,
-            new BigDecimal("340"),
-            new BigDecimal("425"));
+            new BigDecimal("340.00"),
+            new BigDecimal("425.00"));
 
     private final Guest GUEST = new Guest(1, "Sullivan", "Lomas",
             "slomas0@mediafire.com", "(702) 7768761",State.NEVADA);

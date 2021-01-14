@@ -27,6 +27,14 @@ public class HostService {
                 .collect(Collectors.toList());
     }
 
+    public List<Host> findByLastName(String lastName) {
+        return repository.findAll().stream()
+                .filter(h -> h.getLastName().trim()
+                        .substring(0,Math.min(h.getLastName().trim().length(), lastName.trim().length()))
+                        .equalsIgnoreCase(lastName.trim()))
+                .collect(Collectors.toList());
+    }
+
     public Host findById(String hostId) {
         return repository.findById(hostId);
     }

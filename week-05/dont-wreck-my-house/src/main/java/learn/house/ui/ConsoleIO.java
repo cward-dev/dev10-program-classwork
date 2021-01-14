@@ -1,8 +1,11 @@
 package learn.house.ui;
 
+import learn.house.models.State;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 @Component
@@ -15,7 +18,7 @@ public class ConsoleIO {
     private static final String REQUIRED
             = "[INVALID] Value is required.";
     private static final String INVALID_DATE
-            = "[INVALID] Enter a valid date no later than %s.";
+            = "[INVALID] Enter a valid date no earlier than %s.";
     private static final String INVALID_STATE
             = "[INVALID] Enter a valid state name or abbreviation.";
 
@@ -67,6 +70,132 @@ public class ConsoleIO {
                 return result;
             }
             println(String.format(NUMBER_OUT_OF_RANGE, min, max));
+        }
+    }
+
+    public boolean readBoolean(String prompt) {
+        while (true) {
+            String input = readRequiredString(prompt).toLowerCase();
+            if (input.equalsIgnoreCase("y")) {
+                return true;
+            } else if (input.equalsIgnoreCase("n")) {
+                return false;
+            }
+            println("[INVALID] Please enter 'y' or 'n'.");
+        }
+    }
+
+    public LocalDate readLocalDateStart(String prompt) {
+        LocalDate today = LocalDate.now();
+        LocalDate result;
+
+        while (true) {
+            String input = readRequiredString(prompt);
+            try {
+                result = LocalDate.parse(input, formatter);
+                if (!result.isBefore(today)) return result;
+                println(String.format(INVALID_DATE, formatter.format(today)));
+            } catch (DateTimeParseException ex) {
+                println(String.format(INVALID_DATE, formatter.format(today)));
+            }
+        }
+    }
+
+    // Overloaded for editing existing
+    public LocalDate readLocalDateStart(String prompt, LocalDate existingDate) {
+        LocalDate today = LocalDate.now();
+        LocalDate result;
+
+        while (true) {
+            String input = readString(prompt);
+            if (input == null || input.trim().length() == 0) {
+                return existingDate;
+            }
+            try {
+                result = LocalDate.parse(input, formatter);
+                if (!result.isBefore(today)) return result;
+                println(String.format(INVALID_DATE, formatter.format(today)));
+            } catch (DateTimeParseException ex) {
+                println(String.format(INVALID_DATE, formatter.format(today)));
+            }
+        }
+    }
+
+    public LocalDate readLocalDateEnd(String prompt, LocalDate startDate) {
+        LocalDate result;
+
+        while (true) {
+            String input = readRequiredString(prompt);
+            try {
+                result = LocalDate.parse(input, formatter);
+                if (result.isAfter(startDate)) return result;
+                println(String.format(INVALID_DATE, formatter.format(startDate.plusDays(1))));
+            } catch (DateTimeParseException ex) {
+                println(String.format(INVALID_DATE, formatter.format(startDate.plusDays(1))));
+            }
+        }
+    }
+
+    // Overloaded for editing existing
+    public LocalDate readLocalDateEnd(String prompt, LocalDate startDate, LocalDate existingDate) {
+        LocalDate result;
+
+        while (true) {
+            String input = readString(prompt);
+            if (input == null || input.trim().length() == 0) {
+                if (existingDate.isAfter(startDate)) {
+                    return existingDate;
+                }
+                println(String.format(INVALID_DATE, formatter.format(startDate.plusDays(1))));
+                continue;
+            }
+            try {
+                result = LocalDate.parse(input, formatter);
+                if (result.isAfter(startDate)) return result;
+                println(String.format(INVALID_DATE, formatter.format(startDate.plusDays(1))));
+            } catch (DateTimeParseException ex) {
+                println(String.format(INVALID_DATE, formatter.format(startDate.plusDays(1))));
+            }
+        }
+    }
+
+    public State readState(String prompt) {
+        State state;
+        while (true) {
+            String input = readRequiredString(prompt);
+            try {
+                if (input.trim().length() == 2) {
+                    state = State.getStateFromAbbreviation(input);
+                } else {
+                    state = State.getStateFromName(input.toUpperCase());
+                }
+                if (state != null) return state;
+                println(INVALID_STATE);
+            } catch (IllegalArgumentException ex) {
+                println(INVALID_STATE);
+            }
+        }
+    }
+
+    // Overloaded for editing existing
+    public State readState(String prompt, State existingState) {
+        State state;
+        while (true) {
+            String input = readString(prompt);
+            if (input == null || input.trim().length() == 0) {
+                return existingState;
+            }
+            try {
+                if (input.trim().length() == 2) {
+                    state = State.getStateFromAbbreviation(input);
+                } else {
+                    state = State.getStateFromName(input.toUpperCase());
+                }
+                if (state != null) return state;
+                println(INVALID_STATE);
+            } catch (IllegalArgumentException ex) {
+                println(INVALID_STATE);
+            }
         }
     }
 }

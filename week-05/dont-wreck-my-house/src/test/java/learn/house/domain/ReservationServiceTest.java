@@ -30,16 +30,16 @@ class ReservationServiceTest {
             "eyearnes0@sfgate.com",
             "(806) 1783815",
             "3 Nova Trail", "Amarillo", State.TEXAS, 79182,
-            new BigDecimal("340"),
-            new BigDecimal("425"));
+            new BigDecimal("340.00"),
+            new BigDecimal("425.00"));
 
     private final Host NONEXISTENT_HOST = new Host("thisisatestidandshouldnotreturnahost",
             "Doe",
             "jdoe@gmail.com",
             "(111) 2223333",
             "123 North Parkway", "Milwaukee", State.WISCONSIN, 53208,
-            new BigDecimal("100"),
-            new BigDecimal("150"));
+            new BigDecimal("100.00"),
+            new BigDecimal("150.00"));
 
     private final Guest GUEST = new Guest(1, "Sullivan", "Lomas",
             "slomas0@mediafire.com", "(702) 7768761",State.NEVADA);
@@ -91,7 +91,7 @@ class ReservationServiceTest {
                 END_DATE,
                 HOST,
                 GUEST,
-                new BigDecimal("360")));
+                new BigDecimal("360.00")));
 
         assertTrue(result.isSuccess());
         assertNotNull(result.getPayload());
@@ -106,7 +106,7 @@ class ReservationServiceTest {
                         END_DATE,
                         HOST,
                         GUEST,
-                        new BigDecimal("360")));
+                        new BigDecimal("360.00")));
 
         assertTrue(result.isSuccess());
         assertNotNull(result.getPayload());
@@ -121,7 +121,7 @@ class ReservationServiceTest {
                         END_DATE.minusDays(10),
                         HOST,
                         GUEST,
-                        new BigDecimal("360")));
+                        new BigDecimal("360.00")));
 
         assertTrue(result.isSuccess());
         assertNotNull(result.getPayload());
@@ -145,7 +145,7 @@ class ReservationServiceTest {
                         END_DATE,
                         null,
                         GUEST,
-                        new BigDecimal("360")));
+                        new BigDecimal("360.00")));
 
         assertFalse(result.isSuccess());
         assertNull(result.getPayload());
@@ -160,7 +160,7 @@ class ReservationServiceTest {
                         END_DATE,
                         HOST,
                         null,
-                        new BigDecimal("360")));
+                        new BigDecimal("360.00")));
 
         assertFalse(result.isSuccess());
         assertNull(result.getPayload());
@@ -175,7 +175,7 @@ class ReservationServiceTest {
                         END_DATE,
                         HOST,
                         GUEST,
-                        new BigDecimal("360")));
+                        new BigDecimal("360.00")));
 
         assertFalse(result.isSuccess());
         assertNull(result.getPayload());
@@ -190,7 +190,7 @@ class ReservationServiceTest {
                         null,
                         HOST,
                         GUEST,
-                        new BigDecimal("360")));
+                        new BigDecimal("360.00")));
 
         assertFalse(result.isSuccess());
         assertNull(result.getPayload());
@@ -205,7 +205,7 @@ class ReservationServiceTest {
                         END_DATE,
                         HOST,
                         GUEST,
-                        new BigDecimal("360")));
+                        new BigDecimal("360.00")));
 
         assertFalse(result.isSuccess());
         assertNull(result.getPayload());
@@ -220,7 +220,7 @@ class ReservationServiceTest {
                         START_DATE.minusDays(1),
                         HOST,
                         GUEST,
-                        new BigDecimal("360")));
+                        new BigDecimal("360.00")));
 
         assertFalse(result.isSuccess());
         assertNull(result.getPayload());
@@ -235,7 +235,7 @@ class ReservationServiceTest {
                         START_DATE,
                         HOST,
                         GUEST,
-                        new BigDecimal("360")));
+                        new BigDecimal("360.00")));
 
         assertFalse(result.isSuccess());
         assertNull(result.getPayload());
@@ -250,7 +250,7 @@ class ReservationServiceTest {
                         END_DATE,
                         NONEXISTENT_HOST,
                         GUEST,
-                        new BigDecimal("360")));
+                        new BigDecimal("360.00")));
 
         assertFalse(result.isSuccess());
         assertNull(result.getPayload());
@@ -265,7 +265,7 @@ class ReservationServiceTest {
                         END_DATE,
                         HOST,
                         NONEXISTENT_GUEST,
-                        new BigDecimal("360")));
+                        new BigDecimal("360.00")));
 
         assertFalse(result.isSuccess());
         assertNull(result.getPayload());
@@ -280,7 +280,7 @@ class ReservationServiceTest {
                         END_DATE,
                         HOST,
                         GUEST,
-                        new BigDecimal("360")));
+                        new BigDecimal("360.00")));
 
         assertFalse(result.isSuccess());
         assertNull(result.getPayload());
@@ -295,7 +295,7 @@ class ReservationServiceTest {
                         END_DATE.minusDays(6),
                         HOST,
                         GUEST,
-                        new BigDecimal("360")));
+                        new BigDecimal("360.00")));
 
         assertFalse(result.isSuccess());
         assertNull(result.getPayload());
@@ -336,7 +336,7 @@ class ReservationServiceTest {
                 END_DATE.minusMonths(2),
                 HOST,
                 GUEST,
-                new BigDecimal("360"));
+                new BigDecimal("360.00"));
         Result<Reservation> result = service.update(reservation);
 
         assertFalse(result.isSuccess());
@@ -351,7 +351,7 @@ class ReservationServiceTest {
                 END_DATE.minusDays(5),
                 HOST,
                 GUEST,
-                new BigDecimal("360"));
+                new BigDecimal("360.00"));
         reservation.setHost(null);
 
         Result<Reservation> result = service.update(reservation);
@@ -368,7 +368,7 @@ class ReservationServiceTest {
                 END_DATE.minusDays(5),
                 HOST,
                 GUEST,
-                new BigDecimal("360"));
+                new BigDecimal("360.00"));
         reservation.setGuest(null);
 
         Result<Reservation> result = service.update(reservation);
@@ -385,7 +385,7 @@ class ReservationServiceTest {
                 END_DATE.minusDays(5),
                 HOST,
                 GUEST,
-                new BigDecimal("360"));
+                new BigDecimal("360.00"));
         reservation.setStartDate(null);
 
         Result<Reservation> result = service.update(reservation);
@@ -402,7 +402,7 @@ class ReservationServiceTest {
                 END_DATE.minusDays(5),
                 HOST,
                 GUEST,
-                new BigDecimal("360"));
+                new BigDecimal("360.00"));
         reservation.setEndDate(null);
 
         Result<Reservation> result = service.update(reservation);
@@ -419,7 +419,7 @@ class ReservationServiceTest {
                 END_DATE.minusDays(5),
                 HOST,
                 GUEST,
-                new BigDecimal("360"));
+                new BigDecimal("360.00"));
         reservation.setStartDate(reservation.getStartDate().minusMonths(1));
 
         Result<Reservation> result = service.update(reservation);
@@ -436,7 +436,7 @@ class ReservationServiceTest {
                 END_DATE.minusDays(5),
                 HOST,
                 GUEST,
-                new BigDecimal("360"));
+                new BigDecimal("360.00"));
         reservation.setEndDate(reservation.getStartDate().minusDays(1));
 
         Result<Reservation> result = service.update(reservation);
@@ -453,7 +453,7 @@ class ReservationServiceTest {
                 END_DATE.minusDays(5),
                 HOST,
                 GUEST,
-                new BigDecimal("360"));
+                new BigDecimal("360.00"));
         reservation.setEndDate(reservation.getStartDate());
 
         Result<Reservation> result = service.update(reservation);
@@ -470,7 +470,7 @@ class ReservationServiceTest {
                 END_DATE.minusDays(5),
                 HOST,
                 GUEST,
-                new BigDecimal("360"));
+                new BigDecimal("360.00"));
         reservation.setHost(NONEXISTENT_HOST);
 
         Result<Reservation> result = service.update(reservation);
@@ -487,7 +487,7 @@ class ReservationServiceTest {
                 END_DATE.minusDays(5),
                 HOST,
                 GUEST,
-                new BigDecimal("360"));
+                new BigDecimal("360.00"));
         reservation.setGuest(NONEXISTENT_GUEST);
 
         Result<Reservation> result = service.update(reservation);
@@ -504,7 +504,7 @@ class ReservationServiceTest {
                 END_DATE.minusDays(5),
                 HOST,
                 GUEST,
-                new BigDecimal("360"));
+                new BigDecimal("360.00"));
 
         Result<Reservation> conflictingReservation = service.add(
                 new Reservation(0,
@@ -512,7 +512,7 @@ class ReservationServiceTest {
                         reservation.getStartDate(),
                         HOST,
                         GUEST,
-                        new BigDecimal("360")));
+                        new BigDecimal("360.00")));
 
         reservation.setStartDate(reservation.getStartDate().minusDays(2));
 
@@ -530,7 +530,7 @@ class ReservationServiceTest {
                 END_DATE.minusDays(5),
                 HOST,
                 GUEST,
-                new BigDecimal("360"));
+                new BigDecimal("360.00"));
 
         Result<Reservation> conflictingReservation = service.add(
                 new Reservation(0,
@@ -538,7 +538,7 @@ class ReservationServiceTest {
                         reservation.getEndDate().plusDays(4),
                         HOST,
                         GUEST,
-                        new BigDecimal("360")));
+                        new BigDecimal("360.00")));
 
         reservation.setEndDate(reservation.getEndDate().plusDays(1));
 
@@ -556,7 +556,7 @@ class ReservationServiceTest {
                 END_DATE.minusDays(5),
                 HOST,
                 GUEST,
-                new BigDecimal("360"));
+                new BigDecimal("360.00"));
 
         Result<Reservation> result = service.delete(reservation);
 
@@ -598,7 +598,7 @@ class ReservationServiceTest {
                 END_DATE.minusDays(5),
                 HOST,
                 GUEST,
-                new BigDecimal("360"));
+                new BigDecimal("360.00"));
         reservation.setId(0);
 
         Result<Reservation> result = service.delete(reservation);
@@ -615,7 +615,7 @@ class ReservationServiceTest {
                 END_DATE.minusDays(5),
                 HOST,
                 GUEST,
-                new BigDecimal("360"));
+                new BigDecimal("360.00"));
         reservation.setId(99);
 
         Result<Reservation> result = service.delete(reservation);
@@ -632,7 +632,7 @@ class ReservationServiceTest {
                 END_DATE.minusDays(5),
                 HOST,
                 GUEST,
-                new BigDecimal("360"));
+                new BigDecimal("360.00"));
         reservation.setId(99);
 
         Result<Reservation> result = service.delete(reservation);
@@ -649,7 +649,7 @@ class ReservationServiceTest {
                 END_DATE.minusDays(5),
                 HOST,
                 GUEST,
-                new BigDecimal("360"));
+                new BigDecimal("360.00"));
         reservation.setHost(null);
 
         Result<Reservation> result = service.delete(reservation);
@@ -666,7 +666,7 @@ class ReservationServiceTest {
                 END_DATE.minusDays(5),
                 HOST,
                 GUEST,
-                new BigDecimal("360"));
+                new BigDecimal("360.00"));
         reservation.setHost(NONEXISTENT_HOST);
 
         Result<Reservation> result = service.delete(reservation);
