@@ -3,6 +3,7 @@ package learn.house.ui;
 import learn.house.models.State;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -196,6 +197,53 @@ public class ConsoleIO {
             } catch (IllegalArgumentException ex) {
                 println(INVALID_STATE);
             }
+        }
+    }
+
+    public BigDecimal readBigDecimal(String prompt) {
+        while (true) {
+            String input = readRequiredString(prompt);
+            try {
+                return new BigDecimal(input);
+            } catch (NumberFormatException ex) {
+                println(INVALID_NUMBER);
+            }
+        }
+    }
+
+    // Overloaded for editing existing
+    public BigDecimal readBigDecimal(String prompt, BigDecimal currentValue) {
+        while (true) {
+            String input = readString(prompt);
+            if (input.trim().length() == 0) {
+                return currentValue;
+            }
+            try {
+                return new BigDecimal(input);
+            } catch (NumberFormatException ex) {
+                println(INVALID_NUMBER);
+            }
+        }
+    }
+
+    public BigDecimal readBigDecimal(String prompt, BigDecimal min, BigDecimal max) {
+        while (true) {
+            BigDecimal result = readBigDecimal(prompt);
+            if (result.compareTo(min) >= 0 && result.compareTo(max) <= 0) {
+                return result;
+            }
+            println(String.format(NUMBER_OUT_OF_RANGE, min, max));
+        }
+    }
+
+    // Overloaded for editing existing
+    public BigDecimal readBigDecimal(String prompt, BigDecimal min, BigDecimal max, BigDecimal currentValue) {
+        while (true) {
+            BigDecimal result = readBigDecimal(prompt, currentValue);
+            if (result.compareTo(min) >= 0 && result.compareTo(max) <= 0) {
+                return result;
+            }
+            println(String.format(NUMBER_OUT_OF_RANGE, min, max));
         }
     }
 }

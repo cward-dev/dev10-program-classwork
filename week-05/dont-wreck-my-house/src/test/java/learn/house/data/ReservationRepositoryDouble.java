@@ -23,7 +23,7 @@ public class ReservationRepositoryDouble implements ReservationRepository {
             "Yearnes",
             "eyearnes0@sfgate.com",
             "(806) 1783815",
-            "3 Nova Trail", "Amarillo", State.TEXAS, 79182,
+            "3 Nova Trail", "Amarillo", State.TEXAS, "79182",
             new BigDecimal("340.00"),
             new BigDecimal("425.00"));
 

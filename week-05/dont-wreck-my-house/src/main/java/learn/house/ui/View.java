@@ -1,5 +1,6 @@
 package learn.house.ui;
 
+import learn.house.models.Guest;
 import learn.house.models.Host;
 import learn.house.models.Reservation;
 import learn.house.models.State;
@@ -14,10 +15,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Component
 public class View {
 
+    private final LocalDate today = LocalDate.now();
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
     private final ConsoleIO io;
@@ -90,24 +93,27 @@ public class View {
         return GuestMenuOption.fromValue(io.readInt(message, min, max));
     }
 
-    public String getFirstName(String label) {
-        return io.readRequiredString(String.format("%s Last Name: ", label));
-    }
-
-    public String getLastName(String label) {
-        return io.readRequiredString(String.format("%s Last Name: ", label));
-    }
-
     public State getState() {
         return io.readState("State name or abbreviation: ");
+    }
+
+    public State getState(State existingState) {
+        return io.readState(String.format("State name or abbreviation [%s]: ", existingState), existingState);
     }
 
     public Host chooseHost(List<Host> hosts) {
         displayHosts(hosts);
 
-        String message = String.format("Select Host [%s-%s]: ", 1, hosts.size());
+        int min = 0;
+        int max = Math.min(hosts.size(), 15);
 
-        int selection = io.readInt(message, 1, hosts.size());
+        String message = String.format("Select Host [%s-%s]: ", min, max);
+
+        int selection = io.readInt(message, min, max);
+
+        if (selection == 0) {
+            return null;
+        }
 
         return hosts.stream()
                 .sorted(Comparator.comparing(Host::getLastName).thenComparing(Host::getEmail))
@@ -116,44 +122,57 @@ public class View {
                 .orElse(null);
     }
 
+    public Guest chooseGuest(List<Guest> guests) {
+        displayGuests(guests);
+
+        int min = 0;
+        int max = Math.min(guests.size(), 15);
+
+        String message = String.format("Select Guest [%s-%s]: ", min, max);
+
+        int selection = io.readInt(message, min, max);
+
+        if (selection == 0) {
+            return null;
+        }
+
+        return guests.stream()
+                .sorted(Comparator.comparing(Guest::getLastName).thenComparing(Guest::getFirstName).thenComparing(Guest::getEmail))
+                .skip(selection - 1)
+                .findFirst()
+                .orElse(null);
+    }
+
     public Reservation chooseReservation(List<Reservation> reservations, Host host) {
-        displayReservationsByStartDate(reservations, host);
+        List<Reservation> eligibleReservations = reservations.stream()
+                .filter(r -> !r.getStartDate().isBefore(today))
+                .collect(Collectors.toList());
 
-        String message = String.format("Select Reservation [%s-%s]: ", 1, reservations.size());
+        displayReservationsByStartDate(eligibleReservations, host);
 
-        int selection = io.readInt(message, 1, reservations.size());
+        String message = String.format("Select Reservation [%s-%s]: ", 1, eligibleReservations.size());
 
-        return reservations.stream()
+        int selection = io.readInt(message, 1, eligibleReservations.size());
+
+        return eligibleReservations.stream()
+                .filter(r -> !r.getStartDate().isBefore(today))
                 .sorted(Comparator.comparing(Reservation::getStartDate))
                 .skip(selection - 1)
                 .findFirst()
                 .orElse(null);
     }
 
-    public String getHostEmail() {
-        return io.readRequiredString("Host Email: ");
+    public String getStringValue(String label) {
+        return io.readRequiredString(String.format("%s: ", label));
     }
 
     // Overloaded for editing existing
-    public String getHostEmail(String existingEmail) {
-        String email = io.readString(String.format("Host Email [%s]: ", existingEmail));
-        if (email == null || email.trim().length() == 0) {
-            return existingEmail;
+    public String getStringValue(String label, String existingValue) {
+        String value = io.readString(String.format("%s [%s]: ", label, existingValue));
+        if (value == null || value.trim().length() == 0) {
+            return existingValue;
         }
-        return email;
-    }
-
-    public String getGuestEmail() {
-        return io.readRequiredString("Guest Email: ");
-    }
-
-    // Overloaded for editing existing
-    public String getGuestEmail(String existingEmail) {
-        String email = io.readString(String.format("Guest Email [%s]: ", existingEmail));
-        if (email == null || email.trim().length() == 0) {
-            return existingEmail;
-        }
-        return email;
+        return value;
     }
 
     public LocalDate getStartDate() {
@@ -176,6 +195,60 @@ public class View {
 
     public boolean confirmDeletion(Reservation reservation) {
         return io.readBoolean("Are you sure you wish to delete this reservation? [y/n]: ");
+    }
+
+    public Host makeHost() {
+        Host host = new Host();
+        host.setLastName(getStringValue("Host Last Name: "));
+        host.setEmail(getStringValue("Host Email: "));
+        host.setPhone(getStringValue("Host Phone Number [(111) 2223333]: "));
+        host.setAddress(getStringValue("Host Street Address: "));
+        host.setCity(getStringValue("Host City: "));
+        host.setState(io.readState("Host State Name/Abbreviation: "));
+        host.setPostalCode(getStringValue("Host Postal Code [12345]: "));
+        host.setStandardRate(io.readBigDecimal("Standard Rate: $"));
+        host.setWeekendRate(io.readBigDecimal("Weekend Rate: $"));
+        return host;
+    }
+
+    public Host updateHost(Host host) {
+        Host updatedHost = new Host();
+
+        updatedHost.setId(host.getId());
+        updatedHost.setLastName(getStringValue(String.format("Host Last Name [%s]: ", host.getLastName())));
+        updatedHost.setEmail(getStringValue(String.format("Host Email [%s]: ", host.getEmail())));
+        updatedHost.setPhone(getStringValue(String.format("Host Phone Number [%s]: ", host.getPhone())));
+        updatedHost.setAddress(getStringValue(String.format("Host Street Address [%s]: ", host.getAddress())));
+        updatedHost.setCity(getStringValue(String.format("Host City [%s]: ", host.getCity())));
+        updatedHost.setState(io.readState(String.format("Host State [%s]: ", host.getState())));
+        updatedHost.setPostalCode(getStringValue(String.format("Host Postal Code [%s]: ", host.getPostalCode())));
+        updatedHost.setStandardRate(io.readBigDecimal(String.format("Standard Rate [$%s]: $", host.getStandardRate())));
+        updatedHost.setWeekendRate(io.readBigDecimal(String.format("Weekend Rate [$%s]: $", host.getWeekendRate())));
+
+        return updatedHost;
+    }
+
+    public Guest makeGuest() {
+        Guest guest = new Guest();
+        guest.setLastName(getStringValue("First Name: "));
+        guest.setLastName(getStringValue("Last Name: "));
+        guest.setEmail(getStringValue("Email: "));
+        guest.setPhone(getStringValue("Phone Number [(111) 2223333]: "));
+        guest.setState(io.readState("State Name/Abbreviation: "));
+        return guest;
+    }
+
+    public Guest updateGuest(Guest guest) {
+        Guest updatedGuest = new Guest();
+
+        updatedGuest.setId(guest.getId());
+        updatedGuest.setFirstName(getStringValue(String.format("First Name [%s]: ", guest.getFirstName())));
+        updatedGuest.setLastName(getStringValue(String.format("Last Name [%s]: ", guest.getLastName())));
+        updatedGuest.setEmail(getStringValue(String.format("Email [%s]: ", guest.getEmail())));
+        updatedGuest.setPhone(getStringValue(String.format("Phone Number [%s]: ", guest.getPhone())));
+        updatedGuest.setState(io.readState(String.format("State [%s]: ", guest.getState())));
+
+        return updatedGuest;
     }
 
     // display only
@@ -218,22 +291,54 @@ public class View {
     }
 
     public void displayHosts(List<Host> hosts) {
+        int maxDisplayed = 15;
+
         displayHeader("HOSTS");
         AtomicInteger count = new AtomicInteger();
         hosts.stream()
                 .sorted(Comparator.comparing(Host::getLastName).thenComparing(Host::getEmail))
-                .limit(25)
+                .limit(maxDisplayed)
                 .forEach(h -> {
                     count.getAndIncrement();
-                    io.printf("%3s. %s (%s)%n", count.get(), h.getLastName(), h.getEmail());
+                    io.printf("%2s. %s (%s)%n", count.get(), h.getLastName(), h.getEmail());
                 });
 
-        if (hosts.size() > 25) {
-            io.println("More than 25 hosts found. Showing first 25. Please refine your search.");
+        io.println("  * Press [0] to search again");
+        if (hosts.size() > maxDisplayed) {
+            io.println("");
+            io.printf("More than %s hosts found. Showing first %s. Enter [0] to refine your search.%n", maxDisplayed, maxDisplayed);
         }
     }
 
-    public void displayReservationsByStartDate(List<Reservation> reservations, Host host) { // TODO Delete this tip: fpostlethwaitebh@sakura.ne.jp has reservations for testing
+    public void displayGuestInformation(Guest guest) {
+        displaySubHeader("GUEST INFORMATION");
+        io.printf("Name: %s, %s%n", guest.getLastName(), guest.getFirstName());
+        io.printf("Email: %s%n", guest.getEmail());
+        io.printf("Phone: %s%n", guest.getPhone());
+        io.printf("State: %s%n", guest.getState().getAbbreviation());
+    }
+
+    public void displayGuests(List<Guest> guests) {
+        int maxDisplayed = 15;
+
+        displayHeader("GUESTS");
+        AtomicInteger count = new AtomicInteger();
+        guests.stream()
+                .sorted(Comparator.comparing(Guest::getLastName).thenComparing(Guest::getFirstName).thenComparing(Guest::getEmail))
+                .limit(maxDisplayed)
+                .forEach(g -> {
+                    count.getAndIncrement();
+                    io.printf("%2s. %s %s (%s)%n", count.get(), g.getLastName(), g.getFirstName(), g.getEmail());
+                });
+
+        io.println("  * Press [0] to search again");
+        if (guests.size() > maxDisplayed) {
+            io.println("");
+            io.printf("More than %s hosts found. Showing first %s. Enter [0] to refine your search.%n", maxDisplayed, maxDisplayed);
+        }
+    }
+
+    public void displayReservationsByStartDate(List<Reservation> reservations, Host host) {
         displayHostInformation(host);
 
         displaySubHeader("RESERVATIONS");
@@ -257,9 +362,10 @@ public class View {
     }
 
     public void displayReservation(Reservation reservation) {
-        displaySubHeader("         RESERVATION         ");
-        io.printf("   Host: %s%n", reservation.getHost().getLastName());
-        io.printf("         %s%n", reservation.getHost().getEmail());
+        displaySubHeader(String.format("RESERVATION (%s-%s)",
+                reservation.getHost().getLastName().toUpperCase(),
+                reservation.getId()));
+
         io.printf("Address: %s%n",
                 reservation.getHost().getAddress());
         io.printf("         %s, %s %s%n",
@@ -267,9 +373,15 @@ public class View {
                 reservation.getHost().getState().getAbbreviation(),
                 reservation.getHost().getPostalCode());
         io.println("");
+
+        io.printf("   Host: %s%n", reservation.getHost().getLastName());
+        io.printf("         %s%n", reservation.getHost().getEmail());
+        io.println("");
+
         io.printf("  Guest: %s %s%n", reservation.getGuest().getFirstName(), reservation.getGuest().getLastName());
         io.printf("         %s%n", reservation.getGuest().getEmail());
         io.println("");
+
         io.printf("  Start: %s%n", formatter.format(reservation.getStartDate()));
         io.printf("    End: %s%n", formatter.format(reservation.getEndDate()));
         io.printf("  Total: $%s%n", reservation.getTotal());

@@ -26,6 +26,14 @@ public class GuestService {
                 .collect(Collectors.toList());
     }
 
+    public List<Guest> findByLastName(String lastName) {
+        return repository.findAll().stream()
+                .filter(h -> h.getLastName().trim()
+                        .substring(0,Math.min(h.getLastName().trim().length(), lastName.trim().length()))
+                        .equalsIgnoreCase(lastName.trim()))
+                .collect(Collectors.toList());
+    }
+
     public Guest findById(int guestId) {
         return repository.findById(guestId);
     }

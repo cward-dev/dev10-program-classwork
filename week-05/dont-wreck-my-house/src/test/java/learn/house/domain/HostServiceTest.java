@@ -54,6 +54,13 @@ class HostServiceTest {
     }
 
     @Test
+    void shouldFindByLastName() {
+        List<Host> result = service.findByLastName("Postlethwaite");
+
+        assertEquals(1, result.size());
+    }
+
+    @Test
     void shouldFindByEmail() {
         Host result = service.findByEmail("eyearnes0@sfgate.com");
 
@@ -80,9 +87,9 @@ class HostServiceTest {
                 "Doe",
                 "jdoe@gmail.com",
                 "(111) 2223333",
-                "123 North Parkway", "Milwaukee", State.WISCONSIN, 53208,
-                new BigDecimal("100"),
-                new BigDecimal("150"));
+                "123 North Parkway", "Milwaukee", State.WISCONSIN, "53208",
+                new BigDecimal("100.00"),
+                new BigDecimal("150.00"));
         Result<Host> result = service.add(host);
 
         assertTrue(result.isSuccess());
@@ -95,7 +102,7 @@ class HostServiceTest {
                 "Doe",
                 "jdoe@gmail.com",
                 "(111) 2223333",
-                "123 North Parkway", "Milwaukee", State.WISCONSIN, 53208,
+                "123 North Parkway", "Milwaukee", State.WISCONSIN, "53208",
                 new BigDecimal("0.00"),
                 new BigDecimal("0.00"));
         Result<Host> result = service.add(host);
@@ -120,9 +127,9 @@ class HostServiceTest {
                 " ",
                 "jdoe@gmail.com",
                 "(111) 2223333",
-                "123 North Parkway", "Milwaukee", State.WISCONSIN, 53208,
-                new BigDecimal("100"),
-                new BigDecimal("150"));
+                "123 North Parkway", "Milwaukee", State.WISCONSIN, "53208",
+                new BigDecimal("100.00"),
+                new BigDecimal("150.00"));
         Result<Host> result = service.add(host);
 
         assertFalse(result.isSuccess());
@@ -136,9 +143,9 @@ class HostServiceTest {
                 "Doe",
                 " ",
                 "(111) 2223333",
-                "123 North Parkway", "Milwaukee", State.WISCONSIN, 53208,
-                new BigDecimal("100"),
-                new BigDecimal("150"));
+                "123 North Parkway", "Milwaukee", State.WISCONSIN, "53208",
+                new BigDecimal("100.00"),
+                new BigDecimal("150.00"));
         Result<Host> result = service.add(host);
 
         assertFalse(result.isSuccess());
@@ -152,9 +159,9 @@ class HostServiceTest {
                 "Doe",
                 "jdoe@gmail.com",
                 " ",
-                "123 North Parkway", "Milwaukee", State.WISCONSIN, 53208,
-                new BigDecimal("100"),
-                new BigDecimal("150"));
+                "123 North Parkway", "Milwaukee", State.WISCONSIN, "53208",
+                new BigDecimal("100.00"),
+                new BigDecimal("150.00"));
         Result<Host> result = service.add(host);
 
         assertFalse(result.isSuccess());
@@ -168,9 +175,9 @@ class HostServiceTest {
                 "Doe",
                 "jdoe@gmail.com",
                 "(111) 2223333",
-                " ", "Milwaukee", State.WISCONSIN, 53208,
-                new BigDecimal("100"),
-                new BigDecimal("150"));
+                " ", "Milwaukee", State.WISCONSIN, "53208",
+                new BigDecimal("100.00"),
+                new BigDecimal("150.00"));
         Result<Host> result = service.add(host);
 
         assertFalse(result.isSuccess());
@@ -184,9 +191,9 @@ class HostServiceTest {
                 "Doe",
                 "jdoe@gmail.com",
                 "(111) 2223333",
-                "123 North Parkway", " ", State.WISCONSIN, 53208,
-                new BigDecimal("100"),
-                new BigDecimal("150"));
+                "123 North Parkway", " ", State.WISCONSIN, "53208",
+                new BigDecimal("100.00"),
+                new BigDecimal("150.00"));
         Result<Host> result = service.add(host);
 
         assertFalse(result.isSuccess());
@@ -200,9 +207,9 @@ class HostServiceTest {
                 "Doe",
                 "jdoe@gmail.com",
                 "(111) 2223333",
-                "123 North Parkway", "Milwaukee", null, 53208,
-                new BigDecimal("100"),
-                new BigDecimal("150"));
+                "123 North Parkway", "Milwaukee", null, "53208",
+                new BigDecimal("100.00"),
+                new BigDecimal("150.00"));
         Result<Host> result = service.add(host);
 
         assertFalse(result.isSuccess());
@@ -216,13 +223,13 @@ class HostServiceTest {
                 "Doe",
                 "jdoe@gmail.com",
                 "(111) 2223333",
-                "123 North Parkway", "Milwaukee", State.WISCONSIN, 0,
-                new BigDecimal("100"),
-                new BigDecimal("150"));
+                "123 North Parkway", "Milwaukee", State.WISCONSIN, "0",
+                new BigDecimal("100.00"),
+                new BigDecimal("150.00"));
         Result<Host> result = service.add(host);
 
         assertFalse(result.isSuccess());
-        assertEquals("Host postal code is required and must be a 5 digit number.", result.getErrorMessages().get(0));
+        assertEquals("Host postal code is required.", result.getErrorMessages().get(0));
         assertNull(result.getPayload());
     }
 
@@ -232,9 +239,9 @@ class HostServiceTest {
                 "Doe",
                 "jdoe@gmail.com",
                 "(111) 2223333",
-                "123 North Parkway", "Milwaukee", State.WISCONSIN, 53208,
+                "123 North Parkway", "Milwaukee", State.WISCONSIN, "53208",
                 null,
-                new BigDecimal("150"));
+                new BigDecimal("150.00"));
         Result<Host> result = service.add(host);
 
         assertFalse(result.isSuccess());
@@ -248,9 +255,9 @@ class HostServiceTest {
                 "Doe",
                 "jdoe@gmail.com",
                 "(111) 2223333",
-                "123 North Parkway", "Milwaukee", State.WISCONSIN, 53208,
+                "123 North Parkway", "Milwaukee", State.WISCONSIN, "53208",
                 new BigDecimal("-1.00"),
-                new BigDecimal("150"));
+                new BigDecimal("150.00"));
         Result<Host> result = service.add(host);
 
         assertFalse(result.isSuccess());
@@ -264,8 +271,8 @@ class HostServiceTest {
                 "Doe",
                 "jdoe@gmail.com",
                 "(111) 2223333",
-                "123 North Parkway", "Milwaukee", State.WISCONSIN, 53208,
-                new BigDecimal("100"),
+                "123 North Parkway", "Milwaukee", State.WISCONSIN, "53208",
+                new BigDecimal("100.00"),
                 null);
         Result<Host> result = service.add(host);
 
@@ -280,9 +287,9 @@ class HostServiceTest {
                 "Doe",
                 "jdoe@gmail.com",
                 "(111) 2223333",
-                "123 North Parkway", "Milwaukee", State.WISCONSIN, 53208,
-                new BigDecimal("100"),
-                new BigDecimal("-1.00"));
+                "123 North Parkway", "Milwaukee", State.WISCONSIN, "53208",
+                new BigDecimal("100.00"),
+                new BigDecimal("-1.00.00"));
         Result<Host> result = service.add(host);
 
         assertFalse(result.isSuccess());
@@ -296,9 +303,9 @@ class HostServiceTest {
                 "Learnes",
                 "eyearnes0@sfgate.com",
                 "(806) 1783815",
-                "3 Nova Trail", "Amarillo", State.TEXAS, 79182,
-                new BigDecimal("340"),
-                new BigDecimal("425"));
+                "3 Nova Trail", "Amarillo", State.TEXAS, "79182",
+                new BigDecimal("340.00"),
+                new BigDecimal("425.00"));
         Result<Host> result = service.update(updatedHost);
 
         assertTrue(result.isSuccess());
@@ -321,9 +328,9 @@ class HostServiceTest {
                 "Doe",
                 "thisisatestandisntpresent@testing.com",
                 "(111) 2223333",
-                "123 North Parkway", "Milwaukee", State.WISCONSIN, 53208,
-                new BigDecimal("100"),
-                new BigDecimal("150"));
+                "123 North Parkway", "Milwaukee", State.WISCONSIN, "53208",
+                new BigDecimal("100.00"),
+                new BigDecimal("150.00"));
         Result<Host> result = service.update(updatedHost);
 
         assertFalse(result.isSuccess());
@@ -337,9 +344,9 @@ class HostServiceTest {
                 "Doe",
                 "krhodes1@posterous.com",
                 "(111) 2223333",
-                "123 North Parkway", "Milwaukee", State.WISCONSIN, 53208,
-                new BigDecimal("100"),
-                new BigDecimal("150"));
+                "123 North Parkway", "Milwaukee", State.WISCONSIN, "53208",
+                new BigDecimal("100.00"),
+                new BigDecimal("150.00"));
         Result<Host> result = service.update(updatedHost);
 
         assertFalse(result.isSuccess());
@@ -348,18 +355,32 @@ class HostServiceTest {
 
     @Test
     void shouldDeleteById() throws DataException {
-        String hostId = "3edda6bc-ab95-49a8-8962-d50b53f84b15";
-        Result<Host> result = service.deleteById(hostId);
+        Host host = new Host("3edda6bc-ab95-49a8-8962-d50b53f84b15",
+                "Yearnes",
+                "eyearnes0@sfgate.com",
+                "(806) 1783815",
+                "3 Nova Trail", "Amarillo", State.TEXAS, "79182",
+                new BigDecimal("340.00"),
+                new BigDecimal("425.00"));
+
+        Result<Host> result = service.delete(host);
 
         assertTrue(result.isSuccess());
         assertNotNull(result.getPayload());
-        assertEquals(hostId, result.getPayload().getId());
+        assertEquals(host.getId(), result.getPayload().getId());
     }
 
     @Test
     void shouldNotDeleteByIdThatDoesntExist() throws DataException {
-        String hostId = "thisisat-esth-osta-ndsh-ouldfindnull";
-        Result<Host> result = service.deleteById(hostId);
+        Host host = new Host("thisisat-esth-osta-ndsh-ouldfindnull",
+                "Doe",
+                "jdoe@gmail.com",
+                "(111) 2223333",
+                "123 North Parkway", "Milwaukee", null, "53208",
+                new BigDecimal("100.00"),
+                new BigDecimal("150.00"));
+
+        Result<Host> result = service.delete(host);
 
         assertFalse(result.isSuccess());
         assertNull(result.getPayload());

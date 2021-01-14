@@ -90,15 +90,14 @@ public class HostService {
         return result;
     }
 
-    public Result<Host> deleteById(String hostId) throws DataException {
-        Host host = findById(hostId);
+    public Result<Host> delete(Host host) throws DataException {
         Result<Host> result = validate(host);
 
         if (!result.isSuccess()) {
             return result;
         }
 
-        boolean success = repository.deleteById(hostId);
+        boolean success = repository.delete(host);
         if (!success) {
             result.addErrorMessage(String.format("Host email '%s' not found.", host.getEmail()));
         }
@@ -139,8 +138,8 @@ public class HostService {
             result.addErrorMessage("Host state is required.");
         }
 
-        if (String.format("%s", host.getPostalCode()).length() != 5) {
-            result.addErrorMessage("Host postal code is required and must be a 5 digit number.");
+        if (host.getPostalCode() == null || host.getPostalCode().length() == 0) {
+            result.addErrorMessage("Host postal code is required.");
         }
 
         if (host.getStandardRate() == null || host.getStandardRate().compareTo(new BigDecimal("0.00")) < 0) {

@@ -3,7 +3,7 @@ package learn.house.ui.menu;
 public enum HostMenuOption {
 
     EXIT(0, "Return to Main Menu", false),
-    VIEW_HOSTS(1, "View Hosts", false),
+    VIEW_HOSTS_BY_STATE(1, "View Hosts By State", false),
     ADD_HOST(2,"Add a Host", false),
     EDIT_HOST(3,"Edit a Host", false),
     INACTIVATE_HOST(4,"Inactivate a Host", false);

@@ -23,20 +23,16 @@ public class ControllerReservations {
     private final ReservationService service;
 
     @Autowired
-    private final HostService hostService;
-
-    @Autowired
-    private final GuestService guestService;
+    private final ControllerHelper helper;
 
     @Autowired
     private final View view;
 
     @Autowired
-    public ControllerReservations(ReservationService service, HostService hostService, GuestService guestService, View view) {
+    public ControllerReservations(ReservationService service, View view, ControllerHelper helper) {
         this.service = service;
-        this.hostService = hostService;
-        this.guestService = guestService;
         this.view = view;
+        this.helper = helper;
     }
 
     public void runMenu() throws DataException {
@@ -60,31 +56,38 @@ public class ControllerReservations {
         } while (option != ReservationMenuOption.EXIT);
     }
 
-    private void viewReservationsForHost() { // TODO: just displays Host Information as a test right now, need to fix
+    private void viewReservationsForHost() {
         view.displayHeader(ReservationMenuOption.VIEW_RESERVATIONS_FOR_HOST.getMessage());
-        String hostEmail = view.getHostEmail();
-        Host host = hostService.findByEmail(hostEmail);
-        if (host == null) {
-            view.displayStatus(false, String.format("No host found with email address '%s'.",
-                    hostEmail));
+        Host host = helper.getHostByLastName();
+
+        List<Reservation> reservations = service.findByHost(host);
+
+        if (reservations.size() == 0) {
+            view.displayStatus(false, String.format("No reservations found for Host %s (%s)",
+                    host.getLastName(),
+                    host.getEmail()));
         } else {
-            List<Reservation> reservations = service.findByHost(host);
             view.displayReservationsByStartDate(reservations, host);
         }
+
         view.enterToContinue();
     }
 
     private void makeReservation() throws DataException {
         view.displayHeader(ReservationMenuOption.MAKE_RESERVATION.getMessage());
 
-        Host host = getHostByEmail();
-        Guest guest = getGuestByEmail();
+        Host host = helper.getHostByLastName();
+        view.displayHostInformation(host);
+
+        Guest guest = helper.getGuestByLastName();
+        view.displayGuestInformation(guest);
+
         LocalDate startDate = view.getStartDate();
         LocalDate endDate = view.getEndDate(startDate);
 
         Reservation reservation = new Reservation(startDate, endDate, host, guest);
 
-        Result<Reservation> result = getReservationByHostEmail();
+        Result<Reservation> result = service.add(reservation);
         if (!result.isSuccess()) {
             view.displayStatus(false, result.getErrorMessages());
         } else {
@@ -99,7 +102,7 @@ public class ControllerReservations {
     private void editReservation() throws DataException {
         view.displayHeader(ReservationMenuOption.EDIT_RESERVATION.getMessage());
 
-        Result<Reservation> reservation = getReservationByHostEmail();
+        Result<Reservation> reservation = helper.getReservationByHostLastName();
         if (!reservation.isSuccess()) {
             view.displayStatus(false, reservation.getErrorMessages());
             view.enterToContinue();
@@ -107,7 +110,7 @@ public class ControllerReservations {
         }
 
         reservation.getPayload().setGuest(
-                getGuestByEmail(reservation.getPayload().getGuest()));
+                helper.getGuestByLastName(reservation.getPayload().getGuest()));
         reservation.getPayload().setStartDate(
                 view.getStartDate(reservation.getPayload().getStartDate()));
         reservation.getPayload().setEndDate(
@@ -129,8 +132,7 @@ public class ControllerReservations {
     private void cancelReservation() throws DataException {
         view.displayHeader(ReservationMenuOption.CANCEL_RESERVATION.getMessage());
 
-        Result<Reservation> reservation = getReservationByHostLastName();
-
+        Result<Reservation> reservation = helper.getReservationByHostLastName();
         if (!reservation.isSuccess()) {
             view.displayStatus(false, reservation.getErrorMessages());
             view.enterToContinue();
@@ -154,113 +156,4 @@ public class ControllerReservations {
 
         view.enterToContinue();
     }
-
-    private Host getHostByEmail() {
-        String hostEmail;
-        Host host;
-
-        do {
-            hostEmail = view.getHostEmail();
-            host = hostService.findByEmail(hostEmail);
-            if (host == null) {
-                String errorMessage = String.format("No host exists with email '%s'", hostEmail);
-                view.displayStatus(false, errorMessage);
-            }
-        } while (host == null);
-
-        return host;
-    }
-
-    // Overloaded for editing existing
-    private Host getHostByEmail(Host existingHost) {
-        String hostEmail;
-        Host host;
-
-        do {
-            hostEmail = view.getHostEmail(existingHost.getEmail());
-            host = hostService.findByEmail(hostEmail);
-            if (host == null) {
-                String errorMessage = String.format("No host exists with email '%s'", hostEmail);
-                view.displayStatus(false, errorMessage);
-            }
-        } while (host == null);
-
-        return host;
-    }
-
-    private Guest getGuestByEmail() {
-        String guestEmail;
-        Guest guest;
-
-        do {
-            guestEmail = view.getGuestEmail();
-            guest = guestService.findByEmail(guestEmail);
-            if (guest == null) {
-                String errorMessage = String.format("No guest exists with email '%s'.", guestEmail);
-                view.displayStatus(false, errorMessage);
-            }
-        } while (guest == null);
-
-        return guest;
-    }
-
-    // Overloaded for editing existing
-    private Guest getGuestByEmail(Guest existingGuest) {
-        String guestEmail;
-        Guest guest;
-
-        do {
-            guestEmail = view.getGuestEmail(existingGuest.getEmail());
-            guest = guestService.findByEmail(guestEmail);
-            if (guest == null) {
-                String errorMessage = String.format("No guest exists with email '%s'.", guestEmail);
-                view.displayStatus(false, errorMessage);
-            }
-        } while (guest == null);
-
-        return guest;
-    }
-
-    private Result<Reservation> getReservationByHostEmail() throws DataException {
-        Result<Reservation> result = new Result<>();
-        Host host = getHostByEmail();
-        List<Reservation> reservations = service.findByHost(host);
-
-        if (reservations.size() == 0) {
-            result.addErrorMessage(String.format("No reservations under Host %s (%s).", host.getLastName(), host.getEmail()));
-            return result;
-        }
-        result.setPayload(view.chooseReservation(reservations, host));
-
-        return result;
-    }
-
-    private Result<Reservation> getReservationByHostLastName() {
-        Result<Reservation> result = new Result<>();
-        String hostLastName = view.getLastName("Host");
-        List<Host> hosts = hostService.findByLastName(hostLastName);
-
-        if (hosts.size() == 0) {
-            result.addErrorMessage(String.format("No hosts matching last name '%s'.", hostLastName));
-            return result;
-        }
-
-        Host host;
-        if (hosts.size() == 1) {
-            host = hosts.get(0);
-        } else {
-            host = view.chooseHost(hosts);
-        }
-
-        List<Reservation> reservations = service.findByHost(host);
-
-        if (reservations.size() == 0) {
-            result.addErrorMessage(String.format("No reservations under Host %s (%s).", host.getLastName(), host.getEmail()));
-            return result;
-        }
-        result.setPayload(view.chooseReservation(reservations, host));
-
-        return result;
-    }
-
 }

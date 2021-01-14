@@ -143,7 +143,8 @@ public class HostFileRepository implements HostRepository {
     }
 
     @Override
-    public boolean deleteById(String hostId) throws DataException {
+    public boolean delete(Host host) throws DataException {
+        String hostId = host.getId();
 
         if (hostId == null || hostId.trim().length() == 0) {
             return false;
@@ -220,7 +221,7 @@ public class HostFileRepository implements HostRepository {
                 clean(host.getAddress()),
                 clean(host.getCity()),
                 host.getState().getAbbreviation(),
-                host.getPostalCode(),
+                clean(host.getPostalCode()),
                 host.getStandardRate(),
                 host.getWeekendRate());
     }
@@ -235,7 +236,7 @@ public class HostFileRepository implements HostRepository {
         host.setAddress(restore(fields[4]));
         host.setCity(restore(fields[5]));
         host.setState(State.getStateFromAbbreviation(fields[6]));
-        host.setPostalCode(Integer.parseInt(fields[7]));
+        host.setPostalCode(restore(fields[7]));
         host.setStandardRate(new BigDecimal(fields[8]).setScale(2, RoundingMode.HALF_EVEN));
         host.setWeekendRate(new BigDecimal(fields[9]).setScale(2, RoundingMode.HALF_EVEN));
         return host;

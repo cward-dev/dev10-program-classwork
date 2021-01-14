@@ -29,7 +29,7 @@ class ReservationServiceTest {
             "Yearnes",
             "eyearnes0@sfgate.com",
             "(806) 1783815",
-            "3 Nova Trail", "Amarillo", State.TEXAS, 79182,
+            "3 Nova Trail", "Amarillo", State.TEXAS, "79182",
             new BigDecimal("340.00"),
             new BigDecimal("425.00"));
 
@@ -37,7 +37,7 @@ class ReservationServiceTest {
             "Doe",
             "jdoe@gmail.com",
             "(111) 2223333",
-            "123 North Parkway", "Milwaukee", State.WISCONSIN, 53208,
+            "123 North Parkway", "Milwaukee", State.WISCONSIN, "53208",
             new BigDecimal("100.00"),
             new BigDecimal("150.00"));
 
