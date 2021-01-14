@@ -3,10 +3,11 @@ package learn.house.ui.menu;
 public enum GuestMenuOption {
 
     EXIT(0, "Return to Main Menu", false),
-    VIEW_GUESTS(1, "View Guests", false),
-    ADD_GUEST(2,"Add a Guest", false),
-    EDIT_GUEST(3,"Edit a Guest", false),
-    INACTIVATE_GUEST(4,"Inactivate a Guest", false);
+    ADD_GUEST(1,"Add a Guest", false),
+    EDIT_GUEST(2,"Edit a Guest", false),
+    VIEW_GUESTS(3, "View Guests", false),
+    INACTIVATE_GUEST(4,"Inactivate a Guest", false),
+    REACTIVATE_GUEST(5,"Reactivate a Guest", false);
 
     private final int value;
     private final String message;

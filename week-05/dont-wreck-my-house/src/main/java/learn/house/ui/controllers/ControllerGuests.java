@@ -38,6 +38,9 @@ public class ControllerGuests {
                 case INACTIVATE_GUEST:
 
                     break;
+                case REACTIVATE_GUEST:
+
+                    break;
             }
         } while (option != GuestMenuOption.EXIT);
     }

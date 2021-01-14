@@ -40,10 +40,14 @@ public class ControllerHelper {
         Result<Reservation> result = new Result<>();
 
         Host host = getHostByLastName();
+        if (host == null) {
+            result.addErrorMessage("Exiting");
+            return result;
+        }
 
         List<Reservation> reservations = reservationService.findByHost(host);
         if (reservations.size() == 0) {
-            result.addErrorMessage(String.format("No reservations under Host %s (%s).",
+            result.addErrorMessage(String.format("No reservations for Host %s (%s).",
                     host.getLastName(),
                     host.getEmail()));
             return result;
@@ -59,7 +63,7 @@ public class ControllerHelper {
 
         do {
             hostLastName = view.getStringValue("Host Last Name");
-            if (hostLastName.equals("!exit")) {
+            if (hostLastName.equals("!")) {
                 return null;
             }
             hosts = hostService.findByLastName(hostLastName);
@@ -84,7 +88,7 @@ public class ControllerHelper {
 
         do {
             hostLastName = view.getStringValue("Host Last Name", existingHost.getLastName());
-            if (hostLastName.equals("!exit")) {
+            if (hostLastName.equals("!")) {
                 return null;
             }
             if (hostLastName.trim().equalsIgnoreCase(existingHost.getLastName().trim())) {
@@ -100,7 +104,7 @@ public class ControllerHelper {
 
         Host host = view.chooseHost(hosts);
         if (host == null) {
-            host = getHostByLastName();
+            host = getHostByLastName(existingHost);
             return host;
         }
         return host;
@@ -112,7 +116,7 @@ public class ControllerHelper {
 
         do {
             hostLastName = view.getStringValue("Inactive Host Last Name");
-            if (hostLastName.equals("!exit")) {
+            if (hostLastName.equals("!")) {
                 return null;
             }
             hosts = hostService.findDeletedByLastName(hostLastName);
@@ -136,7 +140,7 @@ public class ControllerHelper {
 
         do {
             guestLastName = view.getStringValue("Guest Last Name");
-            if (guestLastName.equals("!exit")) {
+            if (guestLastName.equals("!")) {
                 return null;
             }
             guests = guestService.findByLastName(guestLastName);
@@ -161,7 +165,7 @@ public class ControllerHelper {
 
         do {
             guestLastName = view.getStringValue("Guest Last Name", existingGuest.getLastName());
-            if (guestLastName.equals("!exit")) {
+            if (guestLastName.equals("!")) {
                 return null;
             }
             if (guestLastName.trim().equalsIgnoreCase(existingGuest.getLastName().trim())) {
@@ -177,7 +181,7 @@ public class ControllerHelper {
 
         Guest guest = view.chooseGuest(guests);
         if (guest == null) {
-            guest = getGuestByLastName();
+            guest = getGuestByLastName(existingGuest);
             return guest;
         }
         return guest;
@@ -189,7 +193,7 @@ public class ControllerHelper {
 
         do {
             guestLastName = view.getStringValue("Inactive Guest Last Name");
-            if (guestLastName.equals("!exit")) {
+            if (guestLastName.equals("!")) {
                 return null;
             }
             guests = guestService.findDeletedByLastName(guestLastName);

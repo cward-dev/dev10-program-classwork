@@ -41,14 +41,17 @@ public class ControllerHosts {
         do {
             option = view.selectHostMenuOption();
             switch (option) {
-                case VIEW_HOSTS_BY_STATE:
-                    viewHostsByState();
-                    break;
                 case ADD_HOST:
                     addHost();
                     break;
                 case EDIT_HOST:
                     editHost();
+                    break;
+                case VIEW_HOSTS_BY_LAST_NAME:
+                    viewHostsByLastName();
+                    break;
+                case VIEW_HOSTS_BY_STATE:
+                    viewHostsByState();
                     break;
                 case INACTIVATE_HOST:
                     inactivateHost();
@@ -58,22 +61,6 @@ public class ControllerHosts {
                     break;
             }
         } while (option != HostMenuOption.EXIT);
-    }
-
-    private void viewHostsByState() {
-        view.displayHeader(HostMenuOption.VIEW_HOSTS_BY_STATE.getMessage());
-
-        State state = view.getState();
-        List<Host> hosts = service.findByState(state);
-
-        if (hosts.size() == 0) {
-            view.displayStatus(false, String.format("No hosts found in %s.", state.getAbbreviation()));
-            view.enterToContinue();
-            return;
-        }
-        view.displayHosts(hosts);
-
-        view.enterToContinue();
     }
 
     private void addHost() throws DataException {
@@ -97,6 +84,10 @@ public class ControllerHosts {
         view.displayHeader(HostMenuOption.EDIT_HOST.getMessage());
 
         Host host = helper.getHostByLastName();
+        if (host == null) {
+            view.displayStatus(true, "Exiting");
+            return;
+        }
         Host updatedHost = view.updateHost(host);
         Result<Host> result = service.update(updatedHost);
 
@@ -107,6 +98,36 @@ public class ControllerHosts {
             view.displayStatus(true, successMessage);
             view.displayHostInformation(result.getPayload());
         }
+
+        view.enterToContinue();
+    }
+
+    private void viewHostsByLastName() {
+        view.displayHeader(HostMenuOption.VIEW_HOSTS_BY_LAST_NAME.getMessage());
+
+        Host host = helper.getHostByLastName();
+
+        if (host == null) {
+            view.displayStatus(true, "Exiting");
+            return;
+        }
+        view.displayHostInformation(host);
+
+        view.enterToContinue();
+    }
+
+    private void viewHostsByState() {
+        view.displayHeader(HostMenuOption.VIEW_HOSTS_BY_STATE.getMessage());
+
+        State state = view.getState();
+        List<Host> hosts = service.findByState(state);
+
+        if (hosts.size() == 0) {
+            view.displayStatus(false, String.format("No hosts found in %s.", state.getAbbreviation()));
+            view.enterToContinue();
+            return;
+        }
+        view.displayHosts(hosts);
 
         view.enterToContinue();
     }
@@ -149,8 +170,7 @@ public class ControllerHosts {
         Host host = helper.getInactiveHostByLastName();
 
         if (host == null) {
-            result.addErrorMessage("Exiting.");
-            view.displayStatus(false, result.getErrorMessages());
+            view.displayStatus(true, "Exiting.");
             view.enterToContinue();
             return;
         }
@@ -173,5 +193,4 @@ public class ControllerHosts {
 
         view.enterToContinue();
     }
-
 }

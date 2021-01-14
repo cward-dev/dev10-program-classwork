@@ -40,9 +40,6 @@ public class ControllerReservations {
         do {
             option = view.selectReservationMenuOption();
             switch (option) {
-                case VIEW_RESERVATIONS_FOR_HOST:
-                    viewReservationsForHost();
-                    break;
                 case MAKE_RESERVATION:
                     makeReservation();
                     break;
@@ -52,6 +49,9 @@ public class ControllerReservations {
                 case CANCEL_RESERVATION:
                     cancelReservation();
                     break;
+                case VIEW_RESERVATIONS_FOR_HOST:
+                    viewReservationsForHost();
+                    break;
                 case VIEW_RESERVATIONS_FOR_INACTIVE_HOST:
                     viewReservationsForInactiveHost();
                     break;
@@ -59,47 +59,23 @@ public class ControllerReservations {
         } while (option != ReservationMenuOption.EXIT);
     }
 
-    private void viewReservationsForHost() {
-        view.displayHeader(ReservationMenuOption.VIEW_RESERVATIONS_FOR_HOST.getMessage());
-        Host host = helper.getHostByLastName();
-
-        List<Reservation> reservations = service.findByHost(host);
-
-        if (reservations.size() == 0) {
-            view.displayStatus(false, String.format("No reservations found for Host %s (%s)",
-                    host.getLastName(),
-                    host.getEmail()));
-        } else {
-            view.displayReservationsByStartDate(reservations, host);
-        }
-
-        view.enterToContinue();
-    }
-
-    private void viewReservationsForInactiveHost() {
-        view.displayHeader(ReservationMenuOption.VIEW_RESERVATIONS_FOR_INACTIVE_HOST.getMessage());
-        Host host = helper.getInactiveHostByLastName();
-
-        List<Reservation> reservations = service.findByHost(host);
-
-        if (reservations.size() == 0) {
-            view.displayStatus(false, String.format("No reservations found for Inactive Host %s (%s)",
-                    host.getLastName(),
-                    host.getEmail()));
-        } else {
-            view.displayReservationsByStartDate(reservations, host);
-        }
-
-        view.enterToContinue();
-    }
-
     private void makeReservation() throws DataException {
         view.displayHeader(ReservationMenuOption.MAKE_RESERVATION.getMessage());
 
         Host host = helper.getHostByLastName();
+        if (host == null) {
+            view.displayStatus(false, "Exiting");
+            view.enterToContinue();
+            return;
+        }
         view.displayHostInformation(host);
 
         Guest guest = helper.getGuestByLastName();
+        if (guest == null) {
+            view.displayStatus(false, "Exiting");
+            view.enterToContinue();
+            return;
+        }
         view.displayGuestInformation(guest);
 
         LocalDate startDate = view.getStartDate();
@@ -129,8 +105,14 @@ public class ControllerReservations {
             return;
         }
 
-        reservation.getPayload().setGuest(
-                helper.getGuestByLastName(reservation.getPayload().getGuest()));
+        Guest guest = helper.getGuestByLastName(reservation.getPayload().getGuest());
+        if (guest == null) {
+            view.displayStatus(false, "Exiting");
+            view.enterToContinue();
+            return;
+        }
+        reservation.getPayload().setGuest(guest);
+
         reservation.getPayload().setStartDate(
                 view.getStartDate(reservation.getPayload().getStartDate()));
         reservation.getPayload().setEndDate(
@@ -172,6 +154,50 @@ public class ControllerReservations {
         } else {
             result.addErrorMessage("Reservation not deleted.");
             view.displayStatus(false, result.getErrorMessages());
+        }
+
+        view.enterToContinue();
+    }
+
+    private void viewReservationsForHost() {
+        view.displayHeader(ReservationMenuOption.VIEW_RESERVATIONS_FOR_HOST.getMessage());
+        Host host = helper.getHostByLastName();
+        if (host == null) {
+            view.displayStatus(false, "Exiting");
+            view.enterToContinue();
+            return;
+        }
+
+        List<Reservation> reservations = service.findByHost(host);
+
+        if (reservations.size() == 0) {
+            view.displayStatus(false, String.format("No reservations found for Host %s (%s)",
+                    host.getLastName(),
+                    host.getEmail()));
+        } else {
+            view.displayReservationsByStartDate(reservations, host);
+        }
+
+        view.enterToContinue();
+    }
+
+    private void viewReservationsForInactiveHost() {
+        view.displayHeader(ReservationMenuOption.VIEW_RESERVATIONS_FOR_INACTIVE_HOST.getMessage());
+        Host host = helper.getInactiveHostByLastName();
+        if (host == null) {
+            view.displayStatus(false, "Exiting");
+            view.enterToContinue();
+            return;
+        }
+
+        List<Reservation> reservations = service.findByHost(host);
+
+        if (reservations.size() == 0) {
+            view.displayStatus(false, String.format("No reservations found for Inactive Host %s (%s)",
+                    host.getLastName(),
+                    host.getEmail()));
+        } else {
+            view.displayReservationsByStartDate(reservations, host);
         }
 
         view.enterToContinue();

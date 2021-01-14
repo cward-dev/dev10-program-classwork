@@ -3,10 +3,10 @@ package learn.house.ui.menu;
 public enum ReservationMenuOption {
 
     EXIT(0, "Return to Main Menu", false),
-    VIEW_RESERVATIONS_FOR_HOST(1, "View Reservations for Host", false),
-    MAKE_RESERVATION(2,"Make a Reservation", false),
-    EDIT_RESERVATION(3,"Edit a Reservation", false),
-    CANCEL_RESERVATION(4,"Cancel a Reservation", false),
+    MAKE_RESERVATION(1,"Make a Reservation", false),
+    EDIT_RESERVATION(2,"Edit a Reservation", false),
+    CANCEL_RESERVATION(3,"Cancel a Reservation", false),
+    VIEW_RESERVATIONS_FOR_HOST(4, "View Reservations for Host", false),
     VIEW_RESERVATIONS_FOR_INACTIVE_HOST(5, "View Reservations for Inactive Host", false);
 
     private final int value;
