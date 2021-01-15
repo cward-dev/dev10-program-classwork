@@ -107,7 +107,7 @@ public class HostFileRepository implements HostRepository {
 
         Host deletedHost = findDeletedByEmail(host.getEmail());
         if (deletedHost != null) {
-            host.setId(deletedHost.getId()); // TODO make sure this works!
+            host.setId(deletedHost.getId());
         } else {
             host.setId(java.util.UUID.randomUUID().toString());
         }
@@ -117,7 +117,7 @@ public class HostFileRepository implements HostRepository {
 
         all.add(deserialize(fields));
         writeAll(all);
-        removeReactivatedHostFromDeleted(deletedHost); // TODO need to remove deleted host from "deleted" file - make sure this works
+        removeReactivatedHostFromDeleted(deletedHost);
 
         return host;
     }

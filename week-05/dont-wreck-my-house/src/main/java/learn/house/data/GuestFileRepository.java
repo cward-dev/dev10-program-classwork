@@ -106,7 +106,7 @@ public class GuestFileRepository implements GuestRepository {
 
         Guest deletedGuest = findDeletedByEmail(guest.getEmail());
         if (deletedGuest != null) {
-            guest.setId(deletedGuest.getId()); // TODO make sure this works!
+            guest.setId(deletedGuest.getId());
         } else {
             List<Guest> allDeleted = findAllDeleted();
             List<Guest> allCombined = findAll();
@@ -123,7 +123,7 @@ public class GuestFileRepository implements GuestRepository {
 
         all.add(deserialize(fields));
         writeAll(all);
-        removeReactivatedGuestFromDeleted(deletedGuest); // TODO need to remove deleted guest from "deleted" file - make sure this works
+        removeReactivatedGuestFromDeleted(deletedGuest);
 
         return guest;
     }

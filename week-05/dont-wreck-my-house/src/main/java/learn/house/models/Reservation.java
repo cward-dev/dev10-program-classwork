@@ -110,8 +110,8 @@ public class Reservation {
 
         for (int i = 0; i < startDate.until(endDate, ChronoUnit.DAYS); i++) {
             dayOfWeek = startDate.plusDays(i).getDayOfWeek(); // TODO THIS SEEMS LIKE A BUG, MATH WORKS BUT WHY SAT/SUN?
-            if (dayOfWeek == DayOfWeek.SATURDAY
-                    || dayOfWeek == DayOfWeek.SUNDAY) {
+            if (dayOfWeek == DayOfWeek.FRIDAY
+                    || dayOfWeek == DayOfWeek.SATURDAY) {
                 total = total.add(weekendRate);
             } else {
                 total = total.add(standardRate);

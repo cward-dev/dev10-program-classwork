@@ -25,12 +25,12 @@ class ReservationTest {
     Reservation reservation = new Reservation(1,
             LocalDate.of(2020,10,13),
             LocalDate.of(2020,10,17),
-            host, guest, new BigDecimal("720")); // total should be 720
+            host, guest, new BigDecimal("765.00")); // total should be 720
 
     Reservation test = new Reservation(1,
             LocalDate.of(2021,1,15),
             LocalDate.of(2021,1,16),
-            host, guest, new BigDecimal("450")); // total should be 720
+            host, guest, new BigDecimal("450.00")); // total should be 720
 
 //    @Test
 //    void shouldGetTotalTest() {

@@ -133,6 +133,6 @@ class GuestFileRepositoryTest {
     }
 
     private String getDeletedFilePath() {
-        return TEST_PATH.substring(0, TEST_PATH.length() - 4) + "-deleted.csv";
+        return TEST_PATH.substring(0, TEST_PATH.length() - 4) + "-inactivated.csv";
     }
 }
