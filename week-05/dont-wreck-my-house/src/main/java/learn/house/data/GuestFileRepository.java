@@ -70,7 +70,7 @@ public class GuestFileRepository implements GuestRepository {
             for (String line = reader.readLine(); line != null; line = reader.readLine()) {
                 String[] fields = line.split(DELIMITER, -1);
 
-                if (fields.length == 10) {
+                if (fields.length == 6) {
                     result.add(deserialize(fields));
                 }
             }
@@ -98,7 +98,6 @@ public class GuestFileRepository implements GuestRepository {
 
     @Override
     public Guest add(Guest guest) throws DataException {
-
         if (guest == null) {
             return null;
         }
@@ -131,7 +130,6 @@ public class GuestFileRepository implements GuestRepository {
 
     @Override
     public boolean update(Guest guest) throws DataException {
-
         if (guest == null) {
             return false;
         }
@@ -150,6 +148,9 @@ public class GuestFileRepository implements GuestRepository {
 
     @Override
     public boolean delete(Guest guest) throws DataException {
+        if (guest == null) {
+            return false;
+        }
 
         List<Guest> all = findAll();
         for (int i = 0; i < all.size(); i++) {
@@ -243,6 +244,6 @@ public class GuestFileRepository implements GuestRepository {
     private String restore(String value) { return value.replace(DELIMITER_REPLACEMENT, DELIMITER); }
 
     private String getDeletedFilePath() {
-        return filePath.substring(0, filePath.length() - 4) + "-deleted.csv";
+        return filePath.substring(0, filePath.length() - 4) + "-inactivated.csv";
     }
 }

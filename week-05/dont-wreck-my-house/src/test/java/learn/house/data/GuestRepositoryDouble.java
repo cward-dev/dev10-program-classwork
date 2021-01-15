@@ -93,9 +93,9 @@ public class GuestRepositoryDouble implements GuestRepository {
     }
 
     @Override
-    public boolean deleteById(int id) {
+    public boolean delete(Guest guest) {
         for (int i = 0; i < guests.size(); i++) {
-            if (id == guests.get(i).getId()) {
+            if (guest.getId() == guests.get(i).getId()) {
                 guestsDeleted.add(guests.get(i));
                 guests.remove(i);
                 return true;

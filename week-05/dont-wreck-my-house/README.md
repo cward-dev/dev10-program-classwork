@@ -352,7 +352,7 @@ Validation
     * Actual Time: 5 hours
 
   
-- [ ] Create `Result<T>` class (extends `Response`) --- allows us to create instances of Result with different types
+- [x] Create `Result<T>` class (extends `Response`) --- allows us to create instances of Result with different types
   * Fields
     * `private T payload`
     * `getter`
@@ -366,7 +366,7 @@ Validation
     * Actual Time: 10 minutes
 
 ### UI Layer
-- [ ] Create `Controller` class
+- [x] Create `Controller` class
   * Dependencies: `GuestService`, `HostService`, `ReservationService`, `View` --- passes information between the view and domain layer
   * Fields
     * `private final GuestService guestService` --- constructor arg
@@ -388,10 +388,10 @@ Validation
         * `getReservation`
   * Time to Complete
     * Estimated Time: 2 hours
-    * Actual Time: 2 hours
+    * Actual Time: 6 hours
   
 
-- [ ] Create `ConsoleIO` class --- provides us with methods for displaying and getting information using the console
+- [x] Create `ConsoleIO` class --- provides us with methods for displaying and getting information using the console
   * Fields
     * `private static final String INVALID_(CASE)` --- will give [Invalid] message for each type of invalid input
     * `private final Scanner scanner`
@@ -410,9 +410,9 @@ Validation
     * `readBigDecimal`
   * Time to Complete
     * Estimated Time: 2 hours
-    * Actual Time: 1 hour
+    * Actual Time: 2 hours
 
-- [ ] Create `MainMenuOption` enumerator --- provides discrete values for the main menu options
+- [x] Create `MainMenuOption` enumerator --- provides discrete values for the main menu options
   * Values
     * `EXIT`
     * `VIEW_RESERVATIONS_FOR_HOST`
@@ -430,7 +430,7 @@ Validation
     * Estimated Time: 1 hours
     * Actual Time: 1 hour
 
-- [ ] Create `View` class
+- [x] Create `View` classes
   * Dependencies: `ConsoleIO` --- uses methods from the ConsoleIO to display and receive information using the console. View class never directly interacts with the console.
   * Fields
     * `private final ConsoleIO io` --- constructor arg
@@ -454,7 +454,7 @@ Validation
     * // If time allows, will add more viewing, creating, updating, and deleting methods for Guest and Host objects
   * Time to Complete
     * Estimated Time: 3 hours
-    * Actual Time: 30 minutes
+    * Actual Time: 6 hours
 
 ### Inject Spring Dependency
 - [x] Use Annotations to perform Spring dependency injection
@@ -470,4 +470,5 @@ Validation
   * Solution: 
 
 ### Research Required
-- [ ] tbd
+- [x] Increment a variable in a stream to display a numbered List
+  * Solution: Use an AtomicInteger (believe this is because we need a static variable?)

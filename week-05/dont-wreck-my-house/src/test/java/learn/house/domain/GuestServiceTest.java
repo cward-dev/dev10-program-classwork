@@ -191,7 +191,7 @@ class GuestServiceTest {
     @Test
     void shouldDeleteById() throws DataException {
         int guestId = 1;
-        Result<Guest> result = service.deleteById(guestId);
+        Result<Guest> result = service.delete(service.findById(guestId));
 
         assertTrue(result.isSuccess());
         assertNotNull(result.getPayload());
@@ -201,7 +201,7 @@ class GuestServiceTest {
     @Test
     void shouldNotDeleteByIdThatDoesntExist() throws DataException {
         int guestId = 100000;
-        Result<Guest> result = service.deleteById(guestId);
+        Result<Guest> result = service.delete(service.findById(guestId));
 
         assertFalse(result.isSuccess());
         assertNull(result.getPayload());

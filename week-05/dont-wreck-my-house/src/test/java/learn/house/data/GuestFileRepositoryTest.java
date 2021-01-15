@@ -118,7 +118,7 @@ class GuestFileRepositoryTest {
     @Test
     void shouldDeleteById() throws DataException {
         int guestId = 1;
-        boolean success = repository.deleteById(guestId);
+        boolean success = repository.delete(repository.findById(guestId));
 
         assertTrue(success);
         assertNull(repository.findById(guestId));
@@ -127,7 +127,7 @@ class GuestFileRepositoryTest {
     @Test
     void shouldNotDeleteIfIdNotPresent() throws DataException {
         int guestId = 100000;
-        boolean success = repository.deleteById(guestId);
+        boolean success = repository.delete(repository.findById(guestId));
 
         assertFalse(success);
     }
@@ -135,5 +135,4 @@ class GuestFileRepositoryTest {
     private String getDeletedFilePath() {
         return TEST_PATH.substring(0, TEST_PATH.length() - 4) + "-deleted.csv";
     }
-
 }

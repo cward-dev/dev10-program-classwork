@@ -217,7 +217,7 @@ public class View {
         Host host = new Host();
         host.setLastName(getStringValue("Host Last Name"));
         host.setEmail(getStringValue("Host Email"));
-        host.setPhone(getStringValue("Host Phone Number [(111) 2223333]"));
+        host.setPhone(getStringValue("Host Phone Number"));
         host.setAddress(getStringValue("Host Street Address"));
         host.setCity(getStringValue("Host City"));
         host.setState(io.readState("Host State Name/Abbreviation: "));
@@ -246,10 +246,10 @@ public class View {
 
     public Guest makeGuest() {
         Guest guest = new Guest();
-        guest.setLastName(getStringValue("First Name"));
+        guest.setFirstName(getStringValue("First Name"));
         guest.setLastName(getStringValue("Last Name"));
         guest.setEmail(getStringValue("Email"));
-        guest.setPhone(getStringValue("Phone Number [(111) 2223333]"));
+        guest.setPhone(getStringValue("Phone Number"));
         guest.setState(io.readState("State Name/Abbreviation: "));
         return guest;
     }
@@ -344,7 +344,7 @@ public class View {
                 .limit(maxDisplayed)
                 .forEach(g -> {
                     count.getAndIncrement();
-                    io.printf("%2s. %s %s (%s)%n", count.get(), g.getLastName(), g.getFirstName(), g.getEmail());
+                    io.printf("%2s. %s, %s (%s)%n", count.get(), g.getLastName(), g.getFirstName(), g.getEmail());
                 });
 
         io.println("  * Press [0] to search again");

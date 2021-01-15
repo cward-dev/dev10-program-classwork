@@ -99,7 +99,6 @@ public class HostFileRepository implements HostRepository {
 
     @Override
     public Host add(Host host) throws DataException {
-
         if (host == null) {
             return null;
         }
@@ -125,7 +124,6 @@ public class HostFileRepository implements HostRepository {
 
     @Override
     public boolean update(Host host) throws DataException {
-
         if (host == null || host.getId() == null || host.getId().trim().length() == 0) {
             return false;
         }

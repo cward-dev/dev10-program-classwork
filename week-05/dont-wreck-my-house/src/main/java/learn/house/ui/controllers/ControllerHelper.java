@@ -81,7 +81,7 @@ public class ControllerHelper {
         return host;
     }
 
-    // Overloaded for editing existing
+    // Overloaded for editing existing *** TODO REMOVE THIS IF YOU ARENT GOING TO USE IT --- WHEN UPDATING RESERVATIONS WE NEVER CHANGE THE HOST
     public Host getHostByLastName(Host existingHost) {
         String hostLastName;
         List<Host> hosts;
