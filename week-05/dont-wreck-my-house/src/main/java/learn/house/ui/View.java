@@ -101,6 +101,37 @@ public class View {
         return io.readState(String.format("State name or abbreviation [%s]: ", existingState), existingState);
     }
 
+    public String getStringValue(String label) {
+        return io.readRequiredString(String.format("%s: ", label));
+    }
+
+    // Overloaded for editing existing
+    public String getStringValue(String label, String existingValue) {
+        String value = io.readString(String.format("%s [%s]: ", label, existingValue));
+        if (value == null || value.trim().length() == 0) {
+            return existingValue;
+        }
+        return value;
+    }
+
+    public LocalDate getStartDate() {
+        return io.readLocalDateStart("Start Date [mm/dd/yyyy]: ");
+    }
+
+    // Overloaded for editing existing
+    public LocalDate getStartDate(LocalDate existingDate) {
+        return io.readLocalDateStart(String.format("Start Date [%s]: ", formatter.format(existingDate)), existingDate);
+    }
+
+    public LocalDate getEndDate(LocalDate startDate) {
+        return io.readLocalDateEnd("End Date [mm/dd/yyyy]: ", startDate);
+    }
+
+    // Overloaded for editing existing
+    public LocalDate getEndDate(LocalDate startDate, LocalDate existingDate) {
+        return io.readLocalDateEnd(String.format("End Date [%s]: ", formatter.format(existingDate)), startDate, existingDate);
+    }
+
     public Host chooseHost(List<Host> hosts) {
         displayHosts(hosts);
 
@@ -162,57 +193,6 @@ public class View {
                 .orElse(null);
     }
 
-    public String getStringValue(String label) {
-        return io.readRequiredString(String.format("%s: ", label));
-    }
-
-    // Overloaded for editing existing
-    public String getStringValue(String label, String existingValue) {
-        String value = io.readString(String.format("%s [%s]: ", label, existingValue));
-        if (value == null || value.trim().length() == 0) {
-            return existingValue;
-        }
-        return value;
-    }
-
-    public LocalDate getStartDate() {
-        return io.readLocalDateStart("Start Date [mm/dd/yyyy]: ");
-    }
-
-    // Overloaded for editing existing
-    public LocalDate getStartDate(LocalDate existingDate) {
-        return io.readLocalDateStart(String.format("Start Date [%s]: ", formatter.format(existingDate)), existingDate);
-    }
-
-    public LocalDate getEndDate(LocalDate startDate) {
-        return io.readLocalDateEnd("End Date [mm/dd/yyyy]: ", startDate);
-    }
-
-    // Overloaded for editing existing
-    public LocalDate getEndDate(LocalDate startDate, LocalDate existingDate) {
-        return io.readLocalDateEnd(String.format("End Date [%s]: ", formatter.format(existingDate)), startDate, existingDate);
-    }
-
-    public boolean confirmDeletion(Reservation reservation) {
-        return io.readBoolean("Are you sure you wish to delete this reservation? [y/n]: ");
-    }
-
-    public boolean confirmHostInactivation() {
-        return io.readBoolean("Are you sure you wish to inactivate this host? [y/n]: ");
-    }
-
-    public boolean confirmHostReactivation() {
-        return io.readBoolean("Are you sure you wish to reactivate this host? [y/n]: ");
-    }
-
-    public boolean confirmGuestInactivation() {
-        return io.readBoolean("Are you sure you wish to inactivate this guest? [y/n]: ");
-    }
-
-    public boolean confirmGuestReactivation() {
-        return io.readBoolean("Are you sure you wish to reactivate this guest? [y/n]: ");
-    }
-
     public Host makeHost() {
         Host host = new Host();
         host.setLastName(getStringValue("Host Last Name"));
@@ -265,6 +245,18 @@ public class View {
         updatedGuest.setState(io.readState(String.format("State [%s]: ", guest.getState()), guest.getState()));
 
         return updatedGuest;
+    }
+
+    public boolean confirmReservationCancellation() {
+        return io.readBoolean("Are you sure you wish to cancel this reservation? [y/n]: ");
+    }
+
+    public boolean confirmInactivation(String label) {
+        return io.readBoolean(String.format("Are you sure you wish to inactivate this %s? [y/n]: ", label));
+    }
+
+    public boolean confirmReactivation(String label) {
+        return io.readBoolean(String.format("Are you sure you wish to reactivate this %s? [y/n]: ", label));
     }
 
     // display only
@@ -328,10 +320,10 @@ public class View {
 
     public void displayGuestInformation(Guest guest) {
         displaySubHeader("GUEST INFORMATION");
-        io.printf(" Name: %s, %s%n", guest.getLastName(), guest.getFirstName());
-        io.printf("Email: %s%n", guest.getEmail());
-        io.printf("Phone: %s%n", guest.getPhone());
-        io.printf("State: %s%n", guest.getState().getAbbreviation());
+        io.printf("    Name: %s, %s%n", guest.getLastName(), guest.getFirstName());
+        io.printf("   Email: %s%n", guest.getEmail());
+        io.printf("   Phone: %s%n", guest.getPhone());
+        io.printf("   State: %s%n", guest.getState().getAbbreviation());
     }
 
     public void displayGuests(List<Guest> guests) {
@@ -359,7 +351,7 @@ public class View {
 
         displaySubHeader("RESERVATIONS");
 
-        displaySubHeader(String.format("%3s | %-10s | %-10s | %-12s | %9s | %-25s",
+        displaySubHeader(String.format("%3s | %-10s | %-10s | %-15s | %9s | %-25s",
                 "#", "Start", "End", "Guest Name", "Total", "Guest Email"));
 
         AtomicInteger counter = new AtomicInteger();
@@ -367,12 +359,12 @@ public class View {
                 .sorted(Comparator.comparing(Reservation::getStartDate))
                 .forEach(r -> {
                     counter.getAndIncrement();
-                    io.printf("%3s | %10s | %-10s | %1s %-10s | %9s | %s%n",
+                    io.printf("%3s | %10s | %-10s | %1s %-13s | %9s | %s%n",
                         counter,
                         formatter.format(r.getStartDate()),
                         formatter.format(r.getEndDate()),
                         r.getGuest().getFirstName().charAt(0),
-                        r.getGuest().getLastName().substring(0,Math.min(r.getGuest().getLastName().length(), 10)),
+                        r.getGuest().getLastName().substring(0,Math.min(r.getGuest().getLastName().length(), 13)),
                         "$" + r.getTotal(),
                         r.getGuest().getEmail());});
     }

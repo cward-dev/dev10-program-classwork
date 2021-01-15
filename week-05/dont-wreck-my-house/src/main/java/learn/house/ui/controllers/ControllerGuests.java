@@ -4,11 +4,9 @@ import learn.house.data.DataException;
 import learn.house.domain.GuestService;
 import learn.house.domain.Result;
 import learn.house.models.Guest;
-import learn.house.models.Host;
 import learn.house.models.State;
 import learn.house.ui.View;
 import learn.house.ui.menu.GuestMenuOption;
-import learn.house.ui.menu.HostMenuOption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -143,7 +141,7 @@ public class ControllerGuests {
 
         view.displayGuestInformation(guest);
 
-        boolean inactivateGuest = view.confirmGuestInactivation();
+        boolean inactivateGuest = view.confirmInactivation("guest");
         if (inactivateGuest) {
             result = service.delete(guest);
             if (result.isSuccess()) {
@@ -174,7 +172,7 @@ public class ControllerGuests {
 
         view.displayGuestInformation(guest);
 
-        boolean reactivateGuest = view.confirmGuestReactivation();
+        boolean reactivateGuest = view.confirmReactivation("guest");
         if (reactivateGuest) {
             result = service.add(guest);
             if (result.isSuccess()) {

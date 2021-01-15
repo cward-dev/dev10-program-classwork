@@ -3,18 +3,13 @@ package learn.house.ui.controllers;
 import learn.house.data.DataException;
 import learn.house.domain.HostService;
 import learn.house.domain.Result;
-import learn.house.models.Guest;
 import learn.house.models.Host;
-import learn.house.models.Reservation;
 import learn.house.models.State;
 import learn.house.ui.View;
 import learn.house.ui.menu.HostMenuOption;
-import learn.house.ui.menu.ReservationMenuOption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.time.Period;
 import java.util.List;
 
 @Component
@@ -146,7 +141,7 @@ public class ControllerHosts {
 
         view.displayHostInformation(host);
 
-        boolean inactivateHost = view.confirmHostInactivation();
+        boolean inactivateHost = view.confirmInactivation("host");
         if (inactivateHost) {
             result = service.delete(host);
             if (result.isSuccess()) {
@@ -177,7 +172,7 @@ public class ControllerHosts {
 
         view.displayHostInformation(host);
 
-        boolean reactivateHost = view.confirmHostReactivation();
+        boolean reactivateHost = view.confirmReactivation("host");
         if (reactivateHost) {
             result = service.add(host);
             if (result.isSuccess()) {

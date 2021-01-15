@@ -128,18 +128,22 @@ public class GuestService {
         if (guest.getFirstName() == null || guest.getFirstName().trim().length() == 0) {
             result.addErrorMessage("Guest first name is required.");
         }
+        if (guest.getFirstName().charAt(0) == '/') result.addErrorMessage("Guest first name cannot begin with '/' command symbol.");
 
         if (guest.getLastName() == null || guest.getLastName().trim().length() == 0) {
             result.addErrorMessage("Guest last name is required.");
         }
+        if (guest.getLastName().charAt(0) == '/') result.addErrorMessage("Guest last name cannot begin with '/' command symbol.");
 
         if (guest.getEmail() == null || guest.getEmail().trim().length() == 0) {
             result.addErrorMessage("Guest email is required.");
         }
+        if (guest.getEmail().charAt(0) == '/') result.addErrorMessage("Guest email cannot begin with '/' command symbol.");
 
         if (guest.getPhone() == null || guest.getPhone().trim().length() == 0) {
             result.addErrorMessage("Guest phone is required.");
         }
+        if (guest.getPhone().charAt(0) == '/') result.addErrorMessage("Guest phone cannot begin with '/' command symbol.");
 
         if (guest.getState() == null) {
             result.addErrorMessage("Guest state is required.");

@@ -1,8 +1,6 @@
 package learn.house.ui.controllers;
 
 import learn.house.data.DataException;
-import learn.house.domain.GuestService;
-import learn.house.domain.HostService;
 import learn.house.domain.ReservationService;
 import learn.house.domain.Result;
 import learn.house.models.Guest;
@@ -68,7 +66,6 @@ public class ControllerReservations {
             view.enterToContinue();
             return;
         }
-        view.displayHostInformation(host);
 
         Guest guest = helper.getGuestByLastName();
         if (guest == null) {
@@ -76,7 +73,9 @@ public class ControllerReservations {
             view.enterToContinue();
             return;
         }
+
         view.displayGuestInformation(guest);
+        view.displayReservationsByStartDate(service.findByHost(host), host);
 
         LocalDate startDate = view.getStartDate();
         LocalDate endDate = view.getEndDate(startDate);
@@ -141,7 +140,7 @@ public class ControllerReservations {
             return;
         }
 
-        boolean cancelReservation = view.confirmDeletion(reservation.getPayload());
+        boolean cancelReservation = view.confirmReservationCancellation();
         Result<Reservation> result = new Result<>();
         if (cancelReservation) {
             result = service.delete(reservation.getPayload());

@@ -131,22 +131,27 @@ public class HostService {
         if (host.getLastName() == null || host.getLastName().trim().length() == 0) {
             result.addErrorMessage("Host last name is required.");
         }
+        if (host.getLastName().charAt(0) == '/') result.addErrorMessage("Host last name cannot begin with '/' command symbol.");
 
         if (host.getEmail() == null || host.getEmail().trim().length() == 0) {
             result.addErrorMessage("Host email is required.");
         }
+        if (host.getEmail().charAt(0) == '/') result.addErrorMessage("Host email cannot begin with '/' command symbol.");
 
         if (host.getPhone() == null || host.getPhone().trim().length() == 0) {
             result.addErrorMessage("Host phone is required.");
         }
+        if (host.getPhone().charAt(0) == '/') result.addErrorMessage("Host phone cannot begin with '/' command symbol.");
 
         if (host.getAddress() == null || host.getAddress().trim().length() == 0) {
             result.addErrorMessage("Host address is required.");
         }
+        if (host.getAddress().charAt(0) == '/') result.addErrorMessage("Host address cannot begin with '/' command symbol.");
 
         if (host.getCity() == null || host.getCity().trim().length() == 0) {
             result.addErrorMessage("Host city is required.");
         }
+        if (host.getCity().charAt(0) == '/') result.addErrorMessage("Host city cannot begin with '/' command symbol.");
 
         if (host.getState() == null) {
             result.addErrorMessage("Host state is required.");
@@ -155,6 +160,7 @@ public class HostService {
         if (host.getPostalCode() == null || host.getPostalCode().length() == 0) {
             result.addErrorMessage("Host postal code is required.");
         }
+        if (host.getPostalCode().charAt(0) == '/') result.addErrorMessage("Host postal code cannot begin with '/' command symbol.");
 
         if (host.getStandardRate() == null || host.getStandardRate().compareTo(new BigDecimal("0.00")) < 0) {
             result.addErrorMessage("Host standard rate is required and must be a positive dollar amount.");

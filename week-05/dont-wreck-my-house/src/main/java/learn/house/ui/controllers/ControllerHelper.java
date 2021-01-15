@@ -11,6 +11,7 @@ import learn.house.ui.View;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -59,12 +60,13 @@ public class ControllerHelper {
 
     public Host getHostByLastName() {
         String hostLastName;
-        List<Host> hosts;
+        List<Host> hosts = new ArrayList<>();
 
         do {
             hostLastName = view.getStringValue("Host Last Name");
-            if (hostLastName.equals("!")) {
-                return null;
+            if (hostLastName.charAt(0) == '/') {
+                if (hostLastName.equalsIgnoreCase("/exit")) return null;
+                else { view.displayStatus(false, String.format("'%s' is not a valid command.", hostLastName)); continue; }
             }
             hosts = hostService.findByLastName(hostLastName);
 
@@ -84,12 +86,13 @@ public class ControllerHelper {
     // Overloaded for editing existing *** TODO REMOVE THIS IF YOU ARENT GOING TO USE IT --- WHEN UPDATING RESERVATIONS WE NEVER CHANGE THE HOST
     public Host getHostByLastName(Host existingHost) {
         String hostLastName;
-        List<Host> hosts;
+        List<Host> hosts = new ArrayList<>();
 
         do {
             hostLastName = view.getStringValue("Host Last Name", existingHost.getLastName());
-            if (hostLastName.equals("!")) {
-                return null;
+            if (hostLastName.charAt(0) == '/') {
+                if (hostLastName.equalsIgnoreCase("/exit")) return null;
+                else { view.displayStatus(false, String.format("'%s' is not a valid command.", hostLastName)); continue; }
             }
             if (hostLastName.trim().equalsIgnoreCase(existingHost.getLastName().trim())) {
                 return existingHost;
@@ -112,12 +115,13 @@ public class ControllerHelper {
 
     public Host getInactiveHostByLastName() {
         String hostLastName;
-        List<Host> hosts;
+        List<Host> hosts = new ArrayList<>();
 
         do {
             hostLastName = view.getStringValue("Inactive Host Last Name");
-            if (hostLastName.equals("!")) {
-                return null;
+            if (hostLastName.charAt(0) == '/') {
+                if (hostLastName.equalsIgnoreCase("/exit")) return null;
+                else { view.displayStatus(false, String.format("'%s' is not a valid command.", hostLastName)); continue; }
             }
             hosts = hostService.findDeletedByLastName(hostLastName);
 
@@ -136,12 +140,13 @@ public class ControllerHelper {
 
     public Guest getGuestByLastName() {
         String guestLastName;
-        List<Guest> guests;
+        List<Guest> guests = new ArrayList<>();
 
         do {
             guestLastName = view.getStringValue("Guest Last Name");
-            if (guestLastName.equals("!")) {
-                return null;
+            if (guestLastName.charAt(0) == '/') {
+                if (guestLastName.equalsIgnoreCase("/exit")) return null;
+                else { view.displayStatus(false, String.format("'%s' is not a valid command.", guestLastName)); continue; }
             }
             guests = guestService.findByLastName(guestLastName);
 
@@ -161,12 +166,13 @@ public class ControllerHelper {
     // Overloaded for editing existing
     public Guest getGuestByLastName(Guest existingGuest) {
         String guestLastName;
-        List<Guest> guests;
+        List<Guest> guests = new ArrayList<>();
 
         do {
             guestLastName = view.getStringValue("Guest Last Name", existingGuest.getLastName());
-            if (guestLastName.equals("!")) {
-                return null;
+            if (guestLastName.charAt(0) == '/') {
+                if (guestLastName.equalsIgnoreCase("/exit")) return null;
+                else { view.displayStatus(false, String.format("'%s' is not a valid command.", guestLastName)); continue; }
             }
             if (guestLastName.trim().equalsIgnoreCase(existingGuest.getLastName().trim())) {
                 return existingGuest;
@@ -189,12 +195,13 @@ public class ControllerHelper {
 
     public Guest getInactiveGuestByLastName() {
         String guestLastName;
-        List<Guest> guests;
+        List<Guest> guests = new ArrayList<>();
 
         do {
             guestLastName = view.getStringValue("Inactive Guest Last Name");
-            if (guestLastName.equals("!")) {
-                return null;
+            if (guestLastName.charAt(0) == '/') {
+                if (guestLastName.equalsIgnoreCase("/exit")) return null;
+                else { view.displayStatus(false, String.format("'%s' is not a valid command.", guestLastName)); continue; }
             }
             guests = guestService.findDeletedByLastName(guestLastName);
 
