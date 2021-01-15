@@ -149,11 +149,11 @@ public class GuestFileRepository implements GuestRepository {
     }
 
     @Override
-    public boolean deleteById(int id) throws DataException {
+    public boolean delete(Guest guest) throws DataException {
 
         List<Guest> all = findAll();
         for (int i = 0; i < all.size(); i++) {
-            if (id == all.get(i).getId()) {
+            if (guest.getId() == all.get(i).getId()) {
                 moveDeletedGuest(all.get(i));
                 all.remove(i);
                 writeAll(all);

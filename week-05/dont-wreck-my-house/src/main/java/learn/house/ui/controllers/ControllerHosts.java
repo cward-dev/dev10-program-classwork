@@ -138,7 +138,7 @@ public class ControllerHosts {
         Result<Host> result = new Result<>();
         Host host = helper.getHostByLastName();
         if (host == null) {
-            result.addErrorMessage("Host not reactivated.");
+            result.addErrorMessage("Exiting");
             view.displayStatus(false, result.getErrorMessages());
             view.enterToContinue();
             return;

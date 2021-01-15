@@ -163,7 +163,7 @@ public class ReservationFileRepository implements ReservationRepository {
         reservation.setStartDate(LocalDate.parse(fields[1]));
         reservation.setEndDate(LocalDate.parse(fields[2]));
 
-        Host host = hostRepository.findById(hostId); // TODO GET ID
+        Host host = hostRepository.findById(hostId);
         if (host == null) {
             host = hostRepository.findDeletedById(hostId);
         }

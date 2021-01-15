@@ -89,6 +89,7 @@ public class GuestService {
         if (emailIsTakenByInactive) {
             result.addErrorMessage(String.format("An inactive host shares the email '%s'.%nIf you wish to use this email, you must make a new Host.",
                     guest.getEmail()));
+            return result;
         }
 
         boolean success = repository.update(guest);
@@ -100,15 +101,14 @@ public class GuestService {
         return result;
     }
 
-    public Result<Guest> deleteById(int guestId) throws DataException {
-        Guest guest = findById(guestId);
+    public Result<Guest> delete(Guest guest) throws DataException {
         Result<Guest> result = validate(guest);
 
         if (!result.isSuccess()) {
             return result;
         }
 
-        boolean success = repository.deleteById(guestId);
+        boolean success = repository.delete(guest);
         if (!success) {
             result.addErrorMessage(String.format("Guest email '%s' not found.", guest.getEmail()));
         }

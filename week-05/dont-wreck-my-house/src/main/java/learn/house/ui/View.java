@@ -205,6 +205,14 @@ public class View {
         return io.readBoolean("Are you sure you wish to reactivate this host? [y/n]: ");
     }
 
+    public boolean confirmGuestInactivation() {
+        return io.readBoolean("Are you sure you wish to inactivate this guest? [y/n]: ");
+    }
+
+    public boolean confirmGuestReactivation() {
+        return io.readBoolean("Are you sure you wish to reactivate this guest? [y/n]: ");
+    }
+
     public Host makeHost() {
         Host host = new Host();
         host.setLastName(getStringValue("Host Last Name"));
@@ -238,10 +246,10 @@ public class View {
 
     public Guest makeGuest() {
         Guest guest = new Guest();
-        guest.setLastName(getStringValue("First Name: "));
-        guest.setLastName(getStringValue("Last Name: "));
-        guest.setEmail(getStringValue("Email: "));
-        guest.setPhone(getStringValue("Phone Number [(111) 2223333]: "));
+        guest.setLastName(getStringValue("First Name"));
+        guest.setLastName(getStringValue("Last Name"));
+        guest.setEmail(getStringValue("Email"));
+        guest.setPhone(getStringValue("Phone Number [(111) 2223333]"));
         guest.setState(io.readState("State Name/Abbreviation: "));
         return guest;
     }
@@ -250,11 +258,11 @@ public class View {
         Guest updatedGuest = new Guest();
 
         updatedGuest.setId(guest.getId());
-        updatedGuest.setFirstName(getStringValue(String.format("First Name [%s]: ", guest.getFirstName())));
-        updatedGuest.setLastName(getStringValue(String.format("Last Name [%s]: ", guest.getLastName())));
-        updatedGuest.setEmail(getStringValue(String.format("Email [%s]: ", guest.getEmail())));
-        updatedGuest.setPhone(getStringValue(String.format("Phone Number [%s]: ", guest.getPhone())));
-        updatedGuest.setState(io.readState(String.format("State [%s]: ", guest.getState())));
+        updatedGuest.setFirstName(getStringValue("First Name", guest.getFirstName()));
+        updatedGuest.setLastName(getStringValue("Last Name", guest.getLastName()));
+        updatedGuest.setEmail(getStringValue("Email", guest.getEmail()));
+        updatedGuest.setPhone(getStringValue("Phone Number", guest.getPhone()));
+        updatedGuest.setState(io.readState(String.format("State [%s]: ", guest.getState()), guest.getState()));
 
         return updatedGuest;
     }

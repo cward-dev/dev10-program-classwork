@@ -92,6 +92,7 @@ public class HostService {
         if (emailIsTakenByInactive) {
             result.addErrorMessage(String.format("An inactive host shares the email '%s'.%nIf you wish to use this email, you must make a new Host.",
                     host.getEmail()));
+            return result;
         }
 
         boolean success = repository.update(host);
