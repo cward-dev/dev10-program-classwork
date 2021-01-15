@@ -367,6 +367,21 @@ Validation
 
 ### UI Layer
 - [x] Create `Controller` class
+  * Dependencies: `ControllerGuests`, `ControllerHosts`, `ControllerReservations`, `View` --- passes information between the view and domain layer
+  * Fields
+    * `private final ControllerGuests controllerGuests` --- constructor arg
+    * `private final ControllerHosts controllerHosts` --- constructor arg
+    * `private final ControllerReservations controllerReservations` --- constructor arg
+    * `private final View view` --- constructor arg
+  * Methods
+    * `run` --- the application will be run from this method 
+    * Private methods:
+      * `runMainMenu` --- will run the main menu to select between submenus until EXIT is selected
+  * Time to Complete
+    * Estimated Time: 2 hours
+    * Actual Time: 45 minutes
+
+- [x] Create `ControllerGuests` class
   * Dependencies: `GuestService`, `HostService`, `ReservationService`, `View` --- passes information between the view and domain layer
   * Fields
     * `private final GuestService guestService` --- constructor arg
@@ -374,7 +389,7 @@ Validation
     * `private final ReservationService reservationService` --- constructor arg
     * `private final View view` --- constructor arg
   * Methods
-    * `run` --- the application will be run from this method 
+    * `run` --- the application will be run from this method
     * Private methods:
       * `runAppLoop` --- will run methods based on menu selections in a loop until EXIT is selected
       * `viewReservationsByHost`
@@ -388,8 +403,7 @@ Validation
         * `getReservation`
   * Time to Complete
     * Estimated Time: 2 hours
-    * Actual Time: 6 hours
-  
+    * Actual Time: 6 hours  
 
 - [x] Create `ConsoleIO` class --- provides us with methods for displaying and getting information using the console
   * Fields
@@ -415,10 +429,9 @@ Validation
 - [x] Create `MainMenuOption` enumerator --- provides discrete values for the main menu options
   * Values
     * `EXIT`
-    * `VIEW_RESERVATIONS_FOR_HOST`
-    * `ADD_RESERVATION`
-    * `UPDATE_RESERVATION`
-    * `DELETE_RESERVATION`
+    * `RESERVATIONS`
+    * `GUESTS`
+    * `HOSTS`
   * Fields
     * `private int value` --- constructor arg
     * `private String message` --- constructor arg
@@ -429,6 +442,65 @@ Validation
   * Time to Complete
     * Estimated Time: 1 hours
     * Actual Time: 1 hour
+
+- [x] Create `ReservationMenuOption` enumerator --- provides discrete values for the main menu options
+  * Values
+    * `EXIT`
+    * `MAKE_RESERVATION`
+    * `EDIT_RESERVATION`
+    * `CANCEL_RESERVATION`
+    * `VIEW_RESERVATIONS_FOR_HOST`
+    * `VIEW_RESERVATIONS_FOR_INACTIVE_HOST`
+  * Fields
+    * `private int value` --- constructor arg
+    * `private String message` --- constructor arg
+    * `private boolean hidden` --- constructor arg
+  * Methods
+    * `public static ReservationMenuOption fromValue(int value)` --- (get ReservationMenuOption.Value from int value)
+    * `getters`
+  * Time to Complete
+    * Estimated Time: 1 hours
+    * Actual Time: 30 minutes
+
+- [x] Create `GuestMenuOption` enumerator --- provides discrete values for the main menu options
+  * Values
+    * `EXIT`
+    * `ADD_GUEST`
+    * `EDIT_GUEST`
+    * `VIEW_GUESTS_BY_LAST_NAME`
+    * `VIEW_GUESTS_BY_STATE`
+    * `INACTIVATE_GUEST`
+    * `REACTIVATE_GUEST`
+  * Fields
+    * `private int value` --- constructor arg
+    * `private String message` --- constructor arg
+    * `private boolean hidden` --- constructor arg
+  * Methods
+    * `public static GuestMenuOption fromValue(int value)` --- (get GuestMenuOption.Value from int value)
+    * `getters`
+  * Time to Complete
+    * Estimated Time: 1 hours
+    * Actual Time: 30 minutes
+
+- [x] Create `HostMenuOption` enumerator --- provides discrete values for the main menu options
+  * Values
+    * `EXIT`
+    * `ADD_HOST`
+    * `EDIT_HOST`
+    * `VIEW_HOSTS_BY_LAST_NAME`
+    * `VIEW_HOSTS_BY_STATE`
+    * `INACTIVATE_HOST`
+    * `REACTIVATE_HOST`
+  * Fields
+    * `private int value` --- constructor arg
+    * `private String message` --- constructor arg
+    * `private boolean hidden` --- constructor arg
+  * Methods
+    * `public static HostMenuOption fromValue(int value)` --- (get HostMenuOption.Value from int value)
+    * `getters`
+  * Time to Complete
+    * Estimated Time: 1 hours
+    * Actual Time: 30 minutes
 
 - [x] Create `View` classes
   * Dependencies: `ConsoleIO` --- uses methods from the ConsoleIO to display and receive information using the console. View class never directly interacts with the console.

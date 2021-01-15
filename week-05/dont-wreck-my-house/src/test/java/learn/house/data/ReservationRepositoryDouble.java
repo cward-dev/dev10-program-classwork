@@ -58,6 +58,18 @@ public class ReservationRepositoryDouble implements ReservationRepository {
     }
 
     @Override
+    public List<Reservation> findAll() {
+        return reservations;
+    }
+
+    @Override
+    public List<Reservation> findByGuest(Guest guest) {
+        return reservations.stream()
+                .filter(reservation -> reservation.getGuest().equals(guest))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public Reservation add(Reservation reservation) throws DataException {
         if (reservation == null || reservation.getHost() == null) {
             return null;

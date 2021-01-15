@@ -34,7 +34,6 @@ public class Controller {
 
     public void run() {
         view.displayHeader("Welcome to Don't Wreck My House!");
-        view.displaySubHeader("Remember, you may enter [!] to exit back to a menu.");
         try {
             runMainMenu();
         } catch (DataException ex) {

@@ -369,6 +369,28 @@ public class View {
                         r.getGuest().getEmail());});
     }
 
+    public void displayReservationsByStartDate(List<Reservation> reservations, Guest guest) {
+        displayGuestInformation(guest);
+
+        displaySubHeader("RESERVATIONS");
+
+        displaySubHeader(String.format("%3s | %-10s | %-10s | %-13s | %9s | %-25s",
+                "#", "Start", "End", "Host Name", "Total", "Host Email"));
+
+        AtomicInteger counter = new AtomicInteger();
+        reservations.stream()
+                .sorted(Comparator.comparing(Reservation::getStartDate))
+                .forEach(r -> {
+                    counter.getAndIncrement();
+                    io.printf("%3s | %10s | %-10s | %-13s | %9s | %s%n",
+                            counter,
+                            formatter.format(r.getStartDate()),
+                            formatter.format(r.getEndDate()),
+                            r.getHost().getLastName().substring(0,Math.min(r.getHost().getLastName().length(), 15)),
+                            "$" + r.getTotal(),
+                            r.getHost().getEmail());});
+    }
+
     public void displayReservation(Reservation reservation) {
         displaySubHeader(String.format("RESERVATION (%s-%s)",
                 reservation.getHost().getLastName().toUpperCase(),

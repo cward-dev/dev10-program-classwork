@@ -4,12 +4,14 @@ import learn.house.data.DataException;
 import learn.house.data.GuestRepository;
 import learn.house.data.HostRepository;
 import learn.house.data.ReservationRepository;
+import learn.house.models.Guest;
 import learn.house.models.Host;
 import learn.house.models.Reservation;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ReservationService {
@@ -26,6 +28,12 @@ public class ReservationService {
 
     public List<Reservation> findByHost(Host host) {
         return repository.findByHost(host);
+    }
+
+    public List<Reservation> findByGuest(Guest guest) {
+        return repository.findAll().stream()
+                .filter(reservation -> reservation.getGuest().equals(guest))
+                .collect(Collectors.toList());
     }
 
     public Result<Reservation> add(Reservation reservation) throws DataException {

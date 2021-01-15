@@ -13,8 +13,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class ReservationFileRepository implements ReservationRepository {
@@ -58,6 +60,24 @@ public class ReservationFileRepository implements ReservationRepository {
             // not throwing on read
         }
         return result;
+    }
+
+    @Override
+    public List<Reservation> findAll() {
+        List<Host> hosts = hostRepository.findAll();
+        hosts.addAll(hostRepository.findAllDeleted());
+
+        ArrayList<Reservation> result = new ArrayList<>();
+        hosts.forEach(host -> result.addAll(findByHost(host)));
+
+        return result;
+    }
+
+    @Override
+    public List<Reservation> findByGuest(Guest guest) {
+        return findAll().stream()
+                .filter(reservation -> reservation.getGuest().equals(guest))
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -53,6 +53,9 @@ public class ControllerReservations {
                 case VIEW_RESERVATIONS_FOR_INACTIVE_HOST:
                     viewReservationsForInactiveHost();
                     break;
+                case VIEW_RESERVATIONS_FOR_GUEST:
+                    viewReservationsForGuest();
+                    break;
             }
         } while (option != ReservationMenuOption.EXIT);
     }
@@ -175,6 +178,28 @@ public class ControllerReservations {
                     host.getEmail()));
         } else {
             view.displayReservationsByStartDate(reservations, host);
+        }
+
+        view.enterToContinue();
+    }
+
+    private void viewReservationsForGuest() { // TODO add feature
+        view.displayHeader(ReservationMenuOption.VIEW_RESERVATIONS_FOR_GUEST.getMessage());
+        Guest guest = helper.getGuestByLastName();
+        if (guest == null) {
+            view.displayStatus(false, "Exiting");
+            view.enterToContinue();
+            return;
+        }
+
+        List<Reservation> reservations = service.findByGuest(guest);
+
+        if (reservations.size() == 0) {
+            view.displayStatus(false, String.format("No reservations found for Guest %s (%s)",
+                    guest.getLastName(),
+                    guest.getEmail()));
+        } else {
+            view.displayReservationsByStartDate(reservations, guest);
         }
 
         view.enterToContinue();

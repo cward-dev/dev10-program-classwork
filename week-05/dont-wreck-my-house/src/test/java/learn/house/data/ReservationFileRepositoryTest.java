@@ -3,6 +3,7 @@ package learn.house.data;
 import learn.house.models.Guest;
 import learn.house.models.Host;
 import learn.house.models.Reservation;
+import learn.house.models.State;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,6 +30,7 @@ class ReservationFileRepositoryTest {
     Host HOST = hostRepository.findById("2e25f6f7-3ef0-4f38-8a1a-2b5eea81409c"); // line 322 in hosts-test.csv
     Host HOST_WITH_ONE_RESERVATION = hostRepository.findById("4b8194a3-b61d-4a39-bc8c-d4d1b8866476");
     Host HOST_WITHOUT_RESERVATIONS = hostRepository.findById("3edda6bc-ab95-49a8-8962-d50b53f84b15");
+    Guest GUEST = new Guest(1, "Sullivan", "Lomas","slomas0@mediafire.com", "(702) 7768761", State.NEVADA);
 
     ReservationRepository repository = new ReservationFileRepository(
             TEST_DIR_PATH,
@@ -58,6 +60,22 @@ class ReservationFileRepositoryTest {
 
         assertNotNull(reservations);
         assertEquals(13, reservations.size());
+    }
+
+    @Test
+    void shouldFindAll() {
+        List<Reservation> all = repository.findAll();
+
+        assertNotNull(all);
+        assertEquals(359, all.size());
+    }
+
+    @Test
+    void shouldFindByGuest() {
+        List<Reservation> all = repository.findByGuest(GUEST);
+
+        assertNotNull(all);
+        assertEquals(6, all.size());
     }
 
     @Test
