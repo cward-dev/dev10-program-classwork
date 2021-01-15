@@ -408,7 +408,6 @@ guest_id,first_name,last_name,email,phone,state
 407,Cristiano,Witten,cwittenba@homestead.com,(212) 2560276,NY
 408,Rhianon,Benedicto,rbenedictobb@hc360.com,(718) 3520541,NY
 409,Brande,Challis,bchallisbc@youtube.com,(574) 9790533,IN
-410,Lonny,Afonso,lafonsobd@discuz.net,(402) 2609934,NE
 411,Gae,Matterface,gmatterfacebe@telegraph.co.uk,(212) 9915073,NY
 412,Rebecka,Neilus,rneilusbf@wired.com,(202) 7638115,DC
 413,Kellby,Warbey,kwarbeybg@fastcompany.com,(603) 1948338,NH
@@ -586,7 +585,6 @@ guest_id,first_name,last_name,email,phone,state
 585,David,Bassford,dbassfordg8@jigsy.com,(718) 3666684,NY
 586,Darcee,Augustin,daugusting9@g.co,(504) 4020544,LA
 587,Ashia,Carverhill,acarverhillga@stumbleupon.com,(310) 4689030,CA
-588,Isador,Addison,iaddisongb@state.gov,(215) 8901163,PA
 589,Edsel,Openshaw,eopenshawgc@howstuffworks.com,(570) 3622537,PA
 590,Gaelan,Howden,ghowdengd@auda.org.au,(334) 2324033,AL
 591,Kendall,Carefull,kcarefullge@cnbc.com,(716) 7371939,NY
@@ -764,7 +762,6 @@ guest_id,first_name,last_name,email,phone,state
 763,Barrie,Fishenden,bfishendenl6@examiner.com,(714) 4702944,CA
 764,Lane,Atack,latackl7@hostgator.com,(818) 3160126,CA
 765,Karlan,Gorgen,kgorgenl8@harvard.edu,(601) 6437345,MS
-766,Mada,Alenshev,malenshevl9@tripod.com,(805) 1214938,CA
 767,Adrea,Thickett,athickettla@disqus.com,(404) 9691040,GA
 768,Angelia,Flohard,aflohardlb@adobe.com,(561) 7642609,FL
 769,Murdock,Gonthier,mgonthierlc@purevolume.com,(312) 4011132,IL
