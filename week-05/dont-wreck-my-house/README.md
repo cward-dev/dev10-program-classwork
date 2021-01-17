@@ -120,18 +120,18 @@ Validation
 - [x] Day 1 (Monday): Planning and prepare, begin setting up models
 - [x] Day 2 (Tuesday): Finish models, begin data layer development
 - [x] Day 3 (Wednesday): Progress presentation, finish data layer, begin domain layer development
-- [ ] Day 4 (Thursday): Finish domain layer, go through testing and ensure that tests are comprehensive
-- [ ] Day 5 (Friday): Progress presentation, begin ui layer development
-- [ ] Day 6 (Saturday): Finish ui layer, let the bug hunt begin (don't forget targeted tests!)
-- [ ] Day 7 (Sunday): Polish
+- [x] Day 4 (Thursday): Finish domain layer, go through testing and ensure that tests are comprehensive
+- [x] Day 5 (Friday): Progress presentation, begin ui layer development
+- [x] Day 6 (Saturday): Finish ui layer, let the bug hunt begin (don't forget targeted tests!)
+- [x] Day 7 (Sunday): Polish
 
 ## Tasks
 
 // Note: My estimated times seem very optimistic. We will see how they go (and try to give ourselves plenty of time to play catch up as we go)
 
 ### Total Time to Complete
-  * Estimated Time: 28 hours (before stretch goals)
-  * Actual Time:
+  * Estimated Time: 28 hours
+  * Actual Time: 31.75 hours
 
 ### Models
 - [x] Create `State` enumerator
