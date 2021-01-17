@@ -381,29 +381,62 @@ Validation
     * Estimated Time: 2 hours
     * Actual Time: 45 minutes
 
-- [x] Create `ControllerGuests` class
-  * Dependencies: `GuestService`, `HostService`, `ReservationService`, `View` --- passes information between the view and domain layer
+- [x] Create `ControllerReservations` class
+  * Dependencies: `ReservationService`, `View`, `ControllerHelper` --- runs methods for the Reservations menu
   * Fields
-    * `private final GuestService guestService` --- constructor arg
-    * `private final HostService guestService` --- constructor arg
     * `private final ReservationService reservationService` --- constructor arg
     * `private final View view` --- constructor arg
+    * `private final ControllerHelper helper` --- constructor arg
   * Methods
-    * `run` --- the application will be run from this method
+    * `runMenu` --- the menu will be run from this method
     * Private methods:
-      * `runAppLoop` --- will run methods based on menu selections in a loop until EXIT is selected
-      * `viewReservationsByHost`
       * `makeReservation`
       * `editReservation`
       * `cancelReservation`
-      * // If time allows, will add more viewing, creating, updating, and deleting methods for Guest and Host objects
-      * Private helpers:
-        * `getGuest`
-        * `getHost`
-        * `getReservation`
+      * `viewReservationsForHost`
+      * `viewReservationsForInactiveHost`
+      * `viewReservationsForGuest`
   * Time to Complete
     * Estimated Time: 2 hours
-    * Actual Time: 6 hours  
+    * Actual Time: 3 hours
+
+- [x] Create `ControllerGuests` class
+  * Dependencies: `GuestService`, `View`, `ControllerHelper` --- runs methods for the Guests menu
+  * Fields
+    * `private final GuestService guestService` --- constructor arg
+    * `private final View view` --- constructor arg
+    * `private final ControllerHelper helper` --- constructor arg
+  * Methods
+    * `runMenu` --- the menu will be run from this method
+    * Private methods:
+      * `addGuest`
+      * `editGuest`
+      * `viewGuestsByLastName`
+      * `viewGuestsByState`
+      * `inactivateGuest`
+      * `reactivateGuest`
+  * Time to Complete
+    * Estimated Time: 2 hours
+    * Actual Time: 2 hours
+
+- [x] Create `ControllerHosts` class
+  * Dependencies: `HostService`, `View`, `ControllerHelper` --- runs methods for the Guests menu
+  * Fields
+    * `private final HostService hostService` --- constructor arg
+    * `private final View view` --- constructor arg
+    * `private final ControllerHelper helper` --- constructor arg
+  * Methods
+    * `runMenu` --- the menu will be run from this method
+    * Private methods:
+      * `addHost`
+      * `editHost`
+      * `viewHostsByLastName`
+      * `viewHostsByState`
+      * `inactivateHost`
+      * `reactivateHost`
+  * Time to Complete
+    * Estimated Time: 2 hours
+    * Actual Time: 1 hour
 
 - [x] Create `ConsoleIO` class --- provides us with methods for displaying and getting information using the console
   * Fields
@@ -420,7 +453,7 @@ Validation
     * `readInt` --- Overloaded, with min and max parameters
     * `readBoolean`
     * `readState`
-    * `readLocalDate`
+    * `readLocalDate` --- dateStart and dateEnd
     * `readBigDecimal`
   * Time to Complete
     * Estimated Time: 2 hours

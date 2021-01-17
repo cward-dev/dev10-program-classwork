@@ -13,7 +13,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,7 +23,6 @@ public class ReservationFileRepository implements ReservationRepository {
     private static final String HEADER = "id,start_date,end_date,guest_id,total";
     private final String directory;
     private final String DELIMITER = ",";
-    private final String DELIMITER_REPLACEMENT = "@@@";
 
     private final GuestRepository guestRepository;
     private final HostRepository hostRepository;

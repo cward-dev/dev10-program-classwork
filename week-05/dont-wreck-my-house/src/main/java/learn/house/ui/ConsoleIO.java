@@ -22,6 +22,8 @@ public class ConsoleIO {
             = "[INVALID] Enter a valid date no earlier than %s.";
     private static final String INVALID_STATE
             = "[INVALID] Enter a valid state name or abbreviation.";
+    private static final String INVALID_DOLLAR_AMOUNT
+            = "[INVALID] Enter a valid dollar amount no less than $0.00.";
 
     private final Scanner scanner = new Scanner(System.in);
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
@@ -204,46 +206,34 @@ public class ConsoleIO {
         while (true) {
             String input = readRequiredString(prompt);
             try {
-                return new BigDecimal(input);
+                BigDecimal amount = new BigDecimal(input);
+                if (amount.compareTo(BigDecimal.ZERO) >= 0) {
+                    return amount;
+                }
+                println(INVALID_DOLLAR_AMOUNT);
             } catch (NumberFormatException ex) {
-                println(INVALID_NUMBER);
+                println(INVALID_DOLLAR_AMOUNT);
             }
         }
     }
 
     // Overloaded for editing existing
     public BigDecimal readBigDecimal(String prompt, BigDecimal currentValue) {
+
         while (true) {
             String input = readString(prompt);
             if (input.trim().length() == 0) {
                 return currentValue;
             }
             try {
-                return new BigDecimal(input);
+                BigDecimal amount = new BigDecimal(input);
+                if (amount.compareTo(BigDecimal.ZERO) >= 0) {
+                    return amount;
+                }
+                println(INVALID_DOLLAR_AMOUNT);
             } catch (NumberFormatException ex) {
-                println(INVALID_NUMBER);
+                println(INVALID_DOLLAR_AMOUNT);
             }
-        }
-    }
-
-    public BigDecimal readBigDecimal(String prompt, BigDecimal min, BigDecimal max) {
-        while (true) {
-            BigDecimal result = readBigDecimal(prompt);
-            if (result.compareTo(min) >= 0 && result.compareTo(max) <= 0) {
-                return result;
-            }
-            println(String.format(NUMBER_OUT_OF_RANGE, min, max));
-        }
-    }
-
-    // Overloaded for editing existing
-    public BigDecimal readBigDecimal(String prompt, BigDecimal min, BigDecimal max, BigDecimal currentValue) {
-        while (true) {
-            BigDecimal result = readBigDecimal(prompt, currentValue);
-            if (result.compareTo(min) >= 0 && result.compareTo(max) <= 0) {
-                return result;
-            }
-            println(String.format(NUMBER_OUT_OF_RANGE, min, max));
         }
     }
 }
