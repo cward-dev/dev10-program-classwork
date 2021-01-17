@@ -183,7 +183,7 @@ public class ControllerReservations {
         view.enterToContinue();
     }
 
-    private void viewReservationsForGuest() { // TODO add feature
+    private void viewReservationsForGuest() {
         view.displayHeader(ReservationMenuOption.VIEW_RESERVATIONS_FOR_GUEST.getMessage());
         Guest guest = helper.getGuestByLastName();
         if (guest == null) {
