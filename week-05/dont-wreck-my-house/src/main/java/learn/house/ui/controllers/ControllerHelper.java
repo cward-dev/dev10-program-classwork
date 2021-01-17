@@ -83,35 +83,35 @@ public class ControllerHelper {
         return host;
     }
 
-    // Overloaded for editing existing *** TODO WHEN UPDATING RESERVATIONS, CHANGING THE HOST IS NOT CURRENTLY AN OPTION - MAY PREFER IT THIS WAY THOUGH?
-    public Host getHostByLastName(Host existingHost) {
-        String hostLastName;
-        List<Host> hosts = new ArrayList<>();
-
-        do {
-            hostLastName = view.getStringValue("Host Last Name", existingHost.getLastName());
-            if (hostLastName.charAt(0) == '/') {
-                if (hostLastName.equalsIgnoreCase("/exit")) return null;
-                else { view.displayStatus(false, String.format("'%s' is not a valid command.", hostLastName)); continue; }
-            }
-            if (hostLastName.trim().equalsIgnoreCase(existingHost.getLastName().trim())) {
-                return existingHost;
-            }
-
-            hosts = hostService.findByLastName(hostLastName);
-
-            if (hosts.size() == 0) {
-                view.displayStatus(false, String.format("No hosts matching last name '%s'. Please try again.", hostLastName));
-            }
-        } while (hosts.size() == 0);
-
-        Host host = view.chooseHost(hosts);
-        if (host == null) {
-            host = getHostByLastName(existingHost);
-            return host;
-        }
-        return host;
-    }
+//    // Overloaded for editing existing *** TODO WHEN UPDATING RESERVATIONS, CHANGING THE HOST IS NOT CURRENTLY AN OPTION - MAY PREFER IT THIS WAY THOUGH?
+//    public Host getHostByLastName(Host existingHost) {
+//        String hostLastName;
+//        List<Host> hosts = new ArrayList<>();
+//
+//        do {
+//            hostLastName = view.getStringValue("Host Last Name", existingHost.getLastName());
+//            if (hostLastName.charAt(0) == '/') {
+//                if (hostLastName.equalsIgnoreCase("/exit")) return null;
+//                else { view.displayStatus(false, String.format("'%s' is not a valid command.", hostLastName)); continue; }
+//            }
+//            if (hostLastName.trim().equalsIgnoreCase(existingHost.getLastName().trim())) {
+//                return existingHost;
+//            }
+//
+//            hosts = hostService.findByLastName(hostLastName);
+//
+//            if (hosts.size() == 0) {
+//                view.displayStatus(false, String.format("No hosts matching last name '%s'. Please try again.", hostLastName));
+//            }
+//        } while (hosts.size() == 0);
+//
+//        Host host = view.chooseHost(hosts);
+//        if (host == null) {
+//            host = getHostByLastName(existingHost);
+//            return host;
+//        }
+//        return host;
+//    }
 
     public Host getInactiveHostByLastName() {
         String hostLastName;
