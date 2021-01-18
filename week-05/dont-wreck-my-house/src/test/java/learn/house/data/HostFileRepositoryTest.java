@@ -158,6 +158,7 @@ class HostFileRepositoryTest {
         boolean success = repository.delete(repository.findById(hostId));
 
         assertFalse(success);
+        assertEquals(0, repository.findAllDeleted().size());
     }
 
     @Test
@@ -166,6 +167,7 @@ class HostFileRepositoryTest {
         boolean success = repository.delete(repository.findById(hostId));
 
         assertFalse(success);
+        assertEquals(0, repository.findAllDeleted().size());
     }
 
     private String getDeletedFilePath() {

@@ -63,19 +63,11 @@ class ReservationFileRepositoryTest {
     }
 
     @Test
-    void shouldFindAll() {
-        List<Reservation> all = repository.findAll();
+    void shouldReturnEmptyIfHostHasNoReservations() {
+        List<Reservation> reservations = repository.findByHost(HOST_WITHOUT_RESERVATIONS);
 
-        assertNotNull(all);
-        assertEquals(359, all.size());
-    }
-
-    @Test
-    void shouldFindByGuest() {
-        List<Reservation> all = repository.findByGuest(GUEST);
-
-        assertNotNull(all);
-        assertEquals(6, all.size());
+        assertNotNull(reservations);
+        assertEquals(0, reservations.size());
     }
 
     @Test
@@ -87,11 +79,27 @@ class ReservationFileRepositoryTest {
     }
 
     @Test
-    void shouldReturnEmptyIfHostHasNoReservations() {
-        List<Reservation> reservations = repository.findByHost(HOST_WITHOUT_RESERVATIONS);
+    void shouldFindByGuest() {
+        List<Reservation> all = repository.findByGuest(GUEST);
 
-        assertNotNull(reservations);
-        assertEquals(0, reservations.size());
+        assertNotNull(all);
+        assertEquals(6, all.size());
+    }
+
+    @Test
+    void shouldReturnEmptyIfNullGuest() {
+        List<Reservation> all = repository.findByGuest(null);
+
+        assertNotNull(all);
+        assertEquals(0, all.size());
+    }
+
+    @Test
+    void shouldFindAll() {
+        List<Reservation> all = repository.findAll();
+
+        assertNotNull(all);
+        assertEquals(359, all.size());
     }
 
     @Test

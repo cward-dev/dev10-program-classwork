@@ -122,6 +122,7 @@ class GuestFileRepositoryTest {
 
         assertTrue(success);
         assertNull(repository.findById(guestId));
+        assertEquals(1, repository.findAllDeleted().size());
     }
 
     @Test
@@ -130,6 +131,7 @@ class GuestFileRepositoryTest {
         boolean success = repository.delete(repository.findById(guestId));
 
         assertFalse(success);
+        assertEquals(0, repository.findAllDeleted().size());
     }
 
     private String getDeletedFilePath() {
