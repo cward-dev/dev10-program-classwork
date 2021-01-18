@@ -53,8 +53,13 @@ public class ControllerHelper {
                     host.getEmail()));
             return result;
         }
-        result.setPayload(view.chooseReservation(reservations, host));
+        Reservation reservation = view.chooseReservation(reservations, host);
+        if (reservation == null) {
+            result.addErrorMessage("Exiting");
+            return result;
+        }
 
+        result.setPayload(reservation);
         return result;
     }
 

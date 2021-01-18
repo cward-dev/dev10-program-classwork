@@ -181,9 +181,13 @@ public class View {
 
         displayReservationsByStartDate(eligibleReservations, host);
 
-        String message = String.format("Select Reservation [%s-%s]: ", 1, eligibleReservations.size());
+        io.printf("%3s | %s%n", 0, "Enter [0] to exit.");
+        String message = String.format("Select Reservation [%s-%s]: ", 0, eligibleReservations.size());
 
-        int selection = io.readInt(message, 1, eligibleReservations.size());
+        int selection = io.readInt(message, 0, eligibleReservations.size());
+        if (selection == 0) {
+            return null;
+        }
 
         return eligibleReservations.stream()
                 .filter(r -> !r.getStartDate().isBefore(today))
@@ -339,7 +343,7 @@ public class View {
                     io.printf("%2s. %s, %s (%s)%n", count.get(), g.getLastName(), g.getFirstName(), g.getEmail());
                 });
 
-        io.println("  * Press [0] to search again");
+        io.println("  * Enter [0] to search again");
         if (guests.size() > maxDisplayed) {
             io.println("");
             io.printf("More than %s hosts found. Showing first %s. Enter [0] to refine your search.%n", maxDisplayed, maxDisplayed);
