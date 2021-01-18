@@ -47,14 +47,14 @@ public class ControllerReservations {
                 case CANCEL_RESERVATION:
                     cancelReservation();
                     break;
+                case VIEW_RESERVATIONS_FOR_GUEST:
+                    viewReservationsForGuest();
+                    break;
                 case VIEW_RESERVATIONS_FOR_HOST:
                     viewReservationsForHost();
                     break;
                 case VIEW_RESERVATIONS_FOR_INACTIVE_HOST:
                     viewReservationsForInactiveHost();
-                    break;
-                case VIEW_RESERVATIONS_FOR_GUEST:
-                    viewReservationsForGuest();
                     break;
             }
         } while (option != ReservationMenuOption.EXIT);
