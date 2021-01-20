@@ -122,14 +122,6 @@ public class ControllerReservations {
             return;
         }
 
-        Guest guest = helper.getGuestByLastName(reservation.getPayload().getGuest());
-        if (guest == null) {
-            view.displayStatus(false, "Exiting");
-            view.enterToContinue();
-            return;
-        }
-        reservation.getPayload().setGuest(guest);
-
         reservation.getPayload().setStartDate(
                 view.getStartDate(reservation.getPayload().getStartDate()));
         reservation.getPayload().setEndDate(
