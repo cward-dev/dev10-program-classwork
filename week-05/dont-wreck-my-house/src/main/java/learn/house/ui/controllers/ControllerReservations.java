@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class ControllerReservations {
@@ -78,20 +79,32 @@ public class ControllerReservations {
         }
 
         view.displayGuestInformation(guest);
-        view.displayReservationsByStartDate(service.findByHost(host), host);
+
+        List<Reservation> eligibleReservations = service.findByHost(host).stream()
+                .filter(r -> !r.getStartDate().isBefore(LocalDate.now()))
+                .collect(Collectors.toList());
+
+        view.displayReservationsByStartDate(eligibleReservations, host);
 
         LocalDate startDate = view.getStartDate();
         LocalDate endDate = view.getEndDate(startDate);
 
         Reservation reservation = new Reservation(startDate, endDate, host, guest);
 
-        Result<Reservation> result = service.add(reservation);
-        if (!result.isSuccess()) {
-            view.displayStatus(false, result.getErrorMessages());
+        boolean makeReservation = view.confirmAction("make", "reservation");
+        Result<Reservation> result = new Result<>();
+        if (makeReservation) {
+            result = service.add(reservation);
+            if (!result.isSuccess()) {
+                view.displayStatus(false, result.getErrorMessages());
+            } else {
+                String successMessage = "Reservation created successfully.";
+                view.displayStatus(true, successMessage);
+                view.displayReservation(reservation);
+            }
         } else {
-            String successMessage = "Reservation created successfully.";
-            view.displayStatus(true, successMessage);
-            view.displayReservation(reservation);
+            result.addErrorMessage("Reservation not created.");
+            view.displayStatus(false, result.getErrorMessages());
         }
 
         view.enterToContinue();
@@ -120,14 +133,20 @@ public class ControllerReservations {
         reservation.getPayload().setEndDate(
                 view.getEndDate(reservation.getPayload().getStartDate(), reservation.getPayload().getEndDate()));
 
-        Result<Reservation> result = service.update(reservation.getPayload());
-
-        if (!result.isSuccess()) {
-            view.displayStatus(false, result.getErrorMessages());
+        boolean editReservation = view.confirmAction("update", "reservation");
+        Result<Reservation> result = new Result<>();
+        if (editReservation) {
+            result = service.update(reservation.getPayload());
+            if (!result.isSuccess()) {
+                view.displayStatus(false, result.getErrorMessages());
+            } else {
+                String successMessage = "Reservation updated successfully.";
+                view.displayStatus(true, successMessage);
+                view.displayReservation(result.getPayload());
+            }
         } else {
-            String successMessage = "Reservation updated successfully.";
-            view.displayStatus(true, successMessage);
-            view.displayReservation(result.getPayload());
+            result.addErrorMessage("Reservation not updated.");
+            view.displayStatus(false, result.getErrorMessages());
         }
 
         view.enterToContinue();
@@ -143,18 +162,18 @@ public class ControllerReservations {
             return;
         }
 
-        boolean cancelReservation = view.confirmReservationCancellation();
+        boolean cancelReservation = view.confirmAction("cancel", "reservation");
         Result<Reservation> result = new Result<>();
         if (cancelReservation) {
             result = service.delete(reservation.getPayload());
             if (result.isSuccess()) {
-                String successMessage = "Reservation deleted successfully.";
+                String successMessage = "Reservation canceled successfully.";
                 view.displayStatus(true, successMessage);
             } else {
                 view.displayStatus(false, result.getErrorMessages());
             }
         } else {
-            result.addErrorMessage("Reservation not deleted.");
+            result.addErrorMessage("Reservation not canceled.");
             view.displayStatus(false, result.getErrorMessages());
         }
 

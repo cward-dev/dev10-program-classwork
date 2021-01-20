@@ -64,12 +64,19 @@ public class ControllerGuests {
         Guest guest = view.makeGuest();
         Result<Guest> result = service.add(guest);
 
-        if (!result.isSuccess()) {
-            view.displayStatus(false, result.getErrorMessages());
+        boolean addGuest = view.confirmAction("add", "guest");
+        if (addGuest) {
+            result = service.add(guest);
+            if (!result.isSuccess()) {
+                view.displayStatus(false, result.getErrorMessages());
+            } else {
+                String successMessage = "Guest added successfully.";
+                view.displayStatus(true, successMessage);
+                view.displayGuestInformation(result.getPayload());
+            }
         } else {
-            String successMessage = "Guest added successfully.";
-            view.displayStatus(true, successMessage);
-            view.displayGuestInformation(result.getPayload());
+            result.addErrorMessage("Guest not added.");
+            view.displayStatus(false, result.getErrorMessages());
         }
 
         view.enterToContinue();
@@ -86,12 +93,19 @@ public class ControllerGuests {
         Guest updatedGuest = view.updateGuest(guest);
         Result<Guest> result = service.update(updatedGuest);
 
-        if (!result.isSuccess()) {
-            view.displayStatus(false, result.getErrorMessages());
+        boolean editGuest = view.confirmAction("update", "guest");
+        if (editGuest) {
+            result = service.update(guest);
+            if (!result.isSuccess()) {
+                view.displayStatus(false, result.getErrorMessages());
+            } else {
+                String successMessage = "Guest updated successfully.";
+                view.displayStatus(true, successMessage);
+                view.displayGuestInformation(result.getPayload());
+            }
         } else {
-            String successMessage = "Guest updated successfully.";
-            view.displayStatus(true, successMessage);
-            view.displayGuestInformation(result.getPayload());
+            result.addErrorMessage("Guest not updated.");
+            view.displayStatus(false, result.getErrorMessages());
         }
 
         view.enterToContinue();
@@ -141,7 +155,7 @@ public class ControllerGuests {
 
         view.displayGuestInformation(guest);
 
-        boolean inactivateGuest = view.confirmInactivation("guest");
+        boolean inactivateGuest = view.confirmAction("inactivate", "guest");
         if (inactivateGuest) {
             result = service.delete(guest);
             if (result.isSuccess()) {
@@ -172,7 +186,7 @@ public class ControllerGuests {
 
         view.displayGuestInformation(guest);
 
-        boolean reactivateGuest = view.confirmReactivation("guest");
+        boolean reactivateGuest = view.confirmAction("reactivate", "guest");
         if (reactivateGuest) {
             result = service.add(guest);
             if (result.isSuccess()) {

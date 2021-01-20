@@ -64,12 +64,19 @@ public class ControllerHosts {
         Host host = view.makeHost();
         Result<Host> result = service.add(host);
 
-        if (!result.isSuccess()) {
-            view.displayStatus(false, result.getErrorMessages());
+        boolean addHost = view.confirmAction("add", "host");
+        if (addHost) {
+            result = service.add(host);
+            if (!result.isSuccess()) {
+                view.displayStatus(false, result.getErrorMessages());
+            } else {
+                String successMessage = "Host added successfully.";
+                view.displayStatus(true, successMessage);
+                view.displayHostInformation(result.getPayload());
+            }
         } else {
-            String successMessage = "Host added successfully.";
-            view.displayStatus(true, successMessage);
-            view.displayHostInformation(result.getPayload());
+            result.addErrorMessage("Host not added.");
+            view.displayStatus(false, result.getErrorMessages());
         }
 
         view.enterToContinue();
@@ -86,12 +93,19 @@ public class ControllerHosts {
         Host updatedHost = view.updateHost(host);
         Result<Host> result = service.update(updatedHost);
 
-        if (!result.isSuccess()) {
-            view.displayStatus(false, result.getErrorMessages());
+        boolean editHost = view.confirmAction("update", "host");
+        if (editHost) {
+            result = service.update(host);
+            if (!result.isSuccess()) {
+                view.displayStatus(false, result.getErrorMessages());
+            } else {
+                String successMessage = "Host updated successfully.";
+                view.displayStatus(true, successMessage);
+                view.displayHostInformation(result.getPayload());
+            }
         } else {
-            String successMessage = "Host updated successfully.";
-            view.displayStatus(true, successMessage);
-            view.displayHostInformation(result.getPayload());
+            result.addErrorMessage("Host not updated.");
+            view.displayStatus(false, result.getErrorMessages());
         }
 
         view.enterToContinue();
@@ -141,7 +155,7 @@ public class ControllerHosts {
 
         view.displayHostInformation(host);
 
-        boolean inactivateHost = view.confirmInactivation("host");
+        boolean inactivateHost = view.confirmAction("inactivate", "host");
         if (inactivateHost) {
             result = service.delete(host);
             if (result.isSuccess()) {
@@ -172,7 +186,7 @@ public class ControllerHosts {
 
         view.displayHostInformation(host);
 
-        boolean reactivateHost = view.confirmReactivation("host");
+        boolean reactivateHost = view.confirmAction("reactivate", "host");
         if (reactivateHost) {
             result = service.add(host);
             if (result.isSuccess()) {

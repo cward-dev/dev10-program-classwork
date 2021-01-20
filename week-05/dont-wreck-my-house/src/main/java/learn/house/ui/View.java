@@ -251,16 +251,8 @@ public class View {
         return updatedGuest;
     }
 
-    public boolean confirmReservationCancellation() {
-        return io.readBoolean("Are you sure you wish to cancel this reservation? [y/n]: ");
-    }
-
-    public boolean confirmInactivation(String label) {
-        return io.readBoolean(String.format("Are you sure you wish to inactivate this %s? [y/n]: ", label));
-    }
-
-    public boolean confirmReactivation(String label) {
-        return io.readBoolean(String.format("Are you sure you wish to reactivate this %s? [y/n]: ", label));
+    public boolean confirmAction(String action, String label) {
+        return io.readBoolean(String.format("Are you sure you wish to %s this %s? [y/n]: ", action, label));
     }
 
     // display only
