@@ -90,6 +90,9 @@ public class ControllerReservations {
         LocalDate endDate = view.getEndDate(startDate);
 
         Reservation reservation = new Reservation(startDate, endDate, host, guest);
+        reservation.updateTotal();
+
+        view.displayReservation(reservation);
 
         boolean makeReservation = view.confirmAction("make", "reservation");
         Result<Reservation> result = new Result<>();
@@ -100,10 +103,9 @@ public class ControllerReservations {
             } else {
                 String successMessage = "Reservation created successfully.";
                 view.displayStatus(true, successMessage);
-                view.displayReservation(reservation);
             }
         } else {
-            result.addErrorMessage("Reservation not created.");
+            result.addErrorMessage("Reservation not made.");
             view.displayStatus(false, result.getErrorMessages());
         }
 
@@ -132,6 +134,9 @@ public class ControllerReservations {
                 view.getStartDate(reservation.getPayload().getStartDate()));
         reservation.getPayload().setEndDate(
                 view.getEndDate(reservation.getPayload().getStartDate(), reservation.getPayload().getEndDate()));
+        reservation.getPayload().updateTotal();
+
+        view.displayReservation(reservation.getPayload());
 
         boolean editReservation = view.confirmAction("update", "reservation");
         Result<Reservation> result = new Result<>();
@@ -142,7 +147,6 @@ public class ControllerReservations {
             } else {
                 String successMessage = "Reservation updated successfully.";
                 view.displayStatus(true, successMessage);
-                view.displayReservation(result.getPayload());
             }
         } else {
             result.addErrorMessage("Reservation not updated.");
@@ -161,6 +165,8 @@ public class ControllerReservations {
             view.enterToContinue();
             return;
         }
+
+        view.displayReservation(reservation.getPayload());
 
         boolean cancelReservation = view.confirmAction("cancel", "reservation");
         Result<Reservation> result = new Result<>();

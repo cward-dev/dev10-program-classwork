@@ -388,9 +388,7 @@ public class View {
     }
 
     public void displayReservation(Reservation reservation) {
-        displaySubHeader(String.format("RESERVATION (%s-%s)",
-                reservation.getHost().getLastName().toUpperCase(),
-                reservation.getId()));
+        displaySubHeader("RESERVATION");
 
         io.printf("Address: %s%n",
                 reservation.getHost().getAddress());

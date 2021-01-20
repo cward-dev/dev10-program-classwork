@@ -62,9 +62,11 @@ public class ControllerGuests {
         view.displayHeader(GuestMenuOption.ADD_GUEST.getMessage());
 
         Guest guest = view.makeGuest();
-        Result<Guest> result = service.add(guest);
+
+        view.displayGuestInformation(guest);
 
         boolean addGuest = view.confirmAction("add", "guest");
+        Result<Guest> result = new Result<>();
         if (addGuest) {
             result = service.add(guest);
             if (!result.isSuccess()) {
@@ -72,7 +74,6 @@ public class ControllerGuests {
             } else {
                 String successMessage = "Guest added successfully.";
                 view.displayStatus(true, successMessage);
-                view.displayGuestInformation(result.getPayload());
             }
         } else {
             result.addErrorMessage("Guest not added.");
@@ -91,17 +92,18 @@ public class ControllerGuests {
             return;
         }
         Guest updatedGuest = view.updateGuest(guest);
-        Result<Guest> result = service.update(updatedGuest);
+
+        view.displayGuestInformation(updatedGuest);
 
         boolean editGuest = view.confirmAction("update", "guest");
+        Result<Guest> result = new Result<>();
         if (editGuest) {
-            result = service.update(guest);
+            result = service.update(updatedGuest);
             if (!result.isSuccess()) {
                 view.displayStatus(false, result.getErrorMessages());
             } else {
                 String successMessage = "Guest updated successfully.";
                 view.displayStatus(true, successMessage);
-                view.displayGuestInformation(result.getPayload());
             }
         } else {
             result.addErrorMessage("Guest not updated.");

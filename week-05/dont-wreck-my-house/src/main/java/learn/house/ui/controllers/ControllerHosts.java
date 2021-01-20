@@ -62,9 +62,11 @@ public class ControllerHosts {
         view.displayHeader(HostMenuOption.ADD_HOST.getMessage());
 
         Host host = view.makeHost();
-        Result<Host> result = service.add(host);
+
+        view.displayHostInformation(host);
 
         boolean addHost = view.confirmAction("add", "host");
+        Result<Host> result = new Result<>();
         if (addHost) {
             result = service.add(host);
             if (!result.isSuccess()) {
@@ -72,7 +74,6 @@ public class ControllerHosts {
             } else {
                 String successMessage = "Host added successfully.";
                 view.displayStatus(true, successMessage);
-                view.displayHostInformation(result.getPayload());
             }
         } else {
             result.addErrorMessage("Host not added.");
@@ -91,17 +92,18 @@ public class ControllerHosts {
             return;
         }
         Host updatedHost = view.updateHost(host);
-        Result<Host> result = service.update(updatedHost);
+
+        view.displayHostInformation(updatedHost);
 
         boolean editHost = view.confirmAction("update", "host");
+        Result<Host> result = new Result<>();
         if (editHost) {
-            result = service.update(host);
+            result = service.update(updatedHost);
             if (!result.isSuccess()) {
                 view.displayStatus(false, result.getErrorMessages());
             } else {
                 String successMessage = "Host updated successfully.";
                 view.displayStatus(true, successMessage);
-                view.displayHostInformation(result.getPayload());
             }
         } else {
             result.addErrorMessage("Host not updated.");

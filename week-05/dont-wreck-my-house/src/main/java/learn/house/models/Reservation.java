@@ -90,6 +90,10 @@ public class Reservation {
                 || (!this.startDate.isAfter(reservation.startDate) && !this.endDate.isBefore(reservation.endDate));
     }
 
+    public void updateTotal() {
+        this.setTotal(this.calculateTotal());
+    }
+
     public BigDecimal calculateTotal() {
         BigDecimal total = new BigDecimal("0.00");
         BigDecimal standardRate = host.getStandardRate();

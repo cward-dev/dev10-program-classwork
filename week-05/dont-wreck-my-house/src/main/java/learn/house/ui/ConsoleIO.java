@@ -4,6 +4,7 @@ import learn.house.models.State;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -206,7 +207,7 @@ public class ConsoleIO {
         while (true) {
             String input = readRequiredString(prompt);
             try {
-                BigDecimal amount = new BigDecimal(input);
+                BigDecimal amount = new BigDecimal(input).setScale(2, RoundingMode.HALF_EVEN);
                 if (amount.compareTo(BigDecimal.ZERO) >= 0) {
                     return amount;
                 }
