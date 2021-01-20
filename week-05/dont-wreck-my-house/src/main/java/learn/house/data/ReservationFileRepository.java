@@ -44,11 +44,13 @@ public class ReservationFileRepository implements ReservationRepository {
             return result;
         }
 
+        // map of all hostIds to their host object
         Map<String, Host> hostMap = hostRepository.findAll().stream()
                 .collect(Collectors.toMap(Host::getId, h -> h));
             hostMap.putAll(hostRepository.findAllDeleted().stream()
                 .collect(Collectors.toMap(Host::getId, h -> h)));
 
+        // map of all guestIds to their guest object
         Map<Integer, Guest> guestMap = guestRepository.findAll().stream()
                 .collect(Collectors.toMap(Guest::getId, h -> h));
             guestMap.putAll(guestRepository.findAllDeleted().stream()
