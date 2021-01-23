@@ -147,4 +147,3 @@ update contact set
 	phone = '801-EAT-CAKE'
 where contact_id = (select contact_id from person where person_id = '48');
 
-delete 
