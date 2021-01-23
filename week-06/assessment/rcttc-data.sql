@@ -29,15 +29,25 @@ insert into person (first_name, last_name, contact_id)
     
 select * from person;
 
-insert into customer_login (user_name, `password`, person_id)
+insert into customer (person_id)
+	select person_id from person;
+    
+select * from customer cu
+inner join person p on cu.person_id = p.person_id;
+
+insert into customer_login (user_name, `password`, customer_id)
 	select distinct
-		customer_email,
+		concat(
+			LOWER(SUBSTRING(p.first_name,1,1)), 
+            LOWER(SUBSTRING(p.last_name,1,1)), 
+            cu.customer_id),
         'password',
-        (select distinct person_id from person where contact_id = (select distinct contact_id from contact where email = customer_email))
-	from import_ticket_sales;
+        cu.customer_id
+	from customer cu
+    inner join person p on cu.person_id = p.person_id;
 
 select * from customer_login;
-
+    
 insert into theater (theater_name, contact_id)
 	select distinct
 		theater,
@@ -82,9 +92,13 @@ insert into performance (ticket_price, performance_date, show_id)
 
 select * from performance;
 
-insert into reservation (person_id, seat_id, performance_id)
+insert into reservation (customer_id, seat_id, performance_id)
 	select
-		(select distinct person_id from person where first_name = customer_first and last_name = customer_last),
+		(select distinct
+				cu.customer_id 
+                from customer cu
+                inner join person p on cu.person_id = p.person_id 
+                where p.first_name = its.customer_first and p.last_name = its.customer_last),
         (select distinct seat_id from seat where seat_name = its.seat and theater_id = (select distinct theater_id from theater where theater_name = its.theater)),
 		(select distinct performance_id from performance where show_id = (select show_id from `show` where show_name = its.`show`) and performance_date = its.`date`)
 	from import_ticket_sales its;
@@ -105,7 +119,7 @@ update performance set
 select * from performance;
 
 select distinct
-	p.person_id,
+	cu.customer_id,
 	concat(p.first_name, ' ', p.last_name) as customer_name,
 	r.reservation_id,
     s.seat_id,
@@ -114,7 +128,8 @@ select distinct
     pe.performance_id,
     s.theater_id
 from reservation r
-left outer join person p on r.person_id = p.person_id
+left outer join customer cu on r.customer_id = cu.customer_id
+left outer join person p on cu.person_id = p.person_id
 left outer join seat s on r.seat_id = s.seat_id
 left outer join performance pe on r.performance_id = pe.performance_id
 left outer join `show` sh on pe.show_id = sh.show_id
@@ -149,36 +164,98 @@ where contact_id = (select contact_id from person where person_id = '48');
 
 select
 	count(reservation_id),
-    r.person_id,
+    r.customer_id,
     p.performance_id
 from reservation r
 left outer join performance p on r.performance_id = p.performance_id
 left outer join `show` s on p.show_id = s.show_id
 left outer join theater t on s.theater_id = t.theater_id
 where t.theater_name = '10 Pin'
-group by r.person_id, p.performance_id;
+group by r.customer_id, p.performance_id;
 
-delete from reservation where person_id = '7' and performance_id = '1';
-delete from reservation where person_id = '8' and performance_id = '2';
-delete from reservation where person_id = '10' and performance_id = '2';
-delete from reservation where person_id = '15' and performance_id = '2';
-delete from reservation where person_id = '18' and performance_id = '3';
-delete from reservation where person_id = '19' and performance_id = '3';
-delete from reservation where person_id = '22' and performance_id = '3';
-delete from reservation where person_id = '25' and performance_id = '3';
-delete from reservation where person_id = '26' and performance_id = '4';
+delete from reservation where customer_id = '7' and performance_id = '1';
+delete from reservation where customer_id = '8' and performance_id = '2';
+delete from reservation where customer_id = '10' and performance_id = '2';
+delete from reservation where customer_id = '15' and performance_id = '2';
+delete from reservation where customer_id = '18' and performance_id = '3';
+delete from reservation where customer_id = '19' and performance_id = '3';
+delete from reservation where customer_id = '22' and performance_id = '3';
+delete from reservation where customer_id = '25' and performance_id = '3';
+delete from reservation where customer_id = '26' and performance_id = '4';
 
 select
 	p.person_id,
+	cu.customer_id,
     c.contact_id,
+    cl.user_name,
     r.reservation_id
-from person p 
+from person p
+inner join customer cu on p.person_id = cu.customer_id
+inner join customer_login cl on cu.customer_id = cl.customer_id
 inner join contact c on p.contact_id = c.contact_id
-inner join reservation r on p.person_id = r.person_id
+inner join reservation r on cu.customer_id = r.customer_id
 where concat(first_name, ' ', last_name) = 'Liv Egle of Germany';
 
-delete from reservation where person_id = '65';
-delete from customer_login where person_id = '65';
-delete from show_member_show where person_id = '65';
+delete from reservation where customer_id = (select customer_id from customer where person_id = '65');
+delete from customer_login where customer_id = (select customer_id from customer where person_id = '65');
+delete from customer where person_id = '65';
+delete from show_member_performance where person_id = '65';
 delete from person where contact_id = '65';
-delete from contact where contact_id = '65';
+delete from contact where contact_id = '65'; -- not sure if it was worth keeping contact info together for theaters and people, a little clunky in this regard (contact is the last removed)
+
+
+
+-- Other Stretch Goals
+
+-- Adding show cast/crew
+insert into person (first_name, last_name)
+	values
+    ('Jimmy', 'Johnson'),
+    ('Helga', 'Havarti'),
+    ('Ronald', 'Reggae'),
+    ('Leslie', 'Lawter'),
+    ('Michael', 'Marston'),
+    ('Amy', 'Almers'),
+    ('Jeffrey', 'Jeffton'),
+    ('Zachary', 'Zane'),
+    ('Penny', 'Polish'),
+    ('Tina', 'Tarsley');
+    
+select * from `show`;
+
+select * from person p left outer join customer cu on p.person_id = cu.person_id where customer_id is null;
+
+insert into show_member_type (type_name)
+	values
+    ('cast'),
+    ('crew');
+
+select * from show_member_type;
+
+insert into show_member_performance (person_id, performance_id, show_member_type_id)
+	values
+    ('128', '1', '1'),
+	('129', '1', '1'),
+    ('130', '1', '2'),
+    ('131', '1', '2'),
+    ('132', '2', '1'),
+    ('133', '2', '1'),
+    ('134', '2', '2'),
+    ('135', '3', '1'),
+    ('136', '3', '1'),
+	('137', '3', '2');
+
+select * from show_member_show;
+
+select
+	concat(p.first_name, ' ', p.last_name) as person_name,
+    smt.type_name as `role`,
+    sh.show_name,
+    t.theater_name,
+    pe.performance_date
+from person p
+inner join show_member_performance smp on p.person_id = smp.person_id
+inner join show_member_type smt on smp.show_member_type_id = smt.show_member_type_id
+inner join performance pe on smp.performance_id = pe.performance_id
+inner join `show` sh on pe.show_id = sh.show_id
+inner join theater t on sh.theater_id = t.theater_id;

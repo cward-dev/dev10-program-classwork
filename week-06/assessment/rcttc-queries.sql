@@ -1,3 +1,5 @@
+-- Note: database structure requires everyone in the system (even cast/crew) to be listed as "customers"
+
 use tiny_theaters;
 
 --  1 - Find all performances in the last quarter of 2021 (Oct. 1, 2021 - Dec. 31 2021).
@@ -6,24 +8,29 @@ select
     p.performance_date
 from performance p
 left outer join `show` sh on p.show_id = sh.show_id
-where performance_date between '2021-10-01' and '2021-12-31';
+where performance_date between '2021-10-01' and '2021-12-31'
+order by p.performance_date asc, sh.show_name asc;
 
 --  2 - List customers without duplication.
 select distinct 
-	p.person_id,
+	cu.customer_id,
     concat(p.first_name, ' ', p.last_name) as customer_name
 from person p
-left outer join reservation r on p.person_id = r.person_id;
+inner join customer cu on p.person_id = cu.person_id
+left outer join reservation r on cu.customer_id = r.customer_id
+order by customer_id;
 
 --  3 - Find all customers without a .com email address.
 select distinct 
-	p.person_id,
+	cu.customer_id,
     concat(p.first_name, ' ', p.last_name) as customer_name,
     c.email
 from person p
+inner join customer cu on p.person_id = cu.person_id
 left outer join contact c on p.contact_id = c.contact_id
-left outer join reservation r on p.person_id = r.person_id
-where c.email not like '%.com'; -- 32 if strict with the .com, 29 if counting variations
+left outer join reservation r on cu.customer_id = r.customer_id
+where c.email not like '%.com'
+order by customer_id asc; -- 32 if strict with the .com, 29 if counting variations ie like '%.com%'
 
 --  4 - Find the three cheapest shows.
 select distinct
@@ -41,9 +48,11 @@ select distinct
     concat(p.first_name, ' ', p.last_name) as customer_name,
     sh.show_name
 from person p
-inner join reservation r on p.person_id = r.person_id
+inner join customer cu on p.person_id = cu.person_id
+inner join reservation r on cu.customer_id = r.customer_id
 inner join performance pe on r.performance_id = pe.performance_id
-inner join `show` sh on pe.show_id = sh.show_id;
+inner join `show` sh on pe.show_id = sh.show_id
+order by customer_name asc, sh.show_name asc;
 
 --  6 - List customer, show, theater, and seat number in one query.
 select
@@ -52,19 +61,23 @@ select
     t.theater_name as theater,
     s.seat_name as seat_number
 from person p
-inner join reservation r on p.person_id = r.person_id
+inner join customer cu on p.person_id = cu.person_id
+inner join reservation r on cu.customer_id = r.customer_id
 inner join seat s on r.seat_id = s.seat_id
 inner join performance pe on r.performance_id = pe.performance_id
 inner join `show` sh on pe.show_id = sh.show_id
-inner join theater t on sh.theater_id = t.theater_id;
+inner join theater t on sh.theater_id = t.theater_id
+order by theater asc, `show` asc, seat_number asc, customer asc;
 
 --  7 - Find customers without an address.
 select 
-    concat(p.first_name, ' ', p.last_name) as customer,
+    concat(p.first_name, ' ', p.last_name) as customer_name,
     c.address
 from person p
+inner join customer cu on p.person_id = cu.person_id
 left outer join contact c on p.contact_id = c.contact_id
-where p.contact_id is null or nullif(c.address, '') is null;
+where p.contact_id is null or nullif(c.address, '') is null
+order by customer_name asc;
 
 --  8 - Recreate the spreadsheet data with a single query.
 select
@@ -82,7 +95,8 @@ select
     tc.phone as theater_phone,
     tc.email as theater_email
 from reservation r
-left outer join person p on r.person_id = p.person_id
+inner join customer cu on r.customer_id = cu.customer_id
+inner join person p on cu.person_id = p.person_id
 left outer join contact pc on p.contact_id = pc.contact_id
 left outer join seat s on r.seat_id = s.seat_id
 left outer join performance perf on r.performance_id = perf.performance_id
@@ -93,10 +107,12 @@ left outer join contact tc on t.contact_id = tc.contact_id;
 --  9 - Count total tickets purchased per customer.
 select
 	count(r.reservation_id) as tickets_purchased,
-	concat(p.first_name, ' ', p.last_name) as customer
+	concat(p.first_name, ' ', p.last_name) as customer_name
 from person p
-left outer join reservation r on p.person_id = r.person_id
-group by p.person_id;
+inner join customer cu on p.person_id = cu.person_id
+left outer join reservation r on cu.customer_id = r.customer_id
+group by cu.customer_id
+order by tickets_purchased desc, customer_name asc;
 
 -- 10 - Calculate the total revenue per show based on tickets sold.
 select
@@ -118,10 +134,34 @@ inner join theater t on sh.theater_id = t.theater_id
 group by t.theater_id;
 
 -- 12 - Who is the biggest supporter of RCTTC? Who spent the most in 2021?
+-- 12a - Simple (assumes one result)
 select
 	concat(p.first_name, ' ', p.last_name) as customer,
-    ifnull(sum(pe.ticket_price),'0.00') as total_spent
-from person p
-left outer join reservation r on p.person_id = r.person_id
+    sum(pe.ticket_price) as total_spent
+from customer cu
+inner join person p on cu.person_id = p.person_id
+left outer join reservation r on cu.customer_id = r.customer_id
 left outer join performance pe on r.performance_id = pe.performance_id
-group by p.person_id;
+group by cu.customer_id
+order by total_spent desc
+limit 1;
+
+-- 12b - Works if multiple results
+select
+	concat(p.first_name, ' ', p.last_name) as customer,
+    sum(pe.ticket_price) as total_spent
+from customer cu
+inner join person p on cu.person_id = p.person_id
+left outer join reservation r on cu.customer_id = r.customer_id
+left outer join performance pe on r.performance_id = pe.performance_id
+group by cu.customer_id
+having total_spent = (
+	select
+    sum(pe.ticket_price) as total_spent
+	from reservation r
+	left outer join performance pe on r.performance_id = pe.performance_id
+	group by r.customer_id
+	order by total_spent desc
+    limit 1
+)
+order by p.last_name asc, p.first_name asc;

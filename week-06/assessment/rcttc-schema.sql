@@ -19,13 +19,21 @@ create table person (
 		references contact(contact_id)
 );
 
+create table customer(
+	customer_id int primary key auto_increment,
+    person_id int not null,
+    constraint fk_customer_person_id
+		foreign key (person_id)
+		references person(person_id)
+);
+
 create table customer_login (
 	user_name varchar(48) primary key,
     `password` varchar(24) not null,
-    person_id int not null,
-    constraint fk_customer_login_person_id
-		foreign key (person_id)
-		references person(person_id)
+    customer_id int not null,
+    constraint fk_customer_login_customer_id
+		foreign key (customer_id)
+		references customer(customer_id)
 );
 
 create table theater (
@@ -71,12 +79,12 @@ create table performance (
 
 create table reservation (
 	reservation_id int primary key auto_increment,
-    person_id int not null,
+    customer_id int not null,
     seat_id int not null,
     performance_id int not null,
-    constraint fk_reservation_person_id
-		foreign key (person_id)
-		references person(person_id),
+    constraint fk_reservation_customer_id
+		foreign key (customer_id)
+		references customer(customer_id),
     constraint fk_reservation_seat_id
 		foreign key (seat_id)
 		references seat(seat_id),
@@ -92,19 +100,19 @@ create table show_member_type (
     type_name varchar(24) not null
 );
 
-create table show_member_show (
+create table show_member_performance (
 	person_id int not null,
-    show_id int not null,
+    performance_id int not null,
     show_member_type_id int not null,
-    constraint pk_show_member_show
-		primary key (person_id, show_id),
-	constraint fk_show_member_show_person_id
+    constraint pk_show_member_performance
+		primary key (person_id, performance_id),
+	constraint fk_show_member_performance_person_id
 		foreign key (person_id)
         references person(person_id),
-	constraint fk_show_member_show_show_id
-		foreign key (show_id)
-        references `show`(show_id),
-	constraint fk_show_member_show_show_member_type_id
+	constraint fk_show_member_performance_performance_id
+		foreign key (performance_id)
+        references performance(performance_id),
+	constraint fk_show_member_performance_show_member_type_id
 		foreign key (show_member_type_id)
         references show_member_type(show_member_type_id)
 );
