@@ -245,9 +245,10 @@ insert into show_member_performance (person_id, performance_id, show_member_type
     ('136', '3', '1'),
 	('137', '3', '2');
 
-select * from show_member_show;
+select * from show_member_performance;
 
 select
+	p.person_id,
 	concat(p.first_name, ' ', p.last_name) as person_name,
     smt.type_name as `role`,
     sh.show_name,
