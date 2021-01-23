@@ -75,19 +75,19 @@ Save all DQL in a file named `rcttc-queries.sql`.
 * Actual Time: 
 
 ### Diagram
-* [ ] Create a diagram to plan out structure of database
+* [x] Create a diagram to plan out structure of database
   * Estimated Time: 2 hours
-  * Actual Time: 
+  * Actual Time: 3 hours
 
 ### Schema (`rcttc-schema.sql` : re-runnable DDL)
-* [ ] Create DDL Schema
+* [x] Create DDL Schema
   * Estimated Time: 3 hours
-  * Actual Time:
+  * Actual Time: 1.5 hours
   
 ### Populate Tables (`rcttc-data.sql` : data populating DML)
-* [ ] Insert data into database with DML
+* [x] Insert data into database with DML
   * Estimated Time: 1 hour
-  * Actual Time: 
+  * Actual Time: 2 hours
 * [ ] Update required data with DML
   * Estimated Time: 1 hour
   * Actual Time: 
@@ -115,3 +115,6 @@ Save all DQL in a file named `rcttc-queries.sql`.
   * [ ] Calculate the total revenue per theater based on tickets sold.
   * [ ] Who is the biggest supporter of RCTTC? Who spent the most in 2021?
 
+## Research
+* [ ] Prevent overlapping date ranges (start_date and end_date fields in table entry)
+* [ ] In general research unique fields and data validation in tables
