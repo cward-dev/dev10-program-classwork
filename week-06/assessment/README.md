@@ -118,3 +118,4 @@ Save all DQL in a file named `rcttc-queries.sql`.
 ## Research
 * [ ] Prevent overlapping date ranges (start_date and end_date fields in table entry)
 * [ ] In general research unique fields and data validation in tables
+* [ ] Insert csv data using statement rather than manual import
