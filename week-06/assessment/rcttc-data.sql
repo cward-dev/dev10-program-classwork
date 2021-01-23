@@ -147,3 +147,38 @@ update contact set
 	phone = '801-EAT-CAKE'
 where contact_id = (select contact_id from person where person_id = '48');
 
+select
+	count(reservation_id),
+    r.person_id,
+    p.performance_id
+from reservation r
+left outer join performance p on r.performance_id = p.performance_id
+left outer join `show` s on p.show_id = s.show_id
+left outer join theater t on s.theater_id = t.theater_id
+where t.theater_name = '10 Pin'
+group by r.person_id, p.performance_id;
+
+delete from reservation where person_id = '7' and performance_id = '1';
+delete from reservation where person_id = '8' and performance_id = '2';
+delete from reservation where person_id = '10' and performance_id = '2';
+delete from reservation where person_id = '15' and performance_id = '2';
+delete from reservation where person_id = '18' and performance_id = '3';
+delete from reservation where person_id = '19' and performance_id = '3';
+delete from reservation where person_id = '22' and performance_id = '3';
+delete from reservation where person_id = '25' and performance_id = '3';
+delete from reservation where person_id = '26' and performance_id = '4';
+
+select
+	p.person_id,
+    c.contact_id,
+    r.reservation_id
+from person p 
+inner join contact c on p.contact_id = c.contact_id
+inner join reservation r on p.person_id = r.person_id
+where concat(first_name, ' ', last_name) = 'Liv Egle of Germany';
+
+delete from reservation where person_id = '65';
+delete from customer_login where person_id = '65';
+delete from show_member_show where person_id = '65';
+delete from person where contact_id = '65';
+delete from contact where contact_id = '65';
