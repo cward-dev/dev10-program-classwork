@@ -261,3 +261,53 @@ inner join show_member_type smt on smp.show_member_type_id = smt.show_member_typ
 inner join performance pe on smp.performance_id = pe.performance_id
 inner join `show` sh on pe.show_id = sh.show_id
 inner join theater t on sh.theater_id = t.theater_id;
+
+-- payments, payment types
+insert into payment_type (type_name)
+	values
+    ('Cash'),
+	('Check'),
+    ('Credit'),
+    ('Debit');
+    
+select * from payment_type;
+
+insert into balance (total_amount, reservation_id)
+	select
+		pe.ticket_price,
+        r.reservation_id
+	from reservation r
+    inner join performance pe on r.performance_id = pe.performance_id;
+    
+select * from balance;
+
+insert into payment (amount_due, amount_paid, balance_id, payment_type_id)
+	select
+		b.remaining_amount,
+        b.remaining_amount,
+        b.balance_id,
+        (Select payment_type_id from payment_type pt where type_name = 'Credit')
+	from balance b
+    inner join reservation r on b.reservation_id = r.reservation_id;
+
+select * from payment;
+
+delete from payment where balance_id = '1';
+
+insert into payment (amount_due, amount_paid, balance_id, payment_type_id)
+	values
+    ((select remaining_amount from balance where balance_id = '1'), '10.00', '1', '3');
+
+set sql_safe_updates = 0;
+update balance b set
+	remaining_amount = ifnull(total_amount - (select sum(amount_paid) from payment p where p.balance_id = b.balance_id), b.total_amount);
+set sql_safe_updates = 1;    
+    
+select
+	r.reservation_id,
+    b.balance_id,
+    b.total_amount,
+    b.remaining_amount
+from reservation r
+inner join balance b on r.reservation_id = b.reservation_id
+order by b.remaining_amount desc, r.reservation_id asc;

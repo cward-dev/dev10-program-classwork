@@ -13,7 +13,9 @@ create table customer(
     person_id int not null,
     constraint fk_customer_person_id
 		foreign key (person_id)
-		references person(person_id)
+		references person(person_id),
+    constraint uq_customer_person_id
+		unique (person_id)
 );
 
 create table customer_login (
@@ -66,10 +68,17 @@ create table seat (
 create table `show` (
 	show_id int primary key auto_increment,
     show_name varchar(36) not null,
+--     date_start date null, -- removed, but keeping to ask James whether this would have been better practice (start/end date, how to validate no date range overlap at a theater?)
+--     date_end date null,
     theater_id int not null,
     constraint fk_show_theater_id
 		foreign key (theater_id)
 		references theater(theater_id)
+--     constraint ck_show_both_dates_null_or_neither
+-- 		check ((date_start is null and date_end is null) or 
+-- 			   (date_start is not null and date_end is not null)),
+-- 	constraint ck_show_start_date_is_not_after_end_date
+-- 		check (date_start <= date_end)
 );
 
 create table performance (
@@ -104,6 +113,41 @@ create table reservation (
 		references performance(performance_id),
 	constraint uq_reservation_seat_id_performance_id
         unique (seat_id, performance_id)
+);
+
+create table balance (
+	balance_id int primary key auto_increment,
+    total_amount decimal(7, 2) not null,
+    remaining_amount decimal(7, 2) not null default (total_amount),
+    reservation_id int not null,
+    constraint fk_balance_reservation_id
+		foreign key (reservation_id)
+        references reservation(reservation_id),
+	constraint ck_balance_remaining_amount_not_larger_than_total_amount
+		check (remaining_amount <= total_amount),
+	constraint ck_balance_remaining_amount_not_negative
+		check (remaining_amount >= '0.00')
+);
+
+create table payment_type (
+	payment_type_id int primary key auto_increment,
+    type_name varchar(24) not null
+);
+
+create table payment (
+	payment_id int primary key auto_increment,
+    amount_due decimal(7, 2) not null,
+    amount_paid decimal(7, 2) not null,
+    payment_type_id int not null,
+    balance_id int not null,
+	constraint fk_payment_payment_type_id
+		foreign key (payment_type_id)
+        references payment_type(payment_type_id),
+    constraint fk_payment_balance_id
+		foreign key (balance_id)
+        references balance(balance_id),
+	constraint ck_payment_amount_paid_not_more_than_amount_due
+		check (amount_paid <= amount_due)
 );
 
 create table show_member_type (
