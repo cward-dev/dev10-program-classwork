@@ -72,22 +72,23 @@ insert into `show` (show_name, theater_id)
 
 select * from `show`;
 
-set sql_safe_updates = 0;
+-- set sql_safe_updates = 0;
 
-update `show` set
-	start_date = (select min(`date`) from import_ticket_sales where `show` = show_name),
-	end_date = (select max(`date`) from import_ticket_sales where `show` = show_name)
-where start_date is null and end_date is null;
+-- update `show` set -- removed, but keeping to ask James whether this would have been better practice (start/end date)
+-- 	start_date = (select min(`date`) from import_ticket_sales where `show` = show_name),
+-- 	end_date = (select max(`date`) from import_ticket_sales where `show` = show_name)
+-- where start_date is null and end_date is null;
 
-set sql_safe_updates = 1;
+-- set sql_safe_updates = 1;
 
-select * from `show`;
+-- select * from `show`;
 
-insert into performance (ticket_price, performance_date, show_id)
+insert into performance (ticket_price, performance_date, theater_id, show_id)
     select distinct
 		ticket_price,
         `date`,
-        (select show_id from `show` s where `show` = s.show_name)
+        (select theater_id from `show` sh where `show` = sh.show_name),
+        (select show_id from `show` sh where `show` = sh.show_name)
 	from import_ticket_sales;
 
 select * from performance;

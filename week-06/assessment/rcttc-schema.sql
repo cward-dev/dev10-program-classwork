@@ -57,8 +57,6 @@ create table seat (
 create table `show` (
 	show_id int primary key auto_increment,
     show_name varchar(36) not null,
-    start_date date null,
-    end_date date null,
     theater_id int not null,
     constraint fk_show_theater_id
 		foreign key (theater_id)
@@ -69,12 +67,16 @@ create table performance (
 	performance_id int primary key auto_increment,
     ticket_price decimal(7,2) not null,
     performance_date date not null,
+    theater_id int not null,
     show_id int not null,
     constraint fk_performance_show_id
 		foreign key (show_id)
 		references `show`(show_id),
-	constraint uq_performance_performance_date_show_id
-        unique (performance_date, show_id)
+	constraint fk_performance_theater_id
+		foreign key (theater_id)
+		references theater(theater_id),
+	constraint uq_performance_performance_date_theater_id -- same show cannot be listed multiple times for one theater
+        unique (performance_date, theater_id)
 );
 
 create table reservation (

@@ -87,33 +87,33 @@ Save all DQL in a file named `rcttc-queries.sql`.
 ### Populate Tables (`rcttc-data.sql` : data populating DML)
 * [x] Insert data into database with DML
   * Estimated Time: 1 hour
-  * Actual Time: 2 hours
-* [ ] Update required data with DML
+  * Actual Time: 3 hours
+* [x] Update required data with DML
   * Estimated Time: 1 hour
-  * Actual Time: 
-* [ ] Delete all single-ticket reservations at the 10 Pin
+  * Actual Time:  1 hour
+* [x] Delete all single-ticket reservations at the 10 Pin
   * Estimated Time: 1 hour
-  * Actual Time: 
-* [ ] Delete the customer Liv Egle of Germany (will need to work backwards)
+  * Actual Time: 15 minutes
+* [x] Delete the customer Liv Egle of Germany (will need to work backwards)
   * Estimated Time: 30 minutes
-  * Actual Time:
+  * Actual Time: 15 minutes
   
 ### Queries (`rcttc-queries.sql` : queries)
-* [ ] Complete 12 queries:
+* [x] Complete 12 queries:
   * Estimated Time: 3 hours
   * Actual Time: 
-  * [ ] Find all performances in the last quarter of 2021 (Oct. 1, 2021 - Dec. 31 2021).
-  * [ ] List customers without duplication.
-  * [ ] Find all customers without a .com email address.
-  * [ ] Find the three cheapest shows.
-  * [ ] List customers and the show they're attending with no duplication.
-  * [ ] List customer, show, theater, and seat number in one query.
-  * [ ] Find customers without an address.
-  * [ ] Recreate the spreadsheet data with a single query.
-  * [ ] Count total tickets purchased per customer.
-  * [ ] Calculate the total revenue per show based on tickets sold.
-  * [ ] Calculate the total revenue per theater based on tickets sold.
-  * [ ] Who is the biggest supporter of RCTTC? Who spent the most in 2021?
+  * [x] Find all performances in the last quarter of 2021 (Oct. 1, 2021 - Dec. 31 2021).
+  * [x] List customers without duplication.
+  * [x] Find all customers without a .com email address.
+  * [x] Find the three cheapest shows.
+  * [x] List customers and the show they're attending with no duplication.
+  * [x] List customer, show, theater, and seat number in one query.
+  * [x] Find customers without an address.
+  * [x] Recreate the spreadsheet data with a single query.
+  * [x] Count total tickets purchased per customer.
+  * [x] Calculate the total revenue per show based on tickets sold.
+  * [x] Calculate the total revenue per theater based on tickets sold.
+  * [x] Who is the biggest supporter of RCTTC? Who spent the most in 2021?
 
 ## Research
 * [ ] Prevent overlapping date ranges (start_date and end_date fields in table entry)
