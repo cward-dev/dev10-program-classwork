@@ -134,11 +134,11 @@ group by sh.show_id;
 -- 11 - Calculate the total revenue per theater based on tickets sold.
 select
 	t.theater_name,
-	sum(p.ticket_price) as total_revenue
-from `show` sh
-left outer join performance p on sh.show_id = p.show_id
-left outer join reservation r on p.performance_id = r.performance_id
-inner join theater t on sh.theater_id = t.theater_id
+	ifnull(sum(pe.ticket_price), '0.00') as total_revenue
+from theater t
+left outer join `show` sh on t.theater_id = sh.theater_id
+left outer join performance pe on sh.show_id = pe.show_id
+left outer join reservation r on pe.performance_id = r.performance_id
 group by t.theater_id;
 
 -- 12 - Who is the biggest supporter of RCTTC? Who spent the most in 2021?
