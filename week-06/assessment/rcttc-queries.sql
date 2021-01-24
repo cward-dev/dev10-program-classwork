@@ -1,5 +1,3 @@
--- Note: database structure requires everyone in the system (even cast/crew) to be listed as "customers"
-
 use tiny_theaters;
 
 --  1 - Find all performances in the last quarter of 2021 (Oct. 1, 2021 - Dec. 31 2021).
