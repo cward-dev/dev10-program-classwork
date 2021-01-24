@@ -7,7 +7,7 @@ select
 	sh.show_name,
     p.performance_date
 from performance p
-left outer join `show` sh on p.show_id = sh.show_id
+inner join `show` sh on p.show_id = sh.show_id
 where performance_date between '2021-10-01' and '2021-12-31'
 order by p.performance_date asc, sh.show_name asc;
 
@@ -17,7 +17,6 @@ select distinct
     concat(p.first_name, ' ', p.last_name) as customer_name
 from person p
 inner join customer cu on p.person_id = cu.person_id
-left outer join reservation r on cu.customer_id = r.customer_id
 order by customer_id;
 
 --  3 - Find all customers without a .com email address.
@@ -27,7 +26,7 @@ select distinct
     c.email
 from person p
 inner join customer cu on p.person_id = cu.person_id
-left outer join contact c on p.contact_id = c.contact_id
+left outer join contact c on p.person_id = c.person_id
 left outer join reservation r on cu.customer_id = r.customer_id
 where c.email not like '%.com'
 order by customer_id asc; -- 32 if strict with the .com, 29 if counting variations ie like '%.com%'
@@ -75,8 +74,8 @@ select
     c.address
 from person p
 inner join customer cu on p.person_id = cu.person_id
-left outer join contact c on p.contact_id = c.contact_id
-where p.contact_id is null or nullif(c.address, '') is null
+left outer join contact c on p.person_id = c.person_id
+where nullif(c.address, '') is null
 order by customer_name asc;
 
 --  8 - Recreate the spreadsheet data with a single query.
@@ -97,12 +96,12 @@ select
 from reservation r
 inner join customer cu on r.customer_id = cu.customer_id
 inner join person p on cu.person_id = p.person_id
-left outer join contact pc on p.contact_id = pc.contact_id
+left outer join contact pc on p.person_id = pc.person_id
 left outer join seat s on r.seat_id = s.seat_id
 left outer join performance perf on r.performance_id = perf.performance_id
 left outer join `show` sh on perf.show_id = sh.show_id
 left outer join theater t on sh.theater_id = t.theater_id
-left outer join contact tc on t.contact_id = tc.contact_id;
+left outer join contact tc on t.theater_id = tc.theater_id;
 
 --  9 - Count total tickets purchased per customer.
 select

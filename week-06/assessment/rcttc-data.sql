@@ -2,66 +2,54 @@ use tiny_theaters;
 
 select * from import_ticket_sales;
 
-insert into contact (email, phone, address)
-	select distinct
-		customer_email,
-		customer_phone,
-		customer_address
-	from import_ticket_sales;
-
-select * from contact;
-
-insert into contact (email, phone, address)
-    select distinct
-		theater_email,
-		concat(SUBSTRING(theater_phone, 2, 3), '-', SUBSTRING(theater_phone, 7, 3), '-', SUBSTRING(theater_phone, 11, 4)),
-		theater_address
-	from import_ticket_sales;
-
-select * from contact;
-
-insert into person (first_name, last_name, contact_id)
+insert into person (first_name, last_name)
 	select distinct
 		customer_first,
-		customer_last,
-        (select distinct contact_id from contact where email = customer_email)
+		customer_last
 	from import_ticket_sales;
-    
+
 select * from person;
+
+insert into contact (email, phone, address, person_id)
+	select distinct
+		its.customer_email,
+		its.customer_phone,
+		its.customer_address,
+        p.person_id
+	from import_ticket_sales its
+    left outer join person p on concat(its.customer_first, ' ', its.customer_last) = concat(p.first_name, ' ', p.last_name);
+
+select * from contact where person_id is not null;
 
 insert into customer (person_id)
 	select person_id from person;
-    
-select * from customer cu
-inner join person p on cu.person_id = p.person_id;
 
-insert into customer_login (user_name, `password`, customer_id)
-	select distinct
-		concat(
-			LOWER(SUBSTRING(p.first_name,1,1)), 
-            LOWER(SUBSTRING(p.last_name,1,1)), 
-            cu.customer_id),
-        'password',
-        cu.customer_id
-	from customer cu
-    inner join person p on cu.person_id = p.person_id;
+select * from customer cu inner join person p on cu.person_id = p.person_id;
 
-select * from customer_login;
-    
-insert into theater (theater_name, contact_id)
+insert into theater (theater_name)
 	select distinct
-		theater,
-        (select distinct contact_id from contact where email = theater_email)
+		theater
 	from import_ticket_sales;
 
 select * from theater;
+
+insert into contact (email, phone, address, theater_id)
+    select distinct
+		its.theater_email,
+		concat(SUBSTRING(its.theater_phone, 2, 3), '-', SUBSTRING(its.theater_phone, 7, 3), '-', SUBSTRING(its.theater_phone, 11, 4)),
+		its.theater_address,
+        t.theater_id
+	from import_ticket_sales its
+    left outer join theater t on its.theater = t.theater_name;
+
+select * from contact where theater_id is not null;
 
 insert into seat (seat_name, theater_id)
 	select distinct
 		seat,
 		(select theater_id from theater t where theater_name = theater)
 	from import_ticket_sales;
-    
+
 select * from seat;
 
 insert into `show` (show_name, theater_id)
@@ -155,13 +143,13 @@ select
 	p.person_id,
 	concat(p.first_name, ' ', p.last_name) as full_name,
 	c.phone
-from contact c
-left outer join person p on c.contact_id = p.contact_id
+from person p
+left outer join contact c on p.person_id = c.person_id
 where concat(p.first_name, ' ', p.last_name) = 'Jammie Swindles';
 
 update contact set
 	phone = '801-EAT-CAKE'
-where contact_id = (select contact_id from person where person_id = '48');
+where person_id = '48';
 
 select
 	count(reservation_id),
@@ -193,7 +181,7 @@ select
 from person p
 inner join customer cu on p.person_id = cu.customer_id
 inner join customer_login cl on cu.customer_id = cl.customer_id
-inner join contact c on p.contact_id = c.contact_id
+inner join contact c on p.person_id = c.person_id
 inner join reservation r on cu.customer_id = r.customer_id
 where concat(first_name, ' ', last_name) = 'Liv Egle of Germany';
 
@@ -201,14 +189,26 @@ delete from reservation where customer_id = (select customer_id from customer wh
 delete from customer_login where customer_id = (select customer_id from customer where person_id = '65');
 delete from customer where person_id = '65';
 delete from show_member_performance where person_id = '65';
-delete from person where contact_id = '65';
-delete from contact where contact_id = '65'; -- not sure if it was worth keeping contact info together for theaters and people, a little clunky in this regard (contact is the last removed)
-
-
+delete from contact where person_id = '65'; -- not sure if it was worth keeping contact info together for theaters and people, a little clunky in this regard (contact is the last removed)
+delete from person where person_id = '65';
 
 -- Other Stretch Goals
 
--- Adding show cast/crew
+-- login, so customers can make and check reservations online
+insert into customer_login (user_name, `password`, customer_id)
+	select distinct
+		concat(
+			LOWER(SUBSTRING(p.first_name,1,1)), 
+            LOWER(SUBSTRING(p.last_name,1,1)), 
+            cu.customer_id),
+        'password',
+        cu.customer_id
+	from customer cu
+    inner join person p on cu.person_id = p.person_id;
+
+select * from customer_login;
+
+-- cast and crew for each performance
 insert into person (first_name, last_name)
 	values
     ('Jimmy', 'Johnson'),
