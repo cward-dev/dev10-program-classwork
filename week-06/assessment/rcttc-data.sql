@@ -208,6 +208,14 @@ insert into customer_login (user_name, `password`, customer_id)
 
 select * from customer_login;
 
+select -- check results
+	concat(p.first_name, ' ', p.last_name) as customer_name,
+    cl.user_name,
+    cl.`password`
+from customer_login cl
+inner join customer cu on cl.customer_id = cu.customer_id
+inner join person p on cu.person_id = p.person_id;
+
 -- cast and crew for each performance
 insert into person (first_name, last_name)
 	values
@@ -248,7 +256,7 @@ insert into show_member_performance (person_id, performance_id, show_member_type
 
 select * from show_member_performance;
 
-select
+select -- check results
 	p.person_id,
 	concat(p.first_name, ' ', p.last_name) as person_name,
     smt.type_name as `role`,
@@ -307,7 +315,7 @@ update balance b set
 	remaining_amount = ifnull(total_amount - (select sum(amount_paid) from payment p where p.balance_id = b.balance_id), b.total_amount);
 set sql_safe_updates = 1;    
     
-select
+select -- check results
 	r.reservation_id,
     b.balance_id,
     b.total_amount,
