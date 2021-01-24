@@ -26,9 +26,18 @@ select distinct
     c.email
 from person p
 inner join customer cu on p.person_id = cu.person_id
-left outer join contact c on p.person_id = c.person_id
-left outer join reservation r on cu.customer_id = r.customer_id
+inner join contact c on p.person_id = c.person_id
 where c.email not like '%.com'
+order by customer_id asc; -- 32 if strict with the .com, like '%.com'
+
+select distinct 
+	cu.customer_id,
+    concat(p.first_name, ' ', p.last_name) as customer_name,
+    c.email
+from person p
+inner join customer cu on p.person_id = cu.person_id
+inner join contact c on p.person_id = c.person_id
+where c.email not like '%.com%'
 order by customer_id asc; -- 32 if strict with the .com, 29 if counting variations ie like '%.com%'
 
 --  4 - Find the three cheapest shows.
@@ -37,7 +46,7 @@ select distinct
     min(p.ticket_price) as lowest_price_performance,
     max(p.ticket_price) as highest_price_performance
 from `show` sh
-left outer join performance p on sh.show_id = p.show_id
+inner join performance p on sh.show_id = p.show_id
 group by sh.show_name
 order by min(p.ticket_price) asc
 limit 3;

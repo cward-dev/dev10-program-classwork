@@ -294,8 +294,12 @@ select * from payment;
 
 delete from payment where balance_id = '1';
 
-insert into payment (amount_due, amount_paid, balance_id, payment_type_id)
-	values
+set sql_safe_updates = 0;
+update balance b set
+	remaining_amount = ifnull(total_amount - (select sum(amount_paid) from payment p where p.balance_id = b.balance_id), b.total_amount);
+set sql_safe_updates = 1;    
+
+insert into payment (amount_due, amount_paid, balance_id, payment_type_id) values 
     ((select remaining_amount from balance where balance_id = '1'), '10.00', '1', '3');
 
 set sql_safe_updates = 0;
