@@ -72,7 +72,7 @@ Save all DQL in a file named `rcttc-queries.sql`.
 
 ### Total Time
 * Estimated Time: 9.5 hours
-* Actual Time: 
+* Actual Time: 11 hours (plus 3 for stretch goals)
 
 ### Diagram
 * [x] Create a diagram to plan out structure of database
@@ -101,7 +101,7 @@ Save all DQL in a file named `rcttc-queries.sql`.
 ### Queries (`rcttc-queries.sql` : queries)
 * [x] Complete 12 queries:
   * Estimated Time: 3 hours
-  * Actual Time: 
+  * Actual Time: 2 hours
   * [x] Find all performances in the last quarter of 2021 (Oct. 1, 2021 - Dec. 31 2021).
   * [x] List customers without duplication.
   * [x] Find all customers without a .com email address.
@@ -117,5 +117,8 @@ Save all DQL in a file named `rcttc-queries.sql`.
 
 ## Research
 * [ ] Prevent overlapping date ranges (start_date and end_date fields in table entry)
-* [ ] In general research unique fields and data validation in tables
-* [ ] Insert csv data using statement rather than manual import
+  * Can't seem to find an effective way of accomplishing this (tried functions but to no avail)
+* [x] In general research unique fields and data validation in tables
+  * Check constraints are your friend here
+* [x] Insert csv data using statement rather than manual import
+  * Involves changing MySQL safety settings
