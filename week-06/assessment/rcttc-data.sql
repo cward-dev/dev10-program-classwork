@@ -26,11 +26,11 @@ insert into customer (person_id)
 
 select * from customer cu inner join person p on cu.person_id = p.person_id;
 
-insert into theater (theater_name)
+insert into theater (theater_name, theater_description)
 	values
-    ('Little Fitz'),
-    ('10 Pin'),
-    ('Horizon');
+    ('Little Fitz', 'Previously a storage room in the historic Fitzgerald Theater.'),
+    ('10 Pin', 'A cozy little spot tucked behind the lanes of a hipster bowling alley. It''s a little noisy, but the atmosphere is one-of-a-kind.'),
+    ('Horizon', 'A rain-or-shine, summer-to-winter backyard theater hosted by the Thao family.');
 
 select * from theater;
 

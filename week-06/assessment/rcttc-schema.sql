@@ -31,7 +31,8 @@ create table customer_login (
 
 create table theater (
 	theater_id int primary key auto_increment,
-    theater_name varchar(48) not null
+    theater_name varchar(48) not null,
+    theater_description varchar(200) null
 );
 
 create table contact (

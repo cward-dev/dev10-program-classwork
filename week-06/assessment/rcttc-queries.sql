@@ -40,15 +40,16 @@ inner join contact c on p.person_id = c.person_id
 where c.email not like '%.com%'
 order by customer_id asc;
 
--- 3 extra (find people missing email) -> since we have cast and crew (FIND MISSING RECORDS WITH A LEFT OUTER JOIN)
+-- 3c - extra - find customers missing phone (FIND MISSING RECORDS WITH A LEFT OUTER JOIN)
 select distinct
-	p.person_id,
+	cu.customer_id,
     concat(p.first_name, ' ', p.last_name) as customer_name,
-    c.email
+    c.phone
 from person p
+inner join customer cu on p.person_id = cu.person_id
 left outer join contact c on p.person_id = c.person_id
-where nullif(c.email, '') is null
-order by p.person_id asc;
+where nullif(c.phone, '') is null
+order by cu.customer_id asc;
 
 --  4 - Find the three cheapest shows.
 select distinct
