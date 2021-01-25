@@ -13,8 +13,8 @@ select * from person;
 insert into contact (email, phone, address, person_id)
 	select distinct
 		its.customer_email,
-		its.customer_phone,
-		its.customer_address,
+		nullif(its.customer_phone, ''),
+		nullif(its.customer_address, ''),
         p.person_id
 	from import_ticket_sales its
     left outer join person p on concat(its.customer_first, ' ', its.customer_last) = concat(p.first_name, ' ', p.last_name);
@@ -27,17 +27,18 @@ insert into customer (person_id)
 select * from customer cu inner join person p on cu.person_id = p.person_id;
 
 insert into theater (theater_name)
-	select distinct
-		theater
-	from import_ticket_sales;
+	values
+    ('Little Fitz'),
+    ('10 Pin'),
+    ('Horizon');
 
 select * from theater;
 
 insert into contact (email, phone, address, theater_id)
     select distinct
 		its.theater_email,
-		concat(SUBSTRING(its.theater_phone, 2, 3), '-', SUBSTRING(its.theater_phone, 7, 3), '-', SUBSTRING(its.theater_phone, 11, 4)),
-		its.theater_address,
+		nullif(concat(SUBSTRING(its.theater_phone, 2, 3), '-', SUBSTRING(its.theater_phone, 7, 3), '-', SUBSTRING(its.theater_phone, 11, 4)), ''),
+		nullif(its.theater_address, ''),
         t.theater_id
 	from import_ticket_sales its
     left outer join theater t on its.theater = t.theater_name;
@@ -45,18 +46,34 @@ insert into contact (email, phone, address, theater_id)
 select * from contact where theater_id is not null;
 
 insert into seat (seat_name, theater_id)
-	select distinct
-		seat,
-		(select theater_id from theater t where theater_name = theater)
-	from import_ticket_sales;
+	values
+    ('A1', '1'), ('A2', '1'), ('A3', '1'), ('A4', '1'),
+    ('B1', '1'), ('B2', '1'), ('B3', '1'), ('B4', '1'),
+    ('C1', '1'), ('C2', '1'), ('C3', '1'), ('C4', '1'),
+    ('A1', '2'), ('A2', '2'), ('A3', '2'), ('A4', '2'), ('A5', '2'),
+    ('B1', '2'), ('B2', '2'), ('B3', '2'), ('B4', '2'), ('B5', '2'),
+    ('C1', '2'), ('C2', '2'), ('C3', '2'), ('C4', '2'), ('C5', '2'),
+    ('D1', '2'), ('D2', '2'), ('D3', '2'), ('D4', '2'), ('D5', '2'),
+    ('E1', '2'), ('E2', '2'), ('E3', '2'), ('E4', '2'), ('E5', '2'),
+    ('A1', '3'), ('A2', '3'), ('A3', '3'), ('A4', '3'), ('A5', '3'), ('A6', '3'), ('A7', '3'), ('A8', '3'),
+    ('B1', '3'), ('B2', '3'), ('B3', '3'), ('B4', '3'), ('B5', '3'), ('B6', '3'), ('B7', '3'), ('B8', '3');
 
 select * from seat;
 
-insert into `show` (show_name, theater_id)
-	select distinct
-		`show`,
-        (select theater_id from theater where theater_name = theater)
-	from import_ticket_sales;
+insert into `show` (show_name, show_description, theater_id)
+	values
+    ('High School Musical', null, (select distinct (select theater_id from theater where theater_name = (select distinct its.theater from import_ticket_sales its where its.`show` = 'High School Musical')))),
+    ('Hair', null, (select distinct (select theater_id from theater where theater_name = (select distinct its.theater from import_ticket_sales its where its.`show` = 'Hair')))),
+    ('Dance Dance Vertical', 'Dance performed on a vertical surface using climbing equipment', (select distinct (select theater_id from theater where theater_name = (select distinct its.theater from import_ticket_sales its where its.`show` = 'Dance Dance Vertical')))),
+    ('Caddyshack', null, (select distinct (select theater_id from theater where theater_name = (select distinct its.theater from import_ticket_sales its where its.`show` = 'Caddyshack')))),
+    ('Burr', 'The real dirt on Alexander Hamilton', (select distinct (select theater_id from theater where theater_name = (select distinct its.theater from import_ticket_sales its where its.`show` = 'Burr')))),
+    ('Send in the Clowns', null, (select distinct (select theater_id from theater where theater_name = (select distinct its.theater from import_ticket_sales its where its.`show` = 'Send in the Clowns')))),
+    ('The Dress', null, (select distinct (select theater_id from theater where theater_name = (select distinct its.theater from import_ticket_sales its where its.`show` = 'The Dress')))),
+    ('Tell Me What To Think', null, (select distinct (select theater_id from theater where theater_name = (select distinct its.theater from import_ticket_sales its where its.`show` = 'Tell Me What To Think')))),
+    ('The Sky Lit Up', 'Cosmic horror', (select distinct (select theater_id from theater where theater_name = (select distinct its.theater from import_ticket_sales its where its.`show` = 'The Sky Lit Up')))),
+    ('Ocean', 'The life of Frank Ocean as performed by Frank Ocean', (select distinct (select theater_id from theater where theater_name = (select distinct its.theater from import_ticket_sales its where its.`show` = 'Ocean')))),
+    ('Stop. Just Stop.', null, (select distinct (select theater_id from theater where theater_name = (select distinct its.theater from import_ticket_sales its where its.`show` = 'Stop. Just Stop.')))),
+    ('Wen', null, (select distinct (select theater_id from theater where theater_name = (select distinct its.theater from import_ticket_sales its where its.`show` = 'Wen'))));
 
 select * from `show`;
 
@@ -117,11 +134,11 @@ select distinct
     pe.performance_id,
     s.theater_id
 from reservation r
-left outer join customer cu on r.customer_id = cu.customer_id
-left outer join person p on cu.person_id = p.person_id
-left outer join seat s on r.seat_id = s.seat_id
-left outer join performance pe on r.performance_id = pe.performance_id
-left outer join `show` sh on pe.show_id = sh.show_id
+inner join customer cu on r.customer_id = cu.customer_id
+inner join person p on cu.person_id = p.person_id
+inner join seat s on r.seat_id = s.seat_id
+inner join performance pe on r.performance_id = pe.performance_id
+inner join `show` sh on pe.show_id = sh.show_id
 where r.performance_id = 
 	(select distinct performance_id from performance where 
 		show_id = (select show_id from `show` where show_name = 'The Sky Lit Up') and
@@ -131,9 +148,9 @@ insert into seat values
 	('0', 'temp_seat_admin', '2');
     
 update reservation set seat_id = (select seat_id from seat where seat_name = 'temp_seat_admin' limit 1) where reservation_id = 91;
-update reservation set seat_id = 29 where reservation_id = 97;
-update reservation set seat_id = 35 where reservation_id = 95;
-update reservation set seat_id = 33 where reservation_id = 91;
+update reservation set seat_id = (select seat_id from seat where seat_name = 'A4' and theater_id = '1') where reservation_id = 97;
+update reservation set seat_id = (select seat_id from seat where seat_name = 'C2' and theater_id = '1') where reservation_id = 95;
+update reservation set seat_id = (select seat_id from seat where seat_name = 'B4' and theater_id = '1') where reservation_id = 91;
 
 set sql_safe_updates = 0;
 delete from seat where seat_name = 'temp_seat_admin';

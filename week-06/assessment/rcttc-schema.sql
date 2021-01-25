@@ -62,15 +62,18 @@ create table seat (
     theater_id int not null,
     constraint fk_seat_theater_id
 		foreign key (theater_id)
-		references theater(theater_id)
+		references theater(theater_id),
+	constraint uq_seat_seat_name_theater_id
+		unique (seat_name, theater_id)
 );
 
 create table `show` (
 	show_id int primary key auto_increment,
     show_name varchar(36) not null,
+    show_description varchar(100) null,
 --     date_start date null, -- removed, but keeping to ask James whether this would have been better practice (start/end date, how to validate no date range overlap at a theater?)
 --     date_end date null,
-    theater_id int not null,
+    theater_id int null,
     constraint fk_show_theater_id
 		foreign key (theater_id)
 		references theater(theater_id)
