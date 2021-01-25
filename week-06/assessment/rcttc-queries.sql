@@ -145,7 +145,7 @@ group by sh.show_id;
 -- 11 - Calculate the total revenue per theater based on tickets sold.
 select
 	t.theater_name,
-	ifnull(sum(pe.ticket_price), '0.00') as total_revenue
+	ifnull(sum(pe.ticket_price), 0.00) as total_revenue
 from theater t
 left outer join `show` sh on t.theater_id = sh.theater_id
 left outer join performance pe on sh.show_id = pe.show_id

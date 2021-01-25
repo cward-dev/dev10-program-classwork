@@ -72,33 +72,29 @@ create table `show` (
 	show_id int primary key auto_increment,
     show_name varchar(36) not null,
     show_description varchar(100) null,
---     date_start date null, -- removed, but keeping to ask James whether this would have been better practice (start/end date, how to validate no date range overlap at a theater?)
---     date_end date null,
+    start_date date null,
+    end_date date null,
     theater_id int null,
     constraint fk_show_theater_id
 		foreign key (theater_id)
-		references theater(theater_id)
---     constraint ck_show_both_dates_null_or_neither
--- 		check ((date_start is null and date_end is null) or 
--- 			   (date_start is not null and date_end is not null)),
--- 	constraint ck_show_start_date_is_not_after_end_date
--- 		check (date_start <= date_end)
+		references theater(theater_id),
+    constraint ck_show_both_dates_null_or_neither
+		check ((start_date is null and end_date is null) or 
+			   (start_date is not null and end_date is not null)),
+	constraint ck_show_start_date_is_not_after_end_date
+		check (start_date <= end_date)
 );
 
 create table performance (
 	performance_id int primary key auto_increment,
     ticket_price decimal(7, 2) not null,
     performance_date date not null,
-    theater_id int not null,
     show_id int not null,
     constraint fk_performance_show_id
 		foreign key (show_id)
 		references `show`(show_id),
-	constraint fk_performance_theater_id
-		foreign key (theater_id)
-		references theater(theater_id),
-	constraint uq_performance_performance_date_theater_id
-        unique (performance_date, theater_id)
+	constraint uq_performance_performance_date_show_id
+        unique (performance_date, show_id)
 );
 
 create table reservation (
