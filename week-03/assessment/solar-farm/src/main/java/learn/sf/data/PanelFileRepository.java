@@ -9,7 +9,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
 public class PanelFileRepository implements PanelRepository {
 
     private static final String DELIMITER = ",";

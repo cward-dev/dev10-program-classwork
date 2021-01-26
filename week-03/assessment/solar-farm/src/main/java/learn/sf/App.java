@@ -1,5 +1,6 @@
 package learn.sf;
 
+import learn.sf.data.PanelJdbcTemplateRepository;
 import learn.sf.ui.Controller;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
