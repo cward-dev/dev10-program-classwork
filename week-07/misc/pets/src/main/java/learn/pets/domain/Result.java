@@ -21,8 +21,8 @@ public class Result<T> {
         this.payload = payload;
     }
 
-    public List<String> getMessages() {
-        return new ArrayList<>(messages);
+    public boolean isSuccess() {
+        return messages.size() == 0;
     }
 
     public void addMessage(String message, ResultType type) {

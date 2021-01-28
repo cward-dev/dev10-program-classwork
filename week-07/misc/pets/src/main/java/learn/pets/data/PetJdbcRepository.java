@@ -22,7 +22,7 @@ public class PetJdbcRepository implements PetRepository {
         MysqlDataSource result = new MysqlDataSource();
         // 2. connection string is:
         // [db-tech]:[db-vendor]://[host]:[port]/[database-name]
-        result.setUrl("jdbc:mysql://localhost:3306/pets");
+        result.setUrl("jdbc:mysql://localhost:3306/pets_test");
         // 3. username
         result.setUser("root");
         // 4. password
