@@ -89,6 +89,7 @@ class PetJdbcRepositoryTest {
 
     @Test
     void shouldDeleteExisting() {
+
         assertTrue(repository.deleteById(4));
     }
 

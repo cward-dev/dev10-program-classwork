@@ -24,5 +24,5 @@ begin
 		('Jazz',54,10,2016,'AMORPHOUS_SILICON',0);
 end //
 delimiter ;
-    
+
 select * from solar_panel;

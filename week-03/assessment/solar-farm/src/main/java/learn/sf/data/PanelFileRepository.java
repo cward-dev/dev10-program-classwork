@@ -3,12 +3,15 @@ package learn.sf.data;
 import learn.sf.model.Panel;
 import learn.sf.model.PanelMaterial;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
+@Profile("file")
 public class PanelFileRepository implements PanelRepository {
 
     private static final String DELIMITER = ",";

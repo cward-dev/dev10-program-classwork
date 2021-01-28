@@ -2,6 +2,7 @@ package learn.sf.data;
 
 import learn.sf.model.Panel;
 import learn.sf.model.PanelMaterial;
+import org.springframework.context.annotation.Profile;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -13,6 +14,7 @@ import java.sql.*;
 import java.util.List;
 
 @Repository
+@Profile("jdbc-template")
 public class PanelJdbcTemplateRepository implements PanelRepository {
 
     private final JdbcTemplate jdbcTemplate;

@@ -30,7 +30,7 @@ public class PetController {
     public ResponseEntity<Pet> findById(@PathVariable int petId) {
         Pet pet = service.findById(petId);
         if (pet == null) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(pet, HttpStatus.OK);
     }
@@ -59,13 +59,13 @@ public class PetController {
         } else if (result.getType() == ResultType.NOT_FOUND) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{petId}")
     public ResponseEntity<Void> delete(@PathVariable int petId) {
         if (service.deleteById(petId)) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
