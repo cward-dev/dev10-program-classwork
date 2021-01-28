@@ -10,24 +10,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 
+@Repository
+@Profile("jdbc")
 public class PetJdbcRepository implements PetRepository {
 
-    // 1. Dangerous initialization during construction
-    private DataSource dataSource = initDataSource();
+    // 1. Dangerous initialization during construction -- NOT ANYMORE!
+    private DataSource dataSource;
 
-    private DataSource initDataSource() {
-        MysqlDataSource result = new MysqlDataSource();
-        // 2. connection string is:
-        // [db-tech]:[db-vendor]://[host]:[port]/[database-name]
-        result.setUrl("jdbc:mysql://localhost:3306/pets_test");
-        // 3. username
-        result.setUser("root");
-        // 4. password
-        result.setPassword("top-secret-password");
-        return result;
+    public PetJdbcRepository(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     @Override

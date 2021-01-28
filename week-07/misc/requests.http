@@ -332,20 +332,24 @@ Content-Type: application/json
 
 ###
 
-DELETE /pets/6 HTTP/1.1
+DELETE /pets/8 HTTP/1.1
 Host: localhost:8080
 
 ###
 
-
-
-###
-
-
+GET /pets HTTP/1.1
+Host: localhost:8080
 
 ###
 
+POST /pets HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
 
+{
+  "name": "Gibby",
+  "type": "Cat"
+}
 
 ###
 

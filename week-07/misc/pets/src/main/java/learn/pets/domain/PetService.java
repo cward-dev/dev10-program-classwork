@@ -2,6 +2,7 @@ package learn.pets.domain;
 
 import learn.pets.data.PetRepository;
 import learn.pets.models.Pet;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
 @Service // Register the service with the Spring DI context.
 public class PetService {
 
-    private final PetRepository repository;
+    private PetRepository repository;
 
     // A concrete PetRepository will be injected here.
     public PetService(PetRepository repository) {

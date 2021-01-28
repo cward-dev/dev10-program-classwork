@@ -1,15 +1,21 @@
 package learn.pets.data;
 
 import learn.pets.models.Pet;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class PetJdbcRepositoryTest {
 
-    PetJdbcRepository repository = new PetJdbcRepository();
+    @Autowired
+    PetJdbcRepository repository;
 
     @Test
     void shouldFindAll() {
