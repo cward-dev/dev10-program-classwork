@@ -1,0 +1,566 @@
+GET https://pokeapi.co/api/v2/pokemon HTTP/1.1
+Content-Type: application/json
+
+###
+
+GET https://pokeapi.co/api/v2/pokemon/13 HTTP/1.1
+Content-Type: application/json
+
+###
+
+GET https://pokeapi.co/api/v2/pokemon?offset=25&limit=12 HTTP/1.1
+Content-Type: application/json
+
+###
+
+GET https://pokeapi.co/api/v2/item HTTP/1.1
+Content-Type: application/json
+
+###
+
+GET https://pokeapi.co/api/v2/item/2/ HTTP/1.1
+Content-Type: application/json
+
+###
+
+GET https://pokeapi.co/api/v2/ability?offset=50 HTTP/1.1
+Content-Type: application/json
+
+###
+
+GET https://pokeapi.co/api/v2/ability/15/ HTTP/1.1
+Content-Type: application/json
+
+###
+
+GET http://localhost:8080/sighting HTTP/1.1
+Accept: application/json
+
+###
+
+GET /sighting/2 HTTP/1.1
+Host: localhost:8080
+Accept: application/json
+
+###
+
+POST http://localhost:8080/sighting HTTP/1.1
+Content-Type: application/json
+
+{
+  "bugType": "Mosquito",
+  "description": "mosquitos are jerks",
+  "date": "2020-07-04",
+  "interest": 0.0
+}
+
+###
+
+PUT http://localhost:8080/sighting/2 HTTP/1.1
+Content-Type: application/json
+
+{
+  "sightingId": 2,
+  "bugType": "Cicada",
+  "description": "the cicadas are singing in the trees",
+  "date": "2020-09-24",
+  "interest": 9.245
+}
+
+###
+
+DELETE http://localhost:8080/sighting/3 HTTP/1.1
+
+###
+
+POST http://localhost:8080/sighting HTTP/1.1
+Content-Type: application/json
+
+{
+  "bugType": "Dung Beetle",
+  "description": "good at making snowballs",
+  "date": "2021-01-13",
+  "interest": 4.5
+}
+
+###
+
+PUT http://localhost:8080/sighting/5 HTTP/1.1
+Content-Type: application/json
+
+{
+  "sightingId": 5,
+  "bugType": "Dung Beetle",
+  "description": "good at making snowballs",
+  "date": "2021-01-13",
+  "interest": 10.2
+}
+
+###
+
+GET http://localhost:8080/get HTTP/1.1
+
+###
+
+POST http://localhost:8080/post HTTP/1.1
+
+###
+
+PUT http://localhost:8080/put HTTP/1.1
+
+###
+
+DELETE http://localhost:8080/delete HTTP/1.1
+
+###
+
+OPTIONS http://localhost:8080/multi HTTP/1.1
+
+###
+
+TRACE http://localhost:8080/multi HTTP/1.1
+
+###
+
+POST /add/2/3 HTTP/1.1
+Host: localhost:8080
+
+###
+
+GET /product/house paint/more/path HTTP/1.1
+Host: localhost:8080
+
+###
+
+POST /pets HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+{
+  "name": "Gibby",
+  "type": "Cat"
+}
+
+###
+
+PUT /pets/9 HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+{
+    "petId": 9,
+    "name": "Midge",
+    "type": "Pug"
+}
+
+###
+
+PUT /pets/9 HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+{
+    "nope": "nah"
+}
+
+###
+
+POST http://localhost:8080/urlencoded HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+name=Yuki&age=24&likesCookies=true
+
+###
+
+GET http://localhost:8080/get HTTP/1.1
+
+###
+
+POST http://localhost:8080/post HTTP/1.1
+Content-Type: application/json
+
+{
+    "petId": 9,
+    "name": "Midge",
+    "type": "Pug"
+}
+
+###
+
+PUT http://localhost:8080/put HTTP/1.1
+Content-Type: application/json
+
+{
+    "petId": 9,
+    "name": "Midge",
+    "type": "Pug"
+}
+
+###
+
+PUT http://localhost:8080/put HTTP/1.1
+Content-Type: application/json
+
+{
+    "petId": 15,
+    "name": "",
+    "type": "Pug"
+}
+
+###
+
+PUT http://localhost:8080/put HTTP/1.1
+Content-Type: application/json
+
+{
+    "petId": 15,
+    "name": "Midge",
+    "type": "Pug"
+}
+
+###
+
+GET http://localhost:8080/name HTTP/1.1
+Content-Type: application/json
+
+###
+
+GET http://localhost:8080/current/time HTTP/1.1
+Content-Type: application/json
+
+###
+
+GET http://localhost:8080/greet/Chris Ward HTTP/1.1
+Content-Type: application/json
+
+###
+
+GET http://localhost:8080/sheep HTTP/1.1
+Content-Type: application/json
+
+###
+
+PUT http://localhost:8080/sheep/3 HTTP/1.1
+Content-Type: application/json
+
+###
+
+POST http://localhost:8080/sheep HTTP/1.1
+Content-Type: application/json
+
+{
+  "amount": 1
+}
+
+###
+
+DELETE http://localhost:8080/sheep HTTP/1.1
+Content-Type: application/json
+
+###
+
+GET http://localhost:8080/todo HTTP/1.1
+Content-Type: application/json
+
+###
+
+PUT http://localhost:8080/todo HTTP/1.1
+Content-Type: application/json
+
+["go to work", "make dinner", "do laundry"]
+
+###
+
+PUT http://localhost:8080/todo/run errands HTTP/1.1
+Content-Type: application/json
+
+###
+
+DELETE http://localhost:8080/todo/3 HTTP/1.1
+Content-Type: application/json
+
+###
+
+POST http://localhost:8080/todo HTTP/1.1
+Content-Type: application/json
+
+[
+  "wake up", 
+  "brush teeth"
+]
+
+###
+
+POST http://localhost:8080/hangman HTTP/1.1
+
+###
+
+PUT http://localhost:8080/hangman/1/n HTTP/1.1
+
+###
+
+GET /pets HTTP/1.1
+Host: localhost:8080
+
+###
+
+GET /pets/1 HTTP/1.1
+Host: localhost:8080
+
+###
+
+POST /pets HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+{
+    "name": "Mo",
+    "type": "Ostrich"
+}
+
+###
+
+PUT /pets/1 HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+{
+  "petId": 1,
+  "name": "Koda",
+  "type": "Dog"
+}
+
+###
+
+DELETE /pets/6 HTTP/1.1
+Host: localhost:8080
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###
+
+
+
+###

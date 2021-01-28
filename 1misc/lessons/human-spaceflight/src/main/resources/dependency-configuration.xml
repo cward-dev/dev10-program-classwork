@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--
+     Define "beans" here.
+     A bean definition registers an instance of a data type with the DI container.
+     -->
+
+    <!-- 1. class is a fully-qualified type name. -->
+    <bean id="captain" class="learn.spaceflight.personnel.Astronaut">
+        <constructor-arg value="Saraann"/>
+        <constructor-arg value="Burd"/>
+        <constructor-arg value="14"/>
+    </bean>
+
+    <bean id="second" class="learn.spaceflight.personnel.Astronaut">
+        <constructor-arg value="Mohandis"/>
+        <constructor-arg value="Ayer"/>
+        <constructor-arg value="11"/>
+    </bean>
+
+    <bean id="engineer" class="learn.spaceflight.personnel.Astronaut">
+        <constructor-arg value="Lark"/>
+        <constructor-arg value="Middlemist"/>
+        <constructor-arg value="11"/>
+    </bean>
+
+    <bean id="doctor" class="learn.spaceflight.personnel.Astronaut">
+        <constructor-arg value="Itch"/>
+        <constructor-arg value="Yearnsley"/>
+        <constructor-arg value="5"/>
+    </bean>
+
+    <bean id="imbecile" class="learn.spaceflight.personnel.Astronaut">
+        <constructor-arg value="Chris"/>
+        <constructor-arg value="Ward"/>
+        <constructor-arg value="0"/>
+    </bean>
+
+    <bean id="moonHopper" class="learn.spaceflight.spacecraft.MoonHopper">
+        <constructor-arg ref="captain"/>
+        <constructor-arg ref="second"/>
+    </bean>
+
+    <bean class="learn.spaceflight.spacecraft.InterstellarTransport">
+        <constructor-arg>
+            <!-- A list of references. -->
+            <list>
+                <ref bean="second"/>
+                <ref bean="engineer"/>
+                <ref bean="doctor"/>
+                <ref bean="imbecile"/>
+            </list>
+        </constructor-arg>
+        <!-- Setter injection. -->
+        <property name="captain" ref="captain"/>
+    </bean>
+
+    <!-- scope="prototype" creates a new instance each time getBean is called -->
+    <bean class="learn.spaceflight.spacecraft.Probe" scope="prototype"/>
+</beans>

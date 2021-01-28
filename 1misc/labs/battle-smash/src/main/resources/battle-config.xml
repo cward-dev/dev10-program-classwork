@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--
+    Define "beans" here.
+    A bean definition registers an instance of a data type with the DI container.
+    -->
+
+    <!-- Announcers -->
+    <bean id="mumbler" class="learn.battle.announcers.Mumbler"/>
+
+    <bean id="properAnnouncer" class="learn.battle.announcers.ProperAnnouncer"/>
+
+    <!-- Locations -->
+    <bean id="location1" class="learn.battle.environment.Location">
+        <constructor-arg value = "The Repository Layer"/>
+    </bean>
+
+    <bean id="location2" class="learn.battle.environment.Location">
+        <constructor-arg value = "The Domain Layer"/>
+    </bean>
+
+    <bean id="location3" class="learn.battle.environment.Location">
+        <constructor-arg value = "The UI Layer"/>
+    </bean>
+
+    <!-- Fighters -->
+    <bean id="james" class="learn.battle.fighters.Fighter">
+        <constructor-arg value = "James 'The Master Coder' Churchill"/>
+        <constructor-arg value = "50"/>
+    </bean>
+
+    <bean id="kiel" class="learn.battle.fighters.Fighter">
+        <constructor-arg value = "Kiel 'Dependency Injector' Donelson"/>
+        <constructor-arg value = "50"/>
+    </bean>
+
+    <bean id="irina" class="learn.battle.fighters.Fighter">
+        <constructor-arg value = "Irina 'Enhanced For' Cudo"/>
+        <constructor-arg value = "50"/>
+    </bean>
+
+    <bean id="bugsy" class="learn.battle.fighters.Fighter">
+        <constructor-arg value = "Bugsy, The Ultimate Bug"/>
+        <constructor-arg value = "100"/>
+    </bean>
+
+    <!-- Battle -->
+    <bean id="battle" class="learn.battle.environment.Battle">
+        <constructor-arg ref = "location2"/>
+        <constructor-arg>
+            <list>
+                <ref bean = "james"/>
+                <ref bean = "kiel"/>
+                <ref bean = "irina"/>
+                <ref bean = "bugsy"/>
+            </list>
+        </constructor-arg>
+        <property name="announcer" ref="properAnnouncer"/>
+    </bean>
+</beans>
