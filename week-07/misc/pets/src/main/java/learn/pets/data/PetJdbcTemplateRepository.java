@@ -99,7 +99,7 @@ public class PetJdbcTemplateRepository implements PetRepository {
         }
 
         final String sql = "update pet set "
-                + "`name` = ? "
+                + "`name` = ?, "
                 + "`type` = ? "
                 + "where pet_id = ?;";
 

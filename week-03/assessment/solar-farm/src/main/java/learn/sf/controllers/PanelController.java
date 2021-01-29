@@ -14,6 +14,7 @@ import javax.swing.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:3000", "http://initial-domain.com"})
 @RequestMapping("/panels")
 public class PanelController {
 
@@ -26,28 +27,68 @@ public class PanelController {
     }
 
     @GetMapping("/section/{section}")
-    public List<Panel> findBySection(@PathVariable String section) throws DataAccessException {
-        return service.findBySection(section);
+    public ResponseEntity<List<Panel>> findBySection(@PathVariable String section) throws DataAccessException {
+        List<Panel> panels = service.findBySection(section);
+
+        if (panels == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+        if (panels.size() == 0) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(panels, HttpStatus.OK);
     }
 
     @GetMapping("/material/{material}")
-    public List<Panel> findByMaterial(@PathVariable String material) throws DataAccessException {
-        return service.findByMaterial(PanelMaterial.valueOf(material));
+    public ResponseEntity<List<Panel>> findByMaterial(@PathVariable String material) throws DataAccessException {
+        List<Panel> panels = service.findByMaterial(PanelMaterial.valueOf(material));
+
+        if (panels == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+        if (panels.size() == 0) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(panels, HttpStatus.OK);
     }
 
     @GetMapping("/{panelId}")
-    public Panel findById(@PathVariable int panelId) throws DataAccessException {
-        return service.findById(panelId);
+    public ResponseEntity<Panel> findById(@PathVariable int panelId) throws DataAccessException {
+        Panel panel = service.findById(panelId);
+        if (panel == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(panel, HttpStatus.OK);
     }
 
     @GetMapping("/{section}/{row}/{column}")
-    public Panel findByLocation(@PathVariable String section, @PathVariable int row, @PathVariable int column) throws DataAccessException {
-        return service.findByLocation(section, row, column);
+    public ResponseEntity<Panel> findByLocation(@PathVariable String section, @PathVariable int row, @PathVariable int column) throws DataAccessException {
+        Panel panel = service.findByLocation(section, row, column);
+
+        if (panel == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(panel, HttpStatus.OK);
     }
 
     @GetMapping("/sections")
-    public List<String> getAllSections() throws DataAccessException {
-        return service.getAllSections();
+    public ResponseEntity<List<String>> getAllSections() throws DataAccessException {
+        List<String> sections = service.getAllSections();
+
+        if (sections == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+        if (sections.size() == 0) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(sections, HttpStatus.OK);
     }
 
     @PostMapping

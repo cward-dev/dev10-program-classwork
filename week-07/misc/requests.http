@@ -362,17 +362,18 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8080/panels HTTP/1.1
+PUT http://localhost:8080/panels/1 HTTP/1.1
 Content-Type: application/json
 
 {
-  "section": "Jazz",
-  "row": 45,
-  "column": 45,
-  "yearInstalled": 2010,
-  "material": "MULTICRYSTALLINE_SILICON",
-  "isTracking": false
-}
+  "panelId": 1,
+  "section": "Bluegrass",
+  "row": 2,
+  "column": 13,
+  "yearInstalled": 1994,
+  "material": "AMORPHOUS_SILICON",
+  "tracking": true
+},
 
 ###
 

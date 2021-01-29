@@ -38,11 +38,12 @@ public class AgentJdbcTemplateRepository implements AgentRepository {
                 + "from agent "
                 + "where agent_id = ?;";
 
+        // 1. Map the Agent.
         Agent agent = jdbcTemplate.query(sql, new AgentMapper(), agentId).stream()
                 .findFirst().orElse(null);
 
         if (agent != null) {
-            addAgencies(agent);
+            addAgencies(agent); // 2. Map agencies and agency/agent-specific fields.
         }
 
         return agent;

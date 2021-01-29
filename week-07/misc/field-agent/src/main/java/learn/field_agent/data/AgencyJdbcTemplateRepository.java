@@ -38,12 +38,13 @@ public class AgencyJdbcTemplateRepository implements AgencyRepository {
                 + "from agency "
                 + "where agency_id = ?;";
 
+        // 1. Map the Agency
         Agency result = jdbcTemplate.query(sql, new AgencyMapper(), agencyId).stream()
                 .findAny().orElse(null);
 
         if (result != null) {
-            addLocations(result);
-            addAgents(result);
+            addLocations(result); // 2. Map Locations
+            addAgents(result); // 3. NEW: Map agents and agency/agent-specific fields
         }
 
         return result;
@@ -102,6 +103,7 @@ public class AgencyJdbcTemplateRepository implements AgencyRepository {
 
     private void addAgents(Agency agency) {
 
+        // A join pulls together all related and required data.
         final String sql = "select aa.agency_id, aa.agent_id, aa.identifier, aa.activation_date, aa.is_active, "
                 + "sc.security_clearance_id, sc.name security_clearance_name, "
                 + "a.first_name, a.middle_name, a.last_name, a.dob, a.height_in_inches "
