@@ -24,6 +24,16 @@ public class Panel {
         this.isTracking = isTracking;
     }
 
+    public Panel(int panelId, String section, int row, int column, int yearInstalled, PanelMaterial material, boolean isTracking) {
+        this.panelId = panelId;
+        this.section = section;
+        this.row = row;
+        this.column = column;
+        this.yearInstalled = yearInstalled;
+        this.material = material;
+        this.isTracking = isTracking;
+    }
+
     public int getPanelId() {
         return panelId;
     }
@@ -85,13 +95,13 @@ public class Panel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Panel panel = (Panel) o;
-        return panelId == panel.panelId &&
-                section.equals(panel.getSection()) &&
-                row == panel.getRow() &&
-                column == panel.getColumn() &&
-                yearInstalled == panel.getYearInstalled() &&
-                Objects.equals(material, panel.getMaterial()) &&
-                isTracking == panel.isTracking;
+        return this.panelId == panel.panelId &&
+                this.section.equals(panel.getSection()) &&
+                this.row == panel.getRow() &&
+                this.column == panel.getColumn() &&
+                this.yearInstalled == panel.getYearInstalled() &&
+                Objects.equals(this.material, panel.getMaterial()) &&
+                this.isTracking == panel.isTracking;
     }
 
     @Override // From unexplained encounters lesson

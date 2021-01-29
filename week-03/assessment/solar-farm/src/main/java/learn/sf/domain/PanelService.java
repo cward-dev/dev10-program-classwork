@@ -4,8 +4,10 @@ import learn.sf.data.DataAccessException;
 import learn.sf.data.PanelRepository;
 import learn.sf.model.Panel;
 import learn.sf.model.PanelMaterial;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -115,6 +117,10 @@ public class PanelService {
 
         if (panel.getColumn() < 1 || panel.getColumn() > 250) {
             result.addErrorMessage("Column must be a positive number less than or equal to 250.");
+        }
+
+        if (panel.getYearInstalled() > LocalDate.now().getYear() || panel.getYearInstalled() < 1954) {
+            result.addErrorMessage(String.format("Year must be between 1954 and %s.", LocalDate.now().getYear()));
         }
 
         if (panel.getMaterial() == null) {

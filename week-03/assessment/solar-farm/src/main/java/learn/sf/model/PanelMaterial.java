@@ -1,5 +1,8 @@
 package learn.sf.model;
 
+import java.util.Arrays;
+import java.util.List;
+
 public enum PanelMaterial {
 
     MULTICRYSTALLINE_SILICON("Multicrystalline Silicon", "c-Si"),
@@ -22,5 +25,13 @@ public enum PanelMaterial {
 
     public String getAbbreviation() {
         return abbreviation;
+    }
+
+    public PanelMaterial getFromAbbreviation(String abbreviation) {
+        return Arrays.stream(PanelMaterial.values())
+                .filter(m -> m.abbreviation.equalsIgnoreCase(abbreviation))
+                .findFirst()
+                .orElse(null);
+
     }
 }

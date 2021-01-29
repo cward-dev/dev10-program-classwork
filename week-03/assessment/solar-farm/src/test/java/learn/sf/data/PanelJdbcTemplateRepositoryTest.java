@@ -5,6 +5,8 @@ import learn.sf.model.PanelMaterial;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,38 +20,30 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class PanelJdbcTemplateRepositoryTest {
 
-    private final PanelJdbcTemplateRepository repository;
+    @Autowired
+    PanelJdbcTemplateRepository repository;
 
-    public PanelJdbcTemplateRepositoryTest() {
-        ApplicationContext context = new AnnotationConfigApplicationContext(DbTestConfig.class);
-        repository = context.getBean(PanelJdbcTemplateRepository.class);
-    }
+    @Autowired
+    JdbcTemplate jdbcTemplate;
+
+    static boolean hasSetup = false;
 
     final Panel[] testPanels = new Panel[]{
-            new Panel("Bluegrass",3,15,1994, PanelMaterial.MULTICRYSTALLINE_SILICON,true),
-            new Panel("Jazz",54,22,1983,PanelMaterial.AMORPHOUS_SILICON,false),
-            new Panel("Gospel",13,15,2005,PanelMaterial.COPPER_INDIUM_GALLIUM_SELENIDE,true),
-            new Panel("Jazz",54,10,2016,PanelMaterial.AMORPHOUS_SILICON,false)
+            new Panel(1, "Bluegrass",3,15,1994, PanelMaterial.MULTICRYSTALLINE_SILICON,true),
+            new Panel(2, "Jazz",54,22,1983,PanelMaterial.AMORPHOUS_SILICON,false),
+            new Panel(3, "Gospel",13,15,2005,PanelMaterial.COPPER_INDIUM_GALLIUM_SELENIDE,true),
+            new Panel(4, "Jazz",54,10,2016,PanelMaterial.AMORPHOUS_SILICON,false)
     };
 
-    @BeforeAll
-    static void oneTimeSetup() {
-        ApplicationContext context = new AnnotationConfigApplicationContext(DbTestConfig.class);
-        JdbcTemplate jdbcTemplate = context.getBean(JdbcTemplate.class);
-        jdbcTemplate.update("call set_known_good_state();");
-    }
-
     @BeforeEach
-    void setupTestPanels() {
-//        ApplicationContext context = new AnnotationConfigApplicationContext(DbTestConfig.class);
-//        JdbcTemplate jdbcTemplate = context.getBean(JdbcTemplate.class);
-//        jdbcTemplate.update("call set_known_good_state();");
-        testPanels[0].setPanelId(1);
-        testPanels[1].setPanelId(2);
-        testPanels[2].setPanelId(3);
-        testPanels[3].setPanelId(4);
+    void setup() {
+        if (!hasSetup) {
+            hasSetup = true;
+            jdbcTemplate.update("call set_known_good_state();");
+        }
     }
 
     @Test
