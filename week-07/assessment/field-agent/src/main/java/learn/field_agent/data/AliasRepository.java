@@ -8,6 +8,8 @@ public interface AliasRepository {
 
     List<Alias> findAll();
 
+    List<Alias> findByAgentId(int agentId);
+
     Alias findById(int aliasId);
 
     Alias add(Alias alias);

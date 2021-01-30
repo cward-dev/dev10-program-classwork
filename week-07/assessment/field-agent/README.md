@@ -166,12 +166,14 @@ Implement three new features in the numbered priority order.
   * `deleteById(int aliasId)` -> boolean
 * Class: AliasService (with tests)
   * `findAll()` -> List<Alias>
+  * `findByAgentId()` -> List<Alias>
   * `findById(int aliasId)` -> Alias
   * `add(Alias alias)` -> Result<Alias>
   * `update(Alias alias)` -> Result<Alias>
   * `deleteById(int aliasId)` -> boolean
 * Class: AliasController
   * GET `findAll()` - List<Alias>
+  * GET `findByAgentId(@PathVariable int agentId)` - ResponseEntity<List<Alias>>
   * GET `findById(@PathVariable int aliasId)` returns ResponseEntity<`Alias`>
   * POST `add(@RequestBody Alias alias)` returns ResponseEntity<`Object`>
   * PUT `update(@RequestBody Alias alias)` returns ResponseEntity<`Object`>
@@ -278,13 +280,13 @@ Stretch Goals:
   * Estimated Time: 15 minutes
   * Actual Time: 20 minutes
 
-* [ ] Alias Data Layer
+* [x] Alias Data Layer
   * Estimated Time: 2 hours
-  * Actual Time:
+  * Actual Time: 30 minutes
 
-* [ ] Alias Data Layer Tests
+* [x] Alias Data Layer Tests
   * Estimated Time: 45 minutes
-  * Actual Time:
+  * Actual Time: 30 minutes
 
 * [ ] Alias Domain Layer
   * Estimated Time: 1.5 hours

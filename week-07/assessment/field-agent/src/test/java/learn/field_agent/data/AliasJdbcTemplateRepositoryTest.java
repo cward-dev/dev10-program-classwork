@@ -40,6 +40,14 @@ class AliasJdbcTemplateRepositoryTest {
     }
 
     @Test
+    void shouldFindByAgentId() {
+        List<Alias> aliases = repository.findByAgentId(1);
+
+        assertNotNull(aliases);
+        assertEquals(2, aliases.size());
+    }
+
+    @Test
     void shouldFindById() {
         Alias redNoodle = repository.findById(1);
         assertEquals("Red Noodle", redNoodle.getName());
