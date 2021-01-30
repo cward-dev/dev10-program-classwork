@@ -29,7 +29,9 @@ class SecurityClearanceServiceTest {
                 new SecurityClearance(2, "Top Secret"),
                 new SecurityClearance(3, "Ultra Top Secret"));
         when(repository.findAll()).thenReturn(expected);
+
         List<SecurityClearance> actual = service.findAll();
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -37,6 +39,7 @@ class SecurityClearanceServiceTest {
         // pass-through test, probably not useful
         SecurityClearance expected = makeSecurityClearance();
         when(repository.findById(1)).thenReturn(expected);
+
         SecurityClearance actual = service.findById(1);
         assertEquals(expected, actual);
     }
@@ -84,7 +87,7 @@ class SecurityClearanceServiceTest {
     }
 
     @Test
-    void shouldNotAddDuplicate() {
+    void shouldNotAddDuplicateName() {
         when(repository.findAll()).thenReturn(List.of(makeSecurityClearance()));
 
         SecurityClearance securityClearance = makeSecurityClearance();
@@ -169,22 +172,19 @@ class SecurityClearanceServiceTest {
 
     @Test
     void shouldDeleteById() {
+        // pass-through test, probably not useful
         when(repository.deleteById(1)).thenReturn(true);
-
-        boolean isSuccess = service.deleteById(1);
-        assertTrue(isSuccess);
+        assertTrue(service.deleteById(1));
     }
 
     @Test
     void shouldNotDeleteByIdNotFound() {
         // pass-through test, probably not useful
         when(repository.deleteById(45)).thenReturn(false);
-
-        boolean isSuccess = service.deleteById(45);
-        assertFalse(isSuccess);
+        assertFalse(service.deleteById(45));
     }
 
-    SecurityClearance makeSecurityClearance() {
+    private SecurityClearance makeSecurityClearance() {
         SecurityClearance securityClearance = new SecurityClearance();
         securityClearance.setSecurityClearanceId(1);
         securityClearance.setName("Test Security Clearance");

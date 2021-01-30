@@ -63,7 +63,6 @@ public class SecurityClearanceService {
 
         if (Validations.isNullOrBlank(securityClearance.getName())) {
             result.addMessage("name is required", ResultType.INVALID);
-            return result;
         }
 
         if (checkForDuplicate(securityClearance)) {

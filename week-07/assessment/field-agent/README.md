@@ -288,13 +288,13 @@ Stretch Goals:
   * Estimated Time: 45 minutes
   * Actual Time: 30 minutes
 
-* [ ] Alias Domain Layer
+* [x] Alias Domain Layer
   * Estimated Time: 1.5 hours
-  * Actual Time:
+  * Actual Time: 45 minutes
 
-* [ ] Alias Domain Layer Tests
+* [x] Alias Domain Layer Tests
   * Estimated Time: 45 minutes
-  * Actual Time:
+  * Actual Time: 2.5 hours
 
 * [ ] Alias Controller
   * Estimated Time: 2 hours
