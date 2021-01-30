@@ -75,7 +75,7 @@ public class SecurityClearanceService {
 
     private boolean checkForDuplicate(SecurityClearance securityClearance) {
         return findAll().stream()
-                .map(SecurityClearance::getName)
-                .anyMatch(name -> name.equalsIgnoreCase(securityClearance.getName()));
+                .anyMatch(sc -> sc.getName().equalsIgnoreCase(securityClearance.getName())
+                        && sc.getSecurityClearanceId() != securityClearance.getSecurityClearanceId());
     }
 }

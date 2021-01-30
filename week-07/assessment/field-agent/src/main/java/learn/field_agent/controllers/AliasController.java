@@ -26,11 +26,15 @@ public class AliasController {
     }
 
     @GetMapping("/agent/{agentId}")
-    public List<Alias> findAll(@PathVariable int agentId) { return service.findByAgentId(agentId); }
+    public List<Alias> findByAgentId(@PathVariable int agentId) { return service.findByAgentId(agentId); }
 
     @GetMapping("/{aliasId}")
-    public Alias findById(@PathVariable int aliasId) {
-        return service.findById(aliasId);
+    public ResponseEntity<Alias> findById(@PathVariable int aliasId) {
+        Alias alias = service.findById(aliasId);
+        if (alias == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(alias, HttpStatus.OK);
     }
 
     @PostMapping
