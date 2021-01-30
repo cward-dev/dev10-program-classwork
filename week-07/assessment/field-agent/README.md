@@ -84,7 +84,7 @@ Implement three new features in the numbered priority order.
   * Are there any requirements that I need to get clarification on?
     * Everything seems clear as of now.
   * Do I have to do any research?
-    * Not at this time, will update if/when something comes up.
+    * Exception classes for different codes that need caught in the GlobalExceptionHandler
   * Are there any unknowns? What do I need to do to get clarity?
     * N/A.
   * What are my primary tasks?
@@ -302,7 +302,12 @@ Stretch Goals:
 * [x] Global Error Handling
   * Estimated Time: 2 hours
     * 1 hour for basic development, another hour for poking and breaking.
-  * Actual Time: 30 minutes
+  * Actual Time: 1 hour
+  
+
+#### Research
+* [ ] Exception classes to catch in handler (for AgencyController tests)
+  * HttpMessageNotReadableException
 
 
 #### Misc
