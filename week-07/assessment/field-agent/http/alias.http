@@ -18,6 +18,17 @@ Content-Type: application/json
 
 ###
 
+POST {{url}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Red Noodle",
+    "persona": "London",
+    "agentId": 2
+}
+
+###
+
 PUT {{url}}/2 HTTP/1.1
 Content-Type: application/json
 

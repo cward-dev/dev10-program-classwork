@@ -115,7 +115,9 @@ Implement three new features in the numbered priority order.
 ### What classes and methods do I need to add to the project?
 
 #### SecurityClearance
-
+* Agency/AgencyAgent (classes already exist)
+  * Not sure if changes need made yet, but need to go through and make sure that security clearances are fully integrated
+    * They appear to be at first glance.
 * Class: SecurityClearance (model)
   * `int securityClearanceId;`
   * `String name;`
@@ -149,9 +151,6 @@ Implement three new features in the numbered priority order.
     * Add `List<Alias>` field to model (plus getter/setter)
     * Add `addAliases()` to `AgentJdbcTemplateRepository`
     * Call `addAliases(agent)` in `AgentJdbcTemplateRepository.findById()` if agent != null
-* Agency/AgencyAgent (classes already exist)
-  * Not sure if changes need made yet, but need to go through and make sure that security clearances are fully integrated
-    * They appear to be at first glance.
 * Class: Alias (model)
   * `int aliasId;`
   * `String name;`
@@ -296,14 +295,14 @@ Stretch Goals:
   * Estimated Time: 45 minutes
   * Actual Time: 2.5 hours
 
-* [ ] Alias Controller
+* [x] Alias Controller
   * Estimated Time: 2 hours
-  * Actual Time:
+  * Actual Time: 45 minutes
   
-* [ ] Global Error Handling
+* [x] Global Error Handling
   * Estimated Time: 2 hours
     * 1 hour for basic development, another hour for poking and breaking.
-  * Actual Time:
+  * Actual Time: 30 minutes
 
 
 #### Misc
