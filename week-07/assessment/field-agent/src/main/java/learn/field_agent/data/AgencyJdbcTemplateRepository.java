@@ -91,7 +91,7 @@ public class AgencyJdbcTemplateRepository implements AgencyRepository {
 
     private void addLocations(Agency agency) {
 
-        final String sql = "select location_id, name, address, city, region, "
+        final String sql = "select location_id, `name`, address, city, region, "
                 + "country_code, postal_code, agency_id "
                 + "from location "
                 + "where agency_id = ?";

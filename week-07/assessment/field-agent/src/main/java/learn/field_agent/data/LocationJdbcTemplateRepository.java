@@ -22,7 +22,7 @@ public class LocationJdbcTemplateRepository implements LocationRepository {
     @Override
     public Location findById(int locationId) {
 
-        final String sql = "select location_id, name, address, city, region, country_code, postal_code, agency_id "
+        final String sql = "select location_id, `name`, address, city, region, country_code, postal_code, agency_id "
                 + "from location "
                 + "where location_id = ?;";
 
@@ -34,7 +34,7 @@ public class LocationJdbcTemplateRepository implements LocationRepository {
     @Override
     public Location add(Location location) {
 
-        final String sql = "insert into location (name, address, city, region, country_code, postal_code, agency_id)"
+        final String sql = "insert into location (`name`, address, city, region, country_code, postal_code, agency_id)"
                 + "values (?,?,?,?,?,?,?);";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -63,7 +63,7 @@ public class LocationJdbcTemplateRepository implements LocationRepository {
 
         // don't allow agency_id updates for now
         final String sql = "update location set "
-                + "name = ?, "
+                + "`name` = ?, "
                 + "address = ?, "
                 + "city = ?, "
                 + "region = ?, "

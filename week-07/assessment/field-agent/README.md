@@ -156,6 +156,7 @@ Implement three new features in the numbered priority order.
   * `int aliasId;`
   * `String name;`
   * `String persona;`
+  * `int agentId;`
   * getters and setters
 * Class: AliasJdbcTemplateRepository (with tests)
   * `findAll()` -> List<Alias>
@@ -253,29 +254,29 @@ Stretch Goals:
   * However, I would like to look into doing the third stretch goal in place of/in addition to the first two.
 
 # Tasks
-* [ ] SecurityClearance Data Layer
+* [x] SecurityClearance Data Layer
   * Estimated Time: 1 hours
-  * Actual Time:
+  * Actual Time: 30 minutes
   
-* [ ] SecurityClearance Data Layer Tests
+* [x] SecurityClearance Data Layer Tests
   * Estimated Time: 45 minutes
-  * Actual Time:
+  * Actual Time: 30 minutes
   
-* [ ] SecurityClearance Domain Layer
+* [x] SecurityClearance Domain Layer
   * Estimated Time: 1.5 hours
-  * Actual Time:
+  * Actual Time: 45 minutes
   
-* [ ] SecurityClearance Domain Layer Tests
+* [x] SecurityClearance Domain Layer Tests
   * Estimated Time: 45 minutes
-  * Actual Time:
-  
-* [ ] SecurityClearance Controller
+  * Actual Time: 45 minutes
+   
+* [x] SecurityClearance Controller
   * Estimated Time: 2 hours
-  * Actual Time:
+  * Actual Time: 45 minutes
 
-* [ ] Alias Model
+* [x] Alias Model
   * Estimated Time: 15 minutes
-  * Actual Time:
+  * Actual Time: 20 minutes
 
 * [ ] Alias Data Layer
   * Estimated Time: 2 hours

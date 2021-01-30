@@ -43,7 +43,7 @@ class AgentServiceTest {
     }
 
     @Test
-    void shouldNotAddWhenValid() {
+    void shouldAddWhenValid() {
         Agent expected = makeAgent();
         Agent arg = makeAgent();
         arg.setAgentId(0);

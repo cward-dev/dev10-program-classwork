@@ -1,6 +1,17 @@
 use field_agent;
 
 -- Populate fresh production database
+
+insert into security_clearance values
+	(1, 'Secret'),
+	(2, 'Top Secret'),
+    (3, 'Ultra Top Secret');
+    
+insert into alias(`name`, persona, agent_id) values
+	('Red Noodle', null, 1),
+    ('Watcher', null, 1),
+    ('007', null, 2);
+
 insert into agency(agency_id, short_name, long_name) values
 	(1, 'ACME', 'Agency to Classify & Monitor Evildoers'),
 	(2, 'MASK', 'Mobile Armored Strike Kommand'),
