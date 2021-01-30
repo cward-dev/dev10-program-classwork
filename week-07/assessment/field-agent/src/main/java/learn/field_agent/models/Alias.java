@@ -7,7 +7,7 @@ public class Alias {
     int aliasId;
     String name;
     String persona;
-    int agent_id;
+    int agentId;
 
     public int getAliasId() {
         return aliasId;
@@ -33,12 +33,12 @@ public class Alias {
         this.persona = persona;
     }
 
-    public int getAgent_id() {
-        return agent_id;
+    public int getAgentId() {
+        return agentId;
     }
 
-    public void setAgent_id(int agent_id) {
-        this.agent_id = agent_id;
+    public void setAgentId(int agentId) {
+        this.agentId = agentId;
     }
 
     public Alias() {
