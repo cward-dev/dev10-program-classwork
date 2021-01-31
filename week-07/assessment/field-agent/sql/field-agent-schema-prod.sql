@@ -108,5 +108,3 @@ create table logged_exception (
 insert into security_clearance values
 	(1, 'Secret'),
 	(2, 'Top Secret');
-    
-select * from logged_exception;

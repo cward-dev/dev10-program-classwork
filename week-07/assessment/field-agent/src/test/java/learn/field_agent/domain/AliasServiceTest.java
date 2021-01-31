@@ -53,13 +53,13 @@ class AliasServiceTest {
 
     @Test
     void shouldFindByAgentId() {
-        List<Agent> agents = List.of(makeAgent());
+        Agent agent = makeAgent();
         List<Alias> expected = List.of(
                 new Alias(1, "Red Noodle", null, 1),
                 new Alias(2, "Watcher", null, 1));
 
         when(repository.findByAgentId(1)).thenReturn(expected);
-        when(agentRepository.findAll()).thenReturn(agents);
+        when(agentRepository.findById(1)).thenReturn(agent);
 
         List<Alias> actual = service.findByAgentId(1);
         assertEquals(expected, actual);
@@ -71,25 +71,10 @@ class AliasServiceTest {
                 new Agent(1, "Hazel", "C", "Sauven",
                         LocalDate.of(1954, 9, 16), 76));
 
-        when(agentRepository.findAll()).thenReturn(agents);
+        when(agentRepository.findById(45)).thenReturn(null);
 
         List<Alias> actual = service.findByAgentId(45);
         assertEquals(0, actual.size());
-    }
-
-    @Test
-    void shouldAddNullPersona() {
-        Alias expected = makeAlias();
-        Alias actual = makeAlias();
-        actual.setAliasId(0);
-
-        when(repository.add(actual)).thenReturn(expected);
-        when(agentRepository.findAll()).thenReturn(List.of(makeAgent()));
-
-        Result<Alias> result = service.add(actual);
-
-        assertEquals(ResultType.SUCCESS, result.getType());
-        assertEquals(expected, result.getPayload());
     }
 
     @Test
@@ -102,7 +87,22 @@ class AliasServiceTest {
         actual.setPersona("Test Persona");
 
         when(repository.add(actual)).thenReturn(expected);
-        when(agentRepository.findAll()).thenReturn(List.of(makeAgent()));
+        when(agentRepository.findById(1)).thenReturn(makeAgent());
+        Result<Alias> result = service.add(actual);
+
+        assertEquals(ResultType.SUCCESS, result.getType());
+        assertEquals(expected, result.getPayload());
+    }
+
+    @Test
+    void shouldAddWithNullPersona() {
+        Alias expected = makeAlias();
+        Alias actual = makeAlias();
+        actual.setAliasId(0);
+
+        when(repository.add(actual)).thenReturn(expected);
+        when(agentRepository.findById(1)).thenReturn(makeAgent());
+
         Result<Alias> result = service.add(actual);
 
         assertEquals(ResultType.SUCCESS, result.getType());
@@ -116,7 +116,7 @@ class AliasServiceTest {
         actual.setPersona("     ");
 
         when(repository.add(actual)).thenReturn(makeAlias());
-        when(agentRepository.findAll()).thenReturn(List.of(makeAgent()));
+        when(agentRepository.findById(1)).thenReturn(makeAgent());
         Result<Alias> result = service.add(actual);
 
         assertEquals(ResultType.SUCCESS, result.getType());
@@ -138,7 +138,7 @@ class AliasServiceTest {
         actual.setAliasId(0);
         actual.setName(null);
 
-        when(agentRepository.findAll()).thenReturn(List.of(makeAgent()));
+        when(agentRepository.findById(1)).thenReturn(makeAgent());
         Result<Alias> result = service.add(actual);
 
         assertEquals(ResultType.INVALID, result.getType());
@@ -159,7 +159,7 @@ class AliasServiceTest {
         Alias actual = makeAlias();
         actual.setAliasId(0);
 
-        when(agentRepository.findAll()).thenReturn(List.of(makeAgent()));
+        when(agentRepository.findById(1)).thenReturn(makeAgent());
         when(repository.findAll()).thenReturn(List.of(makeAlias()));
         Result<Alias> result = service.add(actual);
 
@@ -177,7 +177,7 @@ class AliasServiceTest {
         actual.setAliasId(0);
         actual.setPersona("Test Persona");
 
-        when(agentRepository.findAll()).thenReturn(List.of(makeAgent()));
+        when(agentRepository.findById(1)).thenReturn(makeAgent());
         when(repository.findAll()).thenReturn(List.of(alias));
         Result<Alias> result = service.add(actual);
 
@@ -191,7 +191,7 @@ class AliasServiceTest {
         Alias actual = makeAlias();
         actual.setAliasId(45);
 
-        when(agentRepository.findAll()).thenReturn(List.of(makeAgent()));
+        when(agentRepository.findById(1)).thenReturn(makeAgent());
         Result<Alias> result = service.add(actual);
 
         assertEquals(ResultType.INVALID, result.getType());
@@ -206,7 +206,7 @@ class AliasServiceTest {
 
         when(repository.update(actual)).thenReturn(true);
         when(repository.findAll()).thenReturn(List.of(makeAlias()));
-        when(agentRepository.findAll()).thenReturn(List.of(makeAgent()));
+        when(agentRepository.findById(1)).thenReturn(makeAgent());
         Result<Alias> result = service.update(actual);
 
         assertEquals(ResultType.SUCCESS, result.getType());
@@ -218,7 +218,7 @@ class AliasServiceTest {
 
         when(repository.update(actual)).thenReturn(true);
         when(repository.findAll()).thenReturn(List.of(makeAlias()));
-        when(agentRepository.findAll()).thenReturn(List.of(makeAgent()));
+        when(agentRepository.findById(1)).thenReturn(makeAgent());
         Result<Alias> result = service.update(actual);
 
         assertEquals(ResultType.SUCCESS, result.getType());
@@ -230,7 +230,7 @@ class AliasServiceTest {
         actual.setName(null);
 
         when(repository.findAll()).thenReturn(List.of(makeAlias()));
-        when(agentRepository.findAll()).thenReturn(List.of(makeAgent()));
+        when(agentRepository.findById(1)).thenReturn(makeAgent());
         Result<Alias> result = service.update(actual);
 
         assertEquals(ResultType.INVALID, result.getType());
@@ -252,7 +252,7 @@ class AliasServiceTest {
         actual.setPersona(null);
 
         when(repository.findAll()).thenReturn(List.of(makeAlias(), alias2));
-        when(agentRepository.findAll()).thenReturn(List.of(makeAgent()));
+        when(agentRepository.findById(1)).thenReturn(makeAgent());
         Result<Alias> result = service.update(actual);
 
         assertEquals(ResultType.INVALID, result.getType());
@@ -268,7 +268,7 @@ class AliasServiceTest {
         actual.setPersona("V2");
 
         when(repository.findAll()).thenReturn(List.of(makeAlias(), alias2));
-        when(agentRepository.findAll()).thenReturn(List.of(makeAgent()));
+        when(agentRepository.findById(1)).thenReturn(makeAgent());
         Result<Alias> result = service.update(actual);
 
         assertEquals(ResultType.INVALID, result.getType());
@@ -281,13 +281,27 @@ class AliasServiceTest {
         actual.setAgentId(45);
 
         when(repository.findAll()).thenReturn(List.of(makeAlias()));
-        when(agentRepository.findAll()).thenReturn(List.of(makeAgent()));
+        when(agentRepository.findById(1)).thenReturn(makeAgent());
         Result<Alias> result = service.update(actual);
 
         assertEquals(ResultType.NOT_FOUND, result.getType());
         assertEquals("agentId: 45, not found", result.getMessages().get(0));
     }
 
+
+    @Test
+    void shouldDeleteById() {
+        // pass-through test, probably not useful
+        when(repository.deleteById(1)).thenReturn(true);
+        assertTrue(service.deleteById(1));
+    }
+
+    @Test
+    void shouldNotDeleteByIdNotFound() {
+        // pass-through test, probably not useful
+        when(repository.deleteById(45)).thenReturn(false);
+        assertFalse(service.deleteById(45));
+    }
 
     private Alias makeAlias() {
         //('Bill',null,1)
@@ -309,19 +323,5 @@ class AliasServiceTest {
         agent.setDob(LocalDate.of(1954, 9, 16));
         agent.setHeightInInches(76);
         return agent;
-    }
-
-    @Test
-    void shouldDeleteById() {
-        // pass-through test, probably not useful
-        when(repository.deleteById(1)).thenReturn(true);
-        assertTrue(service.deleteById(1));
-    }
-
-    @Test
-    void shouldNotDeleteByIdNotFound() {
-        // pass-through test, probably not useful
-        when(repository.deleteById(45)).thenReturn(false);
-        assertFalse(service.deleteById(45));
     }
 }

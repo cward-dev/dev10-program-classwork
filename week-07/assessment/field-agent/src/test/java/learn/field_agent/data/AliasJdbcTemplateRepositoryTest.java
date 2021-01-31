@@ -59,7 +59,7 @@ class AliasJdbcTemplateRepositoryTest {
 
     @Test
     void shouldAdd() {
-        Alias alias = makeSecurityClearance();
+        Alias alias = makeAlias();
         Alias actual = repository.add(alias);
         assertNotNull(actual);
         assertEquals(NEXT_ALIAS_ID, actual.getAliasId());
@@ -67,7 +67,7 @@ class AliasJdbcTemplateRepositoryTest {
 
     @Test
     void shouldUpdate() {
-        Alias alias = makeSecurityClearance();
+        Alias alias = makeAlias();
         alias.setAliasId(2);
         assertTrue(repository.update(alias));
         alias.setAliasId(16);
@@ -80,7 +80,7 @@ class AliasJdbcTemplateRepositoryTest {
         assertFalse(repository.deleteById(45));
     }
 
-    Alias makeSecurityClearance() {
+    Alias makeAlias() {
         Alias alias = new Alias();
         alias.setName("Tester");
         alias.setPersona(null);

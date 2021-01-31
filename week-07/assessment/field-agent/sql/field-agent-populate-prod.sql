@@ -45,7 +45,15 @@ inner join agent
 where agent.agent_id not in (6, 8)
 and agency.agency_id != 2;
 
+insert into mission values
+	(1, 'Operation Piggy', 'Oink oink.', '1970-01-15', '1970-02-15', '1970-02-24', 150000.00, 1),
+	(2, 'Jump the Gun', 'They''ll never see it coming.', '1970-01-15', '1970-02-15', '1970-02-24', 100500.50, 1),
+	(3, 'Taco Tuesday', 'This may get messy.', '1970-01-15', '1970-02-15', '1970-02-24', 4506.22, 2);
+
 insert into logged_exception values
-	(1, 499, "Original Message", "Handled Message", "1995-01-15 07:30:32"),
-	(2, 499, "Original Message", "Handled Message", "1995-02-03 17:04:53"),
-	(3, 499, "Original Message", "Handled Message", "1995-02-13 12:09:16");   
+	(1, 499, 'Original Message', 'Handled Message', '1995-01-15 07:30:32'),
+	(2, 499, 'Original Message', 'Handled Message', '1995-02-03 17:04:53'),
+	(3, 499, 'Original Message', 'Handled Message', '1995-02-13 12:09:16');
+    
+select * from logged_exception;
+select * from mission;

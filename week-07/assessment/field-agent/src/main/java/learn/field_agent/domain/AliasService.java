@@ -124,8 +124,6 @@ public class AliasService {
     }
 
     private boolean checkForValidAgentId(int agentId) {
-        return agentRepository.findAll().stream()
-                .map(Agent::getAgentId)
-                .anyMatch(id -> id == agentId);
+        return agentRepository.findById(agentId) != null;
     }
 }

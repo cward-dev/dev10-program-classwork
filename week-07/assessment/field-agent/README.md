@@ -348,6 +348,7 @@ Stretch Goals:
 * LoggedExceptionJdbcRepository
   * findAll() - for our convenience
   * add() - logs a caught exception to the database
+* LoggedExceptionMapper
 * LoggedExceptionService
   * findAll()
   * add()
@@ -373,8 +374,33 @@ Stretch Goals:
   * Estimated Time: 30 minutes
   * Actual Time: 30 minutes
   
-  
-  
+## Stretch Goal (Mission HTTP CRUD)
+
+### Plan
+* Add mission insert statements to set_known_good_state for testing
+* Mission (model)
+* MissionJdbcTemplateRepository
+* MissionMapping
+* MissionService
+* MissionController
+
+### Tasks
+* [x] Mission DB updates
+  * Estimated Time: 15 minutes
+  * Actual Time: 20 minutes
+* [x] Mission (model)
+  * Estimated Time: 15 minutes
+  * Actual Time: 10 minutes
+* [ ] Mission data layer
+  * Estimated Time: 30 minutes
+  * Actual Time: 
+* [ ] Mission domain layer
+  * Estimated Time: 45 minutes
+  * Actual Time: 
+* [ ] Agency updates to include List<Mission> (including Transactional delete in repo)
+  * Estimated Time: 30 minutes
+  * Actual Time: 
+
 
 #### Research
 * [x] Exception classes to catch in handler (for AgencyController tests)
