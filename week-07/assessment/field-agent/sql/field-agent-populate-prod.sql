@@ -1,11 +1,6 @@
 use field_agent;
 
 -- Populate fresh production database
-
-insert into security_clearance values
-	(1, 'Secret'),
-	(2, 'Top Secret');
-
 insert into agency(agency_id, short_name, long_name) values
 	(1, 'ACME', 'Agency to Classify & Monitor Evildoers'),
 	(2, 'MASK', 'Mobile Armored Strike Kommand'),

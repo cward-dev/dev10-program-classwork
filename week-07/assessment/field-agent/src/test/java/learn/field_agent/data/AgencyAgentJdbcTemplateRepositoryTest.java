@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,6 +26,12 @@ class AgencyAgentJdbcTemplateRepositoryTest {
     @BeforeEach
     void setup() {
         knownGoodState.set();
+    }
+
+    @Test
+    void shouldFindAgencyAgentsForSecurityClearanceId() {
+        List<AgencyAgent> agencyAgents = repository.findBySecurityClearanceId(1);
+        assertTrue(agencyAgents.size() > 0);
     }
 
     @Test

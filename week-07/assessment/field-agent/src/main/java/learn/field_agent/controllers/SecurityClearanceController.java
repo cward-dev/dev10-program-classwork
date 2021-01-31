@@ -31,7 +31,7 @@ public class SecurityClearanceController {
         if (securityClearance == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(securityClearance, HttpStatus.OK);
+        return ResponseEntity.ok(securityClearance);
     }
 
     @PostMapping
@@ -62,7 +62,7 @@ public class SecurityClearanceController {
         Result<SecurityClearance> result = service.deleteById(securityClearanceId);
 
         if (result.isSuccess()) {
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return ErrorResponse.build(result);
     }

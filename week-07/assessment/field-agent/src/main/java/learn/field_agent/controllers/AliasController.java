@@ -34,7 +34,7 @@ public class AliasController {
         if (alias == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(alias, HttpStatus.OK);
+        return ResponseEntity.ok(alias);
     }
 
     @PostMapping

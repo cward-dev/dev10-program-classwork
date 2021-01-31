@@ -1,13 +1,21 @@
 @url = http://localhost:8080/api/security-clearance
 
+// Positive findAll() - 200 OK
 GET {{url}} HTTP/1.1
 
 ###
 
+// Positive findById() - 200 OK
 GET {{url}}/2 HTTP/1.1
 
 ###
 
+// Negative findById() - 404 NOT FOUND
+GET {{url}}/45 HTTP/1.1
+
+###
+
+// Positive add() - 201 CREATED
 POST {{url}} HTTP/1.1
 Content-Type: application/json
 
@@ -17,14 +25,42 @@ Content-Type: application/json
 
 ###
 
+// Negative add() - 400 BAD REQUEST
+POST {{url}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": " "
+}
+
+###
+
+// Positive update() - 204 NO CONTENT
 PUT {{url}}/2 HTTP/1.1
 Content-Type: application/json
 
 {
     "securityClearanceId": 2,
-    "name": "Top Secret"
+    "name": "More Top Secret Than Before"
 }
 
 ###
 
-DELETE {{url}}/2 HTTP/1.1
+// Negative update() - 409 CONFLICT
+PUT {{url}}/1 HTTP/1.1
+Content-Type: application/json
+
+{
+    "securityClearanceId": 2,
+    "name": "Super Duper Secret"
+}
+
+###
+
+// Positive deleteById() - 204 NO CONTENT
+DELETE {{url}}/3 HTTP/1.1
+
+###
+
+// Negative deleteById() - 400 BAD REQUEST
+DELETE {{url}}/1 HTTP/1.1
