@@ -96,6 +96,14 @@ create table alias (
         references agent(agent_id)
 );
 
+create table logged_exception (
+	logged_exception_id int primary key auto_increment,
+    original_status_code int not null,
+    handled_status_code int not null,
+    `timestamp` datetime not null,
+    message varchar(2048) null
+);
+
 delimiter //
 create procedure set_known_good_state()
 begin
@@ -160,6 +168,11 @@ begin
     inner join agent
     where agent.agent_id not in (6, 8)
     and agency.agency_id != 2;
+    
+	insert into logged_exception values
+		(1, 415, 415, "1995-01-15 07:30:32", "Test message"),
+		(2, 415, 415, "1995-02-03 17:04:53", "Test message"),
+		(3, 415, 415, "1995-02-13 12:09:16", "Test message");   
 
 end //
 -- 4. Change the statement terminator back to the original.

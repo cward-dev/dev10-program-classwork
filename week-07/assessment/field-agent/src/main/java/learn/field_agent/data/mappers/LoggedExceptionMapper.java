@@ -15,7 +15,7 @@ public class LoggedExceptionMapper implements RowMapper<LoggedException> {
         loggedException.setLoggedExceptionId(resultSet.getInt("logged_exception_id"));
         loggedException.setOriginalStatusCode(resultSet.getInt("original_status_code"));
         loggedException.setHandledStatusCode(resultSet.getInt("handled_status_code"));
-        loggedException.setTimestamp(resultSet.getTimestamp("`timestamp`").toLocalDateTime());
+        loggedException.setTimestamp(resultSet.getTimestamp("exception_timestamp").toLocalDateTime());
         loggedException.setMessage(resultSet.getString("message"));
 
         return loggedException;

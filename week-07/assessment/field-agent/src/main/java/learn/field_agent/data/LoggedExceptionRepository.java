@@ -10,5 +10,5 @@ import java.util.List;
 public interface LoggedExceptionRepository {
     List<LoggedException> findAll();
 
-    ResponseEntity<LoggedException> add(LoggedException loggedException);
+    LoggedException add(LoggedException loggedException);
 }
