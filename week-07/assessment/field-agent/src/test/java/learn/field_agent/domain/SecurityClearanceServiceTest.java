@@ -99,6 +99,7 @@ class SecurityClearanceServiceTest {
         when(repository.findAll()).thenReturn(List.of(makeSecurityClearance()));
 
         SecurityClearance securityClearance = makeSecurityClearance();
+        securityClearance.setSecurityClearanceId(0);
         Result<SecurityClearance> result = service.add(securityClearance);
 
         assertEquals(ResultType.INVALID, result.getType());

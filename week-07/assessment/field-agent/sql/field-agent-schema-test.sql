@@ -98,10 +98,10 @@ create table alias (
 
 create table logged_exception (
 	logged_exception_id int primary key auto_increment,
-    original_status_code int not null,
-    handled_status_code int not null,
-    `timestamp` datetime not null,
-    message varchar(2048) null
+	status_code int not null,
+    original_message varchar(2048) not null,
+    handled_message varchar(2048) not null,
+    exception_timestamp datetime not null
 );
 
 delimiter //
@@ -119,6 +119,8 @@ begin
     alter table agent auto_increment = 1;
 	delete from security_clearance;
     alter table security_clearance auto_increment = 1;
+    delete from logged_exception;
+    alter table logged_exception auto_increment = 1;
     
     insert into agency(agency_id, short_name, long_name) values
         (1, 'ACME', 'Agency to Classify & Monitor Evildoers'),
@@ -170,9 +172,9 @@ begin
     and agency.agency_id != 2;
     
 	insert into logged_exception values
-		(1, 415, 415, "1995-01-15 07:30:32", "Test message"),
-		(2, 415, 415, "1995-02-03 17:04:53", "Test message"),
-		(3, 415, 415, "1995-02-13 12:09:16", "Test message");   
+		(1, 499, "Original Message", "Handled Message", "1995-01-15 07:30:32"),
+		(2, 499, "Original Message", "Handled Message", "1995-02-03 17:04:53"),
+		(3, 499, "Original Message", "Handled Message", "1995-02-13 12:09:16");   
 
 end //
 -- 4. Change the statement terminator back to the original.
@@ -181,3 +183,5 @@ delimiter ;
 set SQL_SAFE_UPDATES = 0;
 call set_known_good_state;
 set SQL_SAFE_UPDATES = 1;
+
+select * from logged_exception;

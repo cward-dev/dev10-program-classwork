@@ -44,20 +44,21 @@ public class LoggedExceptionService {
             return result;
         }
 
-        if (loggedException.getOriginalStatusCode() <= 0) {
-            result.addMessage("originalStatusCode is required", ResultType.INVALID);
+        if (Validations.isNullOrBlank(loggedException.getStatusCode())) {
+            result.addMessage("statusCode is required", ResultType.INVALID);
+            return result;
         }
 
-        if (loggedException.getHandledStatusCode() <= 0) {
-            result.addMessage("handledStatusCode is required", ResultType.INVALID);
+        if (Validations.isNullOrBlank(loggedException.getOriginalMessage())) {
+            result.addMessage("originalMessage is required", ResultType.INVALID);
+        }
+
+        if (Validations.isNullOrBlank(loggedException.getHandledMessage())) {
+            result.addMessage("handledMessage is required", ResultType.INVALID);
         }
 
         if (loggedException.getTimestamp() == null || loggedException.getTimestamp().isAfter(LocalDateTime.now())) {
             result.addMessage("timestamp is required and cannot be in the future", ResultType.INVALID);
-        }
-
-        if (Validations.isNullOrBlank(loggedException.getMessage())) {
-            result.addMessage("message is required", ResultType.INVALID);
         }
 
         return result;

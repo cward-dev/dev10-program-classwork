@@ -13,10 +13,10 @@ public class LoggedExceptionMapper implements RowMapper<LoggedException> {
     public LoggedException mapRow(ResultSet resultSet, int i) throws SQLException {
         LoggedException loggedException = new LoggedException();
         loggedException.setLoggedExceptionId(resultSet.getInt("logged_exception_id"));
-        loggedException.setOriginalStatusCode(resultSet.getInt("original_status_code"));
-        loggedException.setHandledStatusCode(resultSet.getInt("handled_status_code"));
+        loggedException.setStatusCode(resultSet.getString("status_code"));
+        loggedException.setOriginalMessage(resultSet.getString("original_message"));
+        loggedException.setHandledMessage(resultSet.getString("handled_message"));
         loggedException.setTimestamp(resultSet.getTimestamp("exception_timestamp").toLocalDateTime());
-        loggedException.setMessage(resultSet.getString("message"));
 
         return loggedException;
     }

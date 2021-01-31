@@ -24,7 +24,7 @@ public class LoggedExceptionJdbcTemplateRepository implements LoggedExceptionRep
 
     @Override
     public List<LoggedException> findAll() {
-        final String sql = "select logged_exception_id, original_status_code, handled_status_code, exception_timestamp, message "
+        final String sql = "select logged_exception_id, status_code, original_message, handled_message, exception_timestamp "
                 + "from logged_exception limit 1000;";
         return jdbcTemplate.query(sql, new LoggedExceptionMapper());
     }
@@ -32,16 +32,16 @@ public class LoggedExceptionJdbcTemplateRepository implements LoggedExceptionRep
     @Override
     public LoggedException add(LoggedException loggedException) {
 
-        final String sql = "insert into logged_exception (original_status_code, handled_status_code, exception_timestamp, message)"
+        final String sql = "insert into logged_exception (status_code, original_message, handled_message, exception_timestamp) "
                 + "values (?,?,?,?);";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int rowsAffected = jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, loggedException.getOriginalStatusCode());
-            ps.setInt(2, loggedException.getHandledStatusCode());
-            ps.setTimestamp(3, Timestamp.valueOf(loggedException.getTimestamp()));
-            ps.setString(4, loggedException.getMessage());
+            ps.setString(1, loggedException.getStatusCode());
+            ps.setString(2, loggedException.getOriginalMessage());
+            ps.setString(3, loggedException.getHandledMessage());
+            ps.setTimestamp(4, Timestamp.valueOf(loggedException.getTimestamp()));
             return ps;
         }, keyHolder);
 

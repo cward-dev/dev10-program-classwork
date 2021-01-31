@@ -98,13 +98,15 @@ create table alias (
 
 create table logged_exception (
 	logged_exception_id int primary key auto_increment,
-    original_status_code int not null,
-    handled_status_code int not null,
-    `timestamp` datetime not null,
-    message varchar(2048) null
+    status_code int not null,
+    original_message varchar(2048) not null,
+    handled_message varchar(2048) not null,
+    exception_timestamp datetime not null
 );
 
 -- data
 insert into security_clearance values
 	(1, 'Secret'),
 	(2, 'Top Secret');
+    
+select * from logged_exception;

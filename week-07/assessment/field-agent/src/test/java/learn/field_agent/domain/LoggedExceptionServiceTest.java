@@ -28,18 +28,15 @@ class LoggedExceptionServiceTest {
     void shouldFindAll() {
         // pass-through test, probably not useful
         List<LoggedException> expected = List.of(
-                new LoggedException(1, 415, 415, LocalDateTime.of(
+                new LoggedException(1, "499", "Test Original", "Test Handled", LocalDateTime.of(
                         LocalDate.of(1995, 1, 15),
-                        LocalTime.of(7, 30, 32)),
-                        "Test message"),
-                new LoggedException(2, 415, 415, LocalDateTime.of(
+                        LocalTime.of(7, 30, 32))),
+                new LoggedException(2, "499", "Test Original", "Test Handled", LocalDateTime.of(
                         LocalDate.of(1995, 2, 3),
-                        LocalTime.of(17, 4, 53)),
-                        "Test message"),
-                new LoggedException(3, 415, 415, LocalDateTime.of(
+                        LocalTime.of(17, 4, 53))),
+                new LoggedException(3, "499", "Test Original", "Test Handled", LocalDateTime.of(
                         LocalDate.of(1995, 2, 13),
-                        LocalTime.of(12, 9, 16)),
-                        "Test message"));
+                        LocalTime.of(12, 9, 16))));
         when(repository.findAll()).thenReturn(expected);
         List<LoggedException> actual = service.findAll();
         assertEquals(expected, actual);
@@ -66,21 +63,49 @@ class LoggedExceptionServiceTest {
     }
 
     @Test
-    void shouldNotAddZeroOrNegativeOriginalStatusCode() {
+    void shouldNotAddNullOrBlankStatusCode() {
         LoggedException loggedException = makeLoggedException();
-        loggedException.setOriginalStatusCode(0);
+        loggedException.setStatusCode(null);
 
         Result<LoggedException> actual = service.add(loggedException);
+        assertEquals(ResultType.INVALID, actual.getType());
+        assertNull(actual.getPayload());
+
+        loggedException.setStatusCode(" ");
+
+        actual = service.add(loggedException);
         assertEquals(ResultType.INVALID, actual.getType());
         assertNull(actual.getPayload());
     }
 
     @Test
-    void shouldNotAddZeroOrNegativeHandledStatusCode() {
+    void shouldNotAddNullOrBlankOriginalMessage() {
         LoggedException loggedException = makeLoggedException();
-        loggedException.setHandledStatusCode(0);
+        loggedException.setOriginalMessage(null);
 
         Result<LoggedException> actual = service.add(loggedException);
+        assertEquals(ResultType.INVALID, actual.getType());
+        assertNull(actual.getPayload());
+
+        loggedException.setOriginalMessage(" ");
+
+        actual = service.add(loggedException);
+        assertEquals(ResultType.INVALID, actual.getType());
+        assertNull(actual.getPayload());
+    }
+
+    @Test
+    void shouldNotAddNullOrBlankHandledMessage() {
+        LoggedException loggedException = makeLoggedException();
+        loggedException.setHandledMessage(null);
+
+        Result<LoggedException> actual = service.add(loggedException);
+        assertEquals(ResultType.INVALID, actual.getType());
+        assertNull(actual.getPayload());
+
+        loggedException.setHandledMessage(" ");
+
+        actual = service.add(loggedException);
         assertEquals(ResultType.INVALID, actual.getType());
         assertNull(actual.getPayload());
     }
@@ -101,30 +126,14 @@ class LoggedExceptionServiceTest {
         assertNull(actual.getPayload());
     }
 
-    @Test
-    void shouldNotAddNullOrBlankMessage() {
-        LoggedException loggedException = makeLoggedException();
-        loggedException.setMessage(null);
-
-        Result<LoggedException> actual = service.add(loggedException);
-        assertEquals(ResultType.INVALID, actual.getType());
-        assertNull(actual.getPayload());
-
-        loggedException.setMessage(" ");
-
-        actual = service.add(loggedException);
-        assertEquals(ResultType.INVALID, actual.getType());
-        assertNull(actual.getPayload());
-    }
-
     private LoggedException makeLoggedException() {
         LoggedException loggedException = new LoggedException();
-        loggedException.setOriginalStatusCode(415);
-        loggedException.setHandledStatusCode(415);
+        loggedException.setStatusCode("499");
+        loggedException.setOriginalMessage("Original Message");
+        loggedException.setHandledMessage("Handled Message");
         loggedException.setTimestamp(LocalDateTime.of(
                     LocalDate.of(1970,1,1),
                     LocalTime.of(7, 30, 12)));
-        loggedException.setMessage("Test message");
 
         return loggedException;
     }

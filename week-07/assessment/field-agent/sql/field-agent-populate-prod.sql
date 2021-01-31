@@ -31,6 +31,11 @@ insert into alias(`name`, persona, agent_id) values
 	('Red Noodle', null, 1),
     ('Watcher', null, 1),
     ('007', null, 2);
+    
+insert into logged_exception values
+		(1, 499, "Original Message", "Handled Message", "1995-01-15 07:30:32"),
+		(2, 499, "Original Message", "Handled Message", "1995-02-03 17:04:53"),
+		(3, 499, "Original Message", "Handled Message", "1995-02-13 12:09:16");   
 	
 insert into agency_agent 
 	(agency_id, agent_id, identifier, security_clearance_id, activation_date)

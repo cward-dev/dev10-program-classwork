@@ -5,20 +5,27 @@ import java.time.LocalDateTime;
 public class LoggedException {
 
     private int loggedExceptionId;
-    private int originalStatusCode;
-    private int handledStatusCode;
+    private String statusCode;
+    private String originalMessage;
+    private String handledMessage;
     private LocalDateTime timestamp;
-    private String message;
 
     public LoggedException() {
     }
 
-    public LoggedException(int loggedExceptionId, int originalStatusCode, int handledStatusCode, LocalDateTime timestamp, String message) {
-        this.loggedExceptionId = loggedExceptionId;
-        this.originalStatusCode = originalStatusCode;
-        this.handledStatusCode = handledStatusCode;
+    public LoggedException(String statusCode, String originalMessage, String handledMessage, LocalDateTime timestamp) {
+        this.statusCode = statusCode;
+        this.originalMessage = originalMessage;
+        this.handledMessage = handledMessage;
         this.timestamp = timestamp;
-        this.message = message;
+    }
+
+    public LoggedException(int loggedExceptionId, String statusCode, String originalMessage, String handledMessage, LocalDateTime timestamp) {
+        this.loggedExceptionId = loggedExceptionId;
+        this.statusCode = statusCode;
+        this.originalMessage = originalMessage;
+        this.handledMessage = handledMessage;
+        this.timestamp = timestamp;
     }
 
     public int getLoggedExceptionId() {
@@ -29,20 +36,28 @@ public class LoggedException {
         this.loggedExceptionId = loggedExceptionId;
     }
 
-    public int getOriginalStatusCode() {
-        return originalStatusCode;
+    public String getStatusCode() {
+        return statusCode;
     }
 
-    public void setOriginalStatusCode(int originalStatusCode) {
-        this.originalStatusCode = originalStatusCode;
+    public void setStatusCode(String statusCode) {
+        this.statusCode = statusCode;
     }
 
-    public int getHandledStatusCode() {
-        return handledStatusCode;
+    public String getOriginalMessage() {
+        return originalMessage;
     }
 
-    public void setHandledStatusCode(int handledStatusCode) {
-        this.handledStatusCode = handledStatusCode;
+    public void setOriginalMessage(String originalMessage) {
+        this.originalMessage = originalMessage;
+    }
+
+    public String getHandledMessage() {
+        return handledMessage;
+    }
+
+    public void setHandledMessage(String handledMessage) {
+        this.handledMessage = handledMessage;
     }
 
     public LocalDateTime getTimestamp() {
@@ -51,13 +66,5 @@ public class LoggedException {
 
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 }
