@@ -48,7 +48,7 @@ class LoggedExceptionJdbcTemplateRepositoryTest {
         LoggedException loggedException = new LoggedException();
         loggedException.setStatusCode("499");
         loggedException.setOriginalMessage("Original Message");
-        loggedException.setHandledMessage("Handled Message");
+        loggedException.setDisplayedMessage("Displayed Message");
         loggedException.setTimestamp(LocalDateTime.of(
                     LocalDate.of(1970,1,1),
                     LocalTime.of(7, 30, 12)));

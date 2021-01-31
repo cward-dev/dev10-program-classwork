@@ -53,7 +53,7 @@ public class LoggedExceptionService {
             result.addMessage("originalMessage is required", ResultType.INVALID);
         }
 
-        if (Validations.isNullOrBlank(loggedException.getHandledMessage())) {
+        if (Validations.isNullOrBlank(loggedException.getDisplayedMessage())) {
             result.addMessage("handledMessage is required", ResultType.INVALID);
         }
 

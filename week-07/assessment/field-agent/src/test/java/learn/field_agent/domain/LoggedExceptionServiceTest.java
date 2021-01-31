@@ -28,13 +28,13 @@ class LoggedExceptionServiceTest {
     void shouldFindAll() {
         // pass-through test, probably not useful
         List<LoggedException> expected = List.of(
-                new LoggedException(1, "499", "Test Original", "Test Handled", LocalDateTime.of(
+                new LoggedException(1, "499", "Test Original", "Test Displayed", LocalDateTime.of(
                         LocalDate.of(1995, 1, 15),
                         LocalTime.of(7, 30, 32))),
-                new LoggedException(2, "499", "Test Original", "Test Handled", LocalDateTime.of(
+                new LoggedException(2, "499", "Test Original", "Test Displayed", LocalDateTime.of(
                         LocalDate.of(1995, 2, 3),
                         LocalTime.of(17, 4, 53))),
-                new LoggedException(3, "499", "Test Original", "Test Handled", LocalDateTime.of(
+                new LoggedException(3, "499", "Test Original", "Test Displayed", LocalDateTime.of(
                         LocalDate.of(1995, 2, 13),
                         LocalTime.of(12, 9, 16))));
         when(repository.findAll()).thenReturn(expected);
@@ -97,13 +97,13 @@ class LoggedExceptionServiceTest {
     @Test
     void shouldNotAddNullOrBlankHandledMessage() {
         LoggedException loggedException = makeLoggedException();
-        loggedException.setHandledMessage(null);
+        loggedException.setDisplayedMessage(null);
 
         Result<LoggedException> actual = service.add(loggedException);
         assertEquals(ResultType.INVALID, actual.getType());
         assertNull(actual.getPayload());
 
-        loggedException.setHandledMessage(" ");
+        loggedException.setDisplayedMessage(" ");
 
         actual = service.add(loggedException);
         assertEquals(ResultType.INVALID, actual.getType());
@@ -130,7 +130,7 @@ class LoggedExceptionServiceTest {
         LoggedException loggedException = new LoggedException();
         loggedException.setStatusCode("499");
         loggedException.setOriginalMessage("Original Message");
-        loggedException.setHandledMessage("Handled Message");
+        loggedException.setDisplayedMessage("Displayed Message");
         loggedException.setTimestamp(LocalDateTime.of(
                     LocalDate.of(1970,1,1),
                     LocalTime.of(7, 30, 12)));

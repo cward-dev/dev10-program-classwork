@@ -100,7 +100,7 @@ create table logged_exception (
 	logged_exception_id int primary key auto_increment,
     status_code int not null,
     original_message varchar(2048) not null,
-    handled_message varchar(2048) not null,
+    displayed_message varchar(2048) not null,
     exception_timestamp datetime not null
 );
 

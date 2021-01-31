@@ -2,7 +2,6 @@ package learn.field_agent.data;
 
 import learn.field_agent.data.mappers.LoggedExceptionMapper;
 import learn.field_agent.models.LoggedException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -24,7 +23,7 @@ public class LoggedExceptionJdbcTemplateRepository implements LoggedExceptionRep
 
     @Override
     public List<LoggedException> findAll() {
-        final String sql = "select logged_exception_id, status_code, original_message, handled_message, exception_timestamp "
+        final String sql = "select logged_exception_id, status_code, original_message, displayed_message, exception_timestamp "
                 + "from logged_exception limit 1000;";
         return jdbcTemplate.query(sql, new LoggedExceptionMapper());
     }
@@ -32,7 +31,7 @@ public class LoggedExceptionJdbcTemplateRepository implements LoggedExceptionRep
     @Override
     public LoggedException add(LoggedException loggedException) {
 
-        final String sql = "insert into logged_exception (status_code, original_message, handled_message, exception_timestamp) "
+        final String sql = "insert into logged_exception (status_code, original_message, displayed_message, exception_timestamp) "
                 + "values (?,?,?,?);";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -40,7 +39,7 @@ public class LoggedExceptionJdbcTemplateRepository implements LoggedExceptionRep
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, loggedException.getStatusCode());
             ps.setString(2, loggedException.getOriginalMessage());
-            ps.setString(3, loggedException.getHandledMessage());
+            ps.setString(3, loggedException.getDisplayedMessage());
             ps.setTimestamp(4, Timestamp.valueOf(loggedException.getTimestamp()));
             return ps;
         }, keyHolder);

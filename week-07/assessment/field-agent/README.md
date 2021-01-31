@@ -252,7 +252,7 @@ Testing Strategies
 Stretch Goals:
   * Implement full HTTP CRUD for `mission`.
   * Implement full HTTP CRUD for the `mission`/`agent` many-to-many relationship.
-  * However, I would like to look into doing the third stretch goal in place of/in addition to the first two.
+  * Implement global exception logging
 
 # Tasks
 * [x] SecurityClearance Data Layer
@@ -303,6 +303,77 @@ Stretch Goals:
   * Estimated Time: 2 hours
     * 1 hour for basic development, another hour for poking and breaking.
   * Actual Time: 1 hour
+  
+## Stretch Goal (Global Exception Logging):
+
+### Plan
+* Update DB Schema and TestSchema
+  * Table logged_exception (logged_exception_id, status_code, original_message, displayed_message, exception_timestamp)
+* LoggedException (model)
+* LoggedExceptionJdbcRepository
+  * findAll() - for our convenience
+  * add() - logs a caught exception to the database
+* LoggedExceptionService
+  * findAll()
+  * add()
+  * validate() - private
+  * Validation may be unnecessary since all occurrences of a caught exception will have valid fields, but to be safe we will include it
+* Will generate testing as I go
+* Update GlobalExceptionHandler to create LoggedException objects and add to DB before returning ResponseEntity
+
+### Tasks
+* [x] LoggedException DB updates
+  * Estimated Time: 30 minutes
+  * Actual Time: 30 minutes
+* [x] LoggedException (model)
+  * Estimated Time: 30 minutes
+  * Actual Time: 15 minutes
+* [x] LoggedException data layer
+  * Estimated Time: 45 minutes
+  * Actual Time: 30 minutes
+* [x] LoggedException domain layer
+  * Estimated Time: 30 minutes
+  * Actual Time: 30 minutes
+* [x] LoggedException GlobalExceptionHandler updates
+  * Estimated Time: 30 minutes
+  * Actual Time: 30 minutes
+
+
+## Stretch Goal (Global Exception Logging):
+
+### Plan
+* Update DB Schema and TestSchema
+  * Table logged_exception (logged_exception_id, status_code, original_message, displayed_message, exception_timestamp)
+* LoggedException (model)
+* LoggedExceptionJdbcRepository
+  * findAll() - for our convenience
+  * add() - logs a caught exception to the database
+* LoggedExceptionService
+  * findAll()
+  * add()
+  * validate() - private
+  * Validation may be unnecessary since all occurrences of a caught exception will have valid fields, but to be safe we will include it
+* Will generate testing as I go
+* Update GlobalExceptionHandler to create LoggedException objects and add to DB before returning ResponseEntity
+
+### Tasks
+* [x] LoggedException DB updates
+  * Estimated Time: 30 minutes
+  * Actual Time: 30 minutes
+* [x] LoggedException (model)
+  * Estimated Time: 30 minutes
+  * Actual Time: 15 minutes
+* [x] LoggedException data layer
+  * Estimated Time: 45 minutes
+  * Actual Time: 30 minutes
+* [x] LoggedException domain layer
+  * Estimated Time: 30 minutes
+  * Actual Time: 30 minutes
+* [x] LoggedException GlobalExceptionHandler updates
+  * Estimated Time: 30 minutes
+  * Actual Time: 30 minutes
+  
+  
   
 
 #### Research

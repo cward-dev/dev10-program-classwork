@@ -7,7 +7,7 @@ public class LoggedException {
     private int loggedExceptionId;
     private String statusCode;
     private String originalMessage;
-    private String handledMessage;
+    private String displayedMessage;
     private LocalDateTime timestamp;
 
     public LoggedException() {
@@ -16,7 +16,7 @@ public class LoggedException {
     public LoggedException(String statusCode, String originalMessage, String handledMessage, LocalDateTime timestamp) {
         this.statusCode = statusCode;
         this.originalMessage = originalMessage;
-        this.handledMessage = handledMessage;
+        this.displayedMessage = handledMessage;
         this.timestamp = timestamp;
     }
 
@@ -24,7 +24,7 @@ public class LoggedException {
         this.loggedExceptionId = loggedExceptionId;
         this.statusCode = statusCode;
         this.originalMessage = originalMessage;
-        this.handledMessage = handledMessage;
+        this.displayedMessage = handledMessage;
         this.timestamp = timestamp;
     }
 
@@ -52,12 +52,12 @@ public class LoggedException {
         this.originalMessage = originalMessage;
     }
 
-    public String getHandledMessage() {
-        return handledMessage;
+    public String getDisplayedMessage() {
+        return displayedMessage;
     }
 
-    public void setHandledMessage(String handledMessage) {
-        this.handledMessage = handledMessage;
+    public void setDisplayedMessage(String displayedMessage) {
+        this.displayedMessage = displayedMessage;
     }
 
     public LocalDateTime getTimestamp() {
