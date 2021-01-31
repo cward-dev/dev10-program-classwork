@@ -306,9 +306,9 @@ Stretch Goals:
   
 
 #### Research
-* [ ] Exception classes to catch in handler (for AgencyController tests)
+* [x] Exception classes to catch in handler (for AgencyController tests)
   * HttpMessageNotReadableException
-
+  * HttpMediaTypeNotSupportedException
 
 #### Misc
 

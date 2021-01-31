@@ -1,12 +1,17 @@
 package learn.field_agent.domain;
 
+import learn.field_agent.data.AgencyAgentRepository;
 import learn.field_agent.data.SecurityClearanceRepository;
+import learn.field_agent.models.AgencyAgent;
+import learn.field_agent.models.Agent;
 import learn.field_agent.models.SecurityClearance;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,6 +25,9 @@ class SecurityClearanceServiceTest {
 
     @MockBean
     SecurityClearanceRepository repository;
+
+    @MockBean
+    AgencyAgentRepository agencyAgentRepository;
 
     @Test
     void shouldFindAll() {
@@ -172,16 +180,35 @@ class SecurityClearanceServiceTest {
 
     @Test
     void shouldDeleteById() {
-        // pass-through test, probably not useful
         when(repository.deleteById(1)).thenReturn(true);
-        assertTrue(service.deleteById(1));
+        when(agencyAgentRepository.findBySecurityClearanceId(1)).thenReturn(new ArrayList<>());
+
+        Result<SecurityClearance> result = service.deleteById(1);
+        assertTrue(result.isSuccess());
+        assertEquals(ResultType.SUCCESS, result.getType());
     }
 
     @Test
     void shouldNotDeleteByIdNotFound() {
-        // pass-through test, probably not useful
         when(repository.deleteById(45)).thenReturn(false);
-        assertFalse(service.deleteById(45));
+        when(agencyAgentRepository.findBySecurityClearanceId(1)).thenReturn(new ArrayList<>());
+
+        Result<SecurityClearance> result = service.deleteById(45);
+        assertFalse(result.isSuccess());
+        assertEquals(ResultType.NOT_FOUND, result.getType());
+        assertEquals("securityClearanceId: 45, not found",
+                result.getMessages().get(0));
+    }
+
+    @Test
+    void shouldNotDeleteByIdWithDependentAgencyAgent() {
+        when(agencyAgentRepository.findBySecurityClearanceId(1)).thenReturn(List.of(makeAgencyAgent()));
+
+        Result<SecurityClearance> result = service.deleteById(1);
+        assertFalse(result.isSuccess());
+        assertEquals(ResultType.INVALID, result.getType());
+        assertEquals("cannot delete a securityClearance with dependent agencyAgent",
+                result.getMessages().get(0));
     }
 
     private SecurityClearance makeSecurityClearance() {
@@ -189,5 +216,29 @@ class SecurityClearanceServiceTest {
         securityClearance.setSecurityClearanceId(1);
         securityClearance.setName("Test Security Clearance");
         return securityClearance;
+    }
+
+    Agent makeAgent() {
+        //('Hazel','C','Sauven','1954-09-16',76),
+        Agent agent = new Agent();
+        agent.setAgentId(1);
+        agent.setFirstName("Hazel");
+        agent.setMiddleName("C");
+        agent.setLastName("Sauven");
+        agent.setDob(LocalDate.of(1954, 9, 16));
+        agent.setHeightInInches(76);
+        return agent;
+    }
+
+    private AgencyAgent makeAgencyAgent() {
+        AgencyAgent agencyAgent = new AgencyAgent();
+        agencyAgent.setAgencyId(1);
+        agencyAgent.setIdentifier("Test");
+        agencyAgent.setActivationDate(LocalDate.of(1970, 1, 1));
+        agencyAgent.setActive(true);
+
+        agencyAgent.setAgent(makeAgent());
+        agencyAgent.setSecurityClearance(makeSecurityClearance());
+        return agencyAgent;
     }
 }

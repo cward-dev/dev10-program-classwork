@@ -1,5 +1,6 @@
 package learn.field_agent.domain;
 
+import learn.field_agent.data.AgencyAgentRepository;
 import learn.field_agent.data.SecurityClearanceRepository;
 import learn.field_agent.models.SecurityClearance;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,12 @@ public class SecurityClearanceService {
 
     private final SecurityClearanceRepository repository;
 
-    public SecurityClearanceService(SecurityClearanceRepository repository) { this.repository = repository; }
+    private final AgencyAgentRepository agencyAgentRepository;
+
+    public SecurityClearanceService(SecurityClearanceRepository repository, AgencyAgentRepository agencyAgentRepository) {
+        this.repository = repository;
+        this.agencyAgentRepository = agencyAgentRepository;
+    }
 
     public List<SecurityClearance> findAll() { return repository.findAll(); }
 
@@ -52,7 +58,23 @@ public class SecurityClearanceService {
         return result;
     }
 
-    public boolean deleteById(int securityClearanceId) { return repository.deleteById(securityClearanceId); }
+    public Result<SecurityClearance> deleteById(int securityClearanceId) {
+        Result<SecurityClearance> result = new Result<>();
+
+        boolean dependentAgencyAgentExists = checkForDependentAgencyAgent(securityClearanceId);
+        if (dependentAgencyAgentExists) {
+            result.addMessage("cannot delete a securityClearance with dependent agencyAgent", ResultType.INVALID);
+            return result;
+        }
+
+        boolean deleted = repository.deleteById(securityClearanceId);
+        if (!deleted) {
+            String msg = String.format("securityClearanceId: %s, not found", securityClearanceId);
+            result.addMessage(msg, ResultType.NOT_FOUND);
+        }
+
+        return result;
+    }
 
     private Result<SecurityClearance> validate(SecurityClearance securityClearance) {
         Result<SecurityClearance> result = new Result<>();
@@ -77,5 +99,9 @@ public class SecurityClearanceService {
         return findAll().stream()
                 .anyMatch(sc -> sc.getName().equalsIgnoreCase(securityClearance.getName())
                         && sc.getSecurityClearanceId() != securityClearance.getSecurityClearanceId());
+    }
+
+    private boolean checkForDependentAgencyAgent(int securityClearanceId) {
+        return agencyAgentRepository.findBySecurityClearanceId(securityClearanceId).size() > 0;
     }
 }
