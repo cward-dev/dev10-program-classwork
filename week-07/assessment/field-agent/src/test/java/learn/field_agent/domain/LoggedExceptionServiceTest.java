@@ -126,6 +126,16 @@ class LoggedExceptionServiceTest {
         assertNull(actual.getPayload());
     }
 
+    @Test
+    void shouldNotAddIdSet() {
+        LoggedException loggedException = makeLoggedException();
+        loggedException.setLoggedExceptionId(1);
+
+        Result<LoggedException> actual = service.add(loggedException);
+        assertEquals(ResultType.INVALID, actual.getType());
+        assertNull(actual.getPayload());
+    }
+
     private LoggedException makeLoggedException() {
         LoggedException loggedException = new LoggedException();
         loggedException.setStatusCode("499");

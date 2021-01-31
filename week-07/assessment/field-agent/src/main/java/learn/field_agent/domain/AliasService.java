@@ -60,7 +60,7 @@ public class AliasService {
         }
 
         if (!repository.update(alias)) {
-            String msg = String.format("aliasId: %s, not found", alias.getAgentId());
+            String msg = String.format("aliasId: %s, not found", alias.getAliasId());
             result.addMessage(msg, ResultType.NOT_FOUND);
         }
 

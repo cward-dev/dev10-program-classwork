@@ -2,6 +2,7 @@ package learn.field_agent.models;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Mission {
 
@@ -100,5 +101,25 @@ public class Mission {
 
     public void setAgencyId(int agencyId) {
         this.agencyId = agencyId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Mission mission = (Mission) o;
+        return missionId == mission.missionId
+                && agencyId == mission.agencyId
+                && Objects.equals(codeName, mission.codeName)
+                && Objects.equals(notes, mission.notes)
+                && Objects.equals(startDate, mission.startDate)
+                && Objects.equals(projectedEndDate, mission.projectedEndDate)
+                && Objects.equals(actualEndDate, mission.actualEndDate)
+                && Objects.equals(operationalCost, mission.operationalCost);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(missionId, codeName, notes, startDate, projectedEndDate, actualEndDate, operationalCost, agencyId);
     }
 }

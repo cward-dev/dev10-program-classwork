@@ -225,6 +225,24 @@ class AliasServiceTest {
     }
 
     @Test
+    void shouldNotUpdateMissingOrInvalidId() {
+        Alias actual = new Alias(0, "Test", null, 1);
+
+        when(repository.findAll()).thenReturn(List.of(makeAlias()));
+        when(agentRepository.findById(1)).thenReturn(makeAgent());
+        Result<Alias> result = service.update(actual);
+
+        assertEquals(ResultType.INVALID, result.getType());
+        assertEquals("aliasId must be set for `update` operation", result.getMessages().get(0));
+
+        actual.setAliasId(45);
+        result = service.update(actual);
+
+        assertEquals(ResultType.NOT_FOUND, result.getType());
+        assertEquals("aliasId: 45, not found", result.getMessages().get(0));
+    }
+
+    @Test
     void shouldNotUpdateNullOrBlankName() {
         Alias actual = makeAlias();
         actual.setName(null);

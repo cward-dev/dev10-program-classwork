@@ -3,6 +3,7 @@ package learn.field_agent.domain;
 import learn.field_agent.data.AgencyRepository;
 import learn.field_agent.data.MissionRepository;
 import learn.field_agent.models.Agency;
+import learn.field_agent.models.Alias;
 import learn.field_agent.models.Mission;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -293,6 +294,30 @@ class MissionServiceTest {
         Result<Mission> result = service.update(actual);
 
         assertEquals(ResultType.SUCCESS, result.getType());
+    }
+
+
+    @Test
+    void shouldNotUpdateMissingOrInvalidId() {
+        Mission actual = new Mission(0, "Operation Test", "Test.",
+                LocalDate.of(1970, 1, 15),
+                LocalDate.of(1970, 2, 15),
+                LocalDate.of(1970, 2, 24),
+                new BigDecimal("3.50"),
+                1);
+
+        when(repository.findAll()).thenReturn(List.of(makeMission()));
+        when(agencyRepository.findById(1)).thenReturn(makeAgency());
+        Result<Mission> result = service.update(actual);
+
+        assertEquals(ResultType.INVALID, result.getType());
+        assertEquals("missionId must be set for `update` operation", result.getMessages().get(0));
+
+        actual.setMissionId(45);
+        result = service.update(actual);
+
+        assertEquals(ResultType.NOT_FOUND, result.getType());
+        assertEquals("missionId: 45, not found", result.getMessages().get(0));
     }
 
     @Test

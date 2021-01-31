@@ -1,6 +1,7 @@
 package learn.field_agent.models;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class LoggedException {
 
@@ -66,5 +67,22 @@ public class LoggedException {
 
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LoggedException that = (LoggedException) o;
+        return loggedExceptionId == that.loggedExceptionId
+                && Objects.equals(statusCode, that.statusCode)
+                && Objects.equals(originalMessage, that.originalMessage)
+                && Objects.equals(displayedMessage, that.displayedMessage)
+                && Objects.equals(timestamp, that.timestamp);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(loggedExceptionId, statusCode, originalMessage, displayedMessage, timestamp);
     }
 }
