@@ -1,10 +1,6 @@
 package learn.field_agent.domain;
 
-import com.mysql.cj.log.Log;
-import learn.field_agent.data.LocationRepository;
 import learn.field_agent.data.LoggedExceptionRepository;
-import learn.field_agent.models.Alias;
-import learn.field_agent.models.Location;
 import learn.field_agent.models.LoggedException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,7 +125,6 @@ class LoggedExceptionServiceTest {
                     LocalDate.of(1970,1,1),
                     LocalTime.of(7, 30, 12)));
         loggedException.setMessage("Test message");
-
 
         return loggedException;
     }
