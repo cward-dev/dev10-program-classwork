@@ -3,12 +3,12 @@ package learn.field_agent.domain;
 import learn.field_agent.data.AgencyRepository;
 import learn.field_agent.data.MissionRepository;
 import learn.field_agent.models.Agency;
-import learn.field_agent.models.Alias;
 import learn.field_agent.models.Mission;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.cglib.core.Local;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -272,6 +272,20 @@ class MissionServiceTest {
     }
 
     @Test
+    void shouldNotAddDuplicate() {
+        Mission actual = makeMission();
+        actual.setMissionId(0);
+
+        when(repository.findAll()).thenReturn(List.of(makeMission()));
+        when(agencyRepository.findById(1)).thenReturn(makeAgency());
+        Result<Mission> result = service.add(actual);
+
+        assertEquals(ResultType.INVALID, result.getType());
+        assertEquals("codeName: 'Operation Piggy', agencyId: 1, already exists", result.getMessages().get(0));
+        assertNull(result.getPayload());
+    }
+
+    @Test
     void shouldNotAddWithId() {
         Mission actual = makeMission();
         actual.setMissionId(45);
@@ -417,6 +431,27 @@ class MissionServiceTest {
 
         assertEquals(ResultType.NOT_FOUND, result.getType());
         assertEquals("agencyId: 45, not found", result.getMessages().get(0));
+    }
+
+    @Test
+    void shouldNotUpdateDuplicate() {
+        Mission mission2 = new Mission(2, "Test", "Test",
+                LocalDate.of(1970,6,1),
+                LocalDate.of(1970,6,10),
+                LocalDate.of(1970,6,10),
+                new BigDecimal("3.50"),
+                1);
+
+        Mission actual = makeMission();
+        actual.setCodeName("Test");
+
+        when(repository.findAll()).thenReturn(List.of(makeMission(), mission2));
+        when(agencyRepository.findById(1)).thenReturn(makeAgency());
+        Result<Mission> result = service.update(actual);
+
+        assertEquals(ResultType.INVALID, result.getType());
+        assertEquals("codeName: 'Test', agencyId: 1, already exists", result.getMessages().get(0));
+        assertNull(result.getPayload());
     }
 
 

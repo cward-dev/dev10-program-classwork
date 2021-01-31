@@ -1,0 +1,90 @@
+@url = http://localhost:8080/api/mission
+
+// Positive findAll() - 200 OK
+GET {{url}} HTTP/1.1
+
+###
+
+// Positive findById() - 200 OK
+GET {{url}}/2 HTTP/1.1
+
+###
+
+// Negative findById() - 404 NOT FOUND
+GET {{url}}/45 HTTP/1.1
+
+###
+
+// Positive add() - 201 CREATED
+POST {{url}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "codeName": "Death By Chocolate Cake",
+    "notes": null,
+    "startDate": "2020-01-23",
+    "projectedEndDate": "2020-01-29",
+    "actualEndDate": "2020-01-25",
+    "operationalCost": 34.55,
+    "agencyId": 1
+}
+
+###
+
+// Negative add() - 404 NOT FOUND
+POST {{url}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "codeName": "Death By Chocolate Cake",
+    "notes": null,
+    "startDate": "2020-01-23",
+    "projectedEndDate": "2020-01-29",
+    "actualEndDate": "2020-01-25",
+    "operationalCost": 34.55,
+    "agencyId": 0
+}
+
+###
+
+// Positive update() - 204 NO CONTENT
+PUT {{url}}/1 HTTP/1.1
+Content-Type: application/json
+
+{
+    "missionId": 1,
+    "codeName": "Operation Piggy: Electric Boogaloo",
+    "notes": "Oink oink, the sequel.",
+    "startDate": "2020-01-23",
+    "projectedEndDate": "2020-01-29",
+    "actualEndDate": "2020-01-25",
+    "operationalCost": 3.50,
+    "agencyId": 1
+}
+
+###
+
+// Negative update() - 409 CONFLICT
+PUT {{url}}/45 HTTP/1.1
+Content-Type: application/json
+
+{
+    "missionId": 1,
+    "codeName": "Operation Piggy: Electric Boogaloo",
+    "notes": "Oink oink, the sequel.",
+    "startDate": "2020-01-23",
+    "projectedEndDate": "2020-01-29",
+    "actualEndDate": "2020-01-25",
+    "operationalCost": 3.50,
+    "agencyId": 1
+}
+
+###
+
+// Positive delete() - 204 NO CONTENT
+DELETE {{url}}/3 HTTP/1.1
+
+###
+
+// Negative delete() - 404 NOT FOUND
+DELETE {{url}}/45 HTTP/1.1

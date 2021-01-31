@@ -91,13 +91,10 @@ public class AliasService {
             String msg;
             if (alias.getPersona() == null) {
                 msg = String.format("name: '%s', already exists, cannot set without persona", alias.getName());
-                result.addMessage(msg, ResultType.INVALID);
             } else {
-                if (checkForDuplicate(alias)) {
-                    msg = String.format("name: '%s', persona: '%s', already exists", alias.getName(), alias.getPersona());
-                    result.addMessage(msg, ResultType.INVALID);
-                }
+                msg = String.format("name: '%s', persona: '%s', already exists", alias.getName(), alias.getPersona());
             }
+            result.addMessage(msg, ResultType.INVALID);
         }
 
         if (!checkForValidAgentId(alias.getAgentId())) {
@@ -109,6 +106,9 @@ public class AliasService {
     }
 
     private boolean checkForDuplicate(Alias alias) {
+        if (alias.getName() == null) {
+            return false;
+        }
         if (alias.getPersona() == null) {
             return findAll().stream()
                     .filter(a -> a.getName().equalsIgnoreCase(alias.getName()))

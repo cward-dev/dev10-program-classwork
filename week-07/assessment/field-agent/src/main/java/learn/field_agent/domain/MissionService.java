@@ -114,7 +114,23 @@ public class MissionService {
             result.addMessage(msg, ResultType.NOT_FOUND);
         }
 
+        if (checkForDuplicate(mission)) {
+            String msg = String.format("codeName: '%s', agencyId: %s, already exists",
+                    mission.getCodeName(), mission.getAgencyId());
+            result.addMessage(msg, ResultType.INVALID);
+        }
+
         return result;
+    }
+
+    private boolean checkForDuplicate(Mission mission) {
+        if (mission.getCodeName() == null) {
+            return false;
+        }
+        return findAll().stream()
+                .filter(m -> m.getCodeName().equalsIgnoreCase(mission.getCodeName()))
+                .anyMatch(m -> m.getAgencyId() == mission.getAgencyId()
+                        && m.getMissionId() != mission.getMissionId());
     }
 
     private boolean checkForValidAgencyId(int agencyId) {
