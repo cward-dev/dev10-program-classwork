@@ -20,7 +20,7 @@ POST {{url}} HTTP/1.1
 Content-Type: application/json
 
 {
-    name: "Ultra Top Secret"
+    "name": "Ultra Top Secret"
 }
 
 ###
@@ -63,4 +63,4 @@ DELETE {{url}}/3 HTTP/1.1
 ###
 
 // Negative deleteById() - 400 BAD REQUEST
-DELETE {{url}}/1 HTTP/1.1
+DELETE {{url}}/45 HTTP/1.1

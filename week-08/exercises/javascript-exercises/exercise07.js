@@ -14,6 +14,9 @@ function getFirstVowel(value) {
     }
 
     for (let i = 0; i < value.lenth; i++) {
+        switch (value.charAt(i)) {
+            
+        }
         if(vowels.includes(value.charAt(i).toLowerCase())) {
             return value.charAt(i);
         }
