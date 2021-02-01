@@ -11,7 +11,6 @@ import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 @ControllerAdvice
@@ -63,7 +62,7 @@ public class GlobalExceptionHandler {
                 "Illegal Argument: " + ex.getMessage());
 
         ResponseEntity<ErrorResponse> responseEntity = new ResponseEntity<>(
-                errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+                errorResponse, HttpStatus.BAD_REQUEST);
 
         service.add(new LoggedException(
                 String.valueOf(responseEntity.getStatusCodeValue()),

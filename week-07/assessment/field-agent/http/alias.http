@@ -18,7 +18,7 @@ GET {{url}}/2 HTTP/1.1
 ###
 
 // Negative findById() - 404 NOT FOUND
-GET {{url}}/45 HTTP/1.1
+GET {{url}}/20 HTTP/1.1
 
 ###
 
@@ -78,4 +78,4 @@ DELETE {{url}}/3 HTTP/1.1
 ###
 
 // Negative delete() - 404 NOT FOUND
-DELETE {{url}}/45 HTTP/1.1
+DELETE {{url}}/4 HTTP/1.1
