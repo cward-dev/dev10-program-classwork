@@ -1,5 +1,7 @@
 @url = http://localhost:8080/api/alias
 
+// GET REQUESTS MADE FOR DEMONSTRATION PURPOSES, NOT NECESSARY FOR END USER PRODUCT
+
 // Positive findAll() - 200 OK
 GET {{url}} HTTP/1.1
 

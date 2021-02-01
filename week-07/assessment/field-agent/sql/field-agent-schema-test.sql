@@ -184,12 +184,9 @@ begin
 		(3, 499, 'Original Message', 'Handled Message', '1995-02-13 12:09:16');   
 
 end //
--- 4. Change the statement terminator back to the original.
 delimiter ;
 
+-- for manual setting of known good state
 set SQL_SAFE_UPDATES = 0;
 call set_known_good_state;
 set SQL_SAFE_UPDATES = 1;
-
-select * from logged_exception;
-select * from mission;

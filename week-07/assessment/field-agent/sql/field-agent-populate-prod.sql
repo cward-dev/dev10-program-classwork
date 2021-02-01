@@ -55,5 +55,4 @@ insert into logged_exception values
 	(2, 499, 'Original Message', 'Handled Message', '1995-02-03 17:04:53'),
 	(3, 499, 'Original Message', 'Handled Message', '1995-02-13 12:09:16');
     
-select * from logged_exception;
-select * from mission;
+select * from logged_exception; -- For code review demonstration
