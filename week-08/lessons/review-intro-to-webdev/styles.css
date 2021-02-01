@@ -1,0 +1,37 @@
+.header {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+#whole_form {
+    margin: auto;
+}
+
+.label {
+    font-weight: 500;
+}
+
+.form-control {
+    margin-bottom: 20px;
+}
+
+#submit_button {
+    font-weight: 500;
+}
+
+#submit_button:disabled {
+    background-color: gray;
+    border-color: gray;
+}
+
+#h_line {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.alert {
+    display: inline-block;
+    margin: 7px;
+    font-weight: 500;
+  }

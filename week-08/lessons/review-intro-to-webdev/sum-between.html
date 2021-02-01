@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="styles.css">
+        <title>Sum Between</title>
+        <link rel="icon" href="images/sumbetween.png" type="image/png">
+    </head>
+    <body>
+        <div class="container">
+            <h1 class="header">Sum Between</h1>
+                <div class="form">
+                    <form>
+                        <div class="form-group">
+                            <label class="label" for="minimum-input">Minimum</label>
+                            <input required type="text" id="minimum-input" class="form-control" placeholder="Minimum">
+                            <label class="label" for="maximum-input">Maximum</label>
+                            <input required type="text" id="maximum-input" class="form-control" placeholder="Maximum">
+                        </div>
+                        <button type="button" class="btn btn-primary" id="submit_button" onclick=calculateSum()>Calculate</button>
+                    </form>
+                </div>
+                <hr id="h_line">
+                <div id="results"></div>
+                <br>
+                <p id="message"></p>
+        </div>
+        <script src="scripts.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    </body>
+</html>
