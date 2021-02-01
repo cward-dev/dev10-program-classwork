@@ -10,6 +10,7 @@ public class Agency {
     private String longName;
     private List<Location> locations = new ArrayList<>();
     private List<AgencyAgent> agents = new ArrayList<>();
+    private List<Mission> missions = new ArrayList<>();
 
     public Agency() {
     }
@@ -58,5 +59,13 @@ public class Agency {
 
     public void setAgents(List<AgencyAgent> agents) {
         this.agents = agents;
+    }
+
+    public List<Mission> getMissions() {
+        return missions;
+    }
+
+    public void setMissions(List<Mission> missions) {
+        this.missions = missions;
     }
 }

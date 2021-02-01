@@ -3,6 +3,7 @@ package learn.field_agent.data;
 import learn.field_agent.data.mappers.AgencyAgentMapper;
 import learn.field_agent.data.mappers.AgencyMapper;
 import learn.field_agent.data.mappers.LocationMapper;
+import learn.field_agent.data.mappers.MissionMapper;
 import learn.field_agent.models.Agency;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -44,6 +45,7 @@ public class AgencyJdbcTemplateRepository implements AgencyRepository {
         if (result != null) {
             addLocations(result);
             addAgents(result);
+            addMissions(result);
         }
 
         return result;
@@ -112,6 +114,16 @@ public class AgencyJdbcTemplateRepository implements AgencyRepository {
 
         var agencyAgents = jdbcTemplate.query(sql, new AgencyAgentMapper(), agency.getAgencyId());
         agency.setAgents(agencyAgents);
+    }
+
+    private void addMissions(Agency agency) {
+
+        final String sql = "select mission_id, code_name, notes, start_date, projected_end_date, actual_end_date, operational_cost, agency_id "
+                + "from mission "
+                + "where agency_id = ?;";
+
+        var missions = jdbcTemplate.query(sql, new MissionMapper(), agency.getAgencyId());
+        agency.setMissions(missions);
     }
 
 }
