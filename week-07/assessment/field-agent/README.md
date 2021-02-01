@@ -254,7 +254,19 @@ Stretch Goals:
   * Implement full HTTP CRUD for the `mission`/`agent` many-to-many relationship.
   * Implement global exception logging
 
+## Total Time
+
+* MVP Estimated Time: 15.25 hours
+* MVP Actual Time: 9.75 hours
+  
+* Stretch Estimated Time: 7.25 hours
+* Stretch Actual Time: 6.75 hours
+
+* Total Estimated Time: 22.5 hours
+* Total Actual Time: 16.5 hours
+
 # Tasks
+
 * [x] SecurityClearance Data Layer
   * Estimated Time: 1 hours
   * Actual Time: 30 minutes
@@ -277,7 +289,7 @@ Stretch Goals:
 
 * [x] Alias Model
   * Estimated Time: 15 minutes
-  * Actual Time: 20 minutes
+  * Actual Time: 30 minutes
 
 * [x] Alias Data Layer
   * Estimated Time: 2 hours
@@ -387,19 +399,22 @@ Stretch Goals:
 ### Tasks
 * [x] Mission DB updates
   * Estimated Time: 15 minutes
-  * Actual Time: 20 minutes
+  * Actual Time: 15 minutes
 * [x] Mission (model)
   * Estimated Time: 15 minutes
-  * Actual Time: 10 minutes
-* [ ] Mission data layer
+  * Actual Time: 15 minutes
+* [x] Mission data layer
+  * Estimated Time: 1 hour 30 minutes
+  * Actual Time: 1 hour
+* [x] Mission domain layer
+  * Estimated Time: 1.5 hours
+  * Actual Time: 2 hours
+* [ ] Mission Controller
   * Estimated Time: 30 minutes
-  * Actual Time: 
-* [ ] Mission domain layer
-  * Estimated Time: 45 minutes
-  * Actual Time: 
-* [ ] Agency updates to include List<Mission> (including Transactional delete in repo)
+  * Actual Time: 45 minutes
+* [x] Agency updates to include List<Mission> (including Transactional delete in repo)
   * Estimated Time: 30 minutes
-  * Actual Time: 
+  * Actual Time: 15 minutes
 
 
 #### Research
