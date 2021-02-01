@@ -26,7 +26,14 @@ public class AliasController {
     }
 
     @GetMapping("/agent/{agentId}")
-    public List<Alias> findByAgentId(@PathVariable int agentId) { return service.findByAgentId(agentId); }
+    public ResponseEntity<List<Alias>> findByAgentId(@PathVariable int agentId) {
+        List<Alias> aliases = service.findByAgentId(agentId);
+        if (aliases.size() == 0) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+
+        return ResponseEntity.ok(aliases);
+    }
 
     @GetMapping("/{aliasId}")
     public ResponseEntity<Alias> findById(@PathVariable int aliasId) {

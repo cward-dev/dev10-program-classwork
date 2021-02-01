@@ -7,6 +7,11 @@ GET {{url}} HTTP/1.1
 
 ###
 
+// Positive findByAgentId() - 200 OK
+GET {{url}}/agent/1 HTTP/1.1
+
+###
+
 // Positive findById() - 200 OK
 GET {{url}}/2 HTTP/1.1
 
