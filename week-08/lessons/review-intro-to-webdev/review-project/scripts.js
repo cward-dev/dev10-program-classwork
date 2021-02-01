@@ -13,13 +13,13 @@ function calculateSum() {
 
     let sum = min_value;
     let values_string = "" + min_value;
-    for (i = 1; i <= difference_value; i++) {
+    for (let i = 1; i <= difference_value; i++) {
         sum += min_value + i;
-        values_string += ("," + (min_value + i));
+        values_string += (", " + (min_value + i));
     }
 
     let new_sum = document.createElement("div");
-    new_sum.innerHTML = "<b>Sum:</b><br>" + sum + "<br><br><b>Values:</b><br>" + values_string;
+    new_sum.innerHTML = `<b>Sum:</b><br>${sum}<br><br><b>Values:</b><br>${values_string}`;
     
 
     let results = document.getElementById('results');
