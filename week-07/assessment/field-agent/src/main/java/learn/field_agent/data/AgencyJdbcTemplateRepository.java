@@ -86,6 +86,7 @@ public class AgencyJdbcTemplateRepository implements AgencyRepository {
     @Override
     @Transactional
     public boolean deleteById(int agencyId) {
+        jdbcTemplate.update("delete from mission where agency_id = ?", agencyId);
         jdbcTemplate.update("delete from location where agency_id = ?", agencyId);
         jdbcTemplate.update("delete from agency_agent where agency_id = ?", agencyId);
         return jdbcTemplate.update("delete from agency where agency_id = ?", agencyId) > 0;
