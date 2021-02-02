@@ -3,6 +3,9 @@
 // as a parameter.
 // Inside the function, execute the parameter function.
 
+function runFunction(passedFunction) {
+    passedFunction();
+};
 
 /* In the console, you should see:
 one

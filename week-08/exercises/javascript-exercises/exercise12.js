@@ -9,6 +9,13 @@ const assert = require("assert");
 // Otherwise, returns false.
 // (See exercise08.)
 
+function areInOrder(numberOne, numberTwo, numberThree) {
+    if (numberOne <= numberTwo && numberTwo <= numberThree) {
+        return true;
+    }
+    return false;
+}
+
 // 2. Create a function.
 // Name: areContiguous
 // Parameters: number, number, number
@@ -26,6 +33,15 @@ const assert = require("assert");
 // 7, 5, 6 -> false
 // 1, 0, 1 -> true
 
+function areContiguous(numberOne, numberTwo, numberThree) {
+    if (numberOne + 1 === numberTwo || numberOne - 1 === numberTwo) {
+        if (numberTwo + 1 === numberThree || numberTwo - 1 === numberThree) {
+            return true;
+        }
+    }
+    return false;
+}
+
 // 3. Create a function.
 // Name: isAscendingContiguous
 // Parameters: number, number, number
@@ -34,6 +50,13 @@ const assert = require("assert");
 // Otherwise, returns false.
 // Hint: call areInOrder and areContiguous. Neither method can guarantee the result alone, but together they solve
 // the problem.
+
+function isAscendingContiguous(numberOne, numberTwo, numberThree) {
+    if (areInOrder(numberOne, numberTwo, numberThree) && areContiguous(numberOne, numberTwo, numberThree)) {
+        return true;
+    }
+    return false;
+}
 
 // Execute this exercise.
 // If you see the message "success!", all tests pass.

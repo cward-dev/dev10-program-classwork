@@ -6,6 +6,15 @@ const assert = require("assert");
 // - isGrumpy === false
 // - favoriteColors === an array containing "orange" and "lilac"
 
+
+function makeObject() {
+    return obj = {
+        name: "Timi",
+        isGrumpy: false,
+        favoriteColors: ["orange", "lilac"]
+    }
+}
+
 // Execute this exercise.
 // If you see the message "success!", all tests pass.
 

@@ -10,6 +10,20 @@ const assert = require("assert");
 // If two or more arguments are passed, push the first two args in the rest parameter
 // and return.
 
+function pushTheRest(anyOne, anyTwo, ...anyThree) {
+    if (arguments.length === 0) {
+        return [];
+    }
+
+    if (arguments.length === 1) {
+        anyThree.push(anyOne);
+        return anyThree;
+    }
+
+    anyThree.push(anyOne, anyTwo);
+    return anyThree;
+}
+
 // Execute this exercise.
 // If you see the message "success!", all tests pass.
 

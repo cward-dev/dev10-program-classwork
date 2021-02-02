@@ -17,6 +17,28 @@ Generically:
 // If any property is missing, omit it. If a missing property creates an empty line, omit the line.
 // Hint: object destructing is useful, but not required, here.
 
+function printBusinessCard(object) {
+  let result = ``;
+
+  if (object.firstName !== undefined && object.lastName !== undefined) {
+    result += `\n${object.firstName} ${object.lastName}`;
+  } else if (object.firstName !== undefined) {
+    result += `\n${object.firstName}`;
+  } else if (object.lastName !== undefined) {
+    result += `\n${object.lastName}`;
+  }
+
+  if (object.jobTitle !== undefined) {
+    result += `\n${object.jobTitle}`
+  }
+
+  if (object.pithyPhrase !== undefined) {
+    result += `\n${object.pithyPhrase}`
+  }
+
+  console.log(result);
+}
+
 
 printBusinessCard({
     jobTitle: "Architect",

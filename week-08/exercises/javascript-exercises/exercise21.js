@@ -6,6 +6,10 @@ const assert = require("assert");
 // uses the second's.
 // Hint: spread syntax is useful here.
 
+function mergeObjects(objOne, objTwo) {
+    return {...objOne, ...objTwo};
+}
+
 // Execute this exercise.
 // If you see the message "success!", all tests pass.
 

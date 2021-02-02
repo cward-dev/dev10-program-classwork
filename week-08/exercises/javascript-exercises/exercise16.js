@@ -6,6 +6,15 @@ const assert = require("assert");
 // Return the new array.
 // Hint: `filter` is useful here.
 
+function removeEveryOther(entries) {
+    let result = [];
+    for (const [i, v] of entries.entries()) {
+        if (i % 2 === 0) {
+            result.push(v);
+        }
+    }
+    return result;
+}
 
 // Execute this exercise.
 // If you see the message "success!", all tests pass.

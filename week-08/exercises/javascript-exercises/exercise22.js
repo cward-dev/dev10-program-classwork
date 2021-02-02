@@ -7,6 +7,10 @@ const assert = require("assert");
 // Return the result.
 // Hint: the `map` method is useful here.
 
+function extractNames(objArray) {
+    return objArray.map(obj => obj.name).filter(name => name !== undefined);
+
+}
 
 // Execute this exercise.
 // If you see the message "success!", all tests pass.

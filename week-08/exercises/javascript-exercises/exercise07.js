@@ -13,15 +13,12 @@ function getFirstVowel(value) {
         return "";
     }
 
-    for (let i = 0; i < value.lenth; i++) {
-        switch (value.charAt(i)) {
-            
-        }
+    for (let i = 0; i < value.length; i++) {
         if(vowels.includes(value.charAt(i).toLowerCase())) {
             return value.charAt(i);
         }
     }
-    return null;
+    return "";
 }
 
 // Node's assert library will test your function.

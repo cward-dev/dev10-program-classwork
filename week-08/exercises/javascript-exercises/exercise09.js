@@ -12,6 +12,13 @@ const assert = require("assert");
 // third parameter: 3
 // fourth parameter: 4
 
+function areInOrder(numOne = 1, numTwo = 2, numThree = 3, numFour = 4) {
+    if (numOne <= numTwo && numTwo <= numThree && numThree <= numFour) {
+        return true;
+    }
+    return false;
+}
+
 // Execute this exercise.
 // If you see the message "success!", all tests pass.
 
