@@ -28,5 +28,5 @@ hs_err_pid*
 # Maven
 target/
 
-# npm-nodes
+# npm node_modules
 node_modules/
