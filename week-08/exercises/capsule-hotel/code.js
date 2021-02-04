@@ -3,6 +3,7 @@ const capsules = [];
 
 const bookGuestForm = document.getElementById("book-guest");
 const checkOutGuestForm = document.getElementById("check-out");
+const messageDiv = document.getElementById("messages");
 
 function handleGuestFormSubmit(event) {
     // prevents default behavior of the form (keeps from refreshing)
@@ -52,6 +53,12 @@ function handleCheckOutGuestFormSubmit(event) {
 
     // reset the form
     checkOutGuestElement.value = '';
+}
+
+function updateMessages(message) {
+    if (message === null || message.trim().length === 0) {
+
+    }
 }
 
 function renderCapsules() {

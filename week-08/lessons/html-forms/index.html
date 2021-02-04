@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forms</title>  
+</head>
+<body>
+  <!-- Add snippets here. -->
+  <div>
+    <label for="petName">Name</label>
+    <input type="text" id="petName" name="petName">
+  </div>
+  <div>
+      <label for="likesKibble">Likes Kibble</label>
+      <input type="checkbox" id="likesKibble" name="likesKibble">
+  </div>
+  <div>
+    <input type="text" id="txtOne" name="txtOne">
+    <!-- default's to type="text" -->
+    <input id="txtTwo" name="txtTwo">
+    <!-- has an initial value -->
+    <input type="text" id="txtThree" name="txtThree" value="This is the starting value.">
+    <!-- placeholder prompts the user -->
+    <input type="text" id="txtFour" name="txtFour" placeholder="[Enter some text here.]">
+    <!-- title shows a message when the user hovers -->
+    <input type="text" id="txtFive" name="txtFive" title="I am for entering text.">
+  </div>
+  <div>
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password">
+    <label for="passwordConfirm">Confirm Password</label>
+    <input type="password" id="passwordConfirm" name="passwordConfirm">
+  </div>
+  <div>
+    <input type="checkbox" id="chkOne" name="chkOne">
+    <input type="checkbox" id="chkTwo" name="chkTwo" value="isHopeful">
+    <input type="checkbox" id="chkThree" name="chkThree" checked>
+    <label for="chkFour">I Am Check Four</label>
+    <input type="checkbox" id="chkFour" name="chkFour" title="Check me to win a prize." checked>
+  </div>
+  <div>
+    <h2>Choose a primary color.</h2>
+    <input type="radio" name="color" id="rdRed" value="Red">
+    <input type="radio" name="color" id="rdBlue" value="Blue">
+    <input type="radio" name="color" id="rdYellow" value="Yellow">
+  </div>
+  <div>
+      <h2>How do you commute?</h2>
+      <label for="rdWalk">Walk</label>
+      <input type="radio" name="commute" id="rdWalk" value="Walk">
+      <label for="rdBike">Bike</label>
+      <input type="radio" name="commute" id="rdBike" value="Bike">
+      <label for="rdCar">Car</label>
+      <input type="radio" name="commute" id="rdCar" value="Car">
+      <label for="rdBus">Bus</label>
+      <input type="radio" name="commute" id="rdBus" value="Bus">
+      <label for="rdTrain">Train</label>
+      <input type="radio" name="commute" id="rdTrain" value="Train">
+      <label for="rdHome">Work from home</label>
+      <input type="radio" name="commute" id="rdHome" value="Work From Home" checked>
+  </div>
+  <div>
+    <input type="number" id="anyNumber" name="anyNumber">
+    <input type="number" id="between1and10" name="between1and10" value="1" min="1" max="10" step="0.1">
+  </div>
+  <div>
+    <!-- no values, text is the value -->
+    <select name="color" id="color">
+      <option>Red</option>
+      <option selected>Blue</option>
+      <option>Yellow</option>
+    </select>
+      <!-- explicit values -->
+    <select name="commute" id="commute">
+      <option value="walk">Walk</option>
+      <option value="bike">Bicycle</option>
+      <option value="car">Drive</option>
+      <option value="bus">Bus</option>
+      <option value="train">Train</option>
+      <option value="home" selected>Work from Home</option>
+    </select>
+  </div>
+  <div>
+    <h2>Which commuting methods would you consider?</h2>
+    <select name="commute" id="commute" multiple>
+        <option value="walk">Walk</option>
+        <option value="bike">Bicycle</option>
+        <option value="car">Drive</option>
+        <option value="bus">Bus</option>
+        <option value="train">Train</option>
+        <option value="home">Work from Home</option>
+    </select>
+  </div>
+  <div>
+    <textarea id="comment" name="comment"></textarea>
+    <textarea id="profile" name="profile" cols="35" rows="10">My favorite color is light tan.
+    I like puppies.</textarea>
+  </div>
+  <div>
+    <!-- submit button inside the form -->
+    <form onsubmit="alert('first form submitted');return false;">
+      <button type="submit">Submit</button>
+    </form>
+
+    <!-- submit button with the `form` attribute -->
+    <form id="frmTwo" onsubmit="alert('second form submitted');return false;">
+    </form>
+    <button type="submit" form="frmTwo">Submit</button>
+  </div>
+</body>
+</html>
