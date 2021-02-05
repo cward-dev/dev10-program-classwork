@@ -80,7 +80,7 @@ Implement a full CRUD UI for agents.
 * Are there any unknowns? What do I need to do to get clarity?
   * No unknowns at this time.
 * What are my primary tasks?
-  1. Create a directory containing a server subdirectory (Java API) and a client subdirectory (React app)
+  1. Create a directory containing a server folder (Java API app) and a client folder (React app)
   2. Enable full CRUD for Agents in the React app through HTTP requests sent to the server
   3. Create forms that will be used to handle user inputs (add/update features)
   4. Establish validation of all user input fields
