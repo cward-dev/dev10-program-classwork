@@ -7,7 +7,7 @@ const DEFAULT_COIN_CONFIG = [
   { amount: 0.10, maxClicks: 10},
   { amount: 0.05, maxClicks: 10},
   { amount: 0.01, maxClicks: 10}
-]
+];
 
 
 function PiggyBank( { coinConfig = DEFAULT_COIN_CONFIG } ) {
@@ -30,7 +30,7 @@ function PiggyBank( { coinConfig = DEFAULT_COIN_CONFIG } ) {
   return (
     <div className="piggy-bank">
       <div className="row">
-          {coinConfig.map(makeCoinPanel)}
+        {coinConfig.map(makeCoinPanel)}
       </div>
       <h4>Total: ${total.toFixed(2)}</h4>
     </div>

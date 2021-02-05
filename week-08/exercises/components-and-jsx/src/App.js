@@ -11,7 +11,7 @@ function App() {
       <Heading text="Bye Suckers" />
       <Heading text="Hello Again" />
       <Heading text="I can keep doing this." />
-      <Numbers minimum="3" maximum="17" />
+      <Numbers minimum={5} maximum={17} />
       <Movies />
       <Movie title="Avengers: Endgame" releaseYear="2020" />
     </div>

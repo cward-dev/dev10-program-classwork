@@ -1,9 +1,6 @@
 function Numbers( { minimum, maximum } ) {
-  const minValue = parseInt(minimum);
-  const maxValue = parseInt(maximum);
   const numbersToDisplay = [];
-
-  for (let i = minValue; i <= maxValue; i++) {
+  for (let i = minimum; i <= maximum; i++) {
     numbersToDisplay.push(i);
   }
   
