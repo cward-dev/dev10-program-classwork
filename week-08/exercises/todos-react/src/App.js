@@ -1,11 +1,11 @@
 import './App.css';
-import TodoList from './components/TodoList.js';
+import TodoListFetch from './components/TodoListFetch.js';
 
 function App() {
   return (
     <div className="container">
       <h1>Todo List</h1>
-      <TodoList />
+      <TodoListFetch />
     </div>
   );
 }
