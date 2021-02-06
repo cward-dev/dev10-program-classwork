@@ -1,0 +1,81 @@
+@url = http://localhost:8080/api/alias
+
+// GET REQUESTS MADE FOR DEMONSTRATION PURPOSES, NOT NECESSARY FOR END USER PRODUCT
+
+// Positive findAll() - 200 OK
+GET {{url}} HTTP/1.1
+
+###
+
+// Positive findByAgentId() - 200 OK
+GET {{url}}/agent/1 HTTP/1.1
+
+###
+
+// Positive findById() - 200 OK
+GET {{url}}/2 HTTP/1.1
+
+###
+
+// Negative findById() - 404 NOT FOUND
+GET {{url}}/45 HTTP/1.1
+
+###
+
+// Positive add() - 201 CREATED
+POST {{url}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Red Noodle",
+    "persona": "London",
+    "agentId": 2
+}
+
+###
+
+// Negative add() - 404 NOT FOUND CREATED
+POST {{url}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": null,
+    "persona": null,
+    "agentId": 45
+}
+
+###
+
+// Positive update() - 204 NO CONTENT
+PUT {{url}}/1 HTTP/1.1
+Content-Type: application/json
+
+{
+    "aliasId": 1,
+    "name": "Blue Noodle",
+    "persona": null,
+    "agentId": 1
+}
+
+###
+
+// Negative update() - 409 CONFLICT
+PUT {{url}}/45 HTTP/1.1
+Content-Type: application/json
+
+{
+    "aliasId": 1,
+    "name": "Blue Noodle",
+    "persona": null,
+    "agentId": 1
+}
+
+###
+
+// Positive delete() - 204 NO CONTENT
+DELETE {{url}}/3 HTTP/1.1
+
+###
+
+// Negative delete() - 404 NOT FOUND
+DELETE {{url}}/4 HTTP/1.1
