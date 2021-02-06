@@ -181,10 +181,10 @@ Implement a full CRUD UI for agents.
 ### Advanced Navigation Task List
 * [x] Set up MenuSelection.js
   * Estimated Time: 2 hours
-  * Actual Time: 
+  * Actual Time: 1 hour
 * [x] Refactor to have Agents menu button display the Agents features
   * Estimated Time: 1 hour
-  * Actual Time: 
+  * Actual Time: 2 hours
 
 ### Alias CRUD UI Task List
 * [x] Set up AliasFetch.js
