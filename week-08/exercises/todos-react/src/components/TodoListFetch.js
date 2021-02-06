@@ -145,7 +145,7 @@ function TodoListFetch() {
                         <tr key={item.id}>
                             <td>{item.description}</td>
                             <td>
-                                <button type="submit" onClick={() => editById(item.id)}>Edit</button>
+                                <button type="button" onClick={() => editById(item.id)}>Edit</button>
                                 <button onClick={() => deleteById(item.id)}>Delete</button>
                             </td>
                         </tr>)

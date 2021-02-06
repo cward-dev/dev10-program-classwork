@@ -1,0 +1,36 @@
+.container {
+  max-width: 90%;
+}
+
+#current-form {
+  padding-bottom: 20px;
+}
+
+.first-name-item {
+  width: 18%;
+  max-width: 18%;
+}
+
+.middle-name-item {
+  width: 9%;
+}
+
+.last-name-item {
+  width: 18%;
+}
+
+.dob-item {
+  width: 15%;
+}
+
+.height-item {
+  width: 10%;
+}
+
+.actions-agent-item {
+  width: 30%;
+}
+
+#agent-pic {
+  height: 300px;
+}

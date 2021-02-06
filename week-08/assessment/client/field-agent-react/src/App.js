@@ -1,10 +1,10 @@
 import React from 'react';
-import AgentFetch from './components/AgentFetch.js';
+import MainMenu from './components/MainMenu.js';
 
 class App extends React.Component {
   render() {
     return (
-      <AgentFetch />
+      <MainMenu />
     );
   }
 }

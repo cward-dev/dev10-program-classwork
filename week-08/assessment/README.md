@@ -137,68 +137,72 @@ Implement a full CRUD UI for agents.
 
 ### Elapsed Time
 
-* Estimated (Without Stretch Goals): 8.25 hours
-* Actual (Without Stretch Goals): 
+* TOTAL TIME:
+  * Estimated: 14.25 hours
+  * Actual: 16.75 hours
+
+* Estimated (Without Stretch Goals): 8.75 hours
+* Actual (Without Stretch Goals): 10 hours
 
 ### Task List
 
-* [ ] Set up Project Directory and Basic React App
+* [x] Set up Project Directory and Basic React App
   * Estimated Time: 1 hour
-  * Actual Time: 
-* [ ] Set up AgentFetch.js
+  * Actual Time: 0.75 hours
+* [x] Set up AgentFetch.js
   * Estimated Time: 2 hours
-  * Actual Time: 
-* [ ] Set up Agent.js
+  * Actual Time: 3 hours
+* [x] Set up Agent.js
   * Estimated Time: 0.25 hours
-  * Actual Time: 
-* [ ] Set up AgentAddForm.js
+  * Actual Time: 0.25 hours
+* [x] Set up AgentAddForm.js
   * Estimated Time: 1.5 hours
-  * Actual Time: 
-* [ ] Set up AgentUpdateForm.js
+  * Actual Time: 2 hours
+* [x] Set up AgentUpdateForm.js
   * Estimated Time: 1 hour
-  * Actual Time: 
-* [ ] Set up Errors.js
-  * Estimated Time: 30 minutes
-  * Actual Time: 
-* [ ] Implement Advanced Navigation Stretch Goal
-  * Estimated Time: 30 minutes
-  * Actual Time: 
-* [ ] Implement Alias CRUD UI Stretch Goal
-  * Estimated Time: 30 minutes
-  * Actual Time: 
-* [ ] Play with CSS to "prettify" the app
+  * Actual Time: 0.5 hours
+* [x] Set up AgentDeleteForm.js
+  * Estimated Time: 0.5 hours
+  * Actual Time: 0.25 hours
+* [x] Set up Errors.js
+  * Estimated Time: 0.5 hours
+  * Actual Time: 0.25 hours
+* [x] Play with CSS to "prettify" the app
   * Estimated Time: 2 hours
-  * Actual Time: 
+  * Actual Time: 4 hours
 
 ## Stretch Goal Tasks
 
 ### Elapsed Time
 
-* Estimated: 5.25 hours
-* Actual: 
+* Estimated: 5.5 hours
+* Actual: 5.75 hours
 
 ### Advanced Navigation Task List
-* [ ] Set up MenuSelection.js
+* [x] Set up MenuSelection.js
   * Estimated Time: 2 hours
   * Actual Time: 
-* [ ] Refactor to have Agents menu button display the Agents features
+* [x] Refactor to have Agents menu button display the Agents features
   * Estimated Time: 1 hour
   * Actual Time: 
 
 ### Alias CRUD UI Task List
-* [ ] Set up AliasFetch.js
+* [x] Set up AliasFetch.js
   * Estimated Time: 1 hour
-  * Actual Time: 
-* [ ] Set up Alias.js
+  * Actual Time: 1.5 hours
+* [x] Set up Alias.js
   * Estimated Time: 0.25 hours
-  * Actual Time: 
-* [ ] Set up AliasAddForm.js
+  * Actual Time: 0.25 hours
+* [x] Set up AliasAddForm.js
   * Estimated Time: 0.5 hours
-  * Actual Time: 
-* [ ] Set up AliasUpdateForm.js
+  * Actual Time: 0.5 hours
+* [x] Set up AliasUpdateForm.js
   * Estimated Time: 0.5 hours
-  * Actual Time: 
+  * Actual Time: 0.25 hours
+* [x] Set up AliasDeleteForm.js
+  * Estimated Time: 0.25 hours
+  * Actual Time: 0.25 hours
 
 ```
-Will need to figure out how to select an agent from a list to attach to an Alias (instead of having user input the agentId)
+Will need to figure out how to select an agent from a list to attach to an Alias (instead of having user input the agentId) // OPTED FOR NAVIGATING TO ALIAS PAGE DIRECTLY FROM AGENT LIST
 ```

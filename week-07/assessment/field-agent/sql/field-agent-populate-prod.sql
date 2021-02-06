@@ -23,7 +23,7 @@ values
 	('Winn','V','Puckrin','1999-10-21',60),
 	('Kiab','U','Whitham','1960-07-29',52),
 	('Min','E','Dearle','1967-04-18',44),
-	('Urban','H','Carwithen',null,58),
+	('Urban','H','Carwithen','1978-01-02',58),
 	('Ulises','B','Muhammad','2008-04-01',80),
 	('Phylys','Y','Howitt','1979-03-28',68);
     
@@ -56,3 +56,5 @@ insert into logged_exception values
 	(3, 499, 'Original Message', 'Handled Message', '1995-02-13 12:09:16');
     
 select * from logged_exception; -- For code review demonstration
+
+select * from agent;

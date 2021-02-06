@@ -1,0 +1,31 @@
+.btn-success {
+  background-color: #2aaf5d;
+  font-weight: bold;
+  color: whitesmoke;
+}
+
+.btn-info {
+  background-color: #41a1b9;
+  font-weight: bold;
+  color: whitesmoke;
+}
+
+.btn-warning {
+  background-color: #ffe96b;
+  font-weight: bold;
+  color: black;
+}
+
+.btn-danger {
+  background-color: #db4646;
+  font-weight: bold;
+  color: whitesmoke;
+}
+
+.form-row {
+  margin-top: 10px;
+}
+
+#submit-alias, #cancel-alias {
+  margin-top: 20px;
+}
