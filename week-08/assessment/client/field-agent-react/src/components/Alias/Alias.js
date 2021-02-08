@@ -1,5 +1,3 @@
-import './Alias.css';
-
 function Alias( { alias, setEditAliasId, setDeleteAliasId, handleCancel } ) {
 
   const { aliasId, name, persona } = alias;

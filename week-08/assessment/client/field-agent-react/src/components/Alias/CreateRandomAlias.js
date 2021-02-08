@@ -8,8 +8,8 @@ function createRandomAlias (agentId) {
   ];
 
   const alias = {
-    "name": nameArray[Math.floor(Math.random() * 9)],
-    "persona": personaArray[Math.floor(Math.random() * 9)],
+    "name": nameArray[Math.floor(Math.random() * nameArray.length)],
+    "persona": personaArray[Math.floor(Math.random() * personaArray.length)],
     "agentId": agentId
   };
 

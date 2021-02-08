@@ -56,3 +56,5 @@ insert into logged_exception values
 	(3, 499, 'Original Message', 'Handled Message', '1995-02-13 12:09:16');
     
 select * from logged_exception; -- For code review demonstration
+
+select * from agent;

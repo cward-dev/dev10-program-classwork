@@ -1,5 +1,3 @@
-import './Agent.css';
-
 function Agent( { agent, setEditAgentId, setDeleteAgentId, handleAliases, handleCancel } ) {
 
   const { agentId, firstName, middleName, lastName, dob, heightInInches} = agent;

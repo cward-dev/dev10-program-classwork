@@ -1,5 +1,3 @@
-import '../Agent/Agent.css';
-
 function AgentForAlias ({ agent, goBackToAgentMenu }) {
   return (
     <div>
