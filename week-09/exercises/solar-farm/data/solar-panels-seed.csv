@@ -1,0 +1,5 @@
+panelId,section,row,column,yearInstalled,material,isTracking
+1,Bluegrass,3,15,1994,MULTICRYSTALLINE_SILICON,true
+2,Jazz,54,22,1983,AMORPHOUS_SILICON,false
+3,Gospel,13,15,2005,COPPER_INDIUM_GALLIUM_SELENIDE,true
+4,Jazz,54,10,2016,AMORPHOUS_SILICON,false
