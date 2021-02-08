@@ -8,9 +8,11 @@ import learn.sf.model.PanelMaterial;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.*;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -92,12 +94,16 @@ public class PanelController {
     }
 
     @PostMapping
-    public ResponseEntity<Panel> add(@RequestBody Panel panel) throws DataAccessException {
-        PanelResult result = service.add(panel);
+    public ResponseEntity<Object> add(@RequestBody @Valid Panel panel, BindingResult result) throws DataAccessException {
+        if (result.hasErrors()) {
+            return new ResponseEntity<>(result.getAllErrors(), HttpStatus.BAD_REQUEST);
+        }
 
-        if (!result.isSuccess()) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        PanelResult resultPanel = service.add(panel);
 
-        return new ResponseEntity<>(result.getPayload(), HttpStatus.CREATED);
+        if (!resultPanel.isSuccess()) return new ResponseEntity<>(resultPanel.getMessages(), HttpStatus.BAD_REQUEST);
+
+        return new ResponseEntity<>(resultPanel.getPayload(), HttpStatus.CREATED);
     }
 
     @PutMapping("/{panelId}")

@@ -1,15 +1,38 @@
 package learn.sf.model;
 
+import org.springframework.cglib.core.Local;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.Objects;
 
+@NotNull(message = "Panel cannot be null.")
 public class Panel {
 
     private int panelId;
+
+    @NotNull(message = "Section is required.")
+    @NotBlank(message = "Section is required.")
     private String section;
+
+    @Min(value = 1, message = "Row must be a positive number less than or equal to 250.")
+    @Max(value = 250, message = "Row must be a positive number less than or equal to 250.")
     private int row;
+
+    @Min(value = 1, message = "Column must be a positive number less than or equal to 250.")
+    @Max(value = 250, message = "Column must be a positive number less than or equal to 250.")
     private int column;
+
+    @Max(value = 2021, message = "Year must be between 1954 and 2021.")
+    @Min(value = 1954, message = "Year must be between 1954 and 2021.")
     private int yearInstalled;
+
+    @NotNull(message = "Material is required.")
     private PanelMaterial material;
+
     private boolean isTracking;
 
     public Panel() {
