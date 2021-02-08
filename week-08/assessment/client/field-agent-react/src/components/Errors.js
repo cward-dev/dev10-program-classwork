@@ -1,11 +1,11 @@
 function Errors( { errors } ) {
   if (errors.length === 0) {
-    return null;
+    return [];
   }
 
   return (
-    <div className="alert alert-danger">
-      The following errors were found:
+    <div className="alert alert-danger pt-4">
+      <b>--Error--{errors.length > 1 ? 's' : null}</b>
       <ul>
         {errors.map(error => (
           <li key={error}>{error}</li>

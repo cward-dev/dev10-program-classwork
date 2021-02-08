@@ -1,16 +1,16 @@
 import './Agent.css';
 
-function Agent( { agent, setEditAgentId, setDeleteAgentId, handleAliases } ) {
+function Agent( { agent, setEditAgentId, setDeleteAgentId, handleAliases, handleCancel } ) {
 
   const { agentId, firstName, middleName, lastName, dob, heightInInches} = agent;
 
   const handleEdit = () => {
-    setDeleteAgentId(0);
+    handleCancel();
     setEditAgentId(agentId);
   }
 
   const handleDelete = () => {
-    setEditAgentId(0);
+    handleCancel();
     setDeleteAgentId(agentId);
   }
 

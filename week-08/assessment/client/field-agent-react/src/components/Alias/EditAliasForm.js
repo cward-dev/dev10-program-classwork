@@ -31,7 +31,7 @@ function UpdateAliasForm( { getAliasToEdit, handleEdit, handleCancel } ) {
   return (
     <form onSubmit={handleSubmit}>
       <div className="alert alert-secondary">
-        <h3>Update Alias</h3>
+        <h3>Edit Alias</h3>
       </div>
       <div>
         <div className="form-row">
@@ -44,7 +44,7 @@ function UpdateAliasForm( { getAliasToEdit, handleEdit, handleCancel } ) {
         </div>
         <div className="form-row">
           <div className="col">
-            <button className="btn btn-info col" type="submit" id="submit-alias">Update Alias</button>
+            <button className="btn btn-info col" type="submit" id="submit-alias">Edit Alias</button>
           </div>
           <div className="col">
             <button className="btn btn-warning col" type="button" id="cancel-alias" onClick={handleEditCancel}>Cancel</button>

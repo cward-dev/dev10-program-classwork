@@ -37,7 +37,7 @@ function UpdateAgentForm( { getAgentToEdit, handleEdit, handleCancel } ) {
   return (
     <form onSubmit={handleSubmit}>
       <div className="alert alert-secondary">
-        <h3>Update Agent</h3>
+        <h3>Edit Agent</h3>
       </div>
       <div>
           <div className="form-row">
@@ -62,7 +62,7 @@ function UpdateAgentForm( { getAgentToEdit, handleEdit, handleCancel } ) {
           </div>
         <div className="form-row">
           <div className="col">
-            <button className="btn btn-info col" type="submit" id="submit-agent">Update Agent</button>
+            <button className="btn btn-info col" type="submit" id="submit-agent">Edit Agent</button>
           </div>
           <div className="col">
             <button className="btn btn-warning col" type="button" id="cancel-agent" onClick={handleEditCancel}>Cancel</button>

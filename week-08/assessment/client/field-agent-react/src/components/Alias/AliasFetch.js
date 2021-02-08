@@ -2,38 +2,42 @@ import { useState, useEffect } from 'react';
 import Alias from './Alias.js';
 import createRandomAlias from './CreateRandomAlias';
 import AddAliasForm from './AddAliasForm.js';
-import UpdateAliasForm from './UpdateAliasForm.js';
+import UpdateAliasForm from './EditAliasForm.js';
 import DeleteAliasForm from './DeleteAliasForm.js';
 import Errors from '../Errors.js';
 import './AliasFetch.css';
 import aliasPic from '../images/alias_pic.png';
+import AgentForAlias from './AgentForAlias';
 
-function AliasFetch( { setMenuSelection, agentId } ) {
+function AliasFetch( { setMenuSelection, agent } ) {
 
   const [aliases, setAliases] = useState([]);
   const [editAliasId, setEditAliasId] = useState(0);
   const [deleteAliasId, setDeleteAliasId] = useState(0);
   const [errors, setErrors] = useState([]);
 
+
   useEffect(() => {
-    fetch(`http://localhost:8080/api/alias/agent/${agentId}`)
-      .then(response => {
-        if (response.status === 404) {
-          return Promise.reject("This agent has no aliases.");
-        } else {
-          return response.json();
+    const getData = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/api/alias/agent/${agent.agentId}`);
+        
+        if (response.status === 200) {
+          const data = await response.json();
+          setAliases(data);
         }
-      })
-      .then(data => setAliases(data))
-      .catch(error => setErrors([error]));
+      } catch (error) {
+        setErrors("Failed to fetch aliases.");
+      }
+    };
+    getData();
   }, []);
 
-  const addAlias = (newAlias) => {
-
+  const addAlias = async (newAlias) => {
     const alias = {
       "name": newAlias.name,
       "persona": newAlias.persona,
-      "agentId": agentId
+      "agentId": agent.agentId
     };
 
     const init = {
@@ -45,37 +49,37 @@ function AliasFetch( { setMenuSelection, agentId } ) {
       body: JSON.stringify(alias)
     };
 
-    fetch("http://localhost:8080/api/alias", init)
-      .then(response => {
-        if (response.status === 201 || response.status === 400) {
-          return response.json();
-        }
-        return Promise.reject(`Alias add failed with status ${response.status}.`);
-      })
-      .then(data => {
+    try {
+      const response = await fetch("http://localhost:8080/api/alias", init);
+
+      if (response.status === 201 || response.status === 400) {
+        const data = await response.json();
+
         if (data.aliasId) {
           setAliases([...aliases, data]);
-          setErrors([]);
+          handleCancel();
         } else {
           setErrors(data);
-        }})
-      .catch(data => setErrors([data]));
-  };
+        }
+      } else {
+        throw new Error(["Something unexpected went wrong, sorry!"]);
+      }
+    } catch (error) {
+      setErrors(error)
+    }
+  }
 
   const addRandomAlias = () => {
-
     const alias = createRandomAlias(1);
-
     addAlias(alias);
   };
 
-  const editAlias = (inputAlias) => {
-      
+  const editAlias = async (editedAlias) => {
     const updatedAlias = {
-      "aliasId": inputAlias.aliasId,
-      "name": inputAlias.name,
-      "persona": inputAlias.persona,
-      "agentId": agentId
+      "aliasId": editedAlias.aliasId,
+      "name": editedAlias.name,
+      "persona": editedAlias.persona,
+      "agentId": agent.agentId
     };
 
     const init = {
@@ -87,61 +91,53 @@ function AliasFetch( { setMenuSelection, agentId } ) {
       body: JSON.stringify(updatedAlias)
     };
 
-    fetch(`http://localhost:8080/api/alias/${inputAlias.aliasId}`, init)
-      .then(response => {
-        if (response.status === 204) {
-          return null;
-        } else if (response.status === 400) {
-          return response.json();
-        } else if (response.status === 404) {
-          return Promise.reject("Alias to edit not found.");
-        } else {
-          return Promise.reject(`Alias id ${updatedAlias.aliasId} update failed with status ${response.status}.`);
-        }
-      })
-      .then(data => {
-        if (!data) {
-          const newAliases = [...aliases];
-          const aliasIndexToReplace = aliases.findIndex(alias => alias.aliasId === updatedAlias.aliasId);
-          newAliases[aliasIndexToReplace] = updatedAlias;
-  
-          setAliases([...newAliases]);
-          setEditAliasId(0);
-          setErrors([]);
-        } else {
-          setErrors([data]);
-        }
-      });
-  };
+    try {
+      const response = await fetch(`http://localhost:8080/api/alias/${editedAlias.aliasId}`, init);
 
-  const deleteById = (aliasId) => {
-    fetch(`http://localhost:8080/api/alias/${aliasId}`, { method: "DELETE" })
-      .then(response => {
-        if (response.status === 204) {
-          setAliases(aliases.filter(alias => alias.aliasId !== aliasId));
-          setDeleteAliasId(0);
-          setErrors([]);
-        } else if (response.status === 404) {
-          return Promise.reject("Alias to delete not found.");
-        } else {
-          return Promise.reject(`Delete failed with status: ${response.status}`);
-        }
-      })
-      .catch(setErrors);
-  };
+      if (response.status === 204) {
+        const newAliases = [...aliases];
+        const aliasIndexToEdit = aliases.findIndex(alias => alias.aliasId === editAliasId);
+        newAliases[aliasIndexToEdit] = updatedAlias;
 
-  const getAliasById = (aliasId) => {
-    const aliasFound = aliases.find(a => a.aliasId === aliasId);
+        setAliases(newAliases);
+        handleCancel();
+      } else if (response.status === 400) {
+        const data = await response.json();
+        setErrors(data);
+      } else if (response.status === 404) {
+        throw new Error(["Alias to edit not found."])
+      } else {
+        throw new Error(["Something unexpected went wrong, sorry!"])
+      }
+    } catch (error) {
+      setErrors(error);
+    }
+  }
 
-    return aliasFound;
+  const deleteById = async (aliasId) => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/alias/${aliasId}`, { method: "DELETE" });
+    
+      if (response.status === 204) {
+        const newAliases = aliases.filter(alias => alias.aliasId !== aliasId);
+        setAliases(newAliases);
+        handleCancel();
+      } else if (response.status === 404) {
+        throw new Error(`Alias ID #${aliasId} not found.`);
+      } else {
+        throw new Error("Something unexpected went wrong, sorry!")
+      }
+    } catch (error) {
+      setErrors(error);
+    }
   };
 
   const getAliasToEdit = () => {
-    return getAliasById(editAliasId);
+    return aliases.find(a => a.aliasId === editAliasId);
   };
 
   const getAliasToDelete = () => {
-    return getAliasById(deleteAliasId);
+    return aliases.find(a => a.aliasId === deleteAliasId);
   };
 
   const goBackToAgentMenu = () => {
@@ -151,6 +147,7 @@ function AliasFetch( { setMenuSelection, agentId } ) {
   const handleCancel = () => {
     setEditAliasId(0);
     setDeleteAliasId(0);
+    setErrors([]);
   }
 
   const makeAlias = (alias) => {
@@ -159,7 +156,8 @@ function AliasFetch( { setMenuSelection, agentId } ) {
         key={alias.aliasId} 
         alias={alias}
         setEditAliasId={setEditAliasId}
-        setDeleteAliasId={setDeleteAliasId} />
+        setDeleteAliasId={setDeleteAliasId}
+        handleCancel={handleCancel} />
     );
   };
   
@@ -168,9 +166,6 @@ function AliasFetch( { setMenuSelection, agentId } ) {
       <div className="jumbotron row">
         <div className="col">
           <h1>Aliases</h1>
-        </div>
-        <div className="col" align="right">
-          <button className="btn btn-info mr-5" onClick={goBackToAgentMenu}>Go Back</button>
         </div>
       </div>
       <div className="container">
@@ -193,14 +188,15 @@ function AliasFetch( { setMenuSelection, agentId } ) {
             </div>
           </div>
           <div className="col-8">
+            <AgentForAlias agent={agent} goBackToAgentMenu={goBackToAgentMenu} />
             <div className="alert alert-secondary">
               <h3>Alias List</h3>
             </div>
             <table className="table table-striped">
               <thead className="table-dark">
                 <tr>
-                  <th className="name-item">Name</th>
-                  <th className="persona-item">Persona</th>
+                  <th className="name-alias-item">Name</th>
+                  <th className="persona-alias-item">Persona</th>
                   <th className="actions-alias-item">Actions</th>
                 </tr>
               </thead>
@@ -208,6 +204,7 @@ function AliasFetch( { setMenuSelection, agentId } ) {
                 {aliases.map(alias => makeAlias(alias))}
               </tbody>
             </table>
+            {aliases.length === 0 ? <div className="colspan alert alert-warning" align="center">If this agent has any aliases, they're deep undercover. (No aliases found)</div> : null}
             <div align="right">
               <button className="btn btn-success mr-2" onClick={addRandomAlias}>Add Random Alias</button>
             </div>

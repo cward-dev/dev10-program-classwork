@@ -7,14 +7,14 @@ import agentspic from './images/agents_pic.jpg';
 function MainMenu() {
 
   const [menuSelection, setMenuSelection] = useState(0);
-  const [agentIdForAliases, setAgentIdForAliases] = useState(0);
+  const [agentForAliases, setAgentForAliases] = useState(0);
 
   const goToAgentPage = () => {
     setMenuSelection(1);
   }
 
-  const goToAliasPage = (agentId) => {
-    setAgentIdForAliases(agentId);
+  const goToAliasPage = (agent) => {
+    setAgentForAliases(agent);
     setMenuSelection(2);
   }
 
@@ -35,8 +35,8 @@ function MainMenu() {
           </div>
         </div> 
       ) : null}
-      {menuSelection === 1 ? <AgentFetch setMenuSelection={setMenuSelection} setAgentIdForAliases={goToAliasPage} /> : null}
-      {menuSelection === 2 ? <AliasFetch setMenuSelection={setMenuSelection} agentId={agentIdForAliases} /> : null}
+      {menuSelection === 1 ? <AgentFetch setMenuSelection={setMenuSelection} setAgentForAliases={goToAliasPage} /> : null}
+      {menuSelection === 2 ? <AliasFetch setMenuSelection={setMenuSelection} agent={agentForAliases} /> : null}
     </div>
   );
 

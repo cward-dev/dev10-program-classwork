@@ -2,13 +2,13 @@ import { useState, useEffect } from 'react';
 import Agent from './Agent.js';
 import createRandomAgent from './CreateRandomAgent';
 import AddAgentForm from './AddAgentForm.js';
-import UpdateAgentForm from './UpdateAgentForm.js';
+import UpdateAgentForm from './EditAgentForm.js';
 import DeleteAgentForm from './DeleteAgentForm.js';
 import Errors from '../Errors.js';
 import './AgentFetch.css';
 import agentPic from '../images/agent_pic.jpg';
 
-function AgentFetch( { setMenuSelection, setAgentIdForAliases } ) {
+function AgentFetch( { setMenuSelection, setAgentForAliases } ) {
 
   const [agents, setAgents] = useState([]);
   const [editAgentId, setEditAgentId] = useState(0);
@@ -16,14 +16,19 @@ function AgentFetch( { setMenuSelection, setAgentIdForAliases } ) {
   const [errors, setErrors] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:8080/api/agent')
-      .then(response => response.json())
-      .then(data => setAgents(data))
-      .catch(error => setErrors(error));
+    const getData = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/api/agent");
+        const data = await response.json();
+        setAgents(data);
+      } catch (error) {
+        setErrors(["Failed to fetch agents."]);
+      }
+    };
+    getData();
   }, []);
 
-  const addAgent = (newAgent) => {
-
+  const addAgent = async (newAgent) => {
     const agent = {
       "firstName": newAgent.firstName,
       "middleName": newAgent.middleName,
@@ -41,39 +46,39 @@ function AgentFetch( { setMenuSelection, setAgentIdForAliases } ) {
       body: JSON.stringify(agent)
     };
 
-    fetch("http://localhost:8080/api/agent", init)
-      .then(response => {
-        if (response.status === 201 || response.status === 400) {
-          return response.json();
-        }
-        return Promise.reject(`Agent add failed with status ${response.status}.`);
-      })
-      .then(data => {
+    try {
+      const response = await fetch("http://localhost:8080/api/agent", init);
+
+      if (response.status === 201 || response.status === 400) {
+        const data = await response.json();
+
         if (data.agentId) {
           setAgents([...agents, data]);
-          setErrors([]);
+          handleCancel();
         } else {
           setErrors(data);
-        }})
-      .catch(data => setErrors([data]));
-  };
+        }
+      } else {
+        throw new Error(["Something unexpected went wrong, sorry!"]);
+      }
+    } catch (error) {
+      setErrors([error])
+    }
+  }
 
   const addRandomAgent = () => {
-
     const agent = createRandomAgent();
-
     addAgent(agent);
   };
 
-  const editAgent = (inputAgent) => {
-      
+  const editAgent = async (editedAgent) => {
     const updatedAgent = {
-      "agentId": inputAgent.agentId,
-      "firstName": inputAgent.firstName,
-      "middleName": inputAgent.middleName,
-      "lastName": inputAgent.lastName,
-      "dob": inputAgent.dob,
-      "heightInInches": inputAgent.heightInInches
+      "agentId": editedAgent.agentId,
+      "firstName": editedAgent.firstName,
+      "middleName": editedAgent.middleName,
+      "lastName": editedAgent.lastName,
+      "dob": editedAgent.dob,
+      "heightInInches": editedAgent.heightInInches
     };
 
     const init = {
@@ -85,61 +90,53 @@ function AgentFetch( { setMenuSelection, setAgentIdForAliases } ) {
       body: JSON.stringify(updatedAgent)
     };
 
-    fetch(`http://localhost:8080/api/agent/${inputAgent.agentId}`, init)
-      .then(response => {
-        if (response.status === 204) {
-          return null;
-        } else if (response.status === 400) {
-          return response.json();
-        } else if (response.status === 404) {
-          return Promise.reject("Agent to edit not found.");
-        } else {
-          return Promise.reject(`Agent id ${updatedAgent.agentId} update failed with status ${response.status}.`);
-        }
-      })
-      .then(data => {
-        if (!data) {
-          const newAgents = [...agents];
-          const agentIndexToReplace = agents.findIndex(agent => agent.agentId === updatedAgent.agentId);
-          newAgents[agentIndexToReplace] = updatedAgent;
-  
-          setAgents([...newAgents]);
-          setEditAgentId(0);
-          setErrors([]);
-        } else {
-          setErrors([data]);
-        }
-      });
-  };
+    try {
+      const response = await fetch(`http://localhost:8080/api/agent/${editedAgent.agentId}`, init);
 
-  const deleteById = (agentId) => {
-    fetch(`http://localhost:8080/api/agent/${agentId}`, { method: "DELETE" })
-      .then(response => {
-        if (response.status === 204) {
-          setAgents(agents.filter(agent => agent.agentId !== agentId));
-          setDeleteAgentId(0);
-          setErrors([]);
-        } else if (response.status === 404) {
-          return Promise.reject("Agent to delete not found.");
-        } else {
-          return Promise.reject(`Delete failed with status: ${response.status}`);
-        }
-      })
-      .catch(setErrors);
-  };
+      if (response.status === 204) {
+        const newAgents = [...agents];
+        const agentIndexToEdit = agents.findIndex(agent => agent.agentId === editAgentId);
+        newAgents[agentIndexToEdit] = updatedAgent;
 
-  const getAgentById = (agentId) => {
-    const agentFound = agents.find(a => a.agentId === agentId);
+        setAgents(newAgents);
+        handleCancel();
+      } else if (response.status === 400) {
+        const data = await response.json();
+        setErrors(data);
+      } else if (response.status === 404) {
+        throw new Error(["Agent to edit not found."])
+      } else {
+        throw new Error(["Something unexpected went wrong, sorry!"])
+      }
+    } catch (error) {
+      setErrors(error);
+    }
+  }
 
-    return agentFound;
+  const deleteById = async (agentId) => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/agent/${agentId}`, { method: "DELETE" });
+    
+      if (response.status === 204) {
+        const newAgents = agents.filter(agent => agent.agentId !== agentId);
+        setAgents(newAgents);
+        handleCancel();
+      } else if (response.status === 404) {
+        throw new Error(`Agent ID #${agentId} not found.`);
+      } else {
+        throw new Error("Something unexpected went wrong, sorry!")
+      }
+    } catch (error) {
+      setErrors(error);
+    }
   };
 
   const getAgentToEdit = () => {
-    return getAgentById(editAgentId);
+    return agents.find(a => a.agentId === editAgentId);
   };
 
   const getAgentToDelete = () => {
-    return getAgentById(deleteAgentId);
+    return agents.find(a => a.agentId === deleteAgentId);
   };
 
   const goBackToMainMenu = () => {
@@ -149,10 +146,12 @@ function AgentFetch( { setMenuSelection, setAgentIdForAliases } ) {
   const handleCancel = () => {
     setEditAgentId(0);
     setDeleteAgentId(0);
+    setErrors([]);
   }
 
   const handleAliases = (agentId) => {
-    setAgentIdForAliases(agentId);
+    const agentForAliases = agents.find(a => a.agentId === agentId);
+    setAgentForAliases(agentForAliases);
   }
 
   const makeAgent = (agent) => {
@@ -162,7 +161,8 @@ function AgentFetch( { setMenuSelection, setAgentIdForAliases } ) {
         agent={agent}
         setEditAgentId={setEditAgentId}
         setDeleteAgentId={setDeleteAgentId}
-        handleAliases={handleAliases} />
+        handleAliases={handleAliases}
+        handleCancel={handleCancel} />
     );
   };
   
@@ -171,9 +171,6 @@ function AgentFetch( { setMenuSelection, setAgentIdForAliases } ) {
       <div className="jumbotron row">
         <div className="col">
           <h1>Agents</h1>
-        </div>
-        <div className="col" align="right">
-          <button className="btn btn-info mr-5" onClick={goBackToMainMenu}>Go Back</button>
         </div>
       </div>
       <div className="container">
@@ -199,7 +196,14 @@ function AgentFetch( { setMenuSelection, setAgentIdForAliases } ) {
           </div>
           <div className="col-8">
             <div className="alert alert-secondary">
-              <h3>Agent List</h3>
+              <div className="row">
+                <div className="col-8">
+                  <h3>Agent List</h3>
+                </div>
+                <div className="col-4" align="right">
+                  <button className="btn btn-info mr-5 col ml-2" onClick={goBackToMainMenu}>Back To Landing Page</button>
+                </div>
+              </div>
             </div>
             <table className="table table-striped">
               <thead className="table-dark">
@@ -216,6 +220,7 @@ function AgentFetch( { setMenuSelection, setAgentIdForAliases } ) {
                 {agents.map(agent => makeAgent(agent))}
               </tbody>
             </table>
+            {agents.length === 0 ? <div className="colspan alert alert-warning" align="center">These agents appear to have given you the slip. (No agents found)</div> : null}
             <div align="right">
               <button className="btn btn-success mr-2" onClick={addRandomAgent}>Add Random Agent</button>
             </div>
