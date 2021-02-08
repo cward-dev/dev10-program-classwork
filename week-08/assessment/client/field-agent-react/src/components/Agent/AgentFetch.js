@@ -16,7 +16,7 @@ function AgentFetch( { setMenuSelection, setAgentForAliases } ) {
         const data = await response.json();
         setAgents(data);
       } catch (error) {
-        setErrors(["Failed to fetch agents."]);
+        setErrors(["Something went wrong with our database, sorry!"]);
       }
     };
     getData();
@@ -56,7 +56,11 @@ function AgentFetch( { setMenuSelection, setAgentForAliases } ) {
         throw new Error(["Something unexpected went wrong, sorry!"]);
       }
     } catch (error) {
-      setErrors([error])
+      if (error.message === "Failed to fetch") {
+        setErrors(["Something went wrong with our database, sorry!"])
+      } else {
+        setErrors(["Something unexpected went wrong, sorry!"]);
+      }
     }
   }
 
@@ -103,7 +107,11 @@ function AgentFetch( { setMenuSelection, setAgentForAliases } ) {
         throw new Error(["Something unexpected went wrong, sorry!"])
       }
     } catch (error) {
-      setErrors(error);
+      if (error.message === "Failed to fetch") {
+        setErrors(["Something went wrong with our database, sorry!"])
+      } else {
+        setErrors(["Something unexpected went wrong, sorry!"]);
+      }
     }
   }
 
@@ -121,7 +129,11 @@ function AgentFetch( { setMenuSelection, setAgentForAliases } ) {
         throw new Error("Something unexpected went wrong, sorry!")
       }
     } catch (error) {
-      setErrors(error);
+      if (error.message === "Failed to fetch") {
+        setErrors(["Something went wrong with our database, sorry!"])
+      } else {
+        setErrors(["Something unexpected went wrong, sorry!"]);
+      }
     }
   };
 

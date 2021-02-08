@@ -20,7 +20,7 @@ function AliasFetch( { setMenuSelection, agent } ) {
           setAliases(data);
         }
       } catch (error) {
-        setErrors("Failed to fetch aliases.");
+        setErrors(["Something went wrong with our database, sorry!"]);
       }
     };
     getData();
@@ -58,7 +58,11 @@ function AliasFetch( { setMenuSelection, agent } ) {
         throw new Error(["Something unexpected went wrong, sorry!"]);
       }
     } catch (error) {
-      setErrors(error)
+      if (error.message === "Failed to fetch") {
+        setErrors(["Something went wrong with our database, sorry!"])
+      } else {
+        setErrors(["Something unexpected went wrong, sorry!"]);
+      }
     }
   }
 
@@ -103,7 +107,11 @@ function AliasFetch( { setMenuSelection, agent } ) {
         throw new Error(["Something unexpected went wrong, sorry!"])
       }
     } catch (error) {
-      setErrors(error);
+      if (error.message === "Failed to fetch") {
+        setErrors(["Something went wrong with our database, sorry!"])
+      } else {
+        setErrors(["Something unexpected went wrong, sorry!"]);
+      }
     }
   }
 
@@ -121,7 +129,11 @@ function AliasFetch( { setMenuSelection, agent } ) {
         throw new Error("Something unexpected went wrong, sorry!")
       }
     } catch (error) {
-      setErrors(error);
+      if (error.message === "Failed to fetch") {
+        setErrors(["Something went wrong with our database, sorry!"])
+      } else {
+        setErrors(["Something unexpected went wrong, sorry!"]);
+      }
     }
   };
 
