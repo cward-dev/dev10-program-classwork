@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab: Translate To Thymeleaf - Tip Calculator</title>
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/milligram/1.3.0/milligram.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Tip Calculator</h1>
+        <form onsubmit="return false;">
+            <fieldset>
+                <div>
+                    <label for="check">Check Total</label>
+                    <input type="number" id="check" step="0.1">
+                </div>
+                <div>
+                    <label for="percent">Tip Percent</label>
+                    <input type="number" id="percent">
+                </div>
+                <div>
+                    <button type="submit" class="button" onclick="calculate()">Calculate</button>
+                </div>
+            </fieldset>
+        </form>
+        <div id="results" style="display: none;">
+            <p>
+                <strong>Check Total:</strong> <span id="spnCheck">0.0</span>
+            </p>
+            <p>
+                <strong>Percent:</strong> <span id="spnPercent">0.0</span>
+            </p>
+            <p>
+                <strong>Tip:</strong> <span id="spnTip">0.0</span>
+            </p>
+        </div>
+        <div>
+            <a href="index.html" class="button">Home</a>
+            <a href="tip-calculator.html" class="button">Reset</a>
+        </div>
+    </div>
+    <script src="tip-calculator.js"></script>
+</body>
+</html>

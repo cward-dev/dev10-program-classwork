@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab: Translate To Thymeleaf - Random Encouragement</title>
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/milligram/1.3.0/milligram.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Random Encouragement</h1>
+      <div>
+        <blockquote th:text="${encouragement}">Good job!</blockquote>
+        <a href="/" class="button">Home</a>
+        <a href="/encouragement" class="button">Reset</a>
+      </div>
+    </div>
+  </body>
+</html>
