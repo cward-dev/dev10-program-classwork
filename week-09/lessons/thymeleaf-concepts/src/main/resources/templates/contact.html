@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us</title>
+  <link rel="stylesheet" href="/theme.css">
+</head>
+<body>
+<h1>Contact Us</h1>
+<form method="POST" onsubmit="return areYouSure()">
+  <div>
+    <label for="email">Email: </label>
+    <input type="text" id="email" name="email" required>
+  </div>
+  <div>
+    <label for="message">Message: </label>
+    <textarea id="message" name="message" required></textarea>
+  </div>
+  <div>
+    <button type="submit">Submit</button>
+  </div>
+</form>
+<div>
+  <a href="/">Home</a> |
+  <a href="/about-us.html">About Us</a> |
+  Contact Us
+</div>
+<script src="/code.js"></script>
+</body>
+</html>

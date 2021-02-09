@@ -52,15 +52,8 @@ public class Ticket {
     public Ticket() {
     }
 
-    public Ticket(@NotBlank(message = "Customer name is required.") @Size(max = 50, message = "Customer name cannot be greater than 50 characters.") String customerName,
-                  @NotBlank(message = "Customer email is required.") @Email(message = "Customer email must be a valid email address.") String customerEmail,
-                  @NotNull(message = "Purchase date is required.") @PastOrPresent(message = "Purchase date cannot be in the future.") LocalDate purchaseDate,
-                  @Min(value = 1, message = "Pick 1 must be between 1 and 69.") @Max(value = 69, message = "Pick 1 must be between 1 and 69.") int pick1,
-                  @Min(value = 1, message = "Pick 2 must be between 1 and 69.") @Max(value = 69, message = "Pick 2 must be between 1 and 69.") int pick2,
-                  @Min(value = 1, message = "Pick 3 must be between 1 and 69.") @Max(value = 69, message = "Pick 3 must be between 1 and 69.") int pick3,
-                  @Min(value = 1, message = "Pick 4 must be between 1 and 69.") @Max(value = 69, message = "Pick 4 must be between 1 and 69.") int pick4,
-                  @Min(value = 1, message = "Pick 5 must be between 1 and 69.") @Max(value = 69, message = "Pick 5 must be between 1 and 69.") int pick5,
-                  @Min(value = 1, message = "The Powerball must be between 1 and 26.") @Max(value = 69, message = "The Powerball must be between 1 and 26.") int powerball) {
+    public Ticket(String customerName, String customerEmail, LocalDate purchaseDate,
+                  int pick1, int pick2, int pick3, int pick4, int pick5, int powerball) {
         this.customerName = customerName;
         this.customerEmail = customerEmail;
         this.purchaseDate = purchaseDate;

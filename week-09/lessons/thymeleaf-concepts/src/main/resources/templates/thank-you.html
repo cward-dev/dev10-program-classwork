@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You</title>
+    <link rel="stylesheet" href="/theme.css">
+  </head>
+  <body>
+    <h1>Thank you!</h1>
+    <p>
+      Thanks for your feedback. We'll get back to you soon.
+    </p>
+    <h2>Your Message:</h2>
+    <p th:text="${message}">
+        Message Text...
+    </p>
+    <div>
+      <a href="/">Home</a> |
+      <a href="/about-us.html">About Us</a> |
+      <a href="/contact">Contact Us</a>
+    </div>
+  </body>
+</html>

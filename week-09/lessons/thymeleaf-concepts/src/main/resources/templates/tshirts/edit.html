@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="'Edit ' + ${tshirt.name}">Edit T-Shirt</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <h1>Edit</h1>
+        <form method="POST">
+            <input type="hidden" name="id" th:value="${tshirt.id}">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" value="Sunset" th:value="${tshirt.name}"
+                    required>
+            </div>
+            <div class="form-group">
+                <label for="color">Color</label>
+                <select id="color" name="color.colorId" class="form-control" required>
+                    <option value=""> -- Choose -- </option>
+                    <option value="0" th:each="color : ${colors}" th:value="${color.colorId}" th:text="${color.name}"
+                        th:selected="${color.colorId == tshirt.color.colorId}">
+                        Color</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="size">Size</label>
+                <select id="size" name="size.sizeId" class="form-control" required>
+                    <option value=""> -- Choose -- </option>
+                    <option value="0" th:each="size : ${sizes}" th:value="${size.sizeId}" th:text="${size.name}"
+                        th:selected="${size.sizeId == tshirt.size.sizeId}">
+                        Color</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary mr-2">Save</button>
+                <a href="/tshirts" class="btn btn-secondary" role="button">Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
