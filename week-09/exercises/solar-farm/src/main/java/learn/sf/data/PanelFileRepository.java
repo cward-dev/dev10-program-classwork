@@ -16,7 +16,7 @@ public class PanelFileRepository implements PanelRepository {
 
     private static final String DELIMITER = ",";
     private static final String DELIMITER_REPLACEMENT = "@@~@@~@@";
-    private static final String HEADER = "panelId,section,row,column,yearInstalled,material,isTracking";
+    private static final String HEADER = "panelId,section,row,column,yearInstalled,material,tracking";
     private final String filePath;
 
     public PanelFileRepository(@Value("${dataFilePath:./data/solar-panels.csv}")String filePath) {

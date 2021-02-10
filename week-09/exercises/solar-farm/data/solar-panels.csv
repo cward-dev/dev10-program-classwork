@@ -1,4 +1,4 @@
-panelId,section,row,column,yearInstalled,material,isTracking
+panelId,section,row,column,yearInstalled,material,tracking
 2,Jazz,54,22,1983,AMORPHOUS_SILICON,false
 3,Bluegrass,54,10,2005,COPPER_INDIUM_GALLIUM_SELENIDE,true
 4,Jazz,54,10,2016,AMORPHOUS_SILICON,true

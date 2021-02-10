@@ -9,10 +9,10 @@ create table solar_panel (
     `column` int not null,
     year_installed int not null,
     material varchar(48) not null,
-    is_tracking bit not null
+    tracking bit not null
 );
 
-insert into solar_panel (section, `row`, `column`, year_installed, material, is_tracking)
+insert into solar_panel (section, `row`, `column`, year_installed, material, tracking)
 	values
     ('Bluegrass',2,13,1994,'AMORPHOUS_SILICON',1),
     ('Jazz',54,22,1983,'AMORPHOUS_SILICON',0),

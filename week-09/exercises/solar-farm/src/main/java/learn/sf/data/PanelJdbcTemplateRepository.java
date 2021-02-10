@@ -31,19 +31,19 @@ public class PanelJdbcTemplateRepository implements PanelRepository {
         panel.setColumn(resultSet.getInt("column"));
         panel.setYearInstalled(resultSet.getInt("year_installed"));
         panel.setMaterial(PanelMaterial.valueOf(resultSet.getString("material")));
-        panel.setTracking(resultSet.getInt("is_tracking") == 1);
+        panel.setTracking(resultSet.getInt("tracking") == 1);
         return panel;
     };
 
     @Override
     public List<Panel> findAll() {
-        final String sql = "select panel_id, section, `row`, `column`, year_installed, material, is_tracking from solar_panel;";
+        final String sql = "select panel_id, section, `row`, `column`, year_installed, material, tracking from solar_panel;";
         return jdbcTemplate.query(sql, mapper);
     }
 
     @Override
     public List<Panel> findBySection(String section) {
-        final String sql = "select panel_id, section, `row`, `column`, year_installed, material, is_tracking from solar_panel where section = ?;";
+        final String sql = "select panel_id, section, `row`, `column`, year_installed, material, tracking from solar_panel where section = ?;";
         try {
             return jdbcTemplate.query(sql, mapper, section);
         } catch (EmptyResultDataAccessException ex) {
@@ -53,7 +53,7 @@ public class PanelJdbcTemplateRepository implements PanelRepository {
 
     @Override
     public List<Panel> findByMaterial(PanelMaterial material) {
-        final String sql = "select panel_id, section, `row`, `column`, year_installed, material, is_tracking from solar_panel where material = ?;";
+        final String sql = "select panel_id, section, `row`, `column`, year_installed, material, tracking from solar_panel where material = ?;";
         try {
             return jdbcTemplate.query(sql, mapper, material.name());
         } catch (EmptyResultDataAccessException ex) {
@@ -63,7 +63,7 @@ public class PanelJdbcTemplateRepository implements PanelRepository {
 
     @Override
     public Panel findById(int panelId) {
-        final String sql = "select panel_id, section, `row`, `column`, year_installed, material, is_tracking from solar_panel where panel_id = ?;";
+        final String sql = "select panel_id, section, `row`, `column`, year_installed, material, tracking from solar_panel where panel_id = ?;";
         try {
             return jdbcTemplate.queryForObject(sql, mapper, panelId);
         } catch (EmptyResultDataAccessException ex) {
@@ -73,7 +73,7 @@ public class PanelJdbcTemplateRepository implements PanelRepository {
 
     @Override
     public Panel findByLocation(String section, int row, int column) {
-        final String sql = "select panel_id, section, `row`, `column`, year_installed, material, is_tracking from solar_panel where section = ? and `row` = ? and `column` = ?;";
+        final String sql = "select panel_id, section, `row`, `column`, year_installed, material, tracking from solar_panel where section = ? and `row` = ? and `column` = ?;";
         try {
             return jdbcTemplate.queryForObject(sql, mapper, section, row, column);
         } catch (EmptyResultDataAccessException ex) {
@@ -93,7 +93,7 @@ public class PanelJdbcTemplateRepository implements PanelRepository {
 
     @Override
     public Panel add(Panel panel) {
-        final String sql = "insert into solar_panel (section, `row`, `column`, year_installed, material, is_tracking) values (?,?,?,?,?,?);";
+        final String sql = "insert into solar_panel (section, `row`, `column`, year_installed, material, tracking) values (?,?,?,?,?,?);";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int rowsAffected = jdbcTemplate.update(connection -> {
@@ -124,7 +124,7 @@ public class PanelJdbcTemplateRepository implements PanelRepository {
                 + "`column` = ?, "
                 + "year_installed = ?, "
                 + "material = ?, "
-                + "is_tracking = ? "
+                + "tracking = ? "
                 + "where panel_id = ?;";
 
         int rowsUpdated = jdbcTemplate.update(sql,

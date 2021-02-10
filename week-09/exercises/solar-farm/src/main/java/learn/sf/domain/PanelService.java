@@ -10,6 +10,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -116,36 +117,9 @@ public class PanelService {
         return result;
     }
 
-//    private PanelResult validate(Panel panel) {
-//        PanelResult result = new PanelResult();
-//
-//        if (panel == null) {
-//            result.addErrorMessage("Panel cannot be null.");
-//            return result;
-//        }
-//
-//        if (panel.getSection() == null || panel.getSection().trim().length() == 0) {
-//            result.addErrorMessage("Section is required.");
-//        }
-//
-//        if (panel.getRow() < 1 || panel.getRow() > 250) {
-//            result.addErrorMessage("Row must be a positive number less than or equal to 250.");
-//        }
-//
-//        if (panel.getColumn() < 1 || panel.getColumn() > 250) {
-//            result.addErrorMessage("Column must be a positive number less than or equal to 250.");
-//        }
-//
-//        if (panel.getYearInstalled() > LocalDate.now().getYear() || panel.getYearInstalled() < 1954) {
-//            result.addErrorMessage(String.format("Year must be between 1954 and %s.", LocalDate.now().getYear()));
-//        }
-//
-//        if (panel.getMaterial() == null) {
-//            result.addErrorMessage("Material is required.");
-//        }
-//
-//        return result;
-//    }
+    public List<PanelMaterial> getMaterials() {
+        return Arrays.asList(PanelMaterial.values());
+    }
 
     private boolean checkForDuplicate(Panel panel) throws DataAccessException {
         List<Panel> panels = findAll();
@@ -161,6 +135,4 @@ public class PanelService {
 
         return false;
     }
-
-
 }

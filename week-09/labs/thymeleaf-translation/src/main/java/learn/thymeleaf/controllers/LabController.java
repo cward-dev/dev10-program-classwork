@@ -74,12 +74,33 @@ public class LabController {
     }
 
     @GetMapping("/tip")
-    public String getTip() {
+    public String getTip(Model model) {
+        model.addAttribute("displayForm", true);
+        return "tip";
+    }
+
+    @PostMapping("/tip")
+    public String getTip(double total, double tipPercent, Model model) {
+        double tipAmount = total * (tipPercent / 100);
+
+        model.addAttribute("displayForm", total == 0.0);
+        model.addAttribute("total", total);
+        model.addAttribute("tipPercent", tipPercent);
+        model.addAttribute("tipAmount", tipAmount);
+
         return "tip";
     }
 
     @GetMapping("/color")
-    public String getColor() {
+    public String getColor(Model model) {
+        model.addAttribute("displayForm", true);
+        return "color";
+    }
+
+    @PostMapping("/color")
+    public String getColor(String color, Model model) {
+        model.addAttribute("color", color);
+
         return "color";
     }
 

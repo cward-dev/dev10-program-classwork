@@ -56,7 +56,7 @@
   * private int column; // positive number <= 250
   * private int yearInstalled; // must be in the past
     * To verify, will compare to int currentYear = Year.now(ZoneId.of("America/Chicago")).getValue(); // gets the current year in CST
-  * private boolean isTracking;
+  * private boolean tracking;
 * PanelMaterial
   * Values
     * MULTICRYSTALLINE_SILICON("multicrystalline silicon", "c-Si")

@@ -32,6 +32,5 @@ public enum PanelMaterial {
                 .filter(m -> m.abbreviation.equalsIgnoreCase(abbreviation))
                 .findFirst()
                 .orElse(null);
-
     }
 }

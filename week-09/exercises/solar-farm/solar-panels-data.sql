@@ -1,6 +1,6 @@
 use solar_panels;
 
-insert into solar_panel (panel_id, section, `row`, `column`, year_installed, material, is_tracking)
+insert into solar_panel (panel_id, section, `row`, `column`, year_installed, material, tracking)
 	values
     (1,'Bluegrass',3,15,1994,'MULTICRYSTALLINE_SILICON',1),
 	(2,'Jazz',54,22,1983,'AMORPHOUS_SILICON',0),
@@ -16,7 +16,7 @@ insert into solar_panel (panel_id, section, `row`, `column`, year_installed, mat
         i.`column`,
         i.yearInstalled,
         i.material,
-        case when i.isTracking = 'true' then 1 else 0 end
+        case when i.tracking = 'true' then 1 else 0 end
 	from import_solar_panel i;
     
 select * from solar_panel;

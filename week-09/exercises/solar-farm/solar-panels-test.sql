@@ -9,7 +9,7 @@ create table solar_panel (
     `column` int not null,
     year_installed int not null,
     material varchar(48) not null,
-    is_tracking bit not null
+    tracking bit not null
 );
 
 delimiter //

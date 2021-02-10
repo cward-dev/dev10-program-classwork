@@ -1,12 +1,9 @@
 package learn.sf.model;
 
-import org.springframework.cglib.core.Local;
-
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.util.Objects;
 
 @NotNull(message = "Panel cannot be null.")
@@ -33,28 +30,28 @@ public class Panel {
     @NotNull(message = "Material is required.")
     private PanelMaterial material;
 
-    private boolean isTracking;
+    private boolean tracking;
 
     public Panel() {
     }
 
-    public Panel(String section, int row, int column, int yearInstalled, PanelMaterial material, boolean isTracking) {
+    public Panel(String section, int row, int column, int yearInstalled, PanelMaterial material, boolean tracking) {
         this.section = section;
         this.row = row;
         this.column = column;
         this.yearInstalled = yearInstalled;
         this.material = material;
-        this.isTracking = isTracking;
+        this.tracking = tracking;
     }
 
-    public Panel(int panelId, String section, int row, int column, int yearInstalled, PanelMaterial material, boolean isTracking) {
+    public Panel(int panelId, String section, int row, int column, int yearInstalled, PanelMaterial material, boolean tracking) {
         this.panelId = panelId;
         this.section = section;
         this.row = row;
         this.column = column;
         this.yearInstalled = yearInstalled;
         this.material = material;
-        this.isTracking = isTracking;
+        this.tracking = tracking;
     }
 
     public int getPanelId() {
@@ -106,11 +103,11 @@ public class Panel {
     }
 
     public boolean isTracking() {
-        return isTracking;
+        return tracking;
     }
 
     public void setTracking(boolean tracking) {
-        isTracking = tracking;
+        this.tracking = tracking;
     }
 
     @Override // From unexplained encounters lesson
@@ -124,11 +121,11 @@ public class Panel {
                 this.column == panel.getColumn() &&
                 this.yearInstalled == panel.getYearInstalled() &&
                 Objects.equals(this.material, panel.getMaterial()) &&
-                this.isTracking == panel.isTracking;
+                this.tracking == panel.tracking;
     }
 
     @Override // From unexplained encounters lesson
     public int hashCode() {
-        return Objects.hash(panelId, section, row, column, yearInstalled, material, isTracking);
+        return Objects.hash(panelId, section, row, column, yearInstalled, material, tracking);
     }
 }

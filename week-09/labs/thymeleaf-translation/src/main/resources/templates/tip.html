@@ -9,9 +9,32 @@
   <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/milligram/1.3.0/milligram.css">
 </head>
 <body>
-<div class="container">
-  <h1>Tip Calculator</h1>
-  <a href="/">Return to Home</a>
-</div>
+  <div class="container">
+    <h1>Tip Calculator</h1>
+    <form th:if="${displayForm}" method="post">
+      <fieldset>
+        <legend>Check Total</legend>
+        <div>
+          <input type="number" id="total" name="total">
+        </div>
+        <legend>Tip Percent</legend>
+        <div>
+          <input type="number" id="tipPercent" name="tipPercent">
+        </div>
+        <div>
+          <button type="submit" class="button">Calculate</button>
+        </div>
+      </fieldset>
+    </form>
+    <div th:unless="${displayForm}">
+      <p th:text="|Check Total: $${total}|">$0.00</p>
+      <p th:text="|Percent: ${tipPercent}%|">0%</p>
+      <p th:text="|Tip: $${tipAmount}|">$0.00</p>
+    </div>
+    <div>
+      <a href="/" class="button">Home</a>
+      <a href="/tip" class="button">Reset</a>
+    </div>
+  </div>
 </body>
 </html>

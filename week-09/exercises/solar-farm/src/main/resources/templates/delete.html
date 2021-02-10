@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delete Panel?</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+</head>
+<body>
+  <div class="container">
+    <nav class="navbar">
+      <h1 class="navbar-brand">Solar Farm</h1>
+    </nav>
+    <form method="POST" href="/delete/{id}(id=${panel.panelId})" th:object="${panel}">
+      <h2 th:text="'Delete Panel: ' + ${panel.section} + ' (Row ' + ${panel.row} + ', Col ' + ${panel.column} + ')'">Update</h2>
+      <div class="alert alert-danger">
+        Do you really want to delete this panel? Deletions are permanent.
+      </div>
+      <input type="hidden" th:field="*{panelId}">
+      <div class="form-row">
+        <div class="form-group col">
+          <label for="section">Section</label>
+          <input readonly type="text" class="form-control" th:field="*{section}">
+        </div>
+        <div class="form-group col">
+          <label for="row">Row</label>
+          <input readonly type="number" class="form-control" th:field="*{row}">
+        </div>
+        <div class="form-group col">
+          <label for="column">Column</label>
+          <input readonly type="number" class="form-control" th:field="*{column}">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col">
+          <label for="yearInstalled">Year Installed</label>
+          <input readonly type="number" class="form-control" th:field="*{yearInstalled}">
+        </div>
+        <div class="form-group col">
+          <label for="material">Material</label>
+          <input readonly type="text" class="form-control" th:field="*{material.name}">
+        </div>
+        <div class="form-group col">
+          <label for="tracking">Tracking</label>
+          <input readonly type="text" class="form-control" th:field="*{tracking}">
+        </div>
+      </div>
+      <div>
+        <button type="submit" class="btn btn-danger mr-2">Delete Forever</button>
+        <a href="/" class="btn btn-secondary">Cancel</a>
+      </div>
+    </form>
+
+
+
+<!--    <form method="POST" href="/delete/{id}(id=${panel.panelId})" th:object="${panel}">-->
+<!--      <h3>Are You Sure?</h3>-->
+<!--      <p class="alert alert-danger">-->
+<!--        Do you really want to delete this panel? Deletions are permanent.-->
+<!--      </p>-->
+<!--      <p>-->
+<!--        <label>Section</label>-->
+<!--        <span class="form-control" th:text="*{section}">Section</span>-->
+<!--      </p>-->
+<!--      <p>-->
+<!--        <label>Row</label>-->
+<!--        <span class="form-control" th:text="*{row}">Row</span>-->
+<!--      </p>-->
+<!--      <p>-->
+<!--        <label>Column</label>-->
+<!--        <span class="form-control" th:text="*{column}">Column</span>-->
+<!--      </p>-->
+<!--      <p>-->
+<!--        <label>Material</label>-->
+<!--        <span class="form-control" th:text="*{material.name + ' (' + material.abbreviation + ')'}">Material</span>-->
+<!--      </p>-->
+<!--      <p>-->
+<!--        <label>Is Tracking?</label>-->
+<!--        <span class="form-control" th:text="*{tracking}">Is Tracking?</span>-->
+<!--      </p>-->
+<!--      <div>-->
+<!--        <button type="submit" class="btn btn-danger mr-2">Delete Forever</button>-->
+<!--        <a href="/" class="btn btn-secondary">Cancel</a>-->
+<!--      </div>-->
+<!--    </form>-->
+  </div>
+</body>

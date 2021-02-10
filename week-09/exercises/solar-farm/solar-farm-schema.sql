@@ -7,7 +7,7 @@ create table solar_panel (
     section varchar(48) not null,
     `row` int not null,
     `column` int not null,
-    yearInstalled int not null,
+    year_installed int not null,
     material varchar(48) not null,
-    isTracking bit not null
+    tracking bit not null
 );
