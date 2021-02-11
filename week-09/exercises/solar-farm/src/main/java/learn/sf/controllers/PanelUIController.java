@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,12 +53,24 @@ public class PanelUIController {
 
         PanelResult serviceResult = service.add(panel);
 
+        if (!serviceResult.isSuccess()) {
+            for (String error : serviceResult.getMessages()) {
+                result.addError(new ObjectError("panel", error));
+            }
+            model.addAttribute("materials", service.getMaterials());
+            return "form";
+        }
+
         return "redirect:/";
     }
 
     @GetMapping("/edit/{panelId}")
     public String displayEdit(@PathVariable int panelId, Model model) throws DataAccessException {
         Panel panel = service.findById(panelId);
+        if (panel == null) {
+            return "not-found";
+        }
+
         model.addAttribute("panel", panel);
         model.addAttribute("materials", service.getMaterials());
         return "form";
@@ -73,11 +86,21 @@ public class PanelUIController {
         }
 
         if (result.hasErrors()) {
+            model.addAttribute("panel", panel);
             model.addAttribute("materials", service.getMaterials());
             return "form";
         }
 
         PanelResult serviceResult = service.update(panel);
+
+        if (!serviceResult.isSuccess()) {
+            for (String error : serviceResult.getMessages()) {
+                result.addError(new ObjectError("panel", error));
+            }
+            model.addAttribute("panel", panel);
+            model.addAttribute("materials", service.getMaterials());
+            return "form";
+        }
 
         return "redirect:/";
     }

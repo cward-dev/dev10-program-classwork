@@ -50,7 +50,7 @@
       <div class="form-row">
         <div class="form-group col">
           <label for="yearInstalled">Year Installed</label>
-          <input type="number" class="form-control" th:field="*{yearInstalled}"
+          <input type="number" min="${minYear}" max="${currentYear}" class="form-control" th:field="*{yearInstalled}"
                  th:classappend="${#fields.hasErrors('yearInstalled')}? is-invalid">
           <div class="invalid-feedback" th:if="${#fields.hasErrors('yearInstalled')}" th:errors="*{yearInstalled}">
             Err Message
@@ -61,7 +61,7 @@
           <select class="form-control" th:field="*{material}"
                   th:classappend="${#fields.hasErrors('material')}? is-invalid">
             <option th:each="material: ${materials}" th:value="${material}"
-                    th:text="${material.name + ' (' + material.abbreviation + ')'}" value="{material}">Material (Abbr)
+                    th:text="|${material.name} (${material.abbreviation})|" value="{material}">Material (Abbr)
             </option>
           </select>
           <div class="invalid-feedback" th:if="${#fields.hasErrors('material')}" th:errors="*{material}">
@@ -72,8 +72,8 @@
           <label for="tracking">Tracking</label>
           <select class="form-control" th:field="*{tracking}"
                   th:classappend="${#fields.hasErrors('tracking')}? is-invalid">
-            <option th:value="0">False</option>
-            <option th:value="1">True</option>
+            <option th:value="0">No</option>
+            <option th:value="1">Yes</option>
           </select>
           <div class="invalid-feedback" th:if="${#fields.hasErrors('tracking')}" th:errors="*{tracking}">
             Err Message
