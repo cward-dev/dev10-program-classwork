@@ -100,7 +100,7 @@ Technical Tip
   * firstName @NotNull, @NotBlank
   * middleName
   * lastName @NotNull, @NotBlank
-  * dob @DateTimeFormat(pattern = "mm/dd/yyyy")
+  * dob @DateTimeFormat(pattern = "yyyy-MM-dd")
   * heightInInches @Min(value=36) @Max(value=96)
 * What validations can I remove from the AgentService class?
   * I can remove all validation logic except for the dob validation checking if an agent is too young

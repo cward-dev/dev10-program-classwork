@@ -1,5 +1,9 @@
 package learn.field_agent.models;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +11,19 @@ import java.util.List;
 public class Agent {
 
     private int agentId;
+
+    @NotNull
+    @NotBlank
     private String firstName;
+
+    @NotBlank
     private String middleName;
+
+    @NotNull
+    @NotBlank
     private String lastName;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dob;
     private int heightInInches;
     private List<AgentAgency> agencies = new ArrayList<>();
