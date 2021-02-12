@@ -108,8 +108,7 @@ Technical Tip
   * I will bring in a ValidatorFactory, Validator, and Set<ConstraintViolation<Agent>>, checking if the Set contains error messages and adding them to a PanelResult
 * Are there any validations in the AgentService class that I won't replace with Validation API validators?
   * I may keep the dob maximum date validation in the service layer, but if time allows I may look at using a custom validation
-
-
+  
 * What setup do I need to do to support server-side rendering?
   * I will need to design around page refreshes between each interaction. Different from my React approach, I will have to separate the forms to a separate page from the display lists
 * How will a display the list of agents?
@@ -227,7 +226,6 @@ Will likely need to make updates to service to make access to certain data easie
 * [ ] Add "Aliases" link (button) to the table row for each Agent in agent-page (onclick sends them to /alias/{agentId})
   * Estimated Time: 0.5 hours
   * Actual Time:
-
-
+  
 #### Research
 * [ ] TBD
