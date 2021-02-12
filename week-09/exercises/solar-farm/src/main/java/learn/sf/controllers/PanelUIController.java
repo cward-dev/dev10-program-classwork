@@ -108,6 +108,7 @@ public class PanelUIController {
     @GetMapping("/delete/{panelId}")
     public String displayDelete(@PathVariable int panelId, Model model) throws DataAccessException {
         Panel panel = service.findById(panelId);
+
         if (panel == null) {
             return "not-found";
         }
