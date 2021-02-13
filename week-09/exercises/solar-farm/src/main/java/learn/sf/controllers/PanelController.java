@@ -68,7 +68,10 @@ public class PanelController {
     }
 
     @GetMapping("/{section}/{row}/{column}")
-    public ResponseEntity<Panel> findByLocation(@PathVariable String section, @PathVariable int row, @PathVariable int column) throws DataAccessException {
+    public ResponseEntity<Panel> findByLocation(
+            @PathVariable String section,
+            @PathVariable int row, @PathVariable int column)
+            throws DataAccessException {
         Panel panel = service.findByLocation(section, row, column);
 
         if (panel == null) {

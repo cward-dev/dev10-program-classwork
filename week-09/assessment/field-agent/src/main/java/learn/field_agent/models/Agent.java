@@ -2,8 +2,7 @@ package learn.field_agent.models;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,20 +11,23 @@ public class Agent {
 
     private int agentId;
 
-    @NotNull
-    @NotBlank
+    @NotBlank(message = "Agent first name is required.")
     private String firstName;
 
-    @NotBlank
     private String middleName;
 
-    @NotNull
-    @NotBlank
+    @NotBlank(message = "Agent last name is required.")
     private String lastName;
 
+    @NotNull(message = "Agent date of birth is required.")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Past(message = "Date of birth must be in the past.")
     private LocalDate dob;
+
+    @Min(value = 36, message = "Agent height must be between 36 and 96 inches.")
+    @Max(value = 96, message = "Agent height must be between 36 and 96 inches.")
     private int heightInInches;
+
     private List<AgentAgency> agencies = new ArrayList<>();
     private List<Alias> aliases = new ArrayList<>();
 

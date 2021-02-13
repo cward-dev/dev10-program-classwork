@@ -17,8 +17,7 @@ Content-Type: application/json
     "middleName": "C",
     "lastName": "O'Lynn",
     "dob": "1956-11-09",
-    "heightInInches": 41,
-    "agencies": []
+    "heightInInches": 41
 }
 
 ###

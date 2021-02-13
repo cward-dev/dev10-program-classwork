@@ -11,7 +11,6 @@ public class Panel {
 
     private int panelId;
 
-    @NotNull(message = "Section is required.")
     @NotBlank(message = "Section is required.")
     private String section;
 

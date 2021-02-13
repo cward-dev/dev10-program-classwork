@@ -6,7 +6,12 @@ import learn.field_agent.models.Agent;
 import learn.field_agent.models.Alias;
 import org.springframework.stereotype.Service;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class AliasService {
@@ -15,9 +20,14 @@ public class AliasService {
 
     private final AgentRepository agentRepository;
 
+    Validator validator;
+
     public AliasService(AliasRepository repository, AgentRepository agentRepository) {
         this.repository = repository;
         this.agentRepository = agentRepository;
+
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        this.validator = factory.getValidator();
     }
 
     public List<Alias> findAll() {
@@ -39,7 +49,7 @@ public class AliasService {
         }
 
         if (alias.getAliasId() != 0) {
-            result.addMessage("aliasId cannot be set for `add` operation", ResultType.INVALID);
+            result.addMessage("Alias ID cannot be set for `add` operation.", ResultType.INVALID);
             return result;
         }
 
@@ -55,12 +65,12 @@ public class AliasService {
         }
 
         if (alias.getAliasId() <= 0) {
-            result.addMessage("aliasId must be set for `update` operation", ResultType.INVALID);
+            result.addMessage("Alias ID must be set for `update` operation.", ResultType.INVALID);
             return result;
         }
 
         if (!repository.update(alias)) {
-            String msg = String.format("aliasId: %s, not found", alias.getAliasId());
+            String msg = String.format("Alias ID: %s, not found.", alias.getAliasId());
             result.addMessage(msg, ResultType.NOT_FOUND);
         }
 
@@ -71,16 +81,24 @@ public class AliasService {
         return repository.deleteById(aliasId);
     }
 
+    public Agent getAgent(Alias alias) {
+        return agentRepository.findById(alias.getAgentId());
+    }
+
     private Result<Alias> validate(Alias alias) {
         Result<Alias> result = new Result<>();
 
         if (alias == null) {
-            result.addMessage("alias cannot be null", ResultType.INVALID);
+            result.addMessage("Alias cannot be null.", ResultType.INVALID);
             return result;
         }
 
-        if (Validations.isNullOrBlank(alias.getName())) {
-            result.addMessage("name is required", ResultType.INVALID);
+        Set<ConstraintViolation<Alias>> violations = validator.validate(alias);
+
+        if (!violations.isEmpty()) {
+            for (ConstraintViolation<Alias> violation : violations) {
+                result.addMessage(violation.getMessage(), ResultType.INVALID);
+            }
         }
 
         if (Validations.isNullOrBlank(alias.getPersona())) { // If empty, make persona null
@@ -90,15 +108,15 @@ public class AliasService {
         if (checkForDuplicate(alias)) {
             String msg;
             if (alias.getPersona() == null) {
-                msg = String.format("name: '%s', already exists, cannot set without persona", alias.getName());
+                msg = String.format("Name: '%s', already exists, cannot set without persona.", alias.getName());
             } else {
-                msg = String.format("name: '%s', persona: '%s', already exists", alias.getName(), alias.getPersona());
+                msg = String.format("Name: '%s', Persona: '%s', already exists.", alias.getName(), alias.getPersona());
             }
             result.addMessage(msg, ResultType.INVALID);
         }
 
         if (!checkForValidAgentId(alias.getAgentId())) {
-            String msg = String.format("agentId: %s, not found", alias.getAgentId());
+            String msg = String.format("Agent ID: %s, not found.", alias.getAgentId());
             result.addMessage(msg, ResultType.NOT_FOUND);
         }
 

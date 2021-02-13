@@ -96,10 +96,9 @@ Technical Tip
   * I need to set up the controller methods for the given feature before moving to the html template.
   * I need to complete the Agent CRUD MVP before I focus on Alias/advanced navigation
 * What annotations will I add to the Agent model to leverage the Validation API?
-  * Agent (class) @NotNull
-  * firstName @NotNull, @NotBlank
+  * firstName @NotBlank
   * middleName
-  * lastName @NotNull, @NotBlank
+  * lastName @NotBlank
   * dob @DateTimeFormat(pattern = "yyyy-MM-dd")
   * heightInInches @Min(value=36) @Max(value=96)
 * What validations can I remove from the AgentService class?
@@ -142,7 +141,7 @@ Technical Tip
 ## Time Tracking
 
 * MVP Estimated Time: 8.25 hours
-* MVP Actual Time: 
+* MVP Actual Time: 6 hours
   
 * Stretch Estimated Time: 5.25 hours
 * Stretch Actual Time: 
@@ -152,33 +151,30 @@ Technical Tip
 
 ## MVP Tasks
 
-* [ ] Agent Model Annotations
+* [x] Agent Model Annotations
   * Estimated Time: 0.5 hours
-  * Actual Time:
-* [ ] Update Agent Service to use ValidatorFactory instead of validate method
+  * Actual Time: 0.25 hours
+* [x] Update Agent Service to use ValidatorFactory instead of validate method
   * Estimated Time: 1 hour
-  * Actual Time:
-* [ ] Update AgentController to include BindingResult
-  * Estimated Time: 1 hour
-  * Actual Time:
-* [ ] Create MainMenuController
+  * Actual Time: 0.75 hours
+* [x] Create MainMenuController
   * Estimated Time: 0.5 hours
-  * Actual Time:
-* [ ] Create AgentUIController
+  * Actual Time: 0.25 hours
+* [x] Create AgentUIController
   * Estimated Time: 1.5 hours
-  * Actual Time:
-* [ ] Create index.html template
+  * Actual Time: 2 hours
+* [x] Create index.html template
   * Estimated Time: 0.75 hours
-  * Actual Time:
-* [ ] Create agent-page.html template
+  * Actual Time: 0.5 hours
+* [x] Create agent-display.html template
   * Estimated Time: 1 hour
-  * Actual Time:
-* [ ] Create agent-form.html template (add/update form)
+  * Actual Time: 0.75 hours
+* [x] Create agent-form.html template (add/update form)
   * Estimated Time: 1.5 hours
-  * Actual Time:
-* [ ] Create delete-agent.html template (delete confirmation)
+  * Actual Time: 1 hour
+* [x] Create delete-agent.html template (delete confirmation)
   * Estimated Time: 0.5 hours
-  * Actual Time:
+  * Actual Time: 0.5 hours
   
 ```
 Will likely need to make updates to service to make access to certain data easier in the UIController

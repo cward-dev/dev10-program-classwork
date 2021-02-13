@@ -128,7 +128,7 @@ class AliasServiceTest {
         Result<Alias> result = service.add(null);
 
         assertEquals(ResultType.INVALID, result.getType());
-        assertEquals("alias cannot be null", result.getMessages().get(0));
+        assertEquals("Alias cannot be null.", result.getMessages().get(0));
         assertNull(result.getPayload());
     }
 
@@ -142,7 +142,7 @@ class AliasServiceTest {
         Result<Alias> result = service.add(actual);
 
         assertEquals(ResultType.INVALID, result.getType());
-        assertEquals("name is required", result.getMessages().get(0));
+        assertEquals("Alias name is required.", result.getMessages().get(0));
         assertNull(result.getPayload());
 
         actual.setName(" ");
@@ -150,7 +150,7 @@ class AliasServiceTest {
         result = service.add(actual);
 
         assertEquals(ResultType.INVALID, result.getType());
-        assertEquals("name is required", result.getMessages().get(0));
+        assertEquals("Alias name is required.", result.getMessages().get(0));
         assertNull(result.getPayload());
     }
 
@@ -164,7 +164,7 @@ class AliasServiceTest {
         Result<Alias> result = service.add(actual);
 
         assertEquals(ResultType.INVALID, result.getType());
-        assertEquals("name: 'Bill', already exists, cannot set without persona", result.getMessages().get(0));
+        assertEquals("Name: 'Bill', already exists, cannot set without persona.", result.getMessages().get(0));
         assertNull(result.getPayload());
     }
 
@@ -182,7 +182,7 @@ class AliasServiceTest {
         Result<Alias> result = service.add(actual);
 
         assertEquals(ResultType.INVALID, result.getType());
-        assertEquals("name: 'Bill', persona: 'Test Persona', already exists", result.getMessages().get(0));
+        assertEquals("Name: 'Bill', Persona: 'Test Persona', already exists.", result.getMessages().get(0));
         assertNull(result.getPayload());
     }
 
@@ -195,7 +195,7 @@ class AliasServiceTest {
         Result<Alias> result = service.add(actual);
 
         assertEquals(ResultType.INVALID, result.getType());
-        assertEquals("aliasId cannot be set for `add` operation", result.getMessages().get(0));
+        assertEquals("Alias ID cannot be set for `add` operation.", result.getMessages().get(0));
         assertNull(result.getPayload());
     }
 
@@ -233,13 +233,13 @@ class AliasServiceTest {
         Result<Alias> result = service.update(actual);
 
         assertEquals(ResultType.INVALID, result.getType());
-        assertEquals("aliasId must be set for `update` operation", result.getMessages().get(0));
+        assertEquals("Alias ID must be set for `update` operation.", result.getMessages().get(0));
 
         actual.setAliasId(45);
         result = service.update(actual);
 
         assertEquals(ResultType.NOT_FOUND, result.getType());
-        assertEquals("aliasId: 45, not found", result.getMessages().get(0));
+        assertEquals("Alias ID: 45, not found.", result.getMessages().get(0));
     }
 
     @Test
@@ -252,13 +252,13 @@ class AliasServiceTest {
         Result<Alias> result = service.update(actual);
 
         assertEquals(ResultType.INVALID, result.getType());
-        assertEquals("name is required", result.getMessages().get(0));
+        assertEquals("Alias name is required.", result.getMessages().get(0));
 
         actual.setName(" ");
         result = service.update(actual);
 
         assertEquals(ResultType.INVALID, result.getType());
-        assertEquals("name is required", result.getMessages().get(0));
+        assertEquals("Alias name is required.", result.getMessages().get(0));
     }
 
     @Test
@@ -274,7 +274,7 @@ class AliasServiceTest {
         Result<Alias> result = service.update(actual);
 
         assertEquals(ResultType.INVALID, result.getType());
-        assertEquals("name: 'Test', already exists, cannot set without persona", result.getMessages().get(0));
+        assertEquals("Name: 'Test', already exists, cannot set without persona.", result.getMessages().get(0));
     }
 
     @Test
@@ -290,7 +290,7 @@ class AliasServiceTest {
         Result<Alias> result = service.update(actual);
 
         assertEquals(ResultType.INVALID, result.getType());
-        assertEquals("name: 'Test', persona: 'V2', already exists", result.getMessages().get(0));
+        assertEquals("Name: 'Test', Persona: 'V2', already exists.", result.getMessages().get(0));
     }
 
     @Test
@@ -303,7 +303,7 @@ class AliasServiceTest {
         Result<Alias> result = service.update(actual);
 
         assertEquals(ResultType.NOT_FOUND, result.getType());
-        assertEquals("agentId: 45, not found", result.getMessages().get(0));
+        assertEquals("Agent ID: 45, not found.", result.getMessages().get(0));
     }
 
 

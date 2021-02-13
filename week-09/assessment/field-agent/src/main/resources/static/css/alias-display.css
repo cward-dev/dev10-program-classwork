@@ -1,0 +1,23 @@
+.container {
+  max-width: 90%;
+}
+
+#current-form {
+  padding-bottom: 20px;
+}
+
+.name-alias-item {
+  width: 25%;
+}
+
+.persona-alias-item {
+  width: 55%;
+}
+
+.actions-alias-item {
+  width: 20%;
+}
+
+#alias-pic {
+  height: 200px;
+}

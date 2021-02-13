@@ -1,12 +1,19 @@
 package learn.field_agent.models;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 public class Alias {
 
     int aliasId;
+
+    @NotBlank(message = "Alias name is required.")
     String name;
+
     String persona;
+
+    @Min(value = 1, message = "Alias must be assigned to an Agent ID.")
     int agentId;
 
     public int getAliasId() {

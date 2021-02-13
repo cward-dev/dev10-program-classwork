@@ -4,16 +4,26 @@ import learn.field_agent.data.AgentRepository;
 import learn.field_agent.models.Agent;
 import org.springframework.stereotype.Service;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class AgentService {
 
     private final AgentRepository repository;
 
+    Validator validator;
+
     public AgentService(AgentRepository repository) {
         this.repository = repository;
+
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        this.validator = factory.getValidator();
     }
 
     public List<Agent> findAll() {
@@ -31,7 +41,7 @@ public class AgentService {
         }
 
         if (agent.getAgentId() != 0) {
-            result.addMessage("agentId cannot be set for `add` operation", ResultType.INVALID);
+            result.addMessage("Agent ID cannot be set for `add` operation", ResultType.INVALID);
             return result;
         }
 
@@ -47,7 +57,7 @@ public class AgentService {
         }
 
         if (agent.getAgentId() <= 0) {
-            result.addMessage("agentId must be set for `update` operation", ResultType.INVALID);
+            result.addMessage("Agent ID must be set for `update` operation", ResultType.INVALID);
             return result;
         }
 
@@ -65,25 +75,22 @@ public class AgentService {
 
     private Result<Agent> validate(Agent agent) {
         Result<Agent> result = new Result<>();
+
         if (agent == null) {
-            result.addMessage("agent cannot be null", ResultType.INVALID);
+            result.addMessage("Agent cannot be null.", ResultType.INVALID);
             return result;
         }
 
-        if (Validations.isNullOrBlank(agent.getFirstName())) {
-            result.addMessage("firstName is required", ResultType.INVALID);
-        }
+        Set<ConstraintViolation<Agent>> violations = validator.validate(agent);
 
-        if (Validations.isNullOrBlank(agent.getLastName())) {
-            result.addMessage("lastName is required", ResultType.INVALID);
+        if (!violations.isEmpty()) {
+            for (ConstraintViolation<Agent> violation : violations) {
+                result.addMessage(violation.getMessage(), ResultType.INVALID);
+            }
         }
 
         if (agent.getDob() != null && agent.getDob().isAfter(LocalDate.now().minusYears(12))) {
-            result.addMessage("agents younger than 12 are not allowed", ResultType.INVALID);
-        }
-
-        if (agent.getHeightInInches() < 36 || agent.getHeightInInches() > 96) {
-            result.addMessage("height must be between 36 and 96 inches", ResultType.INVALID);
+            result.addMessage("Agents younger than 12 are not allowed.", ResultType.INVALID);
         }
 
         return result;
