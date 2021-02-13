@@ -25,8 +25,8 @@
         <h2 th:unless="*{aliasId > 0}">Add an Alias</h2>
         <h2 th:if="*{aliasId > 0}" th:text="('Update Alias: ' + ${alias.name})">Update Alias</h2>
       </div>
-      <input type="hidden" th:field="*{aliasId}">
-      <input type="hidden" th:field="*{agentId}">
+      <input type="hidden" th:field="*{aliasId}" value="*{aliasId}">
+      <input type="hidden" th:field="${agentId}" value="${agentId}">
       <div class="form-row">
         <div class="form-group col">
           <label for="name">Name</label>
@@ -43,7 +43,7 @@
       </div>
       <div class="mt-2" th:object="${agent}">
         <button type="submit" class="btn btn-primary mr-2">Save</button>
-        <a href="#aliases" th:href="@{/alias/agent/{id}(id=${alias.agentId})}" class="btn btn-secondary">Cancel</a>
+        <a href="#aliases" th:href="@{/alias/{idAgent}(idAgent=${agentId})}" class="btn btn-secondary">Cancel</a>
       </div>
     </form>
   </div>

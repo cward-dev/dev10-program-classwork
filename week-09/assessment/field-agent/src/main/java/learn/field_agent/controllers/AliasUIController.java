@@ -27,30 +27,29 @@ public class AliasUIController {
         this.agentService = agentService;
     }
 
-    @GetMapping("/alias/agent/{agentId}")
+    @GetMapping("/alias/{agentId}")
     public String displayAll(@PathVariable int agentId, Model model) {
         model.addAttribute("agent", agentService.findById(agentId));
         model.addAttribute("aliases", aliasService.findByAgentId(agentId));
         return "alias-display";
     }
 
-    @GetMapping("/alias/add/agent/{agentId}")
-    public String displayAdd(@PathVariable int agentId, @ModelAttribute("alias") Alias alias, Model model) {
+    @GetMapping("/alias/{agentId}/add")
+    public String displayAdd(@ModelAttribute("alias") Alias alias, @PathVariable int agentId, Model model) {
         model.addAttribute("agentId", agentId);
         return "alias-form";
     }
 
-    @PostMapping("/alias/add")
+    @PostMapping("/alias/{agentId}/add")
     public String handleAdd(
-            @ModelAttribute("alias") @Valid Alias alias, int agentId,
+            @ModelAttribute("alias") @Valid Alias alias, @PathVariable int agentId,
             BindingResult result, Model model) {
 
         if (result.hasErrors()) {
+            model.addAttribute("agentId", agentId);
             model.addAttribute("alias", alias);
             return "alias-form";
         }
-
-        alias.setAgentId(agentId);
 
         Result<Alias> serviceResult = aliasService.add(alias);
 
@@ -58,6 +57,7 @@ public class AliasUIController {
             for (String error : serviceResult.getMessages()) {
                 result.addError(new ObjectError("alias", error));
             }
+            model.addAttribute("agentId", agentId);
             model.addAttribute("alias", alias);
             return "alias-form";
         }
@@ -65,8 +65,8 @@ public class AliasUIController {
         return String.format("redirect:/alias/agent/%s", alias.getAgentId());
     }
 
-    @GetMapping("/alias/edit/{aliasId}")
-    public String displayEdit(@PathVariable int aliasId, Model model) {
+    @GetMapping("/alias/{agentId}/edit/{aliasId}")
+    public String displayEdit(@PathVariable int agentId, @PathVariable int aliasId, Model model) {
         Alias alias = aliasService.findById(aliasId);
         if (alias == null) {
             return "not-found";
@@ -78,12 +78,13 @@ public class AliasUIController {
         }
 
         model.addAttribute("alias", alias);
+        model.addAttribute("agentId", alias.getAgentId());
         return "alias-form";
     }
 
-    @PostMapping("/alias/edit/*")
+    @PostMapping("/alias/{agentId}/edit/*")
     public String handleEdit(
-            @ModelAttribute("alias") @Valid Alias alias,
+            @ModelAttribute("alias") @Valid Alias alias, @PathVariable int agentId,
             BindingResult result, Model model) {
 
         if (result.hasErrors()) {
@@ -101,11 +102,11 @@ public class AliasUIController {
             return "alias-form";
         }
 
-        return String.format("redirect:/alias/agent/%s", alias.getAgentId());
+        return String.format("redirect:/alias/%s", alias.getAgentId());
     }
 
-    @GetMapping("/alias/delete/{aliasId}")
-    public String displayDelete(@PathVariable int aliasId, Model model) {
+    @GetMapping("/alias/{agentId}/delete/{aliasId}")
+    public String displayDelete(@PathVariable int agentId, @PathVariable int aliasId, Model model) {
         Alias alias = aliasService.findById(aliasId);
 
         if (alias == null) {
@@ -116,9 +117,9 @@ public class AliasUIController {
         return "alias-delete";
     }
 
-    @PostMapping("/alias/delete/{aliasId}")
-    public String handleDelete(@PathVariable int aliasId, Model model) {
+    @PostMapping("/alias/{agentId}/delete/{aliasId}")
+    public String handleDelete(@PathVariable int agentId, @PathVariable int aliasId, Model model) {
         aliasService.deleteById(aliasId);
-        return "redirect:/alias";
+        return String.format("redirect:/alias/%s", agentId);
     }
 }

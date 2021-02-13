@@ -39,7 +39,7 @@
     </div>
     <div class="mt-2" th:object="${agent}">
       <button type="submit" class="btn btn-danger mr-2">Delete</button>
-      <a href="#aliases" th:href="@{/alias/agent/{id}(id=${alias.agentId})}" class="btn btn-secondary">Cancel</a>
+      <a href="#aliases" th:href="@{/alias/{idAgent}(idAgent=${agentId})}" class="btn btn-secondary">Cancel</a>
     </div>
   </form>
 </div>
