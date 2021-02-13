@@ -9,99 +9,93 @@
   <link rel="stylesheet" th:href="@{/css/alias-display.css}">
   <link rel="icon" type="image/jpg" th:href="@{/images/agent_pic.jpg}">
 </head>
-<body>
-<div>
-  <div class="jumbotron row">
-    <div class="col-8">
-      <h1>Field Agents ThymeLeaf</h1>
-    </div>
-    <div class="col-3 ml-5" align="right">
-      <a href="#home" th:href="@{/agent}" class="btn btn-info col">Back to Agents</a>
-    </div>
-  </div>
-  <div class="container">
-    <div class="row">
-      <div class="col-2">
-        <div class="d-flex justify-content-center pr-5">
-          <img th:src=@{/images/alias_pic.png} alt="Alias Picture." id="alias-pic" align="center"></img>
-        </div>
+  <body>
+    <div class="jumbotron row">
+      <div class="col-8">
+        <h1>Field Agents ThymeLeaf</h1>
       </div>
-      <div class="col-10">
-        <div>
-          <div class="alert alert-secondary">
-            <div class="row">
-              <div class="col-8">
-                <h3>Agent</h3>
-              </div>
-            </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-2">
+          <div class="d-flex justify-content-center pr-5">
+            <img th:src=@{/images/alias_pic.png} alt="Alias Picture." id="alias-pic" align="center"></img>
           </div>
-          <table class="table table-striped">
-            <thead class="table-dark">
-            <tr>
-              <th class="first-name-item">First Name</th>
-              <th class="middle-name-item">MI</th>
-              <th class="last-name-item">Last Name</th>
-              <th class="dob-item">Date of Birth</th>
-              <th class="height-item">Height</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:object="${agent}">
-              <input type="hidden" th:field="*{agentId}">
-              <td th:text="*{firstName.length() > 15} ? *{firstName.substring(0, 15)} : *{firstName}">First Name</td>
-              <td th:text="*{middleName != null && !middleName.isBlank()} ? *{middleName.charAt(0)} : ''">MI</td>
-              <td th:text="*{lastName.length() > 15} ? *{lastName.substring(0, 15)} : *{lastName}">Last Name</td>
-              <td th:text="*{dob}">Date of Birth</td>
-              <td th:text="*{heightInInches}">Height</td>
-            </tr>
-            </tbody>
-          </table>
         </div>
-        <div>
-          <div class="alert alert-secondary">
-            <div class="row">
-              <div class="col-8">
-                <h3>Alias List</h3>
-              </div>
-              <div class="col-4" align="right">
-                <a href="#alias-add" th:href="@{/alias/{idAgent}/add(idAgent=${agentId})}" class="btn btn-success mr-5 col ml-2">Add Alias</a>
+        <div class="col-10">
+          <div>
+            <div class="alert alert-secondary">
+              <div class="row">
+                <div class="col-8">
+                  <h3>Agent</h3>
+                </div>
+                <div class="col-4" align="right">
+                  <a href="#home" th:href="@{/agent}" class="btn btn-info mr-5 col ml-2">Back to Agents</a>
+                </div>
               </div>
             </div>
-          </div>
-          <table class="table table-striped">
-            <thead class="table-dark">
+            <table class="table table-striped">
+              <thead class="table-dark">
               <tr>
-                <th class="name-alias-item">Name</th>
-                <th class="persona-alias-item">Persona</th>
-                <th class="actions-alias-item">Actions</th>
+                <th class="first-name-item">First Name</th>
+                <th class="middle-name-item">MI</th>
+                <th class="last-name-item">Last Name</th>
+                <th class="dob-item">Date of Birth</th>
+                <th class="height-item">Height</th>
               </tr>
-            </thead>
-            <tbody>
-              <tr th:each="alias: ${aliases}">
-                <td class="name-alias-item" th:text="${alias.name.length() > 18 ? alias.name.substring(0, 18) : alias.name}">Name</td>
-                <td class="persona-alias-item" th:text="${alias.persona != null && !alias.persona.isBlank()} ?
-                  (${alias.persona.length() > 175 ? alias.persona.substring(0, 175)
-                  : alias.persona}) : ''">Persona</td>
-                <td class="actions-alias-item">
-                  <a href="#edit" th:href="@{/alias/{idAgent}/edit/{idAlias}(idAgent=${agentId}, idAlias=${alias.aliasId})}" class="col-4 btn btn-info ml-3">Edit</a>
-                  <a href="#delete" th:href="@{/alias/{idAgent}/delete/{idAlias}(idAgent=${agentId}, idAlias=${alias.aliasId})}" class="col-6 btn btn-danger ml-2">Delete</a>
-                </td>
+              </thead>
+              <tbody>
+              <tr th:object="${agent}">
+                <input type="hidden" th:field="*{agentId}">
+                <td th:text="*{firstName.length() > 15} ? *{firstName.substring(0, 15)} : *{firstName}">First Name</td>
+                <td th:text="*{middleName != null && !middleName.isBlank()} ? *{middleName.charAt(0)} : ''">MI</td>
+                <td th:text="*{lastName.length() > 15} ? *{lastName.substring(0, 15)} : *{lastName}">Last Name</td>
+                <td th:text="*{dob}">Date of Birth</td>
+                <td th:text="*{heightInInches} + '&quot;'">Height</td>
               </tr>
-            </tbody>
-          </table>
-          <div th:if="${#lists.isEmpty(aliases)}" class="colspan alert alert-warning" align="center">
-            If this agent has any aliases, even we haven't tracked them down. (No aliases found)
+              </tbody>
+            </table>
           </div>
-          <form method="POST">
-            <div align="right">
-              <button type="submit" class="btn btn-success mr-2">Add Random Alias</button>
+          <div>
+            <div class="alert alert-secondary">
+              <div class="row">
+                <div class="col-8">
+                  <h3>Alias List</h3>
+                </div>
+              </div>
             </div>
-          </form>
+            <table class="table table-striped">
+              <thead class="table-dark">
+                <tr>
+                  <th class="name-alias-item">Name</th>
+                  <th class="persona-alias-item">Persona</th>
+                  <th class="actions-alias-item">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="alias: ${aliases}">
+                  <td class="name-alias-item" th:text="${alias.name.length() > 18 ? alias.name.substring(0, 18) : alias.name}">Name</td>
+                  <td class="persona-alias-item" th:text="${alias.persona != null && !alias.persona.isBlank()} ?
+                    (${alias.persona.length() > 175 ? alias.persona.substring(0, 175)
+                    : alias.persona}) : ''">Persona</td>
+                  <td class="actions-alias-item">
+                    <a href="#edit" th:href="@{/agent/{idAgent}/alias/edit/{idAlias}(idAgent=${agentId}, idAlias=${alias.aliasId})}" class="col-5 btn btn-info ml-1">Edit</a>
+                    <a href="#delete" th:href="@{/agent/{idAgent}/alias/delete/{idAlias}(idAgent=${agentId}, idAlias=${alias.aliasId})}" class="col-6 btn btn-danger ml-2">Delete</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div th:if="${#lists.isEmpty(aliases)}" class="colspan alert alert-warning" align="center">
+              If this agent has any aliases, even we haven't tracked them down. (No aliases found)
+            </div>
+            <div align="right">
+              <a href="#alias-add" th:href="@{/agent/{idAgent}/alias/add(idAgent=${agentId})}" class="btn btn-success">Add Alias</a>
+              <a href="#alias-add" th:href="@{/agent/{idAgent}/alias/add/random(idAgent=${agentId})}" class="btn btn-success ml-2 mr-2">Add Random Alias</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="jumbotron mt-5" />
-</div>
-</body>
+    <div class="jumbotron mt-5" />
+  </body>
 </html>

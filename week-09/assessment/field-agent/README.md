@@ -143,11 +143,11 @@ Technical Tip
 * MVP Estimated Time: 8.25 hours
 * MVP Actual Time: 6 hours
   
-* Stretch Estimated Time: 5.25 hours
-* Stretch Actual Time: 
+* Stretch Estimated Time: 6 hours
+* Stretch Actual Time: 6.5 hours
 
-* Total Estimated Time: 13.5 hours
-* Total Actual Time: 
+* Total Estimated Time: 14.25 hours
+* Total Actual Time: 12.5 hours
 
 ## MVP Tasks
 
@@ -187,27 +187,27 @@ Will likely need to make updates to service to make access to certain data easie
 * Structure will be similar to the React implementation, where a button on an Agent <tr> will take the user to the alias-page template, populated with the aliases for that agent (and full CRUD)
 
 ### Tasks
-* [ ] Alias Model Annotations
+* [x] Alias Model Annotations
   * Estimated Time: 0.5 hours
-  * Actual Time:
-* [ ] Update Alias Service to use ValidatorFactory instead of validate method
+  * Actual Time: 0.25 hours
+* [x] Update Alias Service to use ValidatorFactory instead of validate method
   * Estimated Time: 0.5 hours
-  * Actual Time:
-* [ ] Update AliasController to include BindingResult
+  * Actual Time: 0.75 hours
+* [x] Update AliasController to include BindingResult
   * Estimated Time: 0.5 hours
-  * Actual Time:
-* [ ] Create AliasUIController
+  * Actual Time: 0.5 hours
+* [x] Create AliasUIController
   * Estimated Time: 0.75 hours
-  * Actual Time:
-* [ ] Create alias-page.html template
+  * Actual Time: 1 hour
+* [x] Create alias-page.html template
   * Estimated Time: 0.75 hours
-  * Actual Time:
-* [ ] Create alias-form.html template (add/update form)
+  * Actual Time: 0.5 hours
+* [x] Create alias-form.html template (add/update form)
   * Estimated Time: 1 hour
-  * Actual Time:
-* [ ] Create delete-alias.html template (delete confirmation)
+  * Actual Time: 1 hour
+* [x] Create delete-alias.html template (delete confirmation)
   * Estimated Time: 0.5 hours
-  * Actual Time:
+  * Actual Time: 0.25 hours
 
 ## Stretch Goal (Advanced Navigation):
 
@@ -216,12 +216,20 @@ Will likely need to make updates to service to make access to certain data easie
 * From agent-page.html, users can select a specific agent to view aliases for, using a button to send them to the alias-page.html template
 
 ### Tasks
-* [ ] Add "Welcome, agent." link (button) to the home page (onclick sends them to /agent to display all agents with the needed agentId)
+* [x] Add "Welcome, agent." link (button) to the home page (onclick sends them to /agent to display all agents with the needed agentId)
   * Estimated Time: 0.25 hours
-  * Actual Time:
-* [ ] Add "Aliases" link (button) to the table row for each Agent in agent-page (onclick sends them to /alias/{agentId})
+  * Actual Time: 0.25 hours
+* [x] Add "Aliases" button feature to the table row for each Agent in agent-page (onclick sends them to /alias/{agentId})
   * Estimated Time: 0.5 hours
-  * Actual Time:
+  * Actual Time: 0.5 hours
+  
+### Stretch Goal (?) - Done for Fun (Add Random Agent/Alias)
+* [x] Add makeRandomAgent/makeRandomAlias method to services
+  * Estimated Time: 0.25 hours
+  * Actual Time: 0.5 hours
+* [x] Add button to display templates and build into controller
+  * Estimated Time: 0.5 hours
+  * Actual Time: 1 hour
   
 #### Research
 * [ ] TBD

@@ -3,10 +3,10 @@ package learn.field_agent.controllers;
 import learn.field_agent.domain.AgentService;
 import learn.field_agent.domain.Result;
 import learn.field_agent.models.Agent;
+import learn.field_agent.models.Alias;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -38,10 +38,7 @@ public class AgentUIController {
     }
 
     @PostMapping("/agent/add")
-    public String handleAdd(
-            @ModelAttribute("agent") @Valid Agent agent,
-            BindingResult result, Model model) {
-
+    public String handleAdd(@ModelAttribute("agent") @Valid Agent agent, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "agent-form";
         }
@@ -54,6 +51,14 @@ public class AgentUIController {
             }
             return "agent-form";
         }
+
+        return "redirect:/agent";
+    }
+
+    @GetMapping("/agent/add/random")
+    public String displayAddRandom(Model model) {
+        Agent agent = service.makeRandomAgent();
+        service.add(agent); // Since duplicate names don't matter and random fields are safe, nothing to do
 
         return "redirect:/agent";
     }
@@ -71,8 +76,7 @@ public class AgentUIController {
 
     @PostMapping("/agent/edit/*")
     public String handleEdit(
-            @ModelAttribute("agent") @Valid Agent agent,
-            BindingResult result, Model model) {
+            @ModelAttribute("agent") @Valid Agent agent, BindingResult result, Model model) {
 
         if (result.hasErrors()) {
             model.addAttribute("agent", agent);
@@ -105,7 +109,7 @@ public class AgentUIController {
     }
 
     @PostMapping("/agent/delete/{agentId}")
-    public String handleDelete(@PathVariable int agentId, Model model) {
+    public String handleDelete(@PathVariable int agentId) {
         service.deleteById(agentId);
         return "redirect:/agent";
     }

@@ -15,9 +15,6 @@
       <div class="col-8">
         <h1>Field Agents ThymeLeaf</h1>
       </div>
-      <div class="col-3 ml-5" align="right">
-        <a href="#home" th:href="@{/}" class="btn btn-info col">Back to Landing Page</a>
-      </div>
     </div>
     <div class="container">
       <Errors/>
@@ -34,7 +31,7 @@
                 <h3>Agent List</h3>
               </div>
               <div class="col-4" align="right">
-                <a href="#agent-add" th:href="@{/agent/add}" class="btn btn-success mr-5 col ml-2">Add Agent</a>
+                <a href="#home" th:href="@{/}" class="btn btn-info col mr-5 ml-2">Back to Landing Page</a>
               </div>
             </div>
           </div>
@@ -55,11 +52,11 @@
                 <td th:text="${agent.middleName != null && !agent.middleName.isBlank()} ? ${agent.middleName.charAt(0)} : ''">MI</td>
                 <td th:text="${agent.lastName.length() > 15 ? agent.lastName.substring(0, 15) : agent.lastName}">Last Name</td>
                 <td th:text="${agent.dob}">Date of Birth</td>
-                <td th:text="${agent.heightInInches}">Height</td>
+                <td th:text="${agent.heightInInches} + '&quot;'">Height</td>
                 <td class="d-flex justify-content-center">
                   <a href="#edit" th:href="@{/agent/edit/{id}(id=${agent.agentId})}" class="col-4 btn btn-info">Edit</a>
                   <a href="#delete" th:href="@{/agent/delete/{id}(id=${agent.agentId})}" class="col-4 btn btn-danger ml-2">Delete</a>
-                  <a href="#aliases" th:href="@{/alias/{id}(id=${agent.agentId})}" class="col-4 btn btn-secondary ml-2 mr-3">Aliases</a>
+                  <a href="#aliases" th:href="@{/agent/{id}/alias(id=${agent.agentId})}" class="col-4 btn btn-secondary ml-2 mr-3">Aliases</a>
                 </td>
               </tr>
             </tbody>
@@ -67,11 +64,10 @@
           <div th:if="${#lists.isEmpty(agents)}" class="colspan alert alert-warning" align="center">
             These agents appear to have given you the slip. (No agents found)
           </div>
-          <form method="POST">
-            <div align="right">
-              <button class="btn btn-success mr-2" onclick="">Add Random Agent</button>
-            </div>
-          </form>
+          <div align="right">
+            <a href="#agent-add" th:href="@{/agent/add}" class="btn btn-success">Add Agent</a>
+            <a href="#agent-add" th:href="@{/agent/add/random}" class="btn btn-success mr-2 ml-2">Add Random Agent</a>
+          </div>
         </div>
       </div>
     </div>

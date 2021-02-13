@@ -53,6 +53,8 @@ public class AliasService {
             return result;
         }
 
+        alias = trimWhitespace(alias);
+
         alias = repository.add(alias);
         result.setPayload(alias);
         return result;
@@ -69,6 +71,8 @@ public class AliasService {
             return result;
         }
 
+        alias = trimWhitespace(alias);
+
         if (!repository.update(alias)) {
             String msg = String.format("Alias ID: %s, not found.", alias.getAliasId());
             result.addMessage(msg, ResultType.NOT_FOUND);
@@ -81,8 +85,22 @@ public class AliasService {
         return repository.deleteById(aliasId);
     }
 
-    public Agent getAgent(Alias alias) {
-        return agentRepository.findById(alias.getAgentId());
+    public Alias makeRandomAlias(int agentId) {
+        List<String> names = List.of("Willow", "Robinhood", "Pickle", "Roofie", "Big Ben", "Limon",
+                "Janitor", "Arkham", "Tailwind", "Sailor", "Racket", "Flyaway", "Roundhouse", "Aether",
+                "Market", "Lobster", "Timeshare", "Bowler", "Bowser", "Sydney", "Tapdance", "Mana",
+                "Tomcat", "Penny", "Nickel", "Sous Vide", "Broiler", "Sugar", "Madison", "Anchorman",
+                "Zoolander", "Rochester", "Gangnam", "Opa", "Samsung", "Apple", "Tuesday", "Yellow Bus",
+                "Freight Train", "Snake Eyes", "Double Blind", "Twisty Straw", "Sumpin Sumpin", "Big Bertha");
+        List<String> personas = List.of("Z-3", "009", "RN", "DQ", "10", "M7", "PU", "4K", "DD", "REM", "EVIL",
+                "6242", "C-3PO", "R2-D2", "The Wily One", "U2", "TB12", "TTYL", "BRB", "LOL");
+
+        Alias alias = new Alias();
+        alias.setName(names.get((int)(Math.random() * names.size())));
+        alias.setPersona(personas.get((int)(Math.random() * personas.size())));
+        alias.setAgentId(agentId);
+
+        return alias;
     }
 
     private Result<Alias> validate(Alias alias) {
@@ -101,7 +119,7 @@ public class AliasService {
             }
         }
 
-        if (Validations.isNullOrBlank(alias.getPersona())) { // If empty, make persona null
+        if (Validations.isNullOrBlank(alias.getPersona())) { // If empty, make persona null for duplicate check
             alias.setPersona(null);
         }
 
@@ -129,19 +147,30 @@ public class AliasService {
         }
         if (alias.getPersona() == null) {
             return findAll().stream()
-                    .filter(a -> a.getName().equalsIgnoreCase(alias.getName()))
+                    .filter(a -> a.getName().trim().equalsIgnoreCase(alias.getName().trim()))
                     .anyMatch(a -> a.getPersona() == null
                             && a.getAliasId() != alias.getAliasId());
         }
         return findAll().stream()
-                .filter(a -> a.getName().equalsIgnoreCase(alias.getName()))
+                .filter(a -> a.getName().trim().equalsIgnoreCase(alias.getName().trim()))
                 .filter(a -> a.getPersona() != null)
-                .anyMatch(a -> a.getPersona().equalsIgnoreCase(alias.getPersona())
+                .anyMatch(a -> a.getPersona().trim().equalsIgnoreCase(alias.getPersona().trim())
                         && a.getAliasId() != alias.getAliasId());
 
     }
 
     private boolean checkForValidAgentId(int agentId) {
         return agentRepository.findById(agentId) != null;
+    }
+
+    private Alias trimWhitespace(Alias alias) {
+        Alias result = alias;
+        result.setName(result.getName().trim().replaceAll("\\s+", " "));
+
+        if (result.getPersona() != null && result.getPersona().length() > 0) {
+            result.setPersona(result.getPersona().trim().replaceAll("\\s+", " "));
+        }
+
+        return result;
     }
 }
