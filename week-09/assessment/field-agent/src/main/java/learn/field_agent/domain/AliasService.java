@@ -111,6 +111,7 @@ public class AliasService {
             return result;
         }
 
+        // Kept in validate() method because we're checking for duplicate/valid agentId anyway
         Set<ConstraintViolation<Alias>> violations = validator.validate(alias);
 
         if (!violations.isEmpty()) {

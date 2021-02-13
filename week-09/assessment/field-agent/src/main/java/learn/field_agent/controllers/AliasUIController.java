@@ -30,7 +30,13 @@ public class AliasUIController {
 
     @GetMapping("/agent/{agentId}/alias")
     public String displayAll(@PathVariable int agentId, Model model) {
-        model.addAttribute("agent", agentService.findById(agentId));
+        Agent agent = agentService.findById(agentId);
+
+        if (agent == null) {
+            return "not-found";
+        }
+
+        model.addAttribute("agent", agent);
         model.addAttribute("aliases", aliasService.findByAgentId(agentId));
         return "alias-display";
     }

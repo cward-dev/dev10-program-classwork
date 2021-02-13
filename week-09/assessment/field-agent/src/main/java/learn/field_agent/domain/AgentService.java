@@ -152,6 +152,7 @@ public class AgentService {
             return result;
         }
 
+        // Kept in validate() method because we're checking for valid date of birth here anyway
         Set<ConstraintViolation<Agent>> violations = validator.validate(agent);
 
         if (!violations.isEmpty()) {
