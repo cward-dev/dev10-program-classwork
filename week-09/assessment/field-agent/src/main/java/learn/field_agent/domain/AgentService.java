@@ -152,8 +152,7 @@ public class AgentService {
             return result;
         }
 
-        // Kept in validate() method because we're checking for valid date of birth here anyway
-        Set<ConstraintViolation<Agent>> violations = validator.validate(agent);
+        Set<ConstraintViolation<Agent>> violations = validator.validate(agent); // Kept in validate() method because we're manually checking for valid dob anyway
 
         if (!violations.isEmpty()) {
             for (ConstraintViolation<Agent> violation : violations) {
@@ -168,7 +167,7 @@ public class AgentService {
         return result;
     }
 
-    private Agent trimWhitespace(Agent agent) {
+    private Agent trimWhitespace(Agent agent) { // Clean up whitespace in String fields
         Agent result = agent;
         result.setFirstName(result.getFirstName().trim().replaceAll("\\s+", " "));
 

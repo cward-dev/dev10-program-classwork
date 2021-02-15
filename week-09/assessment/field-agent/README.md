@@ -222,7 +222,7 @@ Will likely need to make updates to service to make access to certain data easie
 * [x] Add "Aliases" button feature to the table row for each Agent in agent-page (onclick sends them to /alias/{agentId})
   * Estimated Time: 0.5 hours
   * Actual Time: 0.5 hours
-  
+
 ### Stretch Goal (?) - Done for Fun (Add Random Agent/Alias)
 * [x] Add makeRandomAgent/makeRandomAlias method to services
   * Estimated Time: 0.25 hours
@@ -232,4 +232,6 @@ Will likely need to make updates to service to make access to certain data easie
   * Actual Time: 1 hour
   
 #### Research
-* [ ] TBD
+* [x] Direct Whitelabel Error Page to "not-found"
+  * Create an ErrorUIController than implements ErrorController
+    * Override the getErrorPath method to a custom @RequestMapping path and have it return "not-found"

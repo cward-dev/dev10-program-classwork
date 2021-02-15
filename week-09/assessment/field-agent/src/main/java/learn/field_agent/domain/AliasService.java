@@ -111,8 +111,7 @@ public class AliasService {
             return result;
         }
 
-        // Kept in validate() method because we're checking for duplicate/valid agentId anyway
-        Set<ConstraintViolation<Alias>> violations = validator.validate(alias);
+        Set<ConstraintViolation<Alias>> violations = validator.validate(alias); // Kept in validate() method because we're manually checking for duplicate/valid agentId anyway
 
         if (!violations.isEmpty()) {
             for (ConstraintViolation<Alias> violation : violations) {
@@ -164,7 +163,7 @@ public class AliasService {
         return agentRepository.findById(agentId) != null;
     }
 
-    private Alias trimWhitespace(Alias alias) {
+    private Alias trimWhitespace(Alias alias) { // Clean up whitespace in String fields
         Alias result = alias;
         result.setName(result.getName().trim().replaceAll("\\s+", " "));
 
